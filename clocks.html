@@ -7781,7 +7781,7 @@
             updateId("constructorPlural", C("cmanagers", issue).isPlural() ? "s" : "")
 
             // Update the CPS element and change the color by modifying the class
-            var cps = cpt.mul(shards).mul(60)
+            var cps = cpt.mul(60)
             var cpsElem = ID("cps")
             update(cpsElem, cps.floor(true).isZero() ? "no clocks currently" : (cps.plural((cps.isLess(10) ? "only " : "") + format(cps) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " Christmas tree" : " clock"))) + " a second (CPS)"))
             if (cps.isMoreOrEqual(1e11)) {
