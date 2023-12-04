@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>FractalSky</title>
+    <meta charset="utf-8" />
+    <html lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <style>
+        * {
+            font-size: 24px;
+            font-family: Cambria, Cochin, Georgia;
+            touch-action: manipulation;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .scroll {
+            overflow-y: visible;
+        }
+
+        .scroll::-webkit-scrollbar {
+            width: 16px;
+            background-color: #0000;
+        }
+
+        .scroll::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 10px black;
+            border-radius: 8px;
+        }
+
+        .scroll::-webkit-scrollbar-thumb {
+            background: #e00000;
+            box-shadow: inset 0 0 6px black;
+            border-radius: 8px;
+        }
+
+        .scroll::-webkit-scrollbar-thumb:hover {
+            background: #cf0000;
+        }
+
+        .scroll::-webkit-scrollbar-thumb:active {
+            background: #b00000;
+            box-shadow: 6px;
+        }
+
+        input {
+            border: 2px solid black;
+            border-radius: 5px;
+            user-select: text;
+        }
+
+        canvas {
+            image-rendering: -moz-crisp-edges;
+            image-rendering: pixelated;
+            cursor: move;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        button {
+            cursor: pointer;
+            transition: background-color 250ms, transform 500ms;
+            padding: 4px;
+            margin: 2px;
+            border-radius: 5px;
+            border: none;
+            background-color: #fc2;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            background-color: #eb2;
+        }
+
+        button:active {
+            transform: scale(1.05);
+            background-color: #dc2;
+        }
+
+        #menu {
+            display: none;
+            position: absolute;
+            width: 1200px;
+            max-width: 70%;
+            height: 400px;
+            min-height: calc(100px + 10%);
+            max-height: calc(90% - 10px);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #888;
+            border-radius: 8px;
+        }
+
+        #percent {
+            white-space: pre;
+            position: absolute;
+            top: 60px;
+            left: 25px;
+            font-size: 20px;
+            cursor: move;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+        }
+
+        #close {
+            cursor: pointer;
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+        }
+
+        #copy {
+            cursor: pointer;
+            visibility: previous;
+            font-size: 28px;
+            opacity: 0;
+            position: absolute;
+            border-radius: 8px;
+            background-color: #303030;
+            color: white;
+            box-sizing: border-box;
+            padding: 6px;
+            transition: opacity 500ms ease;
+        }
+
+        #slow {
+            cursor: pointer;
+            visibility: previous;
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            width: calc(100% - 20px);
+            border-radius: 12px;
+            background-color: #101010;
+            color: white;
+            text-align: center;
+            transition: opacity 1000ms ease;
+        }
+
+        #copy:hover {
+            color: #ddd;
+        }
+
+        #copy:active {
+            color: #b0b0b0;
+        }
+
+        #left {
+            position: relative;
+            width: calc(100% - 50px);
+        }
+
+        .sheet {
+            background-color: #222;
+            opacity: 0.4;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #legal,
+        #help {
+            font-size: 15px;
+            font-family: "Gill Sans", Calibri, Tahoma;
+        }
+
+        #help {
+            font-size: 25px;
+            text-align: center;
+        }
+
+        body {
+            background-color: #222;
+        }
+
+        #noteTitle {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        #noteContent {
+            font-size: 15px;
+            font-family: Verdana;
+        }
+
+        #welcome {
+            position: absolute;
+            top: 155px;
+            left: 10px;
+            cursor: pointer;
+            background-color: #aaf;
+            border-radius: 5px;
+            border: 3px solid #27b;
+            padding: 2px;
+            max-width: calc(40px + 25%);
+            transition: opacity 500ms;
+            opacity: 0;
+        }
+
+        .choice {
+            border-radius: 4px;
+            padding: 1px;
+            cursor: pointer;
+            color: #2060e0;
+            transition: color 500ms, background-color 500ms;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        .choice:hover {
+            color: #0644c0;
+            background-color: #b3e6f7;
+            text-decoration: underline;
+        }
+
+        .choice:active {
+            color: #039;
+            text-decoration: underline;
+        }
+
+        #percent::selection {
+            color: white;
+            background: #1ae;
+        }
+
+        #help {
+            display: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        h2,
+        i {
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        #infoClose {
+            transition: background-color 100ms;
+            opacity: 1;
+            background-color: #ed710c;
+        }
+
+        #infoClose:hover {
+            background-color: #edc70c;
+        }
+
+        #infoClose:active {
+            transition: background-color 500ms;
+            background-color: #1aad10;
+        }
+    </style>
+    <script id="worker">
+        onmessage = e => {
+            var data = e.data
+        }
+    </script>
+</head>
+
+<body>
+    <a id="select" style="display: none"></a>
+    <canvas width="0" height="0" id="previous"></canvas>
+    <div class="sheet" id="sheet"></div>
+    <canvas width="0" height="0" id="canvas"></canvas>
+    <div style="position: absolute; top: 20px; left: 20px; padding: 5px;">
+        <button onclick="reset()" id="reset">Reset</button>
+        <button onclick="toggleMenu()">More...</button>
+    </div>
+    <b id="percent"></b>
+    <div id="welcome">
+        <div id="noteTitle">Welcome!</div>
+        <div id="noteContent">This online fractal viewer has many of the features that professional "fractal
+            creators" have, such as pertubation and lots of other features!
+            Click <span onclick="loadInfo()" class="choice">here</span> to learn how it works.
+            Use the "More..." button to customize your keybinds. You may notice that this tab is playing audio. This is
+            to prevent the device from sleeping whenever you don't move your mouse after a while.
+            <div id="notice">Anyways, hello!</div>
+        </div>
+    </div>
+    <div id="menu" class="scroll">
+        <button onclick="closeMenu()" id="close">Close <b>(Space)</b></button>
+        <button onclick="loadInfo(); closeMenu()">Info</button>
+        <button onclick="switchFractals()">Switch Fractal <b>(C or Shift+C)</b></button>
+        <button onclick="changePallete()">Switch Pallete <b>(P)</b></button>
+        <button onclick="increaseSpeed()">Increase Pallete Change <b>(S)</b></button>
+        <button onclick="decreaseSpeed()">Decrease Pallete Change <b>(Shift+S)</b></button>
+        <button onclick="changeCategory()">Switch Fractal Category <b>(X)</b></button>
+        <button onclick="setIterations(iterations + 250)">Increase Iterations <b>(I)</b></button>
+        <br>
+        <button onclick="wantedFPS = 3.45">30FPS</button>
+        <button onclick="wantedFPS = 7">15FPS</button>
+        <button onclick="wantedFPS = 10.5">10FPS</button>
+        <br><br>
+        <div id="left">
+            <div id="legal">
+                This fractal viewer was made by Leo Zhang. Copyright 2023. All rights reserved.
+            </div>
+        </div>
+    </div>
+    <div class="sheet" id="help" style="background-color: #fff; opacity: 0.9" class="scroll">
+        Hi there!<br>
+        This fractal viewer is unique, because it uses pertubation, allowing for significantly faster deep zooming.
+        <br><br>
+        <h2>Wait, what even <i>is</i> pertubation?</h2>
+        <br>
+        Pertubation is a trick to make fractals run faster. Computers only represent numbers to a certain precision,
+        and going further results in pixelation. So, we have to implement high-precision, allowing us to zoom
+        deeper. However, this is many times slower, so pertubation helps bring the fractals back up to speed.
+        <br><br><br><br>
+        JK...That isn't implemented yet because I forgot to remove this, but that's my goal!
+        <br>
+        Well, what are you waiting for? Dive in or look at the recommended stuff in the menu.
+        <button onclick="help.style.display = null" id="infoClose">Okay</button>
+    </div>
+    <audio loop id="audio">
+        <source
+            src="data:audio/mpeg;base64,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ypse25lsUQCLBCCAxTwNmdJMQU1FqqrwePG4wwwACgcbgxsY/+MYxPgM614kEACNSgePjgeN4/0ddN///orKqt0dw4gMdGVj0VRYcDFtqIAldpmE7QNE4QgArGH/3tR0AxxwHgIKAQMcceCg/+MYxP0OC1okGACHTdGOsGqgiLRzhGRFRiur0Ox8zpzfpfT//R+77HVmO25VWjZhGkhmDBsjyT7qTEGRAx8YEOOCHBQPBQKC/+MYxP8O214kGAHRSQQ4PwQ/xo0FGAoOqkIzomtv/p+vq/rk7UOs5Zi4M3ISOJHqPB8PdNUKhI/7frpdKNZJNBjpQxWU5EQW/+MYxP0OK1IcUADFKYo44ww4wEPAgYABDgowIGAgwIcdDPVGdPv//7Y2fYY/DX3WVnqz5QlOLNPcXHzLuquFhgWEXaXP9P+6/+MYxPkNQ2YYEACNTK3qjafKiatdrl3LabSmvu/////c/dKISlSMCShjKDIphgRAubz6FnGSMUxBTUUzLjEwMFVVVdAg8H8E/+MYxP8Pk2YkWACTMD4wKODr3d0mnVSOjKnL1Zv//+n9/sr/Q6I8rqcgRwYsOmweBmUEMIVMQU1FMy4xMDBVVVVVVSx8vP+9/+MYxPkNC2IgGACNTDCwsCGSlRocjqhphEMuZq8vPL//ynkAm0FiNhlaytWNQZpI6ggiOOxMQU1FMy4xMDBv1bb0alaSKqoh/+MYxP8SY2IYOACNEciK5kzEVDodWM93ZFXnzv06//6fgmd3MxRKuoienc01Fi+cwAzDEEJMQU1FMy4xMDA1gc1ojllrwYIH/+MYxPALc2IcCACNMYwKCBxoBBAwY4CB5tpGezvT9FdHb/6aok9rMiozJO0FVAToPcCBFUoArWDm+6s7qyRhwLggEECAgYMG/+MYxPELI14cEACHTTwEYCgEcEMDgYFgxgcYEBggQB0S92ZZktbfW5SL/v/tltfPpXJTgMKGRVEi0BKVTEFNRTMuMTAwVT8z/+MYxPELQ2ogEABTTOyP/lvVHuvb/8y9k7c3///+yLek0qOGMg4EDg2KcVhtwCxtmSrKxJVMQU1FMy4xMDBVVVVVVVVVVVVV/+MYxPYMa2YcCACTTlVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVV/+MYxPYMY1okGABFQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVV/+MYxP8QW2IkWACHMVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVV/+MYxO4KU2IUCACTTVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxMQAAAP8AAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxMQAAAP8AAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
+            type="audio/wav" />
+    </audio>
+
+    <script id="script">
+        "use strict"
+        // Set the timeout so there's no trace and so it takes up the most space
+        setTimeout(console.log, 4, "%cYour inspector is currently open (because you can see this). We recommend closing the inspector for performance reasons. This is optional, but the program can run several times faster without it. Why? The inspector has debugging components that can drag down the code significantly! Reload the page after you've closed the inspector.", "font-family:'Gill Sans',Calibri,Tahoma;font-weight:600;font-size:15px")
+        const workerText = worker.textContent
+        worker.remove()
+        script.remove()
+
+        // Helpful browser hacks
+        const isFirefox = !!window.InternalError
+        const isSafari = !!window.GestureEvent
+
+        // Blank 5 seconds of audio to prevent the device from sleeping (Wake Lock API isn't always there)
+        // const audio = document.getElementById("audio")
+        // audio.onpause = () => audio.play()
+
+        const notice = document.getElementById("notice")
+        const sheet = document.getElementById("sheet")
+        const select = document.getElementById("select")
+        const canvas = document.getElementById("canvas")
+        const ctx = canvas.getContext("2d")
+        const previous = document.getElementById("previous")
+        const ctx2 = previous.getContext("2d")
+        const hidden = document.createElement("canvas")
+        const ctx3 = hidden.getContext("2d")
+        const percent = document.getElementById("percent")
+        const welcome = document.getElementById("welcome")
+        const help = document.getElementById("help")
+        const workerCount = navigator.hardwareConcurrency
+
+        var w, h, pixels, bytes, iterationEnd, colorStart, wasmLength, dataArray, colorArray, dataBits, palleteData, colorBits
+        var buffer, memory, handlePixels, resize, exports
+        var centerX = 0, centerY = 0
+        var resizeW, resizeH
+
+        memory = new WebAssembly.Memory({
+            initial: (Math.round(innerWidth * devicePixelRatio) * Math.round(innerHeight * devicePixelRatio)) / 8192,
+            maximum: 50000,
+            shared: true
+        })
+
+        // Notes for welcome popup
+        if (isSafari) {
+            notice.textContent = "IMPORTANT: Safari is significantly slower for this program than other browsers, and misses out on a few minor features. Try using a browser like Firefox or Chrome to get the best speed and performance."
+        }
+
+        var wasmInstance = WebAssembly.instantiateStreaming(fetch("data:application/wasm;base64,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"), {
+            env: {
+                memory: memory
+            }
+        }).then(result => {
+            // var blob = new Blob([workerText], { type: "text/javascript" })
+            // var worker = new Worker(URL.createObjectURL(blob))
+            // worker.onmessage = function (e) {
+            //     var data = e.data
+            // }
+            // worker.postMessage(memory)
+            exports = result.instance.exports
+            memory = exports.memory
+            buffer = memory.buffer
+            handlePixels = exports.run
+            palleteData = getMemory(palleteBytes * 0.25, 0, 32)
+            palleteData.set(pallete)
+            window.addEventListener("resize", resizeHandler)
+
+            // Firefox is weird about resizing
+            justSwitched = false
+            resizeHandler()
+            panX = (-w * 0.5 - 0.5) * zoom - 0.74999
+            panY = (-h * 0.5 - 0.5) * zoom + 1e-5
+            setTimeout(() => {
+                welcome.style.opacity = 1
+            }, 200)
+            draw()
+        })
+
+        // Giant tables of color values (in hexadecimal)
+        const palletes = [
+            [0x0a0aa0, 0x3232ff, 0x00c8ff, 0x00b43c, 0xdcb428, 0x7d643c, 0xdcc8c8, 0xc864aa, 0x820a8c, 0x7d00b9, 0x375ff5, 0x14a0e6, 0x5fe1dc, 0x8ce1c8, 0x9bc87d, 0xf08750, 0xe650aa, 0xa564f0],
+            [0xf7c3f1, 0xe7ece9, 0xc8b2af, 0x181519, 0xbfaaae, 0xcac7ca, 0xc9afb3, 0x424141, 0xd1aead, 0xe9e7ea, 0xd0acb4, 0x171516, 0xc59b8e, 0xc4c4c4, 0xc18477, 0x444645, 0xc3995b, 0xeceae7, 0xbcb346, 0x1a1b1b, 0xe3ae54, 0xd0d1cf, 0xcfb6b1, 0x37373b, 0xc8afb1, 0xeaebe7, 0xc0afaf, 0x141415, 0xc2afa8, 0xc7ccca, 0xc2b2ae, 0x403c41, 0xcdb6b1, 0xe6eceb, 0xc6b2bc, 0x151516, 0xc7a9bb, 0xc4c7c4, 0xc992c6, 0x4b4b45, 0xcda2af, 0xe9ebea, 0xc5b3af, 0x1a1419, 0xd6ad97, 0xd4d3d5, 0xd19866, 0x3e393d, 0xd7732e, 0xebe8ec, 0xd29f56, 0x151615, 0xbeb5a9, 0xc4c9ca, 0xc5b8a4, 0x3e4141, 0xc4b6a9, 0xeae6e5, 0xc7bb59, 0x191414, 0xccb979, 0xc7c7c5, 0xbcb0a3, 0x433f42, 0xb5b05b, 0xece5e9, 0xbdb660, 0x161518, 0xc2bb51, 0xd3d9d9, 0xc1bd56, 0x494444, 0xbfbc59, 0xe5e5e5, 0x7f7c3d, 0x1a1919, 0x9e9e47, 0xc3c1c4, 0xc3994c, 0x2e322f, 0xc67f44, 0xe6ebea, 0xc88c7b, 0x151b19, 0xca5693, 0xc6c6c6, 0xc4529d, 0x4f4c4e, 0xb87b8a, 0xe9eceb, 0xaf6d59, 0x1b1b14, 0xbcc054, 0xd6d7d7, 0xb7bf43, 0x3b3535, 0xb4ba55, 0xe6e8ec, 0xb1b952, 0x171817, 0xafb650, 0xc3c1c5, 0xb4c04c, 0x373539, 0xb7c444, 0xe7e9ec, 0xbaa466, 0x191a1a, 0x844435, 0xc8c9c5, 0xd2657a, 0x4d4b4d, 0xbe9e50, 0xe5e7e7, 0xb3bc3d, 0x1b1915, 0xb1be48, 0xd0d2d6, 0xb2c03a, 0x362f35, 0xb1bc47, 0xe7ece5, 0xb0b753, 0x141517, 0x93b94e, 0xc7c9c9, 0x519f03, 0x3d3e43, 0xb3c73d, 0xeaeceb, 0xadc638, 0x181b17, 0xa9c24f, 0xcacbc9, 0x7ebb6b, 0x484948, 0x4ac484, 0xe9e5ec, 0x6fa65f, 0x1a1916, 0xb5c445, 0xd5ced1, 0xb0c548, 0x3c3638, 0xaabf3d, 0xece5e8, 0xb0b74f, 0x19171b, 0xafb948, 0xc9c5ca, 0xaac140, 0x3d3e43, 0xafc13f, 0xe8e5e6, 0xacc234, 0x141416, 0xafc14e, 0xc3c4c2, 0xadbb4f, 0x474747, 0xb1bc4c, 0xe5ebe5, 0x757a2a, 0x151716, 0x393e13, 0xd7d4d3, 0x2d873b, 0x3f3e39, 0x3eaf57, 0xe9e6e9, 0x66b668, 0x141816, 0x9cba4f, 0xc8cbc9, 0xadbf44, 0x3c3d40, 0xb7bc47, 0xeae7e5, 0x68bc39, 0x191917, 0x68c838, 0xc2c3c3, 0xacc559, 0x404645, 0xafb049, 0xeae7ec, 0xb0b552, 0x191914, 0xb0bb3f, 0xd7d3d4, 0xb7b84a, 0x434a43, 0xb6b44f, 0xe5e5ea, 0x98b54e, 0x14181b, 0x55b163, 0xc1c1c6, 0x009800, 0x2c322c, 0x42763d, 0xe8e7e6, 0x64b346, 0x181b15, 0x41c04e, 0xc8c6c7, 0xb6ae5a, 0x524c52, 0xb1b050, 0xeae8e7, 0xb6aa55, 0x141515, 0xb9ad53, 0xd6dad7, 0xbba242, 0x393535, 0xc08d4b, 0xeaeaeb, 0xb65d53, 0x1b181a, 0xb69551, 0xc4c4c4, 0xbaa556, 0x3a353a, 0xbb594f, 0xeae5ec, 0xc27658, 0x181616, 0xbd5756, 0xcacbca, 0xb75d5c, 0x4b4d4e, 0xb75a5a, 0xeae9e9, 0xc05c8b, 0x181b17, 0xcc5cad, 0xd1d0ce, 0xb77bba, 0x353734, 0xc464c5, 0xe9e6e6, 0xb957aa, 0x181515, 0xc45086, 0xc9c5c6, 0xbd56a8, 0x424042, 0xde86ad, 0xe9e5ea, 0xd26899, 0x161b19, 0xb94eb2, 0xc6cbc4, 0x9d67cf, 0x4d464b, 0xb759aa, 0xe6eae9, 0xca6ba7, 0x15171a, 0xc045a1, 0xcfd4d0, 0xc44ba6, 0x393935, 0xc23f7d, 0xe9e7e9, 0xbc53a6, 0x151a18, 0xa540c0, 0xc9c7c6, 0xbd46a4, 0x3f3d43, 0xc846a7, 0xebebea, 0xdb57ce, 0x161518, 0xa858c8, 0xc7c7c5, 0x6b3fca, 0x454a47, 0xb054a7, 0xe9eae8, 0xd176ba, 0x1a181a, 0xca2cb6, 0xd6d8d7, 0xc543a6, 0x403d3c, 0xb24f8c, 0xe6e7ec, 0xb849a9, 0x19171b, 0xb950a8, 0xcac5c9, 0xbf45aa, 0x3e3e3b, 0xc749a9, 0xe5e6e7, 0xc833a1, 0x161419, 0xc03c81, 0xc4c5c1, 0xc33d55, 0x3f4246, 0xdc9942, 0xe6e8e5, 0xb7bd66, 0x171a18, 0xcf8d52, 0xdad5da, 0xc944a8, 0x494549, 0xc34ca9, 0xe9e8e7, 0x9b41bd, 0x181514, 0x8f45ca, 0xc2c1c5, 0xb239c6, 0x2c322f, 0xbd3dc4, 0xebe8ec, 0xca45ae, 0x18161a, 0xc742a6, 0xc3c7c5, 0xb959aa, 0x4c534f, 0xc04eaf, 0xe9eae7, 0xcb34b7, 0x191416, 0x9d1e9f, 0xd8d8d4, 0x791e96, 0x373833, 0x5f1abb, 0xece8ec, 0x9a39dc, 0x161714, 0xa776e0, 0xeceaeb, 0x99abf6, 0x3c3837, 0x76cdf3, 0xe7e9e7, 0x5b95dc, 0x1a1417, 0x5452cd, 0xdfe3e3, 0x7225bc, 0x4c4e4a, 0xb34acb, 0xe8e7eb, 0xc845b3, 0x1b141b, 0xcc51b3, 0xd1d4d4, 0xca4ab7, 0x323433, 0xc452b4, 0xece7e5, 0xbe5cb8, 0x141814, 0xa73c97, 0xc5c9c7, 0x96498c, 0x3a3e3c, 0x81347e, 0xe6e9e9, 0x5e3660, 0x161817, 0x934986, 0xc4c6c4, 0xc255b9, 0x4e4747, 0xbba3b4, 0xe9ece9, 0xc55abe, 0x1b1814, 0xdc91d2, 0xd2d1ce, 0xcd5bc3, 0x393232, 0xcb58bb, 0xebeae9, 0xbfa6b5, 0x151519, 0xc45bb8, 0xcbcbca, 0xc85abc, 0x42403f, 0xcaa3c1, 0xeae6eb, 0xd157c6, 0x151516, 0xd49bca, 0xc4c2c4, 0xc1a3bc, 0x464143, 0xd498c8, 0xe6e5e9, 0xc6a5bf, 0x141a19, 0xe5ace3, 0xd7d6d4, 0xcba6c5, 0x403d3c, 0xcda6c6, 0xe8e7e7, 0xc5a6bf, 0x161716, 0xbeabbd, 0xc4c5c9, 0xcca7c5, 0x3c3e3a, 0xcca9c6, 0xe8e9ec, 0xcb88cb, 0x17181a, 0xb62fb4, 0xc1c2c0, 0xa470bf, 0x454043, 0xc4a8be, 0xe5e7e7, 0xc8aec6, 0x161617, 0xcfabd1, 0xd8d3d5, 0x9d6bcc, 0x454442, 0xd9a6ee, 0xe6ece9, 0xcba1c7, 0x181a18, 0xc288c9, 0xc1c3c7, 0xcbaac6, 0x333333, 0xd0a8cb, 0xe7e9e7, 0xcfb0cf, 0x141a18, 0xc9adcc, 0xcac5c7, 0xc0adbe, 0x53524d, 0xc1acbf, 0xe5e9e8, 0xdb9ccc, 0x141914, 0xd3aad0, 0xd5dbd7, 0x9983cf, 0x363a34, 0x8a70d2, 0xece7ec, 0x6297ec, 0x161419, 0x68c9e2, 0xedeff4, 0x46cc8c, 0x373d39, 0x93ce3f, 0xe5e6eb, 0xcac25c, 0x151415, 0xd4aa4b, 0xdce1db, 0xe27eda, 0x4d4a4b, 0xc999cb, 0xe6ecea, 0xc7a8cc, 0x19161a, 0xccafc8, 0xcfced3, 0xc7a7d2, 0x373539, 0xbfb0cb, 0xeae9e6, 0xbeaabe, 0x171a17, 0xbaa4be, 0xc6c4ca, 0xbca9c4, 0x3d403b, 0xc6a9cf, 0xe6e9e9, 0xc8aad1, 0x181915, 0xbeaac9, 0xcac4cb, 0xbda4c5, 0x4a4b4f, 0xb7abc2, 0xe8e9e7, 0xbeabc9, 0x1a1b19, 0xc4a9d2, 0xced2d1, 0xc1abce, 0x303736, 0xb9a9c8, 0xeae7e7, 0xb8aabc, 0x18141a, 0xb2a3c3, 0xc8c7c9, 0xb5a6c5, 0x444344, 0x967dc0, 0xebe5e8, 0x9574ec, 0x191a14, 0x9d85e4, 0xc6c6c2, 0xa38ec5, 0x424540, 0xb2a3c4, 0xe5e7e8, 0xb7a6c8, 0x161b17, 0xc1aec8, 0xd5d8d4, 0xb2a6cb, 0x42413e, 0xb3aac7, 0xe5ebe9, 0xb1a7c1, 0x191816, 0xafaac2, 0xcac8c6, 0xaea6ca, 0x3a3f39, 0xb3a8cc, 0xece5e6, 0xc4a7cf, 0x1a1b19, 0xd898cd, 0xc3c4c2, 0xcd8fc1, 0x414341, 0xdd81bf, 0xece9ec, 0xda61b2, 0x151818, 0xe590d8, 0xd9d7d5, 0xb1a6cf, 0x444340, 0xaca7cb, 0xe5e5ec, 0xaaa9c6, 0x181519, 0xa6a4bd, 0xc6c2c0, 0xa3a4cd, 0x2c2f2f, 0xa4a6d1, 0xece5e7, 0xa7accc, 0x1b1915, 0xaaa6c7, 0xcac5c7, 0xa9aec3, 0x514f50, 0xa5a4c7, 0xeceae6, 0xa4a5cc, 0x1b1418, 0xa7a4ce, 0xdadbda, 0x969ac9, 0x3a3b34, 0xb6b2ea, 0xeceaeb, 0x97b7ee, 0x1b1a1a, 0x72b8e9, 0xe2e1e3, 0xa6adca, 0x383b36, 0xa5a2ce, 0xece6ec, 0xa6a6ce, 0x19171a, 0xa5a6c7, 0xcbc6c8, 0xaaa8be, 0x4a4b4b, 0xa8a7c1, 0xeaeaeb, 0x99a8eb, 0x171415, 0x8d94ed, 0xd1ced2, 0x79c5ec, 0x363535, 0x7aa7eb, 0xece7eb, 0x98a2d3, 0x141415, 0xa8a8c4, 0xcdd0d1, 0xaaa4c7, 0x3c3d3f, 0x9c96df, 0xeceae8, 0xa8a4ca, 0x1a1417, 0xa6a8c6, 0xcbc6c9, 0xa8a5bc, 0x4f504c, 0xaeaebb, 0xece7e9, 0xa8a6c6, 0x171b17, 0xa9aaca, 0xd5d0d2, 0xa7a4c7, 0x323135, 0xb491d6, 0xece5e7, 0xac80d6, 0x14151a, 0xbf6cd9, 0xc9c7ca, 0x956de0, 0x454545, 0x7e7ced, 0xe5e8eb, 0xa3a5bd, 0x151917, 0x8e83af, 0xd9d7d5, 0xaaa3b2, 0x433f3e, 0xa7a3b4, 0xe9eae9, 0xaca6b3, 0x181414, 0xa2a6c2, 0xd7d9d5, 0xb2a5b3, 0x423e3d, 0xaca7b5, 0xe7e9e7, 0xaca4ae, 0x151616, 0xaca7b1, 0xcbc5c4, 0x918ebd, 0x3a3b3c, 0xb2a6b0, 0xeae7ea, 0xd4b1d3, 0x1b161b, 0xcb98c6, 0xc3c1c1, 0xe5c7ee, 0x474644, 0xae88df, 0xeae8ea, 0xae61dd, 0x19181b, 0xb45da3, 0xd7d5d9, 0xc94b6e, 0x423f3f, 0xd2a188, 0xece9e7, 0xd28339, 0x161b1a, 0xc5a04b, 0xc6c4c3, 0xc17644, 0x2f2f33, 0xb55e51, 0xebe9e9, 0xc3984c, 0x171614, 0xae9d2e, 0xc5c7c7, 0xb6a660, 0x514e4e, 0xb0a556, 0xeaecea, 0xbe884e, 0x141914, 0xc46e3b, 0xdad4d7, 0xb58a43, 0x35343a, 0xb9a557, 0xe9ece5, 0xb6a355, 0x15161a, 0xb7a657, 0xc7c4c3, 0xb9a957, 0x36363b, 0xc5b037, 0xeae5e6, 0xbca54c, 0x171517, 0xb45b48, 0xcbcacb, 0xb05e51, 0x4c4b49, 0xb3a74e, 0xeae9e5, 0xb85d42, 0x171916, 0xb9a449, 0xd0d3d2, 0xbc5942, 0x393638, 0xbaa44b, 0xeae7e6, 0xb7a653, 0x161a19, 0xb45b45, 0xc4c3c7, 0xb7a149, 0x383d3f, 0xbb5939, 0xecece7, 0xb85840, 0x18181a, 0xb9a44e, 0xc4c6c9, 0xb2604c, 0x4a4f4e, 0xb9ab53, 0xeae9e9, 0xb55943, 0x141917, 0xb95d43, 0xd4d5d5, 0xb65741, 0x302f33, 0xb85740, 0xe7eaeb, 0xb5a551, 0x181917, 0xb05b50, 0xc9c5ca, 0xb5a64b, 0x444647, 0xb9a547, 0xeae5ea, 0xbb5d3f, 0x161516, 0xb5a852, 0xc4c6c4, 0xb15b4b, 0x434043, 0xb05e50, 0xe5e9eb, 0xb9a64b, 0x181b19, 0xba5c44, 0xd2d8d6, 0xb9a64f, 0x454445, 0xb6a04c, 0xe8e8e6, 0xb3a557, 0x191619, 0xb4a55a, 0xcac4c9, 0xaf5a4e, 0x36353a, 0xb9a954, 0xe6eaea, 0xb1564e, 0x141818, 0xb5a857, 0xc5c1c5, 0xafa35d, 0x454849, 0xb4a459, 0xe8ebe9, 0xc3b397, 0x141b14, 0xafa85a, 0xd8d6d7, 0xb3a35c, 0x43443f, 0xb3c15c, 0xe6e5e6, 0x9cd083, 0x17161b, 0x5abb50, 0xc3c4c2, 0xd2cb4c, 0x322f32],
+            [0xfffffc, 0xa366ec, 0x010201, 0xa86af2, 0xfeffff, 0xa461f7, 0x040001, 0xa365ec, 0xfefdfe, 0xa669f0, 0x070600, 0x9e5df0, 0xffffff, 0x9860ed, 0x000304, 0x9b60e5, 0xffffff, 0x905de6, 0x080602, 0x8c52e8, 0xfcffff, 0x8854dd, 0x030206, 0x7f51e2, 0xfffffe, 0x7446df, 0x060301, 0x6b4cd2, 0xfffcff, 0x673dd0, 0x060206, 0x6040ce, 0xffffff, 0x5f33cb, 0x000801, 0x543ac7, 0xfcffff, 0x462fbf, 0x000806, 0x4125bf, 0xfffeff, 0x3725bc, 0x030305, 0x2d20b8, 0xfffffd, 0x3019b8, 0x040000, 0x2218b0, 0xffffff, 0x2413a8, 0x010306, 0x1d10a5, 0xfefeff, 0x1b17ad, 0x020701, 0x1613a8, 0xffffff, 0x0b0ba9, 0x000001, 0x09119f, 0xffffff, 0x0e0c9e, 0x000000, 0x1010a3, 0xfffeff, 0x0908a3, 0x010000, 0x0710a1, 0xfcffff, 0x1111a5, 0x080802, 0x0b0ea8, 0xffffff, 0x0e0aaa, 0x030500, 0x0f10aa, 0xfcffff, 0x1310ac, 0x070800, 0x1812b6, 0xfffcff, 0x1518b5, 0x070400, 0x1810bc, 0xfffeff, 0x1c17c1, 0x010800, 0x2218c4, 0xfefffc, 0x211fc9, 0x070706, 0x211ace, 0xffffff, 0x1f22cd, 0x010507, 0x2a23da, 0xfefffe, 0x3029dd, 0x010000, 0x2e27da, 0xfcfeff, 0x2b2ae9, 0x020602, 0x2c26e7, 0xfcffff, 0x352af1, 0x000706, 0x3029f4, 0xfeffff, 0x3d33f5, 0x040700, 0x3e36f6, 0xfffeff, 0x3736ff, 0x000007, 0x3d30fd, 0xffffff, 0x3737ff, 0x000807, 0x3f32fa, 0xfdffff, 0x3b34ff, 0x080408, 0x3c37ff, 0xfffffc, 0x4031ff, 0x050008, 0x3937ff, 0xfffffe, 0x4236ff, 0x000707, 0x383bff, 0xfdfdff, 0x3842ff, 0x030004, 0x3c45ff, 0xfffffd, 0x3a4cff, 0x000500, 0x3548ff, 0xfefeff, 0x3153ff, 0x000000, 0x3455ff, 0xfffffc, 0x285dff, 0x000007, 0x2767ff, 0xffffff, 0x2671ff, 0x060005, 0x2678ff, 0xffffff, 0x2580ff, 0x000007, 0x218aff, 0xffffff, 0x1688ff, 0x000003, 0x149aff, 0xffffff, 0x1499ff, 0x000508, 0x0da7ff, 0xfffcfd, 0x0eaeff, 0x000307, 0x10adff, 0xfffffe, 0x05bbff, 0x000300, 0x03b5fd, 0xfffffc, 0x08c0ff, 0x000707, 0x05bfff, 0xffffff, 0x00c6ff, 0x000708, 0x01caff, 0xfcfffe, 0x00ceff, 0x020700, 0x00ccff, 0xfffdff, 0x00c7fb, 0x000200, 0x04cbff, 0xfffcff, 0x05c5fe, 0x080005, 0x06c7fa, 0xffffff, 0x00c4f4, 0x000005, 0x02c4f3, 0xfffefc, 0x08c6ea, 0x010201, 0x00c8dd, 0xfcfffd, 0x08c4de, 0x040007, 0x04c3d3, 0xfffffd, 0x04c7ce, 0x060200, 0x04c2c1, 0xffffff, 0x05c3b6, 0x080000, 0x07c7b0, 0xfffffd, 0x08bfa4, 0x010700, 0x02c19a, 0xffffff, 0x00c28e, 0x000100, 0x02b880, 0xffffff, 0x00c17c, 0x000404, 0x03b675, 0xfeffff, 0x00bf6c, 0x000800, 0x04ba63, 0xffffff, 0x00b85f, 0x060000, 0x03be58, 0xfffffe, 0x04ba4c, 0x080700, 0x08b64a, 0xfffffd, 0x02b848, 0x030601, 0x00b946, 0xfffffe, 0x01b73a, 0x020804, 0x08b33a, 0xfdfdff, 0x04b542, 0x000400, 0x03b93d, 0xfffdff, 0x0cb342, 0x000005, 0x0cb538, 0xfffffe, 0x0eb23a, 0x000101, 0x18b539, 0xfffffc, 0x19b338, 0x000605, 0x25b438, 0xffffff, 0x26b139, 0x020803, 0x35b137, 0xffffff, 0x42b538, 0x030604, 0x48b639, 0xfdfcff, 0x54b937, 0x040000, 0x60b934, 0xfffeff, 0x69b52f, 0x040008, 0x75b330, 0xfdffff, 0x84ba32, 0x060807, 0x92b430, 0xfffffc, 0x9cb234, 0x000300, 0x9fb433, 0xffffff, 0xadb129, 0x080302, 0xb2b428, 0xfcfdfd, 0xbbb42b, 0x040200, 0xcab42e, 0xffffff, 0xcfb52c, 0x000105, 0xcdb126, 0xfdfffe, 0xd6b628, 0x010207, 0xd8b22f, 0xfffdff, 0xe2b425, 0x000508, 0xddb526, 0xffffff, 0xdab02f, 0x050000, 0xd9b125, 0xfeffff, 0xd8b82c, 0x000404, 0xd8b425, 0xfffffe, 0xddb32e, 0x000803, 0xdcae30, 0xfffffe, 0xcea929, 0x000200, 0xccb02b, 0xffffff, 0xcca633, 0x080008, 0xcea834, 0xfdffff, 0xc59e34, 0x030202, 0xbda12b, 0xfeffff, 0xbf982e, 0x070000, 0xb99932, 0xffffff, 0xaf922e, 0x060004, 0xac9235, 0xfdffff, 0xac8531, 0x050205, 0xa08039, 0xfffeff, 0xa28038, 0x050400, 0x97773a, 0xfefeff, 0x957734, 0x070007, 0x92703f, 0xfefcff, 0x917541, 0x000103, 0x856c3f, 0xffffff, 0x876e3c, 0x070604, 0x806b39, 0xffffff, 0x846942, 0x020606, 0x7e6b3a, 0xfffeff, 0x816b3c, 0x000003, 0x7f6741, 0xffffff, 0x7e693c, 0x010000, 0x7c6c3b, 0xfefcfd, 0x7b6845, 0x000406, 0x816741, 0xffffff, 0x80664a, 0x050808, 0x877246, 0xfffeff, 0x8d7548, 0x040001, 0x8a7a4c, 0xffffff, 0x967c59, 0x040805, 0x998262, 0xfeffff, 0x998461, 0x030008, 0x9e8a6a, 0xffffff, 0x9d856b, 0x030600, 0xa99373, 0xfffeff, 0xaa9a7f, 0x010404, 0xb49d86, 0xfffffc, 0xb99b88, 0x000200, 0xb7a790, 0xfffdfe, 0xb9a997, 0x050807, 0xbfb2a6, 0xfeffff, 0xc6ada9, 0x000600, 0xd1b4b5, 0xfdffff, 0xd2b8b0, 0x040303, 0xd7c0b6, 0xfdffff, 0xd9c2b9, 0x030008, 0xd3c1be, 0xffffff, 0xddc7bf, 0x060107, 0xdbc9c7, 0xffffff, 0xdbcbca, 0x000400, 0xd9c6cc, 0xffffff, 0xdac6cb, 0x010008, 0xe0cdca, 0xffffff, 0xd9cccf, 0x000406, 0xdac5c8, 0xffffff, 0xe2c3cc, 0x040706, 0xe0c0c4, 0xfffffe, 0xdcc1c3, 0x020000, 0xdcbfc8, 0xfffeff, 0xd6b9ca, 0x050702, 0xd9b8c6, 0xfcffff, 0xdcb2c2, 0x010107, 0xd3a8c0, 0xfffffd, 0xd4abc1, 0x060600, 0xd1a7bb, 0xfffdfe, 0xd99fb9, 0x080007, 0xd693bf, 0xffffff, 0xd893b6, 0x000805, 0xd58eba, 0xffffff, 0xcb85b4, 0x000107, 0xd082b6, 0xfdfffe, 0xd27eb1, 0x070000, 0xd07cb3, 0xffffff, 0xd277ab, 0x050800, 0xc86eb3, 0xfffcfc, 0xc66fae, 0x060602, 0xca6db3, 0xffffff, 0xca69ac, 0x030000, 0xc96daa, 0xffffff, 0xc667b1, 0x080100, 0xc666ac, 0xfffefd, 0xc668aa, 0x000800, 0xce64a7, 0xffffff, 0xc762aa, 0x000103, 0xc568ad, 0xfdfcfd, 0xc260ad, 0x020004, 0xc764a9, 0xfcfcff, 0xc15fae, 0x050600, 0xbb5ead, 0xfdffff, 0xbc58ae, 0x040806, 0xbc54b2, 0xffffff, 0xb24fb5, 0x060002, 0xb646b4, 0xfcfdff, 0xad42b3, 0x030302, 0xa838b6, 0xfcfeff, 0xa53bb2, 0x000803, 0xa52fae, 0xfdffff, 0xa12ab9, 0x030802, 0x9f2eb0, 0xffffff, 0x9329b4, 0x040102, 0x911db9, 0xffffff, 0x8c1cbd, 0x000603, 0x8d17b3, 0xfffffe, 0x8e17b9, 0x000300, 0x8614bf, 0xffffff, 0x820fbc, 0x030303, 0x8106ba, 0xffffff, 0x8805b9, 0x060507, 0x8603c0, 0xffffff, 0x8009b9, 0x060707, 0x8500b8, 0xfcfdff, 0x8306bd, 0x000100, 0x7b00ba, 0xfffefe, 0x8300b8, 0x000408, 0x8108b9, 0xffffff, 0x7c09bc, 0x000204, 0x7e06bf, 0xfffcff, 0x7411c5, 0x070000, 0x7514c0, 0xfcfdff, 0x7311c4, 0x060400, 0x7513c8, 0xfdfcff, 0x701ec5, 0x000601, 0x691ecc, 0xfeffff, 0x631dca, 0x070507, 0x652ccf, 0xfffffe, 0x642ed3, 0x000102, 0x5d37d5, 0xfffdff, 0x5a33d7, 0x050002, 0x5a3ae3, 0xffffff, 0x5146de, 0x070108, 0x4d46ea, 0xffffff, 0x4c44e5, 0x000300, 0x4c48ea, 0xfffeff, 0x4455e8, 0x080106, 0x4551ee, 0xfdffff, 0x3a53f4, 0x050200, 0x3e5df6, 0xffffff, 0x3757f1, 0x040307, 0x3b5ff9, 0xffffff, 0x3765f6, 0x060005, 0x345bf9, 0xfefdff, 0x3463f4, 0x020703, 0x3461f8, 0xfefffc, 0x3961f2, 0x070407, 0x395ffa, 0xffffff, 0x3d66fa, 0x010001, 0x3968f7, 0xfffeff, 0x3965f2, 0x070001, 0x306ff3, 0xffffff, 0x3670ef, 0x020800, 0x2d6cf7, 0xffffff, 0x3673f5, 0x030000, 0x3178ee, 0xfeffff, 0x2d74f1, 0x080800, 0x2d77f0, 0xffffff, 0x297ef6, 0x080002, 0x2385ee, 0xffffff, 0x2a83f3, 0x000405, 0x2085ed, 0xfffffc, 0x258aee, 0x010402, 0x1d8fee, 0xffffff, 0x2496ee, 0x060107, 0x1f95ef, 0xffffff, 0x1e9aee, 0x040800, 0x199fec, 0xfdfdff, 0x1da0ee, 0x030108, 0x17a3e8, 0xffffff, 0x1ca3e7, 0x060006, 0x1b9ee4, 0xffffff, 0x159fed, 0x000600, 0x17a2e6, 0xffffff, 0x1aa3eb, 0x050000, 0x119ee9, 0xfcffff, 0x199ded, 0x070005, 0x12a5e6, 0xfdfffc, 0x1ba3e7, 0x050000, 0x18aae5, 0xfffeff, 0x22ace3, 0x000808, 0x23abeb, 0xffffff, 0x1ea9e6, 0x000001, 0x25aae2, 0xfffdff, 0x2aade5, 0x020000, 0x2db0e5, 0xfefdff, 0x33b1e6, 0x020000, 0x37b4ea, 0xfdffff, 0x36bae5, 0x010000, 0x3cc1e6, 0xffffff, 0x42c9e5, 0x000008, 0x3dcadd, 0xffffff, 0x42ccdd, 0x010500, 0x4fcdde, 0xffffff, 0x4acce5, 0x030005, 0x56d3df, 0xfdffff, 0x53d1de, 0x070606, 0x52d8e4, 0xffffff, 0x5ed7dd, 0x000506, 0x61e1e4, 0xffffff, 0x5dd8dc, 0x010200, 0x5adbdb, 0xffffff, 0x5ae2e3, 0x060700, 0x63e5df, 0xfdffff, 0x62e0dc, 0x000607, 0x60dde0, 0xffffff, 0x5ee6df, 0x080002, 0x64e5e1, 0xffffff, 0x64dede, 0x010402, 0x69ddda, 0xfffefc, 0x63dbdc, 0x040701, 0x68e5d7, 0xfffcff, 0x67e5d8, 0x040200, 0x6eddd8, 0xfcfffc, 0x74e0d6, 0x050300, 0x71e4da, 0xffffff, 0x75e4da, 0x000400, 0x73e7d4, 0xfdfcff, 0x7de6d8, 0x000107, 0x81e3d6, 0xffffff, 0x85e3d9, 0x080000, 0x7fe3d1, 0xfcffff, 0x8ae6d6, 0x010000, 0x86e8d0, 0xfffdff, 0x91e8d2, 0x040002, 0x90e5c9, 0xfffeff, 0x8de5c8, 0x050102, 0x9addc9, 0xffffff, 0x98e7ce, 0x060500, 0x9be6cf, 0xffffff, 0x94e5d0, 0x000506, 0x9ee4c6, 0xffffff, 0x9edfc6, 0x070705, 0xa2e5ca, 0xffffff, 0x99e3c6, 0x000103, 0x98e3ca, 0xfffffd, 0x9addc6, 0x070001, 0x98dfc6, 0xfeffff, 0x9ae8c8, 0x070000, 0x9ce2c7, 0xfffffe, 0x9ee5c9, 0x080000, 0xa3dfbe, 0xffffff, 0x9bdeb9, 0x030004, 0x99dfb7, 0xfeffff, 0x9de0bc, 0x000300, 0x9dd8b3, 0xfefffe, 0x9adab7, 0x080801, 0x9bd8b2, 0xfffffd, 0x9fdeb0, 0x000406, 0x9cd9ab, 0xfffeff, 0x99d19f, 0x030004, 0x9dd49b, 0xfffdff, 0x9dd89c, 0x000000, 0x9ed293, 0xffffff, 0x98cf90, 0x000806, 0x9bd48d, 0xfffffc, 0x98cd90, 0x030800, 0xa2ca88, 0xffffff, 0xa0cb8b, 0x080502, 0x9cc886, 0xffffff, 0x9cc886, 0x020002, 0xa2c880, 0xfffeff, 0x9cc87b, 0x050000, 0x9dca7e, 0xffffff, 0xa3ca80, 0x030600, 0xa3cb84, 0xfdffff, 0x9bcc7f, 0x060104, 0xa3cb7b, 0xffffff, 0xa0c682, 0x060202, 0xa5c282, 0xfffffc, 0xa6c576, 0x080606, 0xa2c07e, 0xffffff, 0xabc07b, 0x040500, 0xb1c479, 0xffffff, 0xb6bb79, 0x050507, 0xb5b46d, 0xfffffc, 0xb3b371, 0x000600, 0xbeb073, 0xffffff, 0xbeaf6f, 0x080100, 0xc9ad6b, 0xfefdff, 0xc9a765, 0x000700, 0xc8a86b, 0xfefffe, 0xd19f5f, 0x000504, 0xda9a66, 0xfeffff, 0xd8a161, 0x060000, 0xdc985a, 0xfffefc, 0xe19a58, 0x080001, 0xe29758, 0xfffcff, 0xe89256, 0x040003, 0xed8f57, 0xfdfdff, 0xf08859, 0x000303, 0xf28757, 0xffffff, 0xed8d4f, 0x000108, 0xf08658, 0xffffff, 0xf38856, 0x050106, 0xf5874f, 0xffffff, 0xf58b54, 0x050000, 0xed8858, 0xfffffd, 0xec8750, 0x040001, 0xf18551, 0xfffffd, 0xf08454, 0x050703, 0xf68856, 0xfeffff, 0xeb825e, 0x050207, 0xee8363, 0xffffff, 0xf07c6b, 0x000000, 0xef796b, 0xffffff, 0xe97272, 0x000000, 0xed7a6e, 0xfffffd, 0xe96f7a, 0x000005, 0xe87478, 0xfffffc, 0xf26b81, 0x010001, 0xea6888, 0xfffdff, 0xf06786, 0x000000, 0xe66892, 0xfdffff, 0xe75d96, 0x050000, 0xe56292, 0xfefffe, 0xec629a, 0x000404, 0xea5aa4, 0xffffff, 0xea53a1, 0x080501, 0xed54a0, 0xfcffff, 0xe655ab, 0x070600, 0xee4fa9, 0xfffdff, 0xeb53af, 0x000004, 0xe654aa, 0xfffeff, 0xe657ae, 0x020105, 0xe355ae, 0xffffff, 0xec54ae, 0x080106, 0xed57b2, 0xffffff, 0xe153ad, 0x020807, 0xe553ac, 0xffffff, 0xe258b5, 0x000403, 0xdc56b1, 0xffffff, 0xde57ba, 0x080006, 0xdd57b9, 0xfeffff, 0xdd56b6, 0x060207, 0xd859bd, 0xfeffff, 0xd35dc4, 0x000000, 0xd359c6, 0xfffffe, 0xcf59c8, 0x000007, 0xcc60cd, 0xfffffe, 0xc25fcd, 0x010700, 0xc45cd5, 0xffffff, 0xbd5ed9, 0x080800, 0xbe63d9, 0xfffffc, 0xbe5be1, 0x070004, 0xb365e3, 0xffffff, 0xb866df, 0x070606, 0xad5fe5, 0xfffcff, 0xb068e6, 0x000502, 0xa867eb, 0xfcfdff, 0xa866f0, 0x060007, 0xa561ee, 0xfffdff, 0xa860f3, 0x000804, 0xa367f4, 0x000000]
+        ]
+        const interiors = [0xff000000, 0xff000000, 0xff000000]
+        const totalPalletes = palletes.length
+
+        // Well, constants can be modified with push()!
+        for (var i = 0; i !== totalPalletes; i++) {
+            var pallete = palletes[i]
+            // Add transparency values
+            var start = pallete[0] ^ 0xff000000
+            pallete[0] = start
+            pallete.push(start)
+        }
+
+        var palleteID = 0
+        var pallete = palletes[palleteID]
+        var interior = interiors[0]
+        var palleteEnd = pallete.length - 1
+
+        // There's a maximum pallete length of two thousand colors!
+        const palleteBytes = 8000
+
+        // The justSwitched stuff is JUST for Firefox, which sometimes calls weird false resizes when you switch tabs or windows.
+        var justSwitched = false
+
+        document.addEventListener("focus", function () {
+            if (isFirefox) {
+                justSwitched = true
+                setTimeout(() => {
+                    justSwitched = false
+                    var newW = Math.round(innerWidth * devicePixelRatio)
+                    var newH = Math.round(innerHeight * devicePixelRatio)
+                    if (newW !== w || newH !== h) {
+                        resizeHandler()
+                    }
+                }, 250)
+            }
+        })
+
+        function hideWelcome() {
+            welcome.style.opacity = 0
+            setTimeout(() => {
+                welcome.remove()
+            }, 500)
+        }
+
+        welcome.onclick = e => {
+            if (e.which === 1) {
+                hideWelcome()
+            }
+        }
+
+        document.addEventListener("keydown", function (e) {
+            if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                var code = e.keyCode
+                if (!e.shiftKey) {
+                    if (code === 32) {
+                        toggleMenu()
+                        e.preventDefault()
+                    } else if (code === 67) {
+                        switchFractals()
+                    } else if (code === 73) {
+                        setIterations(iterations + 250)
+                    } else if (code === 80) {
+                        changePallete()
+                    } else if (code === 82) {
+                        reset()
+                    } else if (code === 83) {
+                        increaseSpeed()
+                    } else if (code === 88) {
+                        changeCategory()
+                    }
+                } else if (code === 67) {
+                    changeFractal(fractalType === 0 ? 15 : fractalType - 1)
+                } else if (code === 83) {
+                    decreaseSpeed()
+                }
+            }
+        })
+
+        function resizeHandler() {
+            if (isFirefox && justSwitched) {
+                // Ignore this resize
+                return
+            }
+            if (centerX === -1) {
+                centerX = w * 0.5
+                centerY = h * 0.5
+                resizeW = w
+                resizeH = h
+            }
+            var height
+            if (pixels === -1) {
+                height = h
+            } else {
+                height = Math.ceil((pixels - 1) / w)
+            }
+            var oldData = dataArray
+            var oldPixels = pixels
+            palleteData = null
+
+            w = Math.round(innerWidth * devicePixelRatio)
+            h = Math.round(innerHeight * devicePixelRatio)
+            pixels = w * h
+            canvas.width = previous.width = hidden.width = w
+            canvas.height = previous.height = hidden.height = h
+            canvas.style.width = previous.style.width = hidden.style.width = innerWidth + "px"
+            canvas.style.height = previous.style.height = hidden.style.height = innerHeight + "px"
+
+            bytes = pixels * 4
+            iterationEnd = bytes + palleteBytes
+
+            // Why? Becase JS won't let us create 32-bit numbers with offsets not a multiple of 4.
+            colorStart = Math.ceil(iterationEnd * 0.125) * 8
+            wasmLength = colorStart + bytes
+            expandMemory(wasmLength)
+            if (centerX !== 0) {
+                updateZoom((resizeW * resizeW + resizeH * resizeH) / (w * w + h * h), centerX, centerY)
+            }
+            dataArray = getMemory(pixels, palleteBytes, -32)
+            colorArray = getMemory(bytes, colorStart, -8)
+            colorBits = getMemory(pixels, colorStart, 32)
+            dataBits = getMemory((wasmLength - palleteBytes) * 0.125, palleteBytes, -64)
+            redo()
+        }
+
+        var zoom = 0.004
+        var cost = 200000
+        var iterations = 1000
+
+        function expandMemory(finalByte) {
+            var byteLength = buffer.byteLength
+            if (byteLength < finalByte) {
+                memory.grow(Math.ceil((finalByte - byteLength) / 65536))
+                buffer = memory.buffer
+            }
+        }
+
+        function getMemory(size, offset, type) {
+            if (type === -8) {
+                return new Uint8ClampedArray(buffer, offset, size)
+            } else if (type === 8) {
+                return new Uint8Array(buffer, offset, size)
+            } else if (type === 16) {
+                return new Uint16Array(buffer, offset, size)
+            } else if (type === -32) {
+                return new Float32Array(buffer, offset, size)
+            } else if (type === 32) {
+                return new Uint32Array(buffer, offset, size)
+            } else if (type === -64) {
+                return new Float64Array(buffer, offset, size)
+            } else if (type === 64) {
+                return new BigUint64Array(buffer, offset, size)
+            }
+        }
+
+        function download(data, filename, type) {
+            var file = new Blob([data])
+            var url = URL.createObjectURL(file)
+            select.href = url
+            select.download = filename
+            select.click()
+            setTimeout(function () {
+                URL.revokeObjectURL(url)
+            }, 20)
+        }
+
+        // Movement for touchscreen (confusing!) We have to prevent actual touchscreen zooming, however.
+        document.addEventListener("touchstart", e => {
+            if (mouseDown) {
+                e.preventDefault()
+                return
+            }
+            var touches = e.touches
+            var length = touches.length
+            pinching = length === 2
+            if (pinching) {
+                e.preventDefault()
+            }
+            pinching = pinching && !mouseDown
+            touchDown = false
+            if (pinching) {
+                currentX = Math.round((touches[0].pageX + touches[1].pageX) * 0.5 * devicePixelRatio)
+                currentY = Math.round((touches[0].pageY + touches[1].pageY) * 0.5 * devicePixelRatio)
+                var xPinch = touches[0].pageX - touches[1].pageX
+                var yPinch = touches[0].pageY - touches[1].pageY
+                pinchDist = Math.sqrt(xPinch * xPinch + yPinch * yPinch) * devicePixelRatio
+            } else if (length === 1) {
+                touchDown = true
+                currentX = Math.round(touches[0].pageX * devicePixelRatio)
+                currentY = Math.round(touches[0].pageY * devicePixelRatio)
+                if (Date.now() - touchTime < 500) {
+                    updateZoom(0.1, currentX, currentY)
+                    touchTime = 0
+                } else {
+                    touchTime = Date.now()
+                }
+            }
+        }, {
+            passive: false
+        })
+
+        document.addEventListener("touchmove", e => {
+            var touches = e.touches
+            if (touches.length === 2) {
+                e.preventDefault()
+            }
+            if (pinching) {
+                var firstTouch = touches[0]
+                var secondTouch = touches[1]
+                var xPinch = firstTouch.pageX - secondTouch.pageX
+                var yPinch = firstTouch.pageY - secondTouch.pageY
+                var newDist = Math.sqrt(xPinch * xPinch + yPinch * yPinch) * devicePixelRatio
+                var multiplier = 3 * (pinchDist + 10) / (newDist + 10) - 2
+                if (multiplier !== 1) {
+                    updateZoom(multiplier, currentX, currentY)
+                }
+                pinchDist = newDist
+            } else if (touchDown) {
+                var touch = touches[0]
+                var newX = Math.round(touch.pageX * devicePixelRatio)
+                var newY = Math.round(touch.pageY * devicePixelRatio)
+                var diffX = newX - currentX
+                var diffY = newY - currentY
+                if (diffX !== 0 && diffY !== 0) {
+                    moveFractal(diffX, diffY)
+                    currentX = newX
+                    currentY = newY
+                }
+            }
+        }, {
+            passive: false
+        })
+
+        document.addEventListener("touchend", e => {
+            pinching = false
+            touchDown = false
+        })
+
+        function saveAsBinary() {
+            download("test", "data.fri")
+        }
+        setTimeout(hideWelcome, 4000)
+
+        var fractalType = 0
+        var pixel = 0
+        var speed = 1
+        var panX, panY
+        var rehandle = false
+        var unfinished = true
+        var time = performance.now()
+        var fps = 10
+        var wantedFPS = 3.45
+        var mainTime = 0
+        // Starting guess for the estimated time left
+        var previousGuess = 5000
+        var hideTime = -1
+        var scoreSum = 0
+        var frames = 0
+
+        function draw() {
+            if (Date.now() >= hideTime) {
+                percent.textContent = ""
+                hideTime = -1
+            }
+            if (unfinished || rehandle) {
+                var original = pixel
+                if (rehandle) {
+                    // Why is this 32-bit and not 8-bit for colorArray? The colors are always RGBA, and the iterations are float, so it always ends up that 32-bit works.
+                    dataBits.fill(0)
+                    pixel = 0
+                    rehandle = false
+                }
+                // Math.max() for if the pixel is negative
+                pixel = handlePixels(fractalType, w, h, Math.max(pixel, 0), panX, panY, zoom, cost, palleteBytes, colorStart, iterations, 0, palleteEnd, interior, speed)
+                unfinished = pixel !== -1
+                // Complicated zoom preview using previous data (Safari doesn't work for this, sadly)
+                if (doZoom) {
+                    ctx2.imageSmoothingEnabled = false
+                    // Prevent canvas weirdness
+                    ctx2.clearRect(0, 0, w, h)
+                    // Small previews fade out when they are small or huge. It's a nice touch and also makes it look a bit less cluttery.
+                    if (zoomM < 6 && zoomM > 0.002) {
+                        if (zoomM > 2.4) {
+                            sheet.style.opacity = zoomM / 6
+                        } else if (zoomM < 0.01) {
+                            sheet.style.opacity = 1 - 80 * (zoomM - 0.002)
+                        } else {
+                            sheet.removeAttribute("style")
+                        }
+                        ctx2.drawImage(hidden, zoomX, zoomY, w * zoomM, h * zoomM, 0, 0, w, h)
+                    }
+                    doZoom = false
+                }
+                // Don't want to creep up the cost with setting changes
+                var newTime = performance.now()
+                var diff = newTime - time
+                var mainDiff = newTime - mainTime
+                if (pixel !== -1) {
+                    // Cost changes can be somewhat extreme, so we smooth the changes out with this function.
+                    cost = 0.9 * cost + Math.max(Math.min(wantedFPS * ((cost + 5000) / (diff + 1)), cost * 0.25), 50000)
+                }
+
+                // If you have a 1 frame render, this prevents it from saying the score is zero.
+                scoreSum += cost
+                // Frames is used for average score calculation, so we add 1000 instead of 1.
+                frames += 1000
+                if (!document.hidden) {
+                    // Update image
+                    var imgTime = performance.now()
+                    ctx.putImageData(new ImageData(colorArray, w, h), 0, 0)
+                    if (unfinished) {
+                        fps = 0.9 * fps + 100 / diff
+                        var ratio = pixel / pixels
+                        // 30 FPS is the goal, and values near it quietly become 30 (minor FPS errors may occur).
+                        var betterFps = fps.toFixed(1)
+                        // Strange time guessing function. If values are really high and we don't have enough info, we use previous data.
+                        var timeGuess
+                        // Additional ratio statement, because some places render too quickly.
+                        if (frames < 15000) {
+                            // Add a bit of RNG to make it look more real!
+                            timeGuess = Math.max(previousGuess - mainDiff, 200) * (1 + 0.2 * Math.random())
+                        } else {
+                            // Save the guessed time left.
+                            previousGuess = mainDiff / ratio
+                            timeGuess = mainDiff * (1 - ratio) / ratio
+                        }
+                        var timeString
+                        percent.textContent = (100 * ratio).toFixed(2) + "% finished (Taking " + timeToString(mainDiff, true) + ")\r\nEstimated time left: " + timeToString(timeGuess) + "\r\nCalculation score (higher is better): " + (cost * 0.001).toFixed(2) + " at " + betterFps + "fps.\nImage rendering took " + (performance.now() - imgTime).toFixed(1) + "ms"
+                        var val = Math.round((pixel - original) * 0.01)
+                        if (val >= 768) {
+                            var brightness = Math.min(255, val >> 2 - 768)
+                            var color = "rgb(" + brightness + ",255," + brightness + ")"
+                        } else if (val <= 256) {
+                            var color = "rgb(255," + val + ",0)"
+                        } else {
+                            var color = "rgb(" + ((val - 256) >> 1) + ",255,0)"
+                        }
+                        percent.style.color = color
+                    } else {
+                        previousGuess = mainDiff
+                        percent.textContent = "Took " + timeToString(mainDiff, true) + "."
+                        percent.style.color = "#1ad"
+                        hideTime = Date.now() + 500
+                        scoreSum = 0
+                        frames = 0
+                    }
+                    time = newTime
+                } else if (pixel === -1) {
+                    ctx.putImageData(new ImageData(colorArray, w, h), 0, 0)
+                }
+                setTimeout(draw, 4)
+            } else {
+                requestAnimationFrame(draw)
+            }
+        }
+
+        function timeToString(ms, fullLength) {
+            // Has plural support for full lengths
+            if (fullLength) {
+                // This number is used because toFixed() does some funny rounding
+                if (ms < 1000) {
+                    return Math.floor(ms) + " milliseconds"
+                } else if (ms < 60000) {
+                    return (ms * 0.001).toFixed(2) + " seconds"
+                } else if (ms < 3600000) {
+                    var m = Math.floor(ms / 60000)
+                    var s = Math.floor(ms * 0.001 % 60)
+                    return (m === 1 ? "1 minute and " : m + " minutes and ") + (s === 1 ? "1 second" : s + " seconds")
+                } else {
+                    var h = Math.floor(ms / 3600000)
+                    var m = Math.floor(ms / 60000 % 60)
+                    var s = Math.floor(ms * 0.001 % 60)
+                    return (h === 1 ? "1 hour, " : h + "hours, ") + (m === 1 ? "1 minute, and " : m + " minutes, and ") + (s === 1 ? "1 second" : s + " seconds")
+                }
+            } else {
+                if (ms < 1000) {
+                    return Math.floor(ms) + "ms"
+                } else if (ms < 60000) {
+                    return (ms * 0.001).toFixed(2) + "s"
+                } else if (ms < 3600000) {
+                    return Math.floor(ms / 60000) + "m " + Math.floor(ms * 0.001 % 60) + "s"
+                } else {
+                    return Math.floor(ms / 3600000) + "h " + Math.floor(ms / 60000 % 60) + "m " + Math.floor(ms * 0.001 % 60) + "s"
+                }
+            }
+        }
+
+        var scrollMultiplier = 1.1
+        var zoomX = 0, zoomY = 0, zx = 0, zy = 0
+        var zoomM = 1
+        var doZoom = false
+        var mouseDown = false
+        var currentX = -1
+        var currentY = -1
+        var pinching = false
+        var pinchDist = 0
+        var touchDown = false
+        var clickTime = 0, touchTime = 0, zoomTime = Infinity
+
+        function play() {
+            if (audio.paused) {
+                audio.play()
+            }
+        }
+
+        document.addEventListener("mousedown", function (e) {
+            // Double click events act strange in some browsers, so we use this instead.
+            if (e.which === 1 && e.target === canvas || e.target === percent) {
+                var newTime = Date.now()
+                // If we set the click time to zero, then this statement becomes false.
+                var newX = Math.round(e.pageX * devicePixelRatio)
+                var newY = Math.round(e.pageY * devicePixelRatio)
+                if (Date.now() - clickTime < 500 && newX === currentX && newY === currentY) {
+                    updateZoom(0.1, currentX, currentY)
+                    clickTime = 0
+                } else {
+                    clickTime = Date.now()
+                }
+                currentX = newX
+                currentY = newY
+                mouseDown = true
+            }
+            play()
+        })
+
+        function retry(noClear) {
+            if (unfinished) {
+                pixel = 0
+            } else {
+                unfinished = true
+            }
+            if (!noClear) {
+                clearBack()
+            }
+            mainTime = performance.now()
+            centerX = -1
+        }
+
+        function redo() {
+            rehandle = true
+            centerX = -1
+            mainTime = performance.now()
+        }
+
+        document.addEventListener("mousemove", function (e) {
+            if (mouseDown) {
+                var oldX = currentX
+                var oldY = currentY
+                currentX = e.pageX * devicePixelRatio
+                currentY = e.pageY * devicePixelRatio
+                var diffX = currentX - oldX
+                var diffY = currentY - oldY
+                moveFractal(diffX, diffY)
+            }
+        })
+
+        document.addEventListener("mouseup", function () {
+            mouseDown = false
+        })
+
+        document.addEventListener("blur", function () {
+            mouseDown = false
+            justSwitched = true
+        })
+
+        // Passive event weirdness
+        document.addEventListener("wheel", e => {
+            if (e.ctrlKey) {
+                e.preventDefault()
+            }
+            var target = e.target
+            if (target === canvas || target === percent) {
+                currentX = Math.round(e.pageX * devicePixelRatio)
+                currentY = Math.round(e.pageY * devicePixelRatio)
+                updateZoom(e.deltaY < 0 ? 1 / scrollMultiplier : scrollMultiplier, currentX, currentY)
+            }
+        }, { passive: false })
+
+        function updateZoom(factor, x, y) {
+            var pointX = panX + x * zoom
+            var pointY = panY + y * zoom
+            zoom *= factor
+            panX = pointX - x * zoom
+            panY = pointY - y * zoom
+            if (!isSafari) {
+                var newTime = Date.now()
+                if (zx !== x || zy !== y || newTime - zoomTime > 1000) {
+                    zoomM = factor
+                    zx = x
+                    zy = y
+                    ctx3.clearRect(0, 0, w, h)
+                    // This is faster than using putImageData()
+                    ctx3.drawImage(canvas, 0, 0)
+                } else {
+                    zoomM *= factor
+                }
+                zoomX = x * (1 - zoomM)
+                zoomY = y * (1 - zoomM)
+                doZoom = true
+                zoomTime = newTime
+            }
+            redo()
+        }
+
+        function clearBack() {
+            zoomM = 1
+            ctx2.clearRect(0, 0, w, h)
+        }
+
+        function moveFractal(diffX, diffY) {
+            zoomX -= diffX * zoomM
+            zoomY -= diffY * zoomM
+            doZoom = true
+            panX -= diffX * zoom
+            panY -= diffY * zoom
+            var newData = new Float32Array(pixels)
+            var x = -1
+            var y = 0
+            // Precompute bias to add
+            var bias = diffX + w * diffY
+            for (var i = 0; i !== pixels; i++) {
+                x++
+                if (x === w) {
+                    x = 0
+                    y++
+                }
+                var newX = x + diffX
+                var newY = y + diffY
+                if (newX >= 0 && newY >= 0 && newX < w && newY < h) {
+                    newData[i + bias] = dataArray[i]
+                }
+            }
+            dataArray.set(newData)
+            colorBits.fill(0)
+            retry(true)
+        }
+
+        var menuDisplayed = false
+
+        function toggleMenu() {
+            if (menuDisplayed) {
+                document.getElementById("menu").removeAttribute("style")
+            } else {
+                document.getElementById("menu").style.display = "block"
+            }
+            menuDisplayed = !menuDisplayed
+        }
+
+        function closeMenu() {
+            document.getElementById("menu").removeAttribute("style")
+            menuDisplayed = false
+        }
+
+        function resetLocation() {
+            zoom = 0.004
+            panX = (-w * 0.5 - 0.5) * zoom + 1e-5 - (fractalType === 0 || fractalType === 9 || fractalType === 13 ? 0.75 : fractalType === 6 || fractalType === 10 || fractalType === 11 || fractalType === 12 ? 0.5 : (fractalType === 7 ? 0.2 : 0))
+            panY = (-h * 0.5 - 0.5) * zoom + 1e-5 + (fractalType === 6 ? -0.4 : (fractalType === 7 ? 0.25 : 0))
+        }
+
+        function changeFractal(newType) {
+            iterations = 1000
+            previousGuess = 5000
+            fractalType = newType
+            resetLocation()
+            redo()
+        }
+
+        function switchFractals() {
+            changeFractal(fractalType === 15 ? 0 : fractalType + 1)
+        }
+
+        function changePallete() {
+            palleteID++
+            if (palleteID === totalPalletes) {
+                palleteID = 0
+            }
+            pallete = palletes[palleteID]
+            interior = interiors[palleteID]
+            palleteEnd = pallete.length - 1
+            if (palleteData === null) {
+                palleteData = getMemory(palleteBytes * 0.25, 0, 32)
+            }
+            palleteData.set(pallete)
+            retry()
+            clearBack()
+        }
+
+        function increaseSpeed() {
+            if (speed < 25) {
+                speed *= 1.15
+                retry()
+            }
+        }
+
+        function decreaseSpeed() {
+            if (speed > 0.01) {
+                speed /= 1.15
+                retry()
+            }
+        }
+
+        function changeCategory() {
+            if (fractalType < 6) {
+                changeFractal(6)
+            } else if (fractalType < 9) {
+                changeFractal(9)
+            } else {
+                changeFractal(0)
+            }
+        }
+
+        function setIterations(amount) {
+            iterations = amount
+            rehandle = true
+        }
+
+        function reset() {
+            clearBack()
+            var oldZoom = zoom
+            var oldX = panX
+            var oldY = panY
+            var oldSpeed = speed
+
+            resetLocation()
+            speed = 1
+            if (oldZoom !== zoom || oldX !== panX || oldY !== panY || iterations !== 1000) {
+                iterations = 1000
+                previousGuess = 5000
+                redo()
+            } else if (oldSpeed !== speed) {
+                retry()
+            }
+        }
+
+        function loadInfo() {
+            help.style.display = "unset"
+        }
+    </script>
+</body>
+
+</html>

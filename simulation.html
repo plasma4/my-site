@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>Simulation!</title>
+    <meta charset="utf-8" />
+    <html lang="en">
+
+    <style>
+        * {
+            user-select: none;
+            overflow: hidden;
+            font-family: "Gill Sans", "Gill Sans MT", Calibri, Tahoma;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        button {
+            font-size: 15px;
+            border: solid 1.5px #262626;
+            border-radius: 5px;
+            padding: 1px;
+            padding-left: 4px;
+            padding-right: 4px;
+            background-color: #1eaed2;
+        }
+
+        button:hover {
+            background-color: #82cdc5;
+        }
+
+        button:active {
+            background-color: #c7ebe5;
+        }
+
+        div {
+            position: fixed;
+            top: 6px;
+            left: 10px;
+            width: calc(100% - 340px);
+        }
+
+        @media (max-width: 550px) {
+            button {
+                display: block;
+            }
+
+            div {
+                width: auto;
+            }
+        }
+
+        input {
+            font-family: monospace;
+        }
+
+        i {
+            font-weight: 600;
+            display: block;
+            font-size: 30px;
+            color: #111c;
+        }
+
+        textarea {
+            resize: none;
+            overflow: scroll;
+            font-family: Calibri, Tahoma;
+            font-size: 16px;
+        }
+
+        u {
+            cursor: pointer;
+            color: #19c;
+            font-size: 18px;
+            font-family: Tahoma;
+        }
+
+        #show {
+            position: fixed;
+            top: 74px;
+            right: 143px;
+        }
+
+        #hide {
+            font-weight: 600;
+            font-size: 20px;
+            position: fixed;
+            top: 10px;
+            left: 15px;
+            width: 58px;
+        }
+
+        p {
+            font-size: 2px;
+        }
+
+        span {
+            font-weight: 500;
+            font-size: 18px;
+        }
+
+        em {
+            cursor: pointer;
+            opacity: 0;
+            font-size: 32px;
+            font-weight: 700;
+            display: block;
+            color: #611;
+            transition: opacity 500ms;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="0" height="0"></canvas>
+    <div id="stuff">
+        <i>Creature simulation:</i>
+        <button id="fullA" onclick="fullscreen()">Fullscreen</button>
+        <button id="fullB" onclick="stopFullscreen()">Exit Fullscreen</button>
+        <p></p>
+        <button onclick="iterations = 500">500 iterations/tick</button>
+        <button onclick="iterations = 250">250 iterations/tick</button>
+        <button onclick="iterations = 100">100 iterations/tick</button>
+        <button onclick="iterations = 25">25 iterations/tick</button>
+        <button onclick="iterations = 10">10 iterations/tick</button>
+        <button onclick="iterations = 5">5 iterations/tick</button>
+        <button onclick="iterations = 2">2 iterations/tick</button>
+        <button onclick="iterations = 1">1 iteration/tick</button>
+        <button onclick="reset()">Reseed</button>
+        <br>
+        <button onclick="foodAmount = 0">No food</button>
+        <button onclick="foodAmount = -10">0.1 food</button>
+        <button onclick="foodAmount = -4">0.25 food/tick</button>
+        <button onclick="foodAmount = -2">0.5 food/tick</button>
+        <button onclick="foodAmount = 1">1 food/tick</button>
+        <button onclick="foodAmount = 2">2 food/tick (default)</button>
+        <button onclick="foodAmount = 5">5 food/tick</button>
+        <button onclick="foodAmount = 10">10 food/tick</button>
+        <br>
+        <button onclick="addPrey(1)">Add prey</button>
+        <button onclick="addPrey(10)">Add 10 prey</button>
+        <button onclick="addPrey(100)">Add 100 prey</button>
+        <button onclick="addPredator(1)">Add predator</button>
+        <button onclick="addPredator(10)">Add 10 predators</button>
+        <button onclick="addPredator(100)">Add 100 predators</button>
+        <button onclick="empty()">Remove creatures</button>
+        <button onclick="reset(true)">Reset <b>(keeps the seed)</b></button>
+        <p></p>
+        <button onclick="pause()" id="a">Pause</button>
+        <button onclick="play()" style="display: none" id="b">Play</button>
+        <button onclick="new Saver(0).save()">Save</button>
+        <p></p>
+        <textarea rows="4" cols="25" placeholder="Paste your save file here to import it..."
+            oninput="new Saver(0).load(this.value)"></textarea>
+        <br>
+        <b>
+            Food: <span></span>
+            Prey: <span></span>
+            Predators: <span></span>
+        </b>
+        <br>
+        Seed (controls all random numbers): <input oninput="reset(true)" placeholder="Simulation seed"></input>
+        <br>
+        <b>Took <span></span> to render and <span></span> to update</b>
+        <br>
+        <input value="500" placeholder="Width" oninput="mapW = bounds(this.value, 10, 100000); reset()"></input>
+        <input value="500" placeholder="Height" oninput="mapH = bounds(this.value, 10, 100000); reset()"></input>
+        <br>
+        <span id="info"></span>
+        <em id="note" onclick="fade = 1"></em>
+        <u onclick="showStats = true" id="show">More...</u>
+    </div>
+    <u onclick="showStats = false" id="hide">Close</u>
+
+    <script id="error">
+        "use strict"
+        var draw
+        var errors = []
+        onerror = function (e, t, a, b, o) {
+            document.body.innerHTML = "<i style='user-select:all;overflow:scroll;font-size:21px'>Sorry, but an error occured on our end. Try contacting the developer for more details.<br>Technical information:<br>" + e + " at " + a + "<br>Stack:<br>----------<br>" + o.stack.replace(/\n/g, "\r\n") + "</i><br><br><b style='font-weight:600'>You can <u onclick='location.reload()'>reload</u> this page. If this problem persists, try clearing your browser data..</b>"
+            document.body.style = "white-space:pre;font-size:22px"
+            draw = function () { }
+            onerror = null
+        }
+    </script>
+
+    <script id="script">
+        "use strict"
+        script.remove()
+        error.remove()
+
+        // Get the elements based on the tag names:
+        const canvas = document.getElementsByTagName("canvas")[0]
+        const ctx = canvas.getContext("2d")
+        const spans = document.getElementsByTagName("span")
+        const foodElem = spans[0]
+        const preyElem = spans[1]
+        const predatorsElem = spans[2]
+        const timeElem = spans[3]
+        const updateElem = spans[4]
+        const info = spans[5]
+        const seedElem = document.getElementsByTagName("input")[0]
+
+        // Keep the values between the bounds given:
+        function bounds(str, min, max) {
+            var value = Number(str)
+            if (value !== value) {
+                notify("Invalid value!")
+                return min
+            }
+            return Math.min(max, Math.max(min, value))
+        }
+
+        // We use a seed so that users can create the same results every time.
+        function seedRNG(str) {
+            // Convert strings into a seed
+            var h1 = 1779033703, h2 = 3144134277,
+                h3 = 1013904242, h4 = 2773480762
+            for (var i = 0, k; i < str.length; i++) {
+                k = str.charCodeAt(i)
+                h1 = h2 ^ Math.imul(h1 ^ k, 597399067)
+                h2 = h3 ^ Math.imul(h2 ^ k, 2869860233)
+                h3 = h4 ^ Math.imul(h3 ^ k, 951274213)
+                h4 = h1 ^ Math.imul(h4 ^ k, 2716044179)
+            }
+            h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067)
+            h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233)
+            h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213)
+            h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179)
+            seedA = (h1 ^ h2 ^ h3 ^ h4) >>> 0
+            seedB = (h2 ^ h1) >>> 0
+            seedC = (h3 ^ h1) >>> 0
+            seedD = (h4 ^ h1) >>> 0
+        }
+
+        // Generate the random numbers here:
+        function random() {
+            rand++
+            var t = seedB << 9, r = seedA * 5; r = (r << 7 | r >>> 25) * 9
+            seedC ^= seedA
+            seedD ^= seedB
+            seedB ^= seedC
+            seedA ^= seedD
+            seedC ^= t
+            seedD = seedD << 11 | seedD >>> 21
+            return (r >>> 0) / 4294967296
+        }
+
+        var random, w, h, pixels
+        var paused = false, select = 0, rand = 0
+        // Variables for canvas (calculated on resize)
+        var gradient, titleX, moveX
+        var mapW = 500, mapH = 500, zoom = 1, panX = 50, panY = 50
+
+        function resize() {
+            w = Math.round(innerWidth * devicePixelRatio)
+            h = Math.round(innerHeight * devicePixelRatio)
+            pixels = w * h
+            canvas.width = w
+            canvas.height = h
+            canvas.style.width = innerWidth + "px"
+            canvas.style.height = innerHeight + "px"
+            // Here we detect the fullscreen. It ends up working for ALMOST all cases with some extra work in the other fullscreen functions.
+            if (justRequested) {
+                justRequested = false
+            } else if (Math.abs(innerHeight - screen.height) < 4) {
+                fullA.style.display = "none"
+                fullB.style.display = null
+            } else {
+                fullA.style.display = null
+                fullB.style.display = "none"
+            }
+
+            // Update the gradient
+            gradient = ctx.createLinearGradient(innerWidth - 250, 75, innerWidth - 75, 75)
+            gradient.addColorStop(0, "#e89820")
+            gradient.addColorStop(0.5, "#eddc1f")
+            gradient.addColorStop(1, "#281")
+
+            // Update the title coordinates
+            ctx.font = "bold 32px 'Gill Sans', 'Gill Sans MT', Calibri, Tahoma"
+            titleX = innerWidth - 175 - 0.5 * ctx.measureText("Creature info:").width
+            ctx.font = "bold 28px 'Gill Sans', 'Gill Sans MT', Calibri, Tahoma"
+            moveX = 160 - 0.5 * ctx.measureText("Movement:").width
+        }
+
+        var justRequested = false
+        function fullscreen() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen()
+                fullA.style.display = "none"
+                fullB.style.display = null
+                // We set this value to true so that we can override resize in case it doesn't work.
+                justRequested = true
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen()
+                fullA.style.display = "none"
+                fullB.style.display = null
+                justRequested = true
+            }
+        }
+
+        function stopFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen()
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen()
+            }
+        }
+
+        // Object-oriented methods to save files:
+        function Saver(id) {
+            this.id = id
+        }
+
+        Saver.prototype.save = function () {
+            try {
+                var data = [this.id, food, len, seedA, seedB, seedC, seedD]
+                for (var i = 0; i < food; i++) {
+                    data.push(foodX[i], foodY[i])
+                }
+                for (i = 0; i < len; i++) {
+                    var c = creatures[i]
+                    // We don't save the "gold" property. Sorry!
+                    data.push(c.x, c.y, c.id, 10000 * c.generation + c.age * 16 + c.type, c.rotation, c.reproduceTime, c.reproduceWait, ...c.layer1.weights, ...c.layer1.biases, ...c.layer2.weights, ...c.layer2.biases)
+                }
+                // The float data is compacted in non-standard Base64:
+                this.to64(new Float64Array(data))
+            } catch (e) {
+                notify("Aaaack! An error occured while attempting to save the file. This is likely an issue on our side.\n----------\n" + e.stack)
+            }
+        }
+
+        Saver.prototype.load = function (info) {
+            try {
+                var text = info.trim()
+                if (text.length !== 0) {
+                    // Convert it back into standard Base64 (and do stuff in from64):
+                    var t = text.indexOf("|")
+                    if (t === -1) {
+                        notify("Could not find the version value!")
+                        return
+                    }
+                    gameSeed = atob(text.slice(0, t).replace("%", "==").replace("$", "="))
+                    seedElem.value = gameSeed
+                    var data = text.slice(t + 2)
+                    var c = text.charCodeAt(t + 1)
+                    var base64 = data.replace(/~/g, "AAAAAA").replace(/,/g, "AAA").replace(/_/g, "/")
+                    if (c === 49) {
+                        base64 += "="
+                    } else if (c === 50) {
+                        base64 += "=="
+                    }
+                    this.from64(base64)
+                }
+            } catch (e) {
+                notify("Sorry, but we could not import the file.\nThis may be because the data has been malformed, or an issue on our side. If this keeps happening, kindly notify the developer. (Coding is hard!)\n\----------\n" + e.stack)
+            }
+        }
+
+        Saver.prototype.to64 = function (array) {
+            // Use a FileReader to generate a base64 data URI
+            var reader = new FileReader()
+            reader.onload = () => {
+                var result = reader.result
+                var len = result.length
+                var a = result.charCodeAt(len - 1)
+                var t = 0
+                if (a === 61) {
+                    t++
+                    if (result.charCodeAt(len - 2) === 61) {
+                        t++
+                    }
+                }
+                result = btoa(gameSeed).replace("==", "%").replace("=", "$") + "|" + t + result.slice(result.indexOf(",") + 1, len - t).replace(/\//g, "_").replace(/AAAAAA/g, "~").replace(/AAA/g, ",")
+                // Copy the result
+                navigator.clipboard.writeText(result).then(() => notify("Copied!"))
+            }
+            reader.readAsDataURL(new Blob([new Uint8Array(array.buffer)]))
+        }
+
+        Saver.prototype.from64 = function (data) {
+            // Convert it into a Float64Array first:
+            var t = atob(data)
+            var length = t.length
+            var array = new Uint8Array(length)
+            for (var i = 0; i < len; i++) {
+                array[i] = t.charCodeAt(i)
+            }
+            array = new Float64Array(array.buffer)
+            var version = Math.round(array[0])
+            if (version === 0) {
+                food = array[1]
+                len = array[2]
+                seedA = array[3]
+                seedB = array[4]
+                seedC = array[5]
+                seedD = array[6]
+                notify("Successfully imported!")
+            } else if (version > this.id) {
+                notify("It appears that you're using a version that is ahead! The current version is " + this.id + ", and you're somehow on version " + version + "!")
+            } else if (!isFinite(version)) {
+                notify("Oh no! The version number is invalid!")
+            } else {
+                notify("This version (" + version + ") is not supported. The current version is " + this.id + ".")
+            }
+        }
+
+        var fade = 0
+        function notify(text) {
+            note.textContent = text
+            note.style.opacity = 1
+            fade = performance.now() + 2000
+        }
+
+        function drawCreature(age, px, py, rotation, fill, stroke, type) {
+            var x = px * mapW
+            var y = py * mapH
+
+            // Draw the creature's body
+            if (fill === "rainbow") {
+                var rainbow = ctx.createLinearGradient(0, 0, mapW, mapH)
+                rainbow.addColorStop(0, "#e33b1e")
+                rainbow.addColorStop(0.12, "#fc9517")
+                rainbow.addColorStop(0.24, "#e0be12")
+                rainbow.addColorStop(0.36, "#50c41d")
+                rainbow.addColorStop(0.48, "#11c2b9")
+                rainbow.addColorStop(0.6, "#0e67b0")
+                rainbow.addColorStop(0.8, "#d150eb")
+                rainbow.addColorStop(1, "#f51d7b")
+                ctx.fillStyle = rainbow
+            } else {
+                if (age < 128) {
+                    if (age < 8) {
+                        fill += "0"
+                    }
+                    fill += (2 * age).toString(16)
+                }
+                ctx.fillStyle = fill
+            }
+            ctx.lineWidth = 1.5
+            ctx.strokeStyle = stroke
+            ctx.beginPath()
+            ctx.ellipse(x, y, 32, 20, rotation, 0, 6.283185307179586)
+            ctx.fill()
+            ctx.stroke()
+
+            // Draw the eyes
+            ctx.fillStyle = "#fffd"
+            var r1 = rotation - 0.55
+            var a = Math.cos(r1)
+            var b = Math.sin(r1)
+            ctx.beginPath()
+            var r2 = rotation + 0.55
+            var c = Math.cos(r2)
+            var d = Math.sin(r2)
+            var x1 = x + 17 * a
+            var y1 = y + 15 * b
+            var x2 = x + 17 * c
+            var y2 = y + 15 * d
+            ctx.arc(x1, y1, 5.5, 0, 6.283185307179586)
+            ctx.arc(x2, y2, 5.5, 0, 6.283185307179586)
+            ctx.closePath()
+            ctx.fill()
+            ctx.fillStyle = "#000"
+            var diffY = mainY / zoom - panY - y1
+            var diffX = mainX / zoom - panX - x1
+            // Only make eyes look at the mouse if it's close enough (we consider one eye because the difference doesn't really matter)
+            var dist = diffX * diffX + diffY * diffY
+            var r = 3
+            if (dist < 40000) {
+                var m = 0.13 - Math.pow(dist * 0.25, 0.8) * 0.00003
+                var t = Math.atan2(diffY, diffX)
+                x1 = x + 16 * (a + m * Math.cos(t))
+                y1 = y + 15 * (b + m * Math.sin(t))
+                t = Math.atan2(mainY / zoom - panY - y2, mainX / zoom - panX - x2)
+                x2 = x + 16 * (c + m * Math.cos(t))
+                y2 = y + 15 * (d + m * Math.sin(t))
+                // Change the color and increase the radius (so it looks like the creature is following your pointer)
+                ctx.fillStyle = "#b52"
+                r = 4.2 - 0.00002 * dist
+            } else {
+                // Instead, look at the nearest food for prey and nearest prey for predator:
+                var near
+                if (type === PREY) {
+                    near = nearestFood(px, py, 0.1)
+                } else {
+                    near = nearestCreature(px, py, 0.2, PREY)
+                }
+                if (near[0] !== -1) {
+                    var t = Math.atan2(y1 - near[1], x1 - near[0])
+                    x1 = x + 17 * (a + 0.15 * Math.cos(t))
+                    y1 = y + 15 * (b + 0.15 * Math.sin(t))
+                    t = Math.atan2(y2 - near[1], x2 - near[0])
+                    x2 = x + 17 * (c + 0.15 * Math.cos(t))
+                    y2 = y + 15 * (d + 0.15 * Math.sin(t))
+                }
+            }
+            ctx.beginPath()
+            ctx.arc(x1, y1, r, 0, 6.283185307179586)
+            ctx.arc(x2, y2, r, 0, 6.283185307179586)
+            ctx.closePath()
+            ctx.fill()
+            ctx.fillStyle = "#100"
+
+            // Add a small eye if it's colored:
+            if (dist < 40000) {
+                ctx.beginPath()
+                ctx.arc(x1, y1, 1.75, 0, 6.283185307179586)
+                ctx.arc(x2, y2, 1.75, 0, 6.283185307179586)
+                ctx.closePath()
+                ctx.fill()
+            }
+        }
+
+        function pause() {
+            paused = true
+            a.style.display = "none"
+            b.style.display = null
+        }
+
+        function play() {
+            paused = false
+            a.style.display = null
+            b.style.display = "none"
+            draw()
+        }
+
+        function Array1(a, b) {
+            var array = Array(a)
+            for (var i = 0; i < a; i++) {
+                array[i] = 0
+            }
+            return array
+        }
+
+        function Layer(a, b, weights, biases) {
+            this.a = a
+            this.b = b
+            this.weights = mutateW(a, b, weights)
+            this.biases = mutateB(b, biases)
+        }
+
+        Layer.prototype.calc = function (inputs) {
+            var array = Array(this.a)
+            for (var i = 0; i < this.b; i++) {
+                var input = this.biases[i]
+                var m = i * this.a
+                for (var t = 0; t < this.a; t++) {
+                    input += inputs[t] * this.weights[t + m]
+                }
+                array[i] = input
+            }
+            return array
+        }
+
+        // Mutate values randomly. This simulates EVOLUTION!
+        function mutateW(a, b, weights) {
+            var len = a * b
+            var result = Array(len)
+            for (var i = 0; i < len; i++) {
+                result[i] = weights[i] + 0.0006 * random() - 0.0003
+            }
+            var t = random() * 2 + 0.8
+            for (i = 0; i < t; i++) {
+                result[Math.floor(len * random())] += 0.8 * random() * random() - 0.4
+            }
+            return result
+        }
+
+        // We also mutate the biases, although we do it a bit less.
+        function mutateB(b, biases) {
+            var result = biases.slice()
+            for (var i = 0; i < b; i++) {
+                result[i] += 0.0004 * random() - 0.0002
+            }
+            var t = random() * 2 + 0.8
+            for (i = 0; i < t; i++) {
+                result[Math.floor(b * random())] += 0.6 * Math.pow(random(), 1.6) * random() - 0.3
+            }
+            return result
+        }
+
+        // Limit the maximum number of creatures (don't want extreme lag)
+        const limit = 1000
+        const PREY = 0
+        const PREDATOR = 1
+        var iterations = 1, foodAmount = 2, tick = 0, ai = 0, lucky = false, unlucky = false
+        var gameSeed, seedA, seedB, seedC, seedD, len, creatures, food, foodX, foodY, showStats, total
+
+        // The huge function to help create new creatures!
+        function newCreature(type, x = 0.1 + 0.8 * random(), y = 0.1 + 0.8 * random(), w1 = Array1(36), b1 = Array1(4), w2 = Array1(8), b2 = Array1(2), data = (type === PREDATOR ? {
+            topSpeed: 2.7 + 1.3 * random(),
+            vision: 0.2 + 0.12 * random()
+        } : {
+            topSpeed: 3 + 1.1 * random(),
+            vision: 0.1 + 0.07 * random()
+        }), generation = 1) {
+            var obj = {
+                topSpeed: Math.max(0.2, data.topSpeed + 0.06 * random() - 0.03),
+                vision: Math.max(0.0003, data.vision + 0.0002 * random() - 0.0001)
+            }
+            // Only prey can be a special color:
+            var canColor = type === PREY && total > 75
+            return {
+                data: obj,
+                layer1: new Layer(9, 4, w1, b1),
+                layer2: new Layer(4, 2, w2, b2),
+                x: x,
+                y: y,
+                type: type,
+                rotation: 6.283185307179586 * random(),
+                reproduceTime: 0.8 + 0.3 * random(),
+                reproduceWait: (type === PREDATOR ? 20 + 10 * random() : 40 + 20 * random()),
+                energy: (type === PREDATOR ? 1.2 : 1) + 0.4 * random(),
+                age: 300 + Math.ceil(250 * random()),
+                speed: 0,
+                rainbow: gameSeed === "rainbow" || canColor && (random() < (lucky ? 0.05 : unlucky ? 0 : 0.00000014)),
+                carrot: gameSeed === "carrot" || canColor && (random() < (lucky ? 0.1 : unlucky ? 0 : 0.00000068)),
+                ghost: gameSeed === "ghost" || canColor && (random() < (lucky ? 0.1 : unlucky ? 0 : 0.0000037)),
+                dark: gameSeed === "dark" || canColor && (random() < (lucky ? 0.1 : unlucky ? 0 : 0.000013)),
+                pale: gameSeed === "crystals" || canColor && (random() < (lucky ? 0.1 : unlucky ? 0 : 0.00006)),
+                gold: gameSeed === "gold" || canColor && (random() < (lucky ? 0.1 : unlucky ? 0 : 0.00022)),
+                silver: gameSeed === "metal" || canColor && (random() < (lucky ? 0.1 : unlucky ? 0 : 0.0028)),
+                gem: gameSeed === "blue" || canColor && (random() < (lucky ? 0.1 : unlucky ? 0 : 0.006)),
+                generation: generation,
+                id: ++total
+            }
+        }
+
+        // Set up everything here:
+        function reset(seed) {
+            ai = 0
+            rand = 0
+            foodAmount = 2
+            if (seed == null) {
+                gameSeed = ""
+                // Reseed the function
+                var values = new Uint32Array(15)
+                crypto.getRandomValues(values)
+                for (var i = 0; i < 10; i++) {
+                    gameSeed += "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(values[i] * 46 / 4294967296)]
+                }
+                seedElem.value = gameSeed
+            } else {
+                gameSeed = seedElem.value
+            }
+            // Lucky colors!
+            unlucky = gameSeed === "unlucky"
+            lucky = gameSeed === "lucky"
+            seedRNG(gameSeed)
+            // The creature count is randomly generated.
+            len = Math.floor(60 + 20 * random())
+            select = Math.floor(rand32() * len)
+            tick = 0
+            creatures = Array(len)
+            foodX = Array(100)
+            foodY = Array(100)
+            food = 100
+            // Reset creature IDs
+            total = 0
+            // Create 100 organisms
+            for (var i = 0; i < len; i++) {
+                var c
+                if (i + 2 < len * 0.2) {
+                    c = newCreature(PREDATOR, 0.4, 0.4)
+                } else {
+                    c = newCreature(PREY, 0.4 + 0.2 * random(), 0.4 + 0.2 * random())
+                }
+                // Give it a little energy boost
+                c.energy++
+                creatures[i] = c
+            }
+            for (i = 0; i < 100; i++) {
+                foodX[i] = 0.1 + 0.8 * random()
+                foodY[i] = 0.1 + 0.8 * random()
+            }
+            if (paused) {
+                updateText()
+                render()
+            }
+        }
+
+        function addPrey(n) {
+            for (var i = 0; i < n; i++) {
+                if (len < 1000) {
+                    creatures.push(newCreature(PREY))
+                    len++
+                }
+            }
+            if (paused) {
+                render()
+            }
+        }
+
+        function addPredator(n) {
+            for (var i = 0; i < n; i++) {
+                if (len < 1000) {
+                    creatures.push(newCreature(PREDATOR))
+                    len++
+                }
+            }
+            if (paused) {
+                render()
+            }
+        }
+
+        function empty() {
+            creatures = []
+            len = 0
+            if (paused) {
+                render()
+            }
+        }
+
+        function nearestFood(cx, cy, max) {
+            var dist = 999999
+            var x, y, m
+            for (var l = 0; l < food; l++) {
+                var tx = cx - foodX[l]
+                var ty = cy - foodY[l]
+                var d = tx * tx + ty * ty
+                if (d < dist) {
+                    dist = d
+                    m = l
+                    x = foodX[l]
+                    y = foodY[l]
+                }
+            }
+            if (dist > max * max) {
+                return [-1, -1, -1, 999999]
+            }
+            return [x, y, m, dist]
+        }
+
+        function nearestCreature(cx, cy, max, type) {
+            var dist = 999999
+            var x, y, m
+            for (var l = 0; l < len; l++) {
+                var c = creatures[l]
+                if (c.type === type) {
+                    var a = c.x
+                    var b = c.y
+                    var tx = cx - a
+                    var ty = cy - b
+                    var d = tx * tx + ty * ty
+                    if (d < dist && d !== 0) {
+                        dist = d
+                        m = l
+                        x = a
+                        y = b
+                    }
+                }
+            }
+            if (dist > 1.8 * max * max) {
+                return [-1, -1, -1, 999999]
+            }
+            return [x, y, m, dist]
+        }
+
+        function activate(array) {
+            // Run the activation function on each node for the neural networks
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] < 0) {
+                    array[i] = 0
+                }
+            }
+            return array
+        }
+
+        var mouseX = 0, mouseY = 0, touchX = 0, touchY = 0, mainX = 0, mainY = 0
+        var mouseDown = false, touchDown = false
+
+        onkeydown = function (e) {
+            if (e.keyCode === 27) {
+                // The user pressed the escape key.
+                mouseDown = false
+                touchDown = false
+            }
+        }
+
+        onmousedown = function (e) {
+            var tag = e.target.tagName
+            if (tag !== "BUTTON" && tag !== "INPUT" && tag !== "TEXTAREA") {
+                // The mouse always overrides the touchscreen: otherwise, some smart users might realize you can get the program to shake rapidly by combining the two!
+                mouseDown = true
+                touchDown = false
+                mouseX = e.pageX
+                mouseY = e.pageY
+                mainX = Math.round(mouseX * devicePixelRatio)
+                mainY = Math.round(mouseY * devicePixelRatio)
+                if (paused) {
+                    render()
+                }
+            }
+        }
+
+        onmousemove = function (e) {
+            if (mouseDown) {
+                panX += (e.pageX - mouseX) / zoom
+                panY += (e.pageY - mouseY) / zoom
+            }
+            mouseX = e.pageX
+            mouseY = e.pageY
+            if (!touchDown) {
+                mainX = Math.round(mouseX * devicePixelRatio)
+                mainY = Math.round(mouseY * devicePixelRatio)
+            }
+            if (paused) {
+                render()
+            }
+        }
+
+        onmouseup = () => mouseDown = false
+        onblur = () => {
+            mouseDown = false
+            touchDown = false
+        }
+
+        document.addEventListener("touchstart", function (e) {
+            if (e.touches.length !== 1) {
+                touchDown = false
+                e.preventDefault()
+            } else if (!mouseDown) {
+                // Just because the variable says "mouse" doesn't mean touchscreen doesn't work!
+                var touch = e.touches[0]
+                var tag = document.elementFromPoint(touch.pageX, touch.pageY).tagName
+                if (tag !== "BUTTON" && tag !== "INPUT" && tag !== "TEXTAREA") {
+                    touchX = touch.pageX
+                    touchY = touch.pageY
+                    mainX = Math.round(touchX * devicePixelRatio)
+                    mainY = Math.round(touchY * devicePixelRatio)
+                    touchDown = true
+                }
+            }
+        }, { passive: false })
+
+        document.addEventListener("touchmove", function (e) {
+            e.preventDefault()
+            if (e.touches.length !== 1) {
+                touchDown = false
+            } else {
+                var touch = e.touches[0]
+                if (touchDown) {
+                    panX += (touch.pageX - touchX) / zoom
+                    panY += (touch.pageY - touchY) / zoom
+                }
+                touchX = touch.pageX
+                touchY = touch.pageY
+                mainX = Math.round(touch.pageX * devicePixelRatio)
+                mainY = Math.round(touch.pageY * devicePixelRatio)
+                if (paused) {
+                    render()
+                }
+            }
+        }, { passive: false })
+
+        document.addEventListener("touchend", () => {
+            touchDown = false
+        })
+
+        document.addEventListener("wheel", function (e) {
+            var tag = e.target.tagName
+            if (tag !== "BUTTON" && tag !== "INPUT" && tag !== "TEXTAREA") {
+                if (e.ctrlKey) {
+                    e.preventDefault()
+                }
+                // Sadly, updating the zoom is a convoluted mess.
+                var newZoom
+                if (e.deltaY > 0) {
+                    newZoom = Math.max(0.2, zoom / 1.1)
+                } else {
+                    newZoom = Math.min(5, zoom * 1.1)
+                }
+                if (zoom !== newZoom) {
+                    var x = (mainX / zoom + panX)
+                    var y = (mainY / zoom + panY)
+                    panX += x * (newZoom - zoom)
+                    panY += y * (newZoom - zoom)
+                    zoom = newZoom
+                    if (paused) {
+                        render()
+                    }
+                }
+            }
+        }, { passive: false })
+
+        onclick = e => {
+            var tag = e.target.tagName
+            if (tag !== "BUTTON" && tag !== "INPUT" && tag !== "TEXTAREA" && len > 0) {
+                // Find the closest organism and select it:
+                var x = (e.pageX / zoom - panX) / mapW
+                var y = (e.pageY / zoom - panY) / mapH
+                var dist = 999999
+                var m = -1
+                for (var i = 0; i < len; i++) {
+                    var c = creatures[i]
+                    var a = c.x - x
+                    var b = c.y - y
+                    var d = a * a + b * b
+                    if (d < dist) {
+                        dist = d
+                        m = i
+                    }
+                }
+                if (dist < 0.075 && m !== select) {
+                    select = m
+                    if (paused) {
+                        render()
+                    }
+                }
+            }
+        }
+
+        function updateText() {
+            foodElem.textContent = food
+            // Count prey and predators
+            var prey = 0
+            var predators = 0
+            for (var i = 0; i < len; i++) {
+                if (creatures[i].type === PREY) {
+                    prey++
+                } else {
+                    predators++
+                }
+            }
+            preyElem.textContent = prey
+            predatorsElem.textContent = predators
+            info.innerHTML = "There are <b>" + len + "</b> creatures currently, and a total of <b>" + total + "</b> creatures have been created.<br>The simulation has run for <b>" + tick + "</b> ticks.<br><b>A total of <span>" + rand + "</span> seeded random numbers have been generated,<br>and the AI for the creatures has multiplied <span>" + 44 * ai + "</span> times!</b>"
+        }
+
+        // Custom random number generator:
+        var randomId = 1000
+        var randomArray = new Uint32Array(1000)
+
+        function rand32() {
+            if (randomId === 1000) {
+                randomId = 0
+                return crypto.getRandomValues(randomArray)[randomId++] * 2.3283064365386963e-10
+            }
+            return randomArray[randomId++] * 2.3283064365386963e-10
+        }
+
+        function rand64() {
+            if (randomId === 1000 || randomId === 999) {
+                randomId = 0
+                crypto.getRandomValues(randomArray)
+            }
+            return randomArray[randomId++] * 2.3283064365386963e-10 + randomArray[randomId++] * 5.421010862427522e-20
+        }
+
+        function update(ticks) {
+            for (var time = 0; time < ticks; time++) {
+                var t = len
+                for (var i = 0; i < t; i++) {
+                    var c = creatures[i]
+                    var dist = 999999
+                    var r = c.rotation
+                    var cx = c.x + 0.014 * Math.cos(r), cy = c.y + 0.014 * Math.sin(r)
+                    if (c.type === PREY) {
+                        // Get the closest food:
+                        var f = nearestFood(cx, cy, c.data.vision)
+                        var x = f[0]
+                        var y = f[1]
+                        var m = f[2]
+                        var dist = f[3]
+                        var angle = Math.atan2(y - cy, x - cx)
+                        var c2 = nearestCreature(cx, cy, c.data.vision, PREDATOR)
+                        var x2 = c2[0]
+                        var y2 = c2[1]
+                        var m2 = c2[2]
+                        var dist2 = c2[3]
+                        var angle2 = Math.atan2(y2 - cy, x2 - cx)
+                        var c3 = nearestCreature(cx, cy, c.data.vision, PREY)
+                        var x3 = c3[0]
+                        var y3 = c3[1]
+                        var m3 = c3[2]
+                        var dist3 = c3[3]
+                        var angle3 = Math.atan2(y3 - cy, x3 - cx)
+                        var age = c.age * 0.001
+                        // Return special values if the angles are invalid with a NaN trick:
+                        var result = c.layer2.calc(activate(c.layer1.calc([dist, angle, dist2, angle2, dist3, angle3, c.x, c.y, age])))
+                        ai++
+                        var distX = x - cx - 0.008 * Math.cos(angle)
+                        var distY = y - cy - 0.008 * Math.sin(angle)
+                        if (distX * distX + distY * distY < 0.00003) {
+                            food--
+                            foodX.splice(m, 1)
+                            foodY.splice(m, 1)
+                            c.reproduceTime -= 0.4
+                            c.reproduceWait -= 5
+                            c.energy = Math.min(c.energy + 1.2 + 0.25 * random(), 3)
+                        }
+                        c.reproduceTime -= 0.0008
+                        // Why isn't this 2 times PI? Well, JS uses a negative modulo, which allows it to go from -Pi to +Pi, which...works.
+                        var a = 0.88 * r + 0.4 * ((2 * result[0]) % 3.141592653589793)
+                        c.energy -= 0.0045 * c.data.vision + 0.002 * Math.pow(c.data.topSpeed, 1.3)
+                        // Make sure the value isn't NaN (this sneaky trick works because that's the only value that isn't equal to itself):
+                        if (a === a) {
+                            c.rotation = a
+                            var speed = 0.001 * Math.min(Math.abs(4 * result[1]), c.data.topSpeed)
+                            // Check for NaN again:
+                            if (speed === speed) {
+                                c.x += speed * Math.cos(a)
+                                c.y += speed * Math.sin(a)
+                                c.speed = speed
+                                c.energy -= 2.35 * Math.pow(speed, 0.8)
+                            } else {
+                                c.speed = 0
+                            }
+                        } else {
+                            c.speed = 0
+                        }
+                    } else {
+                        // Predators follow the prey!
+                        var f = nearestFood(cx, cy)
+                        var x = f[0]
+                        var y = f[1]
+                        var m = f[2]
+                        var dist = f[3]
+                        var angle = Math.atan2(y - cy, x - cx)
+                        var c2 = nearestCreature(cx, cy, c.data.vision, PREDATOR)
+                        var x2 = c2[0]
+                        var y2 = c2[1]
+                        var m2 = c2[2]
+                        var dist2 = c2[3]
+                        var angle2 = Math.atan2(y2 - cy, x2 - cx)
+                        var c3 = nearestCreature(cx, cy, c.data.vision, PREY)
+                        var x3 = c3[0]
+                        var y3 = c3[1]
+                        var m3 = c3[2]
+                        var dist3 = c3[3]
+                        var angle3 = Math.atan2(y3 - cy, x3 - cx)
+                        var age = c.age * 0.001
+                        var result = c.layer2.calc(activate(c.layer1.calc([dist, angle, dist2, angle2, dist3, angle3, cx, cy, age])))
+                        ai++
+                        var distX = x3 - cx - 0.008 * Math.cos(angle3)
+                        var distY = y3 - cy - 0.008 * Math.sin(angle3)
+                        if (distX * distX + distY * distY < 0.0004) {
+                            creatures.splice(m3, 1)
+                            if (m3 < i) {
+                                i--
+                            }
+                            t--
+                            len--
+                            if (m3 <= select) {
+                                if (m3 === select) {
+                                    // Don't mess with the normal RNG (if we select the zeroth element, that one is sure to die soon)
+                                    select = Math.floor(rand32() * len)
+                                } else if (select !== 0) {
+                                    // Keep selecting the same creature: a creature before it has been removed!
+                                    select--
+                                }
+                            }
+                            c.reproduceTime -= 0.55
+                            c.reproduceWait -= 2
+                            c.energy = Math.min(c.energy + 1.63 + 0.4 * random(), 4.3)
+                        }
+                        c.reproduceTime -= 0.0008
+                        var a = 0.88 * r + 0.4 * ((2 * result[0]) % 3.141592653589793)
+                        c.energy -= 0.0013 * c.data.vision + 0.0014 * Math.pow(c.data.topSpeed, 1.3)
+                        if (a === a) {
+                            c.rotation = a
+                            var speed = 0.001 * Math.min(Math.abs(5 * result[1]), c.data.topSpeed)
+                            if (speed === speed) {
+                                c.x += speed * Math.cos(a)
+                                c.y += speed * Math.sin(a)
+                                c.speed = speed
+                                c.energy -= 2.6 * Math.pow(speed, 0.82)
+                            } else {
+                                c.speed = 0
+                            }
+                        } else {
+                            c.speed = 0
+                        }
+                    }
+                    if (c.age-- < 0 || c.energy < 0) {
+                        // The creature dies if it runs out of age or energy
+                        creatures.splice(i, 1)
+                        i--
+                        t--
+                        len--
+                        if (i <= select) {
+                            if (i === select) {
+                                select = Math.floor(rand32() * len)
+                            } else if (select !== 0) {
+                                select--
+                            }
+                        }
+                    } else if (c.reproduceWait-- < 0 && c.reproduceTime < 0 && (c.energy > 2.6 && c.age < 40 || c.energy > 2.2) && len < limit) {
+                        // Reproduction (the next child costs more)
+                        c.reproduceTime = 1.6
+                        c.reproduceWait = 40 + 50 * random()
+                        c.energy -= 1.6 + 0.4 * random()
+                        len++
+                        creatures.push(newCreature(c.type, c.x + 0.14 * random() - 0.07, c.y + 0.14 * random() - 0.07, c.layer1.weights, c.layer1.biases, c.layer2.weights, c.layer2.biases, c.data, c.generation + 1))
+                    }
+                }
+                for (i = 0; i < len; i++) {
+                    var c = creatures[i]
+                    c.x = Math.max(0, Math.min(1, c.x))
+                    c.y = Math.max(0, Math.min(1, c.y))
+                }
+                tick++
+                // Add food
+                if (food < limit && foodAmount !== 0) {
+                    if (foodAmount < 0) {
+                        // Less than 1 food every tick:
+                        if (tick % -foodAmount === 0) {
+                            food++
+                            foodX.push(random())
+                            foodY.push(random())
+                        }
+                    } else {
+                        for (i = 0; i < foodAmount && food < 1000; i++) {
+                            food++
+                            foodX.push(random())
+                            foodY.push(random())
+                        }
+                    }
+                }
+            }
+        }
+
+        function render() {
+            var time = performance.now()
+            if (fade !== 0 && fade < time) {
+                note.style.opacity = 0
+                fade = 0
+            }
+            // Clear everything
+            ctx.setTransform(1, 0, 0, 1, 0, 0)
+            ctx.clearRect(0, 0, w, h)
+
+            // Fill the edge (we outline later):
+            ctx.scale(devicePixelRatio * zoom, devicePixelRatio * zoom)
+            ctx.translate(panX, panY)
+            ctx.fillStyle = "#ccc"
+            ctx.fillRect(0, 0, mapW, mapH)
+
+            // Draw the food
+            ctx.fillStyle = "#292"
+            ctx.strokeStyle = "#040"
+            ctx.lineWidth = 4
+            for (var i = 0; i < food; i++) {
+                ctx.beginPath()
+                ctx.arc(foodX[i] * mapW, foodY[i] * mapH, 6, 0, 6.283185307179586)
+                ctx.stroke()
+                ctx.fill()
+            }
+
+            if (len === 0) {
+                select = 0
+                show.style.display = "none"
+                outline()
+            } else {
+                show.style.display = innerHeight > 500 ? null : "none"
+                for (var i = 0; i < len; i++) {
+                    var c = creatures[i]
+                    var age = c.age
+                    var stroke = c.type === PREY ? "#171" : "#b21"
+                    // Cosmetic and only for prey
+                    if (c.rainbow) {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "rainbow", "#000", c.type)
+                    } else if (c.carrot) {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "#e38119", "#7d560f", c.type)
+                    } else if (c.ghost) {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "#ddd", "#b2b2b2", c.type)
+                    } else if (c.dark) {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "#181818", "#444", c.type)
+                    } else if (c.pale) {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "#80ed9d", "#099e7e", c.type)
+                    } else if (c.gold) {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "#f7b314", "#eb8034", c.type)
+                    } else if (c.silver) {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "#a3a3a3", "#555", c.type)
+                    } else if (c.gem) {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "#42b3f5", "#158", c.type)
+                    } else if (c.type === PREY) {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "#30bd06", "#337520", c.type)
+                    } else {
+                        drawCreature(c.age, c.x, c.y, c.rotation, "#e61e42", "#7d1427", c.type)
+                    }
+                }
+
+                // Draw the selection dot in front:
+                var c = creatures[select]
+                if (c.rainbow) {
+                    ctx.fillStyle = "#de4b9a"
+                    ctx.strokeStyle = "#ba2b81"
+                } else if (c.carrot) {
+                    ctx.fillStyle = "#f2951b"
+                    ctx.strokeStyle = "#e8a45f"
+                } else if (c.ghost) {
+                    ctx.fillStyle = "#aaa"
+                    ctx.strokeStyle = "#ccc"
+                } else if (c.dark) {
+                    ctx.fillStyle = "#444"
+                    ctx.strokeStyle = "#282828"
+                } else if (c.pale) {
+                    ctx.fillStyle = "#87e6f5"
+                    ctx.strokeStyle = "#48d"
+                } else if (c.gold) {
+                    // Custom selections to tell the difference
+                    ctx.fillStyle = "#f81"
+                    ctx.strokeStyle = "#f04816"
+                } else if (c.silver) {
+                    ctx.fillStyle = "#555"
+                    ctx.strokeStyle = "#222"
+                } else if (c.gem) {
+                    ctx.fillStyle = "#1fdbd2"
+                    ctx.strokeStyle = "#409ea3"
+                } else {
+                    ctx.fillStyle = "#e11"
+                    ctx.strokeStyle = "#511"
+                }
+                ctx.lineWidth = 3
+                ctx.beginPath()
+                ctx.arc(c.x * mapW, c.y * mapH, 6, 0, 6.283185307179586)
+                ctx.fill()
+                ctx.stroke()
+
+                // Outline the game borders at the end so it's in front of everything else
+                outline()
+
+                ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0)
+                // Statistics!
+                if (showStats) {
+                    // More statistics!
+                    stuff.style.display = "none"
+                    hide.style.display = null
+                    ctx.fillStyle = "#5567"
+                    ctx.strokeStyle = "#223"
+                    ctx.lineWidth = 10
+                    ctx.fillRect(0, 0, innerWidth, innerHeight)
+                    ctx.fillStyle = "#556d"
+                    roundRect(50, 50, innerWidth - 100, innerHeight - 100, 12, true)
+
+                    // Yes, moveX does not consider italics, but that is intentional.
+                    ctx.font = "bold italic 28px 'Gill Sans', 'Gill Sans MT', Calibri, Tahoma"
+                    ctx.fillStyle = "#268"
+                    ctx.lineWidth = 0.8
+                    ctx.fillText("Movement:", moveX, 100)
+                    ctx.strokeText("Movement:", moveX, 100)
+                    drawMovement(c, 160, 160)
+
+                } else if (innerHeight > 310) {
+                    stuff.style.display = null
+                    hide.style.display = "none"
+                    ctx.fillStyle = "#556e"
+                    ctx.strokeStyle = "#223"
+                    ctx.lineWidth = 10
+                    // Show the information for the selected creature here:
+                    roundRect(innerWidth - 300, 40, 250, Math.min(innerHeight - 80, 475), 15, true)
+
+                    var left = innerWidth - 275
+                    ctx.font = "20px 'Gill Sans', 'Gill Sans MT', Calibri, Tahoma"
+
+                    ctx.fillStyle = "#143"
+                    ctx.lineWidth = 6
+                    ctx.strokeStyle = "#222"
+                    roundRect(left, 100, 200, 40, 10, true)
+                    ctx.fillStyle = "#293"
+                    if (innerHeight > 390) {
+                        ctx.fillText("Energy: " + (c.energy / 0.04).toFixed(2), innerWidth - 292, 314)
+                        roundRect(left + 3, 103, Math.max(5, Math.min(194, Math.pow(c.energy, 0.8) * 75)), 34, 4)
+                    }
+                    ctx.fillStyle = "#368"
+                    roundRect(left, 160, 200, 25, 6, true)
+                    ctx.fillStyle = "#39d"
+                    if (innerHeight > 390) {
+                        ctx.fillText("Time left: " + (c.age < 15 ? "I'm gonna die" : (c.age + " ticks")), innerWidth - 292, 338)
+                    }
+                    roundRect(left + 3, 163, Math.max(5, Math.min(194, Math.pow(c.age, 0.87))), 19, 4)
+
+                    // Draw some statistics
+                    ctx.font = "bold 32px 'Gill Sans', 'Gill Sans MT', Calibri, Tahoma"
+                    ctx.fillStyle = gradient
+                    ctx.strokeStyle = "#000"
+                    ctx.lineWidth = 1
+                    ctx.fillText("Creature info:", titleX, 75)
+                    ctx.strokeText("Creature info:", titleX, 75)
+                    ctx.font = "20px 'Gill Sans', 'Gill Sans MT', Calibri, Tahoma"
+                    ctx.fillText("Maximum speed: " + (5 * c.data.topSpeed).toFixed(4), innerWidth - 292, 212)
+                    ctx.fillText("Vision: " + (50 * c.data.vision).toFixed(4), innerWidth - 292, 236)
+                    ctx.fillText("Time to reproduce: " + (c.reproduceTime > 0 ? (10 * c.reproduceTime).toFixed(4) : (c.reproduceWait > 0 ? "Waiting" : "Starting")), innerWidth - 292, 260)
+
+                    if (innerHeight > 555) {
+                        ctx.font = "bold 18px 'Gill Sans', 'Gill Sans MT', Calibri, Tahoma"
+                        var text = "Generation " + c.generation + " (#" + c.id + ")"
+                        ctx.fillText(text, innerWidth - 175 - 0.5 * ctx.measureText(text).width, 503)
+                    }
+
+                    // Show the type (in color):
+                    if (innerHeight > 340) {
+                        ctx.lineWidth = 0.75
+                        ctx.font = "bold italic 25px 'Gill Sans', 'Gill Sans MT', Calibri, Tahoma"
+                        ctx.fillStyle = "#eaa"
+                        if (c.type === PREY) {
+                            ctx.fillStyle = "#153"
+                            ctx.fillText("Type: Prey", innerWidth - 292, 288)
+                            ctx.strokeText("Type: Prey", innerWidth - 292, 288)
+                        } else {
+                            ctx.fillStyle = "#c44"
+                            ctx.fillText("Type: Predator", innerWidth - 292, 288)
+                            ctx.strokeText("Type: Predator", innerWidth - 292, 288)
+                        }
+                    }
+
+                    // Draw the movement information:
+                    if (innerHeight > 540) {
+                        ctx.font = "bold 16px 'Gill Sans', 'Gill Sans MT', Calibri, Tahoma"
+                        ctx.fillStyle = "#000"
+                        ctx.fillText("Movement: ", innerWidth - 292, 365)
+                        drawMovement(c, innerWidth - 175, 425)
+                    }
+                } else {
+                    show.style.display = "none"
+                    hide.style.display = "none"
+                }
+                timeElem.textContent = (performance.now() - time).toFixed(1) + "ms"
+            }
+        }
+
+        function outline() {
+            ctx.strokeStyle = "#444"
+            ctx.lineWidth = 80
+            roundRect(-40, -40, mapW + 80, mapH + 80, 50, true, true)
+            ctx.strokeStyle = "#161616"
+            ctx.lineWidth = 24
+            roundRect(-12, -12, mapW + 24, mapH + 24, 50, true, true)
+        }
+
+        // This is a huge beast, so we put it into its own function.
+        function drawMovement(c, a, b) {
+            // Translate the canvas:
+            ctx.translate(a, b)
+
+            ctx.fillStyle = "#466"
+            ctx.lineWidth = 6
+            ctx.beginPath()
+            ctx.arc(0, 0, 50, 0, 6.283185307179586)
+            ctx.fill()
+            ctx.stroke()
+            ctx.lineWidth = 2
+            ctx.beginPath()
+            ctx.strokeStyle = "#999"
+            ctx.fillStyle = "#999"
+            ctx.moveTo(0, 0)
+            var speed = 40000 * c.speed / c.data.topSpeed
+            // Only draw the arrow and lines if it's actually moving:
+            if (speed > 1) {
+                ctx.lineTo(0.9 * speed * Math.cos(c.rotation), 0.9 * speed * Math.sin(c.rotation))
+                ctx.stroke()
+
+                // We also add the little arrow here:
+                var x = speed * Math.cos(c.rotation)
+                var y = speed * Math.sin(c.rotation)
+                ctx.beginPath()
+                ctx.moveTo(x, y)
+                ctx.lineTo(x - 8 * Math.cos(c.rotation - 0.55), y - 8 * Math.sin(c.rotation - 0.55))
+                ctx.lineTo(x - 8 * Math.cos(c.rotation + 0.55), y - 8 * Math.sin(c.rotation + 0.55))
+                ctx.closePath()
+                ctx.fill()
+            }
+
+            // We're done: translate the canvas back.
+            ctx.translate(-a, -b)
+        }
+
+        // Draw a rounded rectangle (with a polyfill)
+        function roundRect(x, y, width, height, r, stroke, noFill) {
+            ctx.beginPath()
+            if (ctx.roundRect) {
+                // Use the normal browser function:
+                ctx.roundRect(x, y, width, height, r)
+            } else {
+                // Make sure the radius isn't larger than it should be (otherwise it looks weird):
+                var radius = Math.min(r, 0.5 * Math.min(width, height))
+                var xw = x + width
+                var yh = y + height
+                ctx.moveTo(x + r, y)
+                ctx.arcTo(xw, y, xw, yh, radius)
+                ctx.arcTo(xw, yh, x, yh, radius)
+                ctx.arcTo(x, yh, x, y, radius)
+                ctx.arcTo(x, y, xw, y, radius)
+            }
+            ctx.closePath()
+            if (!noFill) {
+                ctx.fill()
+            }
+            if (stroke) {
+                ctx.stroke()
+            }
+        }
+
+        function draw() {
+            if (paused) {
+                return
+            } else {
+                // Update the next frame too:
+                setTimeout(draw, 16)
+            }
+            var time = performance.now()
+            update(iterations)
+            updateElem.textContent = (performance.now() - time).toFixed(1) + "ms"
+            if (len === 0) {
+                foodElem.textContent = food
+                preyElem.textContent = "0"
+                predatorsElem.textContent = "0"
+                info.textContent = "No creatures!"
+            } else {
+                updateText()
+            }
+            render()
+        }
+
+        onresize = function () {
+            // We resize and also render to prevent a brief flash:
+            resize()
+            render()
+        }
+        // Call functions: resize canvas, create creatures, and then draw.
+        reset()
+        resize()
+        draw()
+    </script>
+</body>
+
+</html>

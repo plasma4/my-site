@@ -1,0 +1,2583 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>Doodle Square</title>
+    <meta charset="utf-8" />
+    <html lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <style>
+        * {
+            font-size: 22px;
+            font-family: Cambria, Cochin, Georgia;
+            overflow: hidden;
+            touch-action: manipulation;
+            word-break: break-word;
+            user-select: none;
+            color: #333;
+        }
+
+        #hole {
+            position: absolute;
+            border-radius: 25000px;
+        }
+
+        canvas {
+            position: absolute;
+            image-rendering: pixelated;
+            top: 0;
+            left: 0;
+        }
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            width: 100%;
+            height: calc(10% + 2px);
+        }
+
+        em {
+            background-color: #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        a {
+            font-size: inherit;
+            color: #318aeb;
+        }
+
+        #main {
+            overflow: auto;
+            scrollbar-width: none;
+            position: absolute;
+            top: 12px;
+            left: 20px;
+            width: calc(100% - 40px);
+            height: calc(55% + 25px);
+        }
+
+        #main::-webkit-scrollbar {
+            display: none;
+        }
+
+        b {
+            font-size: 38px;
+        }
+
+        small {
+            font-family: "Trebuchet MS";
+            font-size: 16px;
+            display: block;
+        }
+
+        strong {
+            font-family: Verdana;
+            font-size: 15px;
+            display: none;
+        }
+
+        sup {
+            font-size: 14px;
+            color: #eb1;
+        }
+
+        button {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        u {
+            font-size: 26px;
+            display: none;
+        }
+
+        p {
+            font-size: 18px;
+            font-weight: 600;
+            color: #888;
+            font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
+            display: none;
+        }
+
+        i {
+            font-family: "Trebuchet MS";
+            font-size: 16px;
+            display: block;
+        }
+
+        .new1,
+        .new2,
+        .new3 {
+            padding: 2px;
+            font-weight: 700;
+            font-family: "Trebuchet MS";
+            text-align: center;
+            transition: border-radius 500ms;
+            border-radius: 6px;
+            color: black;
+        }
+
+        .new1 {
+            background-image: linear-gradient(30deg, #f07127, #f1bc0c);
+        }
+
+        .new2 {
+            background-image: linear-gradient(30deg, #22da81, #15a3ca);
+        }
+
+        .new3 {
+            background-image: linear-gradient(30deg, #a558ed, #ff3bad);
+        }
+
+        .new1:hover,
+        .new2:hover,
+        .new3:hover {
+            border-radius: 12px;
+        }
+
+        @keyframes down {
+            0% {
+                top: calc(-10% - 80px);
+            }
+
+            25% {
+                top: 0;
+            }
+
+            90% {
+                top: 0;
+            }
+
+            100% {
+                top: calc(-10% - 80px);
+            }
+        }
+
+        .alertBox {
+            font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
+            font-size: 20px;
+            padding: 2px;
+            text-align: center;
+            position: absolute;
+            top: -99999px;
+            left: calc(40% - 100px);
+            width: calc(20% + 200px);
+            min-height: calc(10% + 80px);
+            background-color: #aad3e6;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            animation: 3000ms down;
+            box-shadow: 4px 3px 3px #2225;
+        }
+    </style>
+
+    <script>
+        "use strict"
+
+        // Note: The glitch effect generator below has been modified and compressed to fit this program's needs.
+        // Here's the link in case you want to take a look at it: https://github.com/snorpey/glitch-canvas
+
+        // The MIT License (MIT)
+        // Copyright (c) 2013-2017 Georg Fischer
+
+        // Permission is hereby granted, free of charge, to any person obtaining a copy of
+        // this software and associated documentation files (the "Software"), to deal in
+        // the Software without restriction, including without limitation the rights to
+        // use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+        // the Software, and to permit persons to whom the Software is furnished to do so,
+        // subject to the following conditions:
+
+        // The above copyright notice and this permission notice shall be included in all
+        // copies or substantial portions of the Software.
+
+        // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+        // FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+        // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+        // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+        // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+        var glitch = function () { function d(e) { return "object" != typeof (e = function (t) { var a = !1; if (void 0 !== t) try { a = JSON.parse(JSON.stringify(t)) } catch (t) { } return a }(e)) && (e = {}), Object.keys(n).filter(function (t) { return "iterations" !== t }).forEach(function (t) { var a; "number" != typeof e[t] || isNaN(e[t]) ? e[t] = n[t] : (a = e[t], e[t] = a < 0 ? 0 : 100 < a ? 100 : a), e[t] = Math.round(e[t]) }), ("number" != typeof e.iterations || isNaN(e.iterations) || e.iterations <= 0) && (e.iterations = n.iterations), e.iterations = Math.round(e.iterations), e } function b(t) { if (t instanceof HTMLImageElement) { if (!t.naturalWidth || !t.naturalHeight || !1 === t.complete) throw Error("This this image hasn't finished loading: " + t.src); var a = new l(t.naturalWidth, t.naturalHeight), e = a.getContext("2d"); return e.drawImage(t, 0, 0, a.width, a.height), (a = e.getImageData(0, 0, a.width, a.height)).data && a.data.length && (void 0 === a.width && (a.width = t.naturalWidth), void 0 === a.height && (a.height = t.naturalHeight)), a } throw Error("This object does not seem to be an image.") } function i(n) { return new Promise(function (t, a) { var e = new r; e.onload = function () { t(e) }, e.onerror = a; try { e.src = n } catch (t) { a(t) } }) } function p(t, a, e, n) { i(t).then(e, n) } function s(t) { return { width: t.width || t.naturalWidth, height: t.height || t.naturalHeight } } function m(t, a, r, e) { i(t).then(function (t) { var a = s(t), e = s(t), n = new l(e.width, e.height).getContext("2d"); n.drawImage(t, 0, 0, e.width, e.height), (t = n.getImageData(0, 0, a.width, a.height)).width || (t.width = a.width), t.height || (t.height = a.height), r(t) }, e) } var n = { amount: 35, iterations: 20, quality: 30, seed: 25 }, l = function (t, a) { void 0 === t && (t = 300), void 0 === a && (a = 150), "undefined" == typeof window ? (this.canvasEl = { width: t, height: a }, this.ctx = null) : (this.canvasEl = document.createElement("canvas"), this.canvasEl.width = t, this.canvasEl.height = a, this.ctx = this.canvasEl.getContext("2d")) }, t = { width: { configurable: !0 }, height: { configurable: !0 } }; l.prototype.getContext = function () { return this.ctx }, l.prototype.toDataURL = function (t, a, e) { if ("function" != typeof e) return this.canvasEl.toDataURL(t, a); e(this.canvasEl.toDataURL(t, a)) }, t.width.get = function () { return this.canvasEl.width }, t.width.set = function (t) { this.canvasEl.width = t }, t.height.get = function () { return this.canvasEl.height }, t.height.set = function (t) { this.canvasEl.height = t }, Object.defineProperties(l.prototype, t), "undefined" != typeof window && (l.Image = Image); var r = l.Image, v = Object.assign; return function (n) { function t() { var t = v({}, i); return h || v(t, g), t } function a() { var t = v({}, i); return c || v(t, f), t } function s(t) { return t } function e(e, n, r) { return h = function () { return new Promise(function (t, a) { if (r) e(n, t, a); else if (e === s) t(n); else try { t(e(n, t, a)) } catch (t) { a(t) } }) }, (c ? o : a)() } function r(n, r, i) { return c = function (e) { return new Promise(function (t, a) { i ? n(e, r, t, a) : n === s ? t(e) : n(e, r).then(t, a) }) }, (h && c ? o : t)() } function o() { return new Promise(function (a, e) { h().then(function (t) { return e = t, s = n, new Promise(function (t, a) { var n, r; n = e, r = s.quality, new Promise(function (t, a) { var e; n && "number" == typeof n.width && "number" == typeof n.height && n.data && "number" == typeof n.data.length && "object" == typeof n.data ? ((e = new l(n.width, n.height)).getContext("2d").putImageData(n, 0, 0), t(e = e.toDataURL("image/jpeg", r / 100))) : a(Error("object is not valid imageData")) }).then(function (t) { return n = e, r = t, i = s, new Promise(function (a, e) { u.addEventListener("message", function (t) { t.data && t.data.base64URL ? a(t.data.base64URL) : t.data && t.data.err ? e(t.data.err) : e(t) }), u.postMessage({ params: i, base64URL: r, imageData: n, imageDataWidth: n.width, imageDataHeight: n.height }) }); var n, r, i }, a).then(t, a) }); var e, s }, e).then(function (t) { c(t).then(a, e) }, e) }) } n = d(n); var h, c, u = new Worker(URL.createObjectURL(new Blob(['function isImageData(a){return a&&"number"===typeof a.width&&"number"===typeof a.height&&a.data&&"number"===typeof a.data.length&&"object"===typeof a.data}var base64Chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",base64Map$1=base64Chars.split(""),reversedBase64Map$1={};base64Map$1.forEach(function(a,b){reversedBase64Map$1[a]=b});var maps={base64Map:base64Map$1,reversedBase64Map:reversedBase64Map$1},reversedBase64Map=maps.reversedBase64Map;\nfunction base64ToByteArray(a){var b=[];a=a.replace("data:image/jpeg;base64,","");for(var c=0,d=a.length;c<d;c++){a[c];var e=reversedBase64Map[a[c]];switch(c%4){case 1:b.push(f<<2|e>>4);break;case 2:b.push((f&15)<<4|e>>2);break;case 3:b.push((f&3)<<6|e)}var f=e}return b}function jpgHeaderLength(a){for(var b=417,c=0,d=a.length;c<d;c++)if(255===a[c]&&218===a[c+1]){b=c+2;break}return b}\nfunction glitchByteArray(a,b,c,d){var e=jpgHeaderLength(a),f=a.length-e-4;c/=100;b/=100;for(var g=0;g<d;g++){var h=f/d*g|0;h=h+((f/d*(g+1)|0)-h)*b|0;h>f&&(h=f);a[~~(e+h)]=~~(256*c)}return a}var base64Map=maps.base64Map;\nfunction byteArrayToBase64(a){for(var b=["data:image/jpeg;base64,"],c,d,e=0,f=a.length;e<f;e++){var g=a[e];c=e%3;switch(c){case 0:b.push(base64Map[g>>2]);break;case 1:b.push(base64Map[(d&3)<<4|g>>4]);break;case 2:b.push(base64Map[(d&15)<<2|g>>6]),b.push(base64Map[g&63])}d=g}0===c?(b.push(base64Map[(d&3)<<4]),b.push("==")):1===c&&(b.push(base64Map[(d&15)<<2]),b.push("="));return b.join("")}\nfunction glitchImageData(a,b,c){if(isImageData(a))return a=base64ToByteArray(b),c=glitchByteArray(a,c.seed,c.amount,c.iterations),byteArrayToBase64(c);throw Error("glitchImageData: imageData seems to be corrupt.");}\nonmessage=function(a){var b=a.data.imageData,c=a.data.params,d=a.data.base64URL;if(b&&d&&c)try{"undefined"===typeof b.width&&"number"===typeof a.data.imageDataWidth&&(b.width=a.data.imageDataWidth);"undefined"===typeof b.height&&"number"===typeof a.data.imageDataHeight&&(b.height=a.data.imageDataHeight);var e=glitchImageData(b,d,c);success(e)}catch(f){fail(f)}else a.data.imageData?fail("Parameters are missing."):fail("ImageData is missing.");self.close()};\nfunction fail(a){self.postMessage({err:a.message||a})}function success(a){self.postMessage({base64URL:a})};'], { type: "text/javascript" }))), i = { getParams: function () { return n }, getInput: t, getOutput: a }, g = { fromImageData: function (t) { return e(s, t) }, fromImage: function (t) { return e(b, t) } }, f = { toImage: function (t) { return r(p, t, !0) }, toDataURL: function (t) { return r(s) }, toImageData: function (t) { return r(m, t, !0) } }; return t() } }();
+
+        // The stuff below was all made by myself!
+
+        /**
+         * Clones a nested array
+         * @param {any[]} array The array to clone
+         */
+        function cloneArray(array) {
+            return array.map(array => Array.isArray(array) ? cloneArray(array) : array)
+        }
+
+        /**
+         * Saves game states
+         * @param {Number[][]} data The initial starting object
+         */
+        function SaveState(data = []) {
+            if (!(this instanceof SaveState)) {
+                throw TypeError("Constructor SaveState requires 'new'")
+            }
+            if (!(data instanceof Array)) {
+                throw TypeError("An array was not passed")
+            }
+            /** @type {Number[][][]} All the saved states */
+            this.a = [cloneArray(data)]
+            /** @type {Number[][][]} The save states that are in history */
+            this.h = this.a
+            /** @type {Number} The index of the current state */
+            this.i = 0
+        }
+
+        /**
+         * Saves the object
+         * @param {Number[][]} data The new state to save
+         */
+        SaveState.prototype.save = function (data = []) {
+            // this.h = this.h.slice(0, this.i++ + 1)
+            if (!(data instanceof Array)) {
+                throw TypeError("The data is not an array")
+            }
+            var copy = cloneArray(data)
+            this.a.push(copy)
+            this.h.push(copy)
+            this.i++
+        }
+
+        /**
+         * Returns a previous state
+         * @param {Number} amount How many states to go back
+         */
+        SaveState.prototype.back = function (amount = 1) {
+            return this.h[this.i = Math.max(this.i - amount, 0)]
+        }
+
+        /**
+         * Returns a state after the current one
+         * @param {Number} amount How many states to go forward
+         */
+        SaveState.prototype.forward = function (amount = 1) {
+            return this.h[this.i = Math.min(this.i + amount, this.h.length - 1)]
+        }
+
+        /**
+         * Returns a requested state from all saved state
+         * @param {Number} id What index to request
+         */
+        SaveState.prototype.request = function (id = 0) {
+            var item = this.a[id]
+            if (item == null) {
+                throw RangeError("The index is out of range")
+            }
+            return item
+        }
+    </script>
+</head>
+
+<body>
+    <canvas width="0" height="0"></canvas>
+    <i id="hole"></i>
+    <img>
+    <img style="top: 10%">
+    <img style="top: 20%">
+    <img style="top: 30%">
+    <img style="top: 40%">
+    <img style="top: 50%">
+    <img style="top: 60%">
+    <img style="top: 70%">
+    <img style="top: 80%">
+    <img style="top: 90%">
+    <em></em>
+    <span id="main">
+        <div></div>
+        You have <span id="currentLives">&infin; lives</span>
+        <small id="keys">
+            Keyboard shortcuts to switch blocks (well, not really because they're the only way you change blocks)
+            <br>
+            p=Spawn|h=Heart|m=Modifier|u=Gear (invisible modifier)|g=Glitch|r=Reset|s=Quick checkpoint (live edit mode)
+            <br>
+            b=Powerup|t=Tall Fire|f=Flag|c=Clear|0=Erase|1=Solid|2=Spring|3=Slime|4=Goal|6=Coin|7=Portal
+            <br>
+            j=Left Gate|k=Right Gate|v=Switch|y=Off Block|z=On Block|5=Fire|8=Up/Down|Enemy|9=Left/Right|Enemy
+            <br>
+        </small>
+        <p>
+            <span class="new3">Beta</span> <span class="new1">edition</span>
+            <br>
+            Sound effects (they have been converted to mp3 for compression so these don't need external files):
+            <br>
+            <a
+                href="https://freesound.org/people/andersmmg/sounds/523422/">freesound.org/people/andersmmg/sounds/523422/</a>
+            (CC Attribution 4.0) and <a
+                href="https://https://freesound.org/people/miksmusic/sounds/497702/">freesound.org/people/miksmusic/sounds/497702/</a>
+            (CC Attribution 3.0)
+            <br>
+            All the background music comes from <a href="https://freepd.com">freepd.com</a>,
+            which is a really cool site with commercially useable audio without attribution,
+            or CC 1.0 (but I put it here anyway to thank them)
+            <br>
+            Thanks to snorpey for the glitch effect at <a
+                href="https://github.com/snorpey/glitch-canvas">github.com/snorpey/glitch-canvas</a>: it looks stunning!
+            <br>
+            Live Edit mode allows you to play and edit at the same time.
+            <br>
+            Play mode is when you want to test it or show it to others, as there are no quick checkpoints.
+            <br>
+            You can only edit in edit mode.
+            <br>
+            Use the letters above to select elements!
+            <br>
+            Created by Leo Zhang.
+        </p>
+        <br>
+        <button onclick="toggleInfo()">Info<strong> (I)</strong></button>
+        <button onclick="saveMap()">
+            Save Map
+            <strong> (copy command)</strong>
+        </button>
+        <button onclick="navigator.clipboard.readText().then(loadMap)">
+            Import Map
+            <strong> (paste command)</strong>
+        </button>
+        <span id="editButtons">
+            <button onclick="toggleDoubleJump()">
+                Double Jump:
+                <span class="font-size: 18px" id="doubleJump">Off</span>
+                <strong> (O)</strong>
+            </button>
+            <button onclick="tiles = state.back()">
+                Undo <strong> (Ctrl/Cmd+Z)</strong>
+            </button>
+            <button onclick="tiles = state.forward()">
+                Redo <strong> (Ctrl/Cmd+Y or Ctrl/Cmd+Shift+Z)</strong>
+            </button>
+        </span>
+        <br>
+        <button onclick="setMode(mode === 2 ? 0 : (mode + 1))">
+            <span id="mode">Mode: Live Edit</span>
+            <strong> (Enter or Shift+Enter)</strong>
+        </button>
+        <button onclick="createAudio()">
+            Next Song
+            <strong> (S)</strong>
+        </button>
+        <br>
+        <br>
+        Starting lives (<span id="lives">Infinite</span>):
+        <br>
+        <input autocomplete="off" type="range" min="1" max="10" value="10" oninput="setLives(this.value)">
+        <u>Label Data:</u>
+        <p>
+            <span class="new2">Modifiers are weird!</span>
+            <i>Edit modifier information:</i>
+            Speed:
+            <input autocomplete="off" type="range" min="1" max="1000" value="125"
+                oninput="settings[0] = this.value * 0.001">
+            <br>Jump:
+            <input autocomplete="off" type="range" min="1" max="1000" value="300"
+                oninput="settings[1] = this.value * 0.001">
+            <br>Enemy Speed:
+            <input autocomplete="off" type="range" min="1" max="1000" value="160"
+                oninput="settings[6] = this.value * 0.00025">
+            <br>
+            Rotation: <input autocomplete="off" type="range" min="0" max="360" value="0"
+                oninput="settings[12] = this.value % 360"></input>
+            <br>
+            <select autocomplete="off" onchange="settings[2] = this.selectedIndex">
+                <option>None</option>
+                <option>Darkness</option>
+                <option>Flash</option>
+                <option>Grainy</option>
+                <option>Glitchy</option>
+                <option selected>No changes</option>
+                <option>Intense</option>
+            </select>
+            <label>
+                <input type="checkbox" autocomplete="off" onchange="settings[7] = this.checked ? 1 : 0;"></input>
+                2-color background
+            </label>
+            <br>
+            Backgrounds:
+            <br>
+            Background: <input autocomplete="off" type="color" value="#ffffff" oninput="setColor(this.value)"></input>
+            <br>
+            Background 2 (enable 2-color background to use a gradient): <input autocomplete="off" type="color"
+                value="#0a8c15" oninput="setColor(this.value, 5)"></input>
+            <br>
+            Gradient rotation (enable 2-color backgrounds): <input autocomplete="off" type="range" min="0" max="360"
+                value="0" oninput="settings[11] = this.value % 360"></input>
+        </p>
+    </span>
+    <div class="alertBox" tabindex="9">
+        Welcome to the game! Use the arrow keys or WASD to move around.
+        <br>
+        Use the key information at the top to switch between blocks. See what you can create!
+        <br>
+        (Hint: use the <b style="font-family: 'Courier New', Courier, monospace">C</b> key to clear everything)
+    </div>
+
+    <script id="script">
+        "use strict"
+        script.remove()
+
+        const canvas = document.getElementsByTagName("canvas")[0]
+        const ctx = canvas.getContext("2d")
+
+        const imageElements = document.getElementsByTagName("img")
+        const strong = document.getElementsByTagName("strong")
+        const info = document.getElementsByTagName("p")[0]
+        const text = document.getElementsByTagName("div")[0]
+        const label = document.getElementsByTagName("u")[0]
+        const modLabel = document.getElementsByTagName("p")[1]
+        const currentLives = document.getElementById("currentLives")
+        const livesElem = document.getElementById("lives")
+        const livesInput = document.getElementsByTagName("input")[0]
+        const hole = document.getElementsByTagName("i")[0]
+
+        const min = Math.min
+        const max = Math.max
+        const floor = Math.floor
+        const round = Math.round
+        const ceil = Math.ceil
+        const sin = Math.sin
+        const cos = Math.cos
+        const abs = Math.abs
+        const random = Math.random
+
+        // Sound effects:
+        const coinSound = new Audio("data:audio/mpeg;base64,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")
+        const winSound = new Audio("data:audio/mpeg;base64,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CpRbMUWarv8rlQF22toFRQ2iAXPQHNu0suUyyBIqnR71pWPUz/DO3NtdXOD+DM/urEeqL0oU0slkYlZhFW4OIhMjGqVIzXhGZ1rrid/JDonpLoT/3BdZ2iae/NX9Yi/V1r0Y3d/2A1MAv/2uAFyAAjpyqEmix5VjXXpc2QpV5wW6sCU+//tUxPKACvB3S+e0cKlkEGl89o5MSI7jS95yN7xOCNX+2WMr9lWyJPN5UPqzDOmS+Km+DijbbM1xXfU7uHHqwp6PeXi3Yjv1lb/eO/1cl+WfRVVKOZ2qRGaWADWXBgW1vi5FAQAAAMGBB4nSwQDGIiJmwKvYgJQMFgEoLgAoEMMURYvCgo3xyr0aoBOC8bsL1NEmMAffoAV34cgHLQVsfcSBBIhTBqLFDJCSQKgGHkAOGMBLOwxKYLgRqVO21+Op//tUxO+AC7h5Sew8Z+lbGem89Q5MfrzlVK/V6WzGFNOReQSbOXRme5/fw1vHD915rVTD8pf+8O3c+3M9d53Hf75/71zC1+/y7jXwpPsKLnG9AdCQjaNFxpkBBRP8oboDjV/////4UMCvbu05myAHPfgAH8ABgbxYm8boKUFS4E9LaF6hpomidKhZQEkaRIkZ9GkSIBCSKMuigorgKCu8ZkFBX//TfxBQVwKC///kFfCCgrwYbUxBTUUzLjEwMFVV//tkxOqAC8THS+w0cKmIF2m+sLAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//t0xPeAF5T7Pfm9EEEwCOj/nmAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sUxNoDwAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+        const failSound = new Audio("data:audio/mpeg;base64,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gk6laMLCyhLU86dOtOM2UgAkiVVO/01iZDOgV0PwCG2ilShilDO1dOGVzYLQklGejtCnjgvKRwuAdEKyYiCzhGcHFg/WnyI1OBDDItUZeJRakSQ2XJFXmd4iFQTgwkA5IEwOFsBHRGrWdJWIcRQo4QANPdd/2/SqACJqm7ttt9W2BIE4VBO4iNTVe9pqdSg1E4q42U0EboHs5HbEctVJjOfaN1iErswFUpZOCEAWQVw0ZQkY2JauTId0J//7YMT0gA1pOT3tpG0hv6dofZMV/JX77HVLb2Nc1QGqNCs9SU72ZpOmmr2/Z7CLllnnUue5xSsAEVeImH7laKIKA4yhpMdnDEwlNBDNZikFaFyDSEQDgMOuj+RSCpOSqgOzoZwj0OYxgkPmSl2ArZXDURsDLmqeet90hmrJEPq05DXpWBEM+A8oUf80960U7+DrLOCJM3xIwS//Sir6d8nVADV3rKyf99m4G7FSoN8AWYGTRnjSPqnDd2XQtrb2PRDLwRQUQJBHIPFwbVJ7zT3LQj3Ow4mO4ukGmDsthgvNuMaItoloNm+1xkrco2ZBSpTLy7zPR7ZLG1lkxJnWKep7g4A0vP/7UMT+gAw800HsmG9hnRlnvaeNHGnmIVOGggIkJcIYJYIUPhAEAAAAADRwjUggARHgH+Cl5AcX+wL/NeFMcQn6n+CeANsyfADQFcCVZT8YwLcC2jLXr8OcNovjBFxalr/NxIF2fQZMAX/U3/0mf/////61TEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+1DE9wAMoSdB7IxTqaSgZz22DSRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//tQxO0ADSjTQ/WUACFlD2k/NNJAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7EMTWA8AAAaQcAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+        const bounceSound = new Audio("data:audio/mpeg;base64,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bjH+MY+pIiJChRBQUdwKCvCgrwU3//gKKyCjuBT4oUN6Cgw2KCium8CglwUFPhBR2IMdiCm//////8Cn/wK8FN7VTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+4DE9wAfLZkz+byAAf8QZr+ekAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7EMTWA8AAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+
+        // It wouldn't be fair if I didn't say that this came from https://freepd.com! Even though I don't have to say this, I'm so thankful that they have commercially useable music. Also, if you're using it, it's WITHOUT ATTRIBUTION, which is crazy, considering the variety of music they have!
+        const allAudio = shuffle(["Arpent", "Behind Enemy Lines", "Bleu", "Goodnightmare", "Kings Trailer", "Meditating Beat", "Spec Ops", "Stereotype News", "Sunday Dub"])
+        const audioLen = allAudio.length
+        var audioIndex = -1, audioFrame = -1
+        var audio
+
+        const grain1 = new Image()
+        const grain2 = new Image()
+        const grain3 = new Image()
+        const grain4 = new Image()
+        const grain5 = new Image()
+        const grain6 = new Image()
+        const grain7 = new Image()
+        const grain8 = new Image()
+        const grain9 = new Image()
+        const grain10 = new Image()
+        const grain11 = new Image()
+        const grain12 = new Image()
+        const grainImages = [grain1, grain2, grain3, grain4, grain5, grain6, grain7, grain8, grain9, grain10, grain11, grain12]
+
+        const NONE = 0
+
+        const LEFT = 37
+        const UP = 38
+        const RIGHT = 39
+        const DOWN = 40
+
+        const DARKNESS = 1
+        const FLASH = 2
+        const OLD = 3
+        const GLITCH = 4
+        const KEEP = 5
+        const INTENSE = 6
+
+        const GATETOP = 1001
+        const GATEMAIN = 1002
+        const ARROWL = 1003
+        const ARROWR = 1004
+
+        const PLATFORM = -13
+        const GEAR = -12
+        const HEART = -11
+        const BATTERY = -10
+        const GATEL = -9
+        const GATER = -8
+        const TALL = -7
+        const SWITCH = -6
+        const OFFBLOCK = -5
+        const ONBLOCK = -4
+        const FLAG = -3
+        const MOD = -2
+        const PLAYER = -1
+        const SOLID = 1
+        const SPRING = 2
+        const SLIME = 3
+        const GOAL = 4
+        const FIRE = 5
+        const COIN = 6
+        const PORTAL = 7
+        const UPDOWN = 8
+        const LEFTRIGHT = 9
+
+        const OUTLINE = 1
+        const BOTH = 2
+
+        const REVERSE = -1
+
+        const EDIT = 0
+        const PRACTICE = 1
+        const PLAY = 2
+
+        // Load sprites dynamically with base64 data and automated animation
+        const IMAGES = {
+            FLAG: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAg0lEQVQ4T2NkoBAwUqifAa8BibER//f0uTA8Fk3BqY6wAd7dDAzOOxk+XbAFO/ajqzqKHuIMAOlEMoTP4DDcVYQNAHqBYa87JKiwGELQgHVxjQwgG9ENgXmFKANAlsMMeRwhS1oYgFyAHnDIUU/QBfMXr8CrZtQABsJ5gZhA/E9JjgQAX5hPEJ1eER0AAAAASUVORK5CYII=",
+            GEAR: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAHhJREFUOE/Fk2EOgCAIheVKHIJDcwiuVKMNR0BWYyt/KcInvqcwmgOa9eMEIKLNgMw89xDxiIsI+LnGZpIvXkEMZDkJoCcr7PsOtKWWBtGNK1jMK228E9RDEsCKvYhVLLlggf8B0Y3qUS01iFfRtdfjkQtvPlj7N+56wmAR1kwSjwAAAABJRU5ErkJggg==",
+            ARROWL: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAHCAYAAAA1WQxeAAAAAXNSR0IArs4c6QAAAEhJREFUGFdjZEAF/xkYGBiRhZA5/9NMuRhmnf6GogWmACwJArycHAzsvAJgdtvWe2Dj4JJo1oFNwzABWRGyApA4XjfANGL4AgDFihYDtqbjVwAAAABJRU5ErkJggg==",
+            ARROWR: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAHCAYAAAA1WQxeAAAAAXNSR0IArs4c6QAAAEhJREFUGFdjZMAE/xkYGBhhwiAGSAAO0ky5GGad/gbigxWBFVR5K4EV/Pz8geHz9x9gNkwRWAFIFzYAUoRTAYoJhNyAbjqKLwBVRhwH4dY2vwAAAABJRU5ErkJggg==",
+            FIRE: [120, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6WTsUvDQBTGv3MSghbrJl0iN1rSqVs7uTu4Obop+C8o+E+4dezWwd2tWyeDHQ+7dBLakkjAyfO9i3fNkQsKfUsCed/vfd+7i8COJXbUoxEw6ff15Wz254DGhrck0ezuZFXgeKka+xo/rDpSt5cK645Etg+cqjAkCHiXUre+gPa1wvw5QVQU/wewuIginF2k3n4XYxmEOAcstIr4SgHnh1vASw4GMLibpp7rGiAefZTCXl4+D4g7bZnX+V1ci+MB3GQWs/BTYPN9g6O9J+CVHJETPAILuY3jA3g6iZ2IIVSb7NaDVPfhAObYxhX7v2K3CHJjXaxH0t0NH0DHZpZnI5BaUOkcOiRmuLdR4yIAMUuk/DyZq3ozawBucJBBViZ4EEFxzYHNq+/JMhfFEcNc2JsZ+id+APp3lhFIL6yiAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABTUlEQVQ4T6WSIU/EQBCF36JIGq654siZIysPyh/A4RE4cDj4EUc4jbsEHBKPR4E7Aw3IDTVn75oeaYJimWnZttt2c4Ixm3Z23n7zZgT+GaKr/lNKvatUZ65533lJAzqWEuuEnALvYUgawM4iw/bcTeMUWAykDuYKy4FEugknidMD/xsIzhU+HkN4WbZewBjHZ+Z5GB1Hll/xQ+EH51+DACezWf54ScAJUzE8VcBRr/g8WAE3AAuw8F4UWdQtgVbxFum++MDTqrMdSyBHn8bFy4cp8CWQ/Fygv3EHvBERiWBCNLXxWgJDRejPPST7Z0URv06RpJfo+7clifHD8sCMDWP6fV3aURnJbXAQxfJelrtRErAA53l0uYHcArtMoSmMD/Vii4A/cgojYHzg889ELuaob6Y1EhcFrkSO3SxuEZiG9Ri6uQdiUu1MZQzwCwKynxEh2nNXAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABiUlEQVQ4T52SP0/CUBTFT42DCX8qNUZijBHTzT8wsbH5Ddh0c8PFj0Di7OIim9+Awd1JNhYh6mQjiXFwgVqwiSbGek/Lg7aUmHhDUtr3zu+ec9/TkFDNctmrttta0lr8W+KmZ9P0ti3r/wB28eTXM038BZrb5b5YFAaw3nex8mpp/Q3T4zMxQlJmCl5GH9jMpOEsYa4TnxgHcAb6J2AcW3i4LiLlujMApfEBFPDJvPzvplLY7XSB+thwE+h9BfPg+p1hQJ3SJJOCUFJ4soBWNlCXhsA50LnIY3FrDXvdbmQOM4DCoYgPQuKMmGvpQGWIznIe+mo6EicC8K1/i/WGACoOMNJg/9SQW2iIBfl2I27OJE7oeCOAgiXdb7Ow948CEbtL2c4Jcvpl4KQ2nMyDaxOAOrbS+1twjeJFMUsAA8f070Yy4FQAnAEjhIsAiTC4moojAL7QhaFLDM6ApSBj6+zMCt/IyJEQwA28QBEXdc3vHBfPOFCOvR0ZQlXeVBQBQC6T9jidmdr7C7mWtRGTC509AAAAAElFTkSuQmCC", REVERSE],
+            TALL: [80, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAABZUlEQVRIS+2UMW5CMQyGnaUDEq0EEhMjd+jUpeICrB05AzMSzJyhY9deoGLp1I2J6Y1MlYoKSAwsj2cTO07yklalVRcywUv85f9txwbOXObMeLgAwM9BOYbSTE/fPrq9sr0qvsxRdIAhCOAK5UDJGxDQGhawfuzB/wLQRk5F3sLTO8DLllKRgvwNgBMI/etTIawKLrF+P6KA607BywJgVh0LAHU20oCFvV0p0AC+0MuB3K6DEwC28T2AhSQVRP5DBQGA2xw71Og/SQsKoCsgAO553KQKsILbZ4C3gYux5dSNRQoQIGtU/dIA3NCQwE4M4Nrj7bxqVHBCHYADMUgHJyACwH0cInRO3b7bOwHNRmCjyoUHiHofFVzdE2H3OQcPELxOmX+USO3fAohymLtE/gZAd6T3mESFsuApsN7xG8/JHwH0kI0fEzfVRKY6wOsNDZXsPHBFs2XFhN5tKHj90KHtuvF+BAwzJTDoABVAAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAABbUlEQVRIS72UsU4CQRCG5xpLSKSl5B2saIgv4BsYn4HaBGqfgVDZ+gKGxsrOyupKKxJIpKQ57h/uX2b3du/0RLZij51v/5n5dzL548oYv1lOisH9yu1/yv11QAjuDKDizgAqOS+geJQim4tCN8NRMfjKWy+oHSAEAMpsAiVvAOD6IZftYiRnB9hUWxUgjSYVJycGRdMUntcirzstRQryPwAWUG57x0ZUKmItdj3HOVRbgz9zkafyAwEVhGmwxTifBnxUt9MMpQpbBxrN64K7ncE3LyLvdy6NWCHTAARjJQCeAm48BQ0ArwZ2EwVQRVUDO1C0iNbz+FM7gBpQQZAGAayHAzjytPyVAkQ6cgKg5zAMe28VRFTUFVjThMEWEJhK24jnqers7VeTo+D9ym9nDFDzPhQQQIjxAz65FLC5OMBa2psHmIFah1QKxkyck50AdsjWHxNUYM3cVBd566tHWl8jjaZtRSrj78ZgnD8AzFdPML8OU6MAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAABqElEQVRIS6WWsUoDQRCG5xpLDaa1DAh5AftoZ2VtI+Ij2AkaBTsfQcRGWys7TWNlZ3UgXGklRIKlzXr/3M1mdm/2ktOtDjL7zT//zA7JqDzulFx2QRm+ux5/qQtkejty/YMJ310ImF1vut7Re6AOAFwGZGnZs/G+643vfLyoWBqQ8iYAdPFBgEnAdGPg+h9Fq0L40wgQFQBIljZQMgMA64cFfd0MyAJIIgY8DoduN8/DVrUAtFcLAUiQUhEMUmwal3D/SfT0zVZoiI6dD0bk+r8AYiDtrFaNqFXIg2sokJbBbb6cF0RX5cUIIGXoeC7BBLzV2ZUCy4dm65BdX04AzFH28mNADUkqEFMCwNYD0eve/BGWRpoeJOsHAEcgNUA/a5heuV7PPH7kDqCEGKC80IPlAZ58XH5pgFYhQaqcJgC9l+xaryrFViBDg1/bAFFHeA7wPDmZQABYGVX5fyahmRagMfsaEEOi1+lHGZ0wFXQGSP1SggHQExnsA1Zx8lzVbAEut3kacWRP/gmgl6y5SDnFud/qRC9rvFSs3Wiudd9WgZxVYdZfgF/zP23iwl1E3wAAAABJRU5ErkJggg==", REVERSE],
+            SPRING: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAHBJREFUOI1jYBhowMjAwMAg0Wr+n0tHlGTN9/y3MDLiknRzc/ufl5cH5/v4+OBUi1Xzli1b/iOLofNJ0ky0Ifg04zKEiShnEQuI8SdBV+KTJMaLOA0hWjO6IW5ubv/xacabOJA14UpIFCdlkjVRHQAAVBdKCU6z8isAAAAASUVORK5CYII=",
+            COIN: [60, 10, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAGNJREFUOI1jYBhowIgu8P8Q33+Cmuw+wfWhGECMZnRD4AagaDb4hFvnBT4UQ1gwFMA0IylEAXs+MTC4IOSYCNlCCGA3gAQw4gzYgxm9mNF4gQ+rQjhwQY0h6qVEUgxBzgsUAwC+SR+ENoGMUwAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAGpJREFUOI1jYBhowIgu8P8Q33+Cmuw+wfWhGECMZnRD4AagaDb4hFsn738GhsP8cENYMBTANF/gw27AHkYGBheEHBNWRbg0YwHYDSABjDgD9mBGL2Y0XuDDqhAOXFBjiHopkRRDkPMCxQAAIvgfk5qbXaAAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAHpJREFUOI1jYBhowIgu8P8Q33+Cmuw+wfUxkaqZwfYjijq4SSiaDT5h18yLZP5hfgZGu0+MLBiKYJov8GExgZ+BwfYjA8NhfrgIExZVODRDQT1qsGE3gAQw4gzYgxm9mNF4gQ+rQjhwQY0hlDghKiXCNEKTM8V5gWIAAJC3I94qdqu9AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAHtJREFUOI1jYBhowIgu8P8Q33+Cmuw+wfUxkaqZwfYjijq4SSiaDT5h18z7n4HhMD8Dg+1HBobD/AyMdp8YWTAUwTRf4MNiAkIzVi/AAVbNUFCPGmzYDSABjDgD9mBGL2Y0XuDDqhAOXFBjCCVOiEqJMI3Q5ExxXqAYAAA/WSXeR/9h+gAAAABJRU5ErkJggg=="],
+            GATETOP: [50, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAR0lEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+P3nyBCyPzCbaAGwuwyaG0wWjBhAbAgwMo4E4Ggag1AIAFRcPEcR5EfwAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCiX9B/ED1/0zqc6vAagO5cFWfOkDt7v69BFscwINrZOWTp3r0oirCFE0yMJBdgMwivAcS4hrYuwOd3+oTBqAuICQEGBorTAQD4PB4Rn/hqrAAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAqklEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCiX9B/ED1/0zqc6ggasOfuNYbHV2+A1Xk7OzZt3bu/DtkbGAYY80k1nf30DKzIy8nhvziPEGUuePnlHcO2fQfI8wK2GCI6FpC9AtNEVBhgs1XVka/p9v5PKIEHU4c3FijyAjGaQWpGXUCFMAAAStw4ER0yViEAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAArklEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCiX9B/ED1/0zqc6mhvwMfvXxnW7d45lF3w5Ppdht23L4K9YCKmOeXMq+s5yFGJ1W+ajlxTru//luOqqv9fRlOZ/FhAtsnD0XHKjv37UWwHyeN1AXqqw2YI3nQAMgDmHWxJHqcLcCnGJk7QBYQMG3gDADzASxFy3xwnAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA0ElEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCsl99/FhYWhvmb1uFUh9eARL+g/yCDKDKAh5eXYfLSheS7gGIDyPKCkaRu2rnnl2eBwuDHr58My3dsBXsBJo4clWTHQkpAQNqcDRtm0T4WYGGg4cifdmP/x1lEp0SQQl9Lu/8ioiIY6cBITjnt3KO7YMMwvMAlyZD27TkDWJIqCYmsaARHGdCZ+gb6M8k2gFgvAACVmWARzqkXMAAAAABJRU5ErkJggg=="],
+            GATEMAIN: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA6ElEQVQ4T2NkwAJ8fX3nqcuJqb59/N7m3e+PDKpKCkduPnp1e/PmzUnoyhmxGQASK8lOPnz73gMbIVZ+BmFZwSM9U+faYlOLYYCfl+OcTdv2p5TlpCS/fvRuDkiTqJxQSteUOXOJMgCmCGaAirk2w8fnz4kzAGY7yBCQAfyC0nPuXLwMdwGyPMwinGEAMuDm3ftzQGFAthf4JSXn3Dl5lTgD0J0HDwN9XYaP75+Cw4BkL4BiAVsgIhuENwyoEo0kpwPkhASKBTMbK+LTAXJKw5YOSE6JuKKRpEAE5UZ1ZUXikjK6F4iJBQCAc7YRQXcqxAAAAABJRU5ErkJggg==",
+            SLIME: [300, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAxklEQVQ4T2NkAIKCWRf/g2hcYFPvXLCUX3EyipIJafqMjMiacSlE1rV/zgk41zHFggFsALogPtcQNEDRCp92Bob7xxgYPn+8CvcSigtAEnqe2igmgDTAAMxwBS0LuBhKGDy4BvHfpe0QG0CGDYwB+EMB4UJQtGJ4AZuT0Q1ECQMl9bz/sAQCCgN8BiDLgdIACDBSbABySoTFAq4wQE8DYBegp0RCCQmkCSMdkJKUYa4D5Rt4LIAMQE6ehKIRJA83AMShJDsDAFiSlP0Q9bB5AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAzElEQVQ4T2NkAIKCWRf/g2hcYFPvXLCUX3EyipIJafqMjMiacSlE1rV/zgk41zHFggFsALogPtfA1H7+eBXsIgwDFK3waWdguH+MgQGkGeYluAEwQT1PbRQTQBpgAGa4gpYFXAwlDB5cg/jv0naIDSDDBsYA/KGAcCE8EGEaQF7A5mR0A1HCQEk97z8sgRAyANlwUBoAAUZyDIClAbAByCkRFgu4wgA9DcANQE6JhBISSBNGOkBPnoRiASQPyjcoSRk5eZJkAEgxJdkZAGwSnf3qoD9dAAAAAElFTkSuQmCC"],
+            SOLID: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAGFJREFUOI3Nk1EOwCAIQ4uH64l7P/bnHEvGRD9sogkoNbyI4ZZjTta3QnE3aVmxpK9jt4XXAQAtJkhOm/jfRfKV299CySAhnerRk6SURbhTB4hzIEaNnykDvDxMNgSlcb4APgtGs58LapcAAAAASUVORK5CYII=",
+            BATTERY: [500, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAnElEQVQ4T2NkoBAwUqifgXIDDny97kuOKxy4NTeD9DGCDAByNpFiCFCPH4YBmS+mE2XGdIlMBpABMMVwF4AMWHOrAiweotaBwkY2GWQADIAMQjFg/u65DLzyt8EGILPRDeAOF2D4uvID2CVkGcB1yI7hm90hTAOQvYDPBTi9QEwo4gxEYjQj24wSjaRohqmFG0COZmQ9lOcFSl0AADZzdieJb69/AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAKlJREFUOE9jZKAQMFKon4FyAw7/uOhLjitsOfQ3g/Qxggyw5dDfRIohh39c9MMwIPPFdKLMmC6RyQAyAKYY7gKQAWtuVYDFQ9Q6cLJBBsAAyCAUA+bvnsvAK38bbAAyG9lgkAHc4QIMX1d+ALuEKAOQDQMZwHXIjuGb3SFMA5BtQncNyNmJrskMeL1ATCjiDERiNCMHHko0kqIZphZuADmakfVQnhcodQEAEpuDJ9N9u70AAAAASUVORK5CYII="],
+            HEART: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAjklEQVQ4T2NkoBAwUqifgfoG/OLl/Q9yFdvnz3DDsYnBXI7iAphCmCTIEJjY7+kbGT6ev8kg1ZuJogfDFnxh8iati4H1/jsG0XXVcH1gBrrNxAQszIvUMYBUVyAHMElhgBy4RMUCtrBAth0kj5GQ8AUoumasBuAKD2yacRqAbgguzXgNgBmCTzNBA4hJUABVSz8R7MZufAAAAABJRU5ErkJggg==",
+            PLATFORM: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAFCAYAAABM6GxJAAAAMklEQVQYV2NkQID/SGximIwgRWACCECaYWxiNMP1gDSRoxlmyX+quABuGrFuh6oDWw4AOGgIBYtfJY8AAAAASUVORK5CYII="
+        }
+        var SPRITES = {}
+        loadSprites()
+
+        // Add the little black specks for the grainy effect (yeah, it's preloaded)
+        grain1.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAQCAYAAAAiYZ4HAAAAAXNSR0IArs4c6QAAAGBJREFUOE+tkuEOABAIhPX+D81qamknGX7Sd3cqapeHZn13nN5BqSqgghTV+CEVQfY+HsdaairAAj0DMc4x0hdAXaSD/g9IXYdndajnaMJbgB9sqmFtBEr3JrWqLu21wwCpvBER69PqWAAAAABJRU5ErkJggg=="
+        grain2.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUCAYAAACaq43EAAAAAXNSR0IArs4c6QAAAJxJREFUSEvdVVsOwCAIw/sfeosfJj6gBWLmNn+RlhbEIodOOcQrvyC+RPxCvIoraDtWjucOBNEq70Fr8kw+x7U7wzhp1WuVM2AtDh1ixLuGfuF5inix/lXEtTrUs4z9Lqsb8A5y87mid/xp4r4tg8io4nY/6kaox54h8hSgirNWX2aHz4VCjD7I1iJzIP1JWLZl1NMcpJgmMwtQ/AbBnBoVZU1HPwAAAABJRU5ErkJggg=="
+        grain3.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAYAAAAWGF8bAAAAAXNSR0IArs4c6QAAAH1JREFUOE/Nk0sOACEIQ+H+h3YiCQYrIfWzGDcagVcEUXm8lOA1EWH8DBUdPbDvbovnTHuxIzAGdVsFd5vHGKsCVtWIYlMSWBtUJUo8uehphpnQ1ZMROBLzw+1TRz9+A8y6bHc7TaF+BAvcHr1sInBqqD+JTcFxoyBHyiz5A2DWGg+nh7hLAAAAAElFTkSuQmCC"
+        grain4.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAAXNSR0IArs4c6QAAAFlJREFUKFOVkNEKACAIA/P/P7pQWGylYb0EdadOG/0zHbUmH3BX2DAL/ujdcKOgwBCuR+qeCmW1JJ9x6KqT5IUAGDmy5QV7Cq8ti+Dg10hc+SVK6Gwczhb/C5WREAi7DGd9AAAAAElFTkSuQmCC"
+        grain5.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAYCAYAAAD6S912AAAAAXNSR0IArs4c6QAAAK9JREFUSEvFlVEOwCAIQ/X+h97iEgwiLWBMtr8586q0sN4uP/0yr3nAR4mM7+M9LWw3apg+PNq3CemFLGwI2VtMcQEiGDolBWZgAkY3muushmKIDYIHpcCorqhM33oUB1grY8xknQBtzRcGA2bNSgNt3lCX/gssn7JiChtMWw69iZI1ZWlPL6SV/t66iLaRmYVyCzqVIqBXtxSQpt9Qj4BowoTCWQOYeYt4lMPyT/EFihkpGYELDCgAAAAASUVORK5CYII="
+        grain6.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAICAYAAADwdn+XAAAAAXNSR0IArs4c6QAAAEZJREFUKFNjZECA/1AmI5IYQSayYmwGwMTQDYLrQ7cNlwZcLmGk1AAGSgwA6yXGAGyBCvIqVgNAhiKHA8EYwRYL2FyGMzoB59kKCDUfEb4AAAAASUVORK5CYII="
+        grain7.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAICAYAAADwdn+XAAAAAXNSR0IArs4c6QAAAEdJREFUKFNjZKAQMCLp/4/ERhZHtgJDDS4D0N0FUoesGSQP1otNgpCnUFxHjgHIFjDCTEN3HiFXoHgBphibIQQDmaACQk4BAC2yCgnQhXlVAAAAAElFTkSuQmCC"
+        grain8.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAUCAYAAACXtf2DAAAAAXNSR0IArs4c6QAAAKxJREFUSEutlVkOgDAIROn9D62hCYaylEX8a7TzGKjTBQAPnM8S619LFJMAFJQQ/KYF5psiUAviVWXBLGeyfbTv050AXJ1bAK/6zLCVXtXBDWJqRSej4qYFwIozELfQyEEWQK1Lz6AqzGdzQCaHbEKmAekWZQbrtiV6URW/RoiVmpk/lp8aHoIqECcAvCDufmtX4pqEVGIygrq8PABdRF4YZk/f6gCiGdEctpsXH00jFPHCjdYAAAAASUVORK5CYII="
+        grain9.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAHBJREFUOE+9k1EOwCAIQ8v9Dz0zFxaQVZuZ6Lc8S1sNm8eE+Yvc6bNHAC5gVCIriBtEiATwAV+1qIgeFDoAZqCrshlgNdxDYNKEdJ8E/wBS9McBpXisiYqBycTRtJj/DJZi/KosLdBbBJLX/ary0dAAceMUEQqaAOcAAAAASUVORK5CYII="
+        grain10.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAMCAYAAABfnvydAAAAAXNSR0IArs4c6QAAAEhJREFUKFNjZCAAGBkYGP5D1YDYyAAkzkhIAQNMFzZT4CaAjIUpgFkBMxlsBQygKwKJU64A7khs7gBbje4LjGAjSQHca8ihCwC7DhEI8xVcDAAAAABJRU5ErkJggg=="
+        grain11.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAEhJREFUKFOFkEEOACAIw8b/H62BKGE6wq6WUTTMWQDMZg4j6MDN1xjTQLTUEPg+Ophq1bFto4mzp21VPuSW1whx9WN5jFpJahvtNAwLcO3p0wAAAABJRU5ErkJggg=="
+        grain12.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAYAAAB4MH11AAAAAXNSR0IArs4c6QAAAHdJREFUOE+tklEKwDAIQ9f7H3pDqEUlqWG4X81zSbOef9+7ZauT+4IJ2uUNU+C+c6CTBw7cfqg6iEPmKAGIc+gAxVmPVLhr6F4cMHH3jnWemFMHjAPjVSOIUcQWIdeJqVaTxTRyoGvWda5WMTpgsULWLaLWvlKvD3wWGwiID085AAAAAElFTkSuQmCC"
+
+        // Yes, it uses a whole lot of variables!
+        var tiles = [], effect = NONE, settings = [0.12, 0.3, KEEP, 255, 255, 255, 0.04, 0, 10, 140, 20, 0, 0], showInfo = false, time = 0, modID = 0, gradient = false
+        var spawnX = 1.25, spawnY = 1.25, liveX = spawnX, liveY = spawnY, playerX = -1, playerY = -1, doubleJump = false, doubleJumped = 0
+        var mainX = spawnX, mainY = spawnY, velocity = 0, resetVelocity = false, immunity = 0, lives = Infinity, normalLives = Infinity, flying = false, clip = false
+        var nextDraw = -1, zoom = 0, panX = 0, panY = 0, centerX = 0, centerY = 0, speed = 0.12, jump = 0.3, enemySpeed = 0.04, mode = PRACTICE
+        var scale = 0, half = 0, w = 0, h = 0, moveL = 0, moveR = 0, moveU = 0, moveD = 0, collide = NONE
+        var note = 0, selectX = -1, selectY = -1, realFrame = 0, frame = 0, glitchFrame = floor(10 * random()), portal = true, rotation = 0, opacity = 1
+
+        // Determine if the endian is little or not for exporting the map
+        var u32 = new Uint32Array([0x01234567])
+        var u8 = new Uint8Array(u32.buffer)
+        const littleEndian = u8[0] === 0x67 && u8[1] === 0x45 && u8[2] === 0x23
+
+        // Simple default level
+        loadMap("0.0.5|0AQAD^AQAB$U$gAC$Y$gAD$Y$QAE$UABgAC$QABgAC$UABgAD$UABgAD$QABgAD$M$QAF$U$wAH$M$wAI$M$gAJ$k$gAL$k$gAN$g$gAN$E$QAO$E$QAQ$E$QAS$M$QAW$gABQAU$QABgAW$U$QAW$k$QAW$o$QAW$s$QAY$g$QAY$k$QAY$o$QAY$sABQAY$cABQAZ$cABQAa$cABQAa$gABQAZ$gABQAZ$kABQAZ$oABQAZ$sABQAa$sABQAa$oABQAa$kAB$X$s$wAW$w$wAX$w$wAY$w$wAZ$w$wAa$w$wAN$U$wAO$U$QAP$UABQAP$I$gAQ$U$QAE$Y$wAF$Y$w^Y$QAB$Y$QAB$c$QAC$c$QAD$c$QAE$cABQAK$kABQAM$kABQAC$IA-v8S$IAfQADAewT--8&^$BQAD$I$wAV$w$wAU$w$wAU$s$wAU$o$wAG$Q$w^c$w^g$wAB$g$wAC$g$wAD$g$wAE$g$wAF$g$wAF$cA-v8H$k$QAsAfET--8&^$-v8G$k$QAsAfET--8&^$-v8I$k$QAsAfET--8&^$-v8V$sA+wDoA-ET--8&^$")
+        var state = new SaveState(tiles)
+
+        // Updates the mode button name
+        function setMode(newMode) {
+            mode = newMode
+            document.getElementById("mode").textContent = ["Mode: Edit", "Mode: Live Edit", "Mode: Play"][mode]
+            if (mode === 2) {
+                document.getElementById("editButtons").style.display = "none"
+                document.getElementById("keys").style.display = "none"
+            } else {
+                document.getElementById("editButtons").removeAttribute("style")
+                document.getElementById("keys").removeAttribute("style")
+            }
+            liveX = spawnX
+            liveY = spawnY
+            // Hide mod label
+            if (selectType === MOD || selectType === GEAR) {
+                if (mode === PLAY) {
+                    modLabel.removeAttribute("style")
+                    label.removeAttribute("style")
+                } else {
+                    modLabel.style.display = "block"
+                    label.style.display = "block"
+                }
+            }
+        }
+
+        function setColor(color, s = 0) {
+            settings[3 + s] = parseInt(color.slice(1, 3), 16)
+            settings[4 + s] = parseInt(color.slice(3, 5), 16)
+            settings[5 + s] = parseInt(color.slice(5, 7), 16)
+        }
+
+        function setLives(value) {
+            var newLives = Number(value)
+            normalLives = lives = newLives === 10 ? Infinity : newLives
+            livesElem.textContent = newLives === 10 ? "Infinite" : value
+            currentLives.textContent = newLives === 10 ? "\u221E lives" : (newLives !== 1 ? value + " lives" : "1 life")
+        }
+
+        function loadSprites() {
+            var items = Object.keys(IMAGES)
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i]
+                var data = IMAGES[item]
+                // It is a set of sprites: convert all strings to images
+                var result
+                if (data instanceof Array) {
+                    result = [data[0]]
+                    var extra = 1
+                    for (var t = 1; t < data.length; t++) {
+                        var elem = data[t]
+                        if (typeof elem === "number") {
+                            extra = elem
+                        } else {
+                            var image = new Image()
+                            image.src = elem
+                            for (var v = 0; v < extra; v++) {
+                                result.push(image)
+                            }
+                            extra = 1
+                        }
+                    }
+                    if (extra === REVERSE) {
+                        // Also play the frames backwards (except for the first and last frame)
+                        for (var t = result.length - 2; t !== 1; t--) {
+                            result.push(result[t])
+                        }
+                    }
+                } else {
+                    // It's a single image
+                    result = new Image(data)
+                    result.src = data
+                }
+                // Indirect eval to get constants (we assume that the object is safe)
+                SPRITES[(null, eval)(item)] = result
+            }
+        }
+
+        // Saving is a lot simpler than loading because we only need to consider the newest version:
+        function saveMap() {
+            var data = [spawnX - 0.25, spawnY - 0.25, normalLives === Infinity ? 0 : normalLives]
+            for (var i = 0; i < tiles.length; i++) {
+                var tile = tiles[i]
+                var type = tile[0]
+                data.push(type, tile[1], tile[2])
+                if (type === PORTAL) {
+                    data.push(tile[3])
+                } else if (type === MOD || type === GEAR) {
+                    // Compress color and mode data (overflow with over16 is considered while loading the map)
+                    data.push(tile[4] * 1000, tile[5] * 1000, tile[6] + tile[7] * 20, over16(tile[8] + 256 * tile[9]), (tile[10] + tile[11]) * 4000)
+                    if (tile[11] === 16) {
+                        // Add gradient data
+                        var rotate1 = tile[15]
+                        var rotate2 = tile[16]
+                        data.push(tile[12] + 256 * tile[13], tile[14] + (rotate1 % 128), rotate2 + 360 * floor(rotate1 * 0.0078125))
+                    } else {
+                        data.push(tile[16])
+                    }
+                }
+            }
+            var reader = new FileReader()
+            reader.onload = () => {
+                var result = reader.result
+                var len = result.length
+                var a = result.charCodeAt(len - 1)
+                var t = 0
+                if (a === 61) {
+                    t++
+                    if (result.charCodeAt(len - 2) === 61) {
+                        t++
+                    }
+                }
+                result = t + result.slice(result.indexOf(",") + 1, len - t).replace(/AAAAAAA/g, "&").replace(/AAAA/g, "^").replace(/AAA/g, "%").replace(/AA/g, "$").replace(/\/\/\/\//g, ":").replace(/\/\/\//g, "@").replace(/\//g, "-")
+                // Copy the result
+                navigator.clipboard.writeText("0.0.6.1|" + result).then(() => {
+                    message("<b>Copied!</b>", 1500)
+                })
+            }
+            // Little endian devices make things simpler:
+            if (littleEndian) {
+                reader.readAsDataURL(new Blob([new Uint16Array(data)]))
+            } else {
+                // Compact script to convert stuff to little-endian
+                var len = data.length * 2
+                var int8 = new Uint8Array(len)
+                for (i = 0; i < len;) {
+                    var item = data[i * 0.5]
+                    int8[i++] = item % 256
+                    int8[i++] = item >> 8
+                }
+                reader.readAsDataURL(new Blob([int8]))
+            }
+        }
+
+        // 16-bit overflow
+        function over16(value) {
+            if (value > 32767) {
+                return value - 65536
+            }
+            return value
+        }
+
+        // Reverse 16-bit overflow
+        function under16(value) {
+            if (value < 0) {
+                return 65536 + value
+            }
+            return value
+        }
+
+        function loadMap(str) {
+            var trim = str.trim()
+            if (trim.length === 0) {
+                return
+            }
+            // Version support!
+            var pipe = trim.indexOf("|")
+            var version, data
+            if (pipe === -1) {
+                // Complain:
+                message("<b style='color:red'>No version!</b>", 2000)
+                return
+            } else {
+                version = trim.slice(0, pipe)
+                data = trim.slice(pipe + 1)
+                // Check if it's actually a version with a short regex:
+                if (!/0\.0\.([1-6]|6\.1)/.test(version)) {
+                    // Very specific valid version regex in case people poke around (3 numbers one-digit or 4 numbers with the first three one-digit and the final one one-digit or two-digit but if it has two digits it doesn't start with a zero):
+                    if (/^(([0-9]\.){2}[0-9]|([0-9]\.){3}([0-9]|[1-9][0-9]))$/.test(version)) {
+                        message("<b style='color:red'>Version " + version + " not supported!</b>", 2000)
+                    } else {
+                        message("<b style='color:red'>The version number is invalid!</b>", 2000)
+                    }
+                    return
+                }
+            }
+            var base64 = data.slice(1).replace(/\$/g, "AA").replace(/%/g, "AAA").replace(/\^/g, "AAAA").replace(/&/g, "AAAAAAA").replace(/@/g, "\/\/\/").replace(/:/g, "\/\/\/\/").replace(/-/g, "/")
+            var c = data.charCodeAt(0)
+            if (c === 49) {
+                base64 += "="
+            } else if (c === 50) {
+                base64 += "=="
+            }
+            var raw = atob(base64)
+            var len = raw.length * 0.5
+            var array = new Int16Array(len)
+            for (var i = 0, t = 0; i < len; i++) {
+                array[i] = raw.charCodeAt(t++) + 256 * raw.charCodeAt(t++)
+            }
+            var result = []
+            spawnX = array[0] + 0.25
+            spawnY = array[1] + 0.25
+            liveX = spawnX
+            liveY = spawnY
+            resetMod()
+            effect = NONE
+            if (version === "0.0.1") {
+                for (i = 2; i < len;) {
+                    var item = [array[i++], array[i++], array[i++]]
+                    var type = item[0]
+                    if (type === COIN) {
+                        item.push(0)
+                    } else if (type === UPDOWN || type === LEFTRIGHT) {
+                        item.push(0, 0)
+                    } else if (type === PORTAL) {
+                        item.push(array[i++])
+                    } else if (type === MOD) {
+                        // No effects/background in this version:
+                        item.push(0, array[i++] * 0.001, array[i++] * 0.001, 0, 255, 255, 255, 0.04)
+                    }
+                    result.push(item)
+                }
+            } else if (version === "0.0.2") {
+                for (i = 2; i < len;) {
+                    var item = [array[i++], array[i++], array[i++]]
+                    var type = item[0]
+                    if (type === COIN) {
+                        item.push(0)
+                    } else if (type === UPDOWN || type === LEFTRIGHT) {
+                        item.push(0, 0)
+                    } else if (type === PORTAL) {
+                        item.push(array[i++])
+                    } else if (type === MOD) {
+                        // No background in this version
+                        item.push(0, array[i++] * 0.001, array[i++] * 0.001, array[i++], 255, 255, 255, 0.04)
+                    }
+                    result.push(item)
+                }
+            } else if (version === "0.0.3") {
+                for (i = 2; i < len;) {
+                    var item = [array[i++], array[i++], array[i++]]
+                    var type = item[0]
+                    if (type === COIN) {
+                        item.push(0)
+                    } else if (type === UPDOWN || type === LEFTRIGHT) {
+                        item.push(0, 0)
+                    } else if (type === PORTAL) {
+                        item.push(array[i++])
+                    } else if (type === MOD) {
+                        // Decompress color and mode data
+                        item.push(0, array[i++] * 0.001, array[i++] * 0.001)
+                        var data = array[i++]
+                        var data2 = array[i++]
+                        if (data2 < 0) {
+                            data2 = 65536 + data2
+                        }
+                        item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625), 0.04)
+                    }
+                    result.push(item)
+                }
+            } else if (version === "0.0.4") {
+                for (i = 2; i < len;) {
+                    var item = [array[i++], array[i++], array[i++]]
+                    var type = item[0]
+                    if (type === COIN || type === BATTERY || type === HEART) {
+                        item.push(0)
+                    } else if (type === UPDOWN || type === LEFTRIGHT) {
+                        item.push(0, 0)
+                    } else if (type === PORTAL) {
+                        item.push(array[i++])
+                    } else if (type === MOD) {
+                        item.push(0, array[i++] * 0.001, array[i++] * 0.001)
+                        var data = array[i++]
+                        var data2 = array[i++]
+                        if (data2 < 0) {
+                            data2 = 65536 + data2
+                        }
+                        item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625), array[i++] * 0.00025)
+                    }
+                    result.push(item)
+                }
+            } else {
+                // Load the amount of lives
+                lives = array[2]
+                if (lives === 0) {
+                    lives = Infinity
+                }
+                normalLives = lives
+
+                // Update everything, including the input element
+                livesElem.textContent = lives === Infinity ? "Infinite" : lives
+                currentLives.textContent = lives === Infinity ? "\u221E lives" : (lives !== 1 ? lives + " lives" : "1 life")
+                livesInput.value = lives === Infinity ? 10 : lives
+                if (version === "0.0.5") {
+                    for (i = 3; i < len;) {
+                        var item = [array[i++], array[i++], array[i++]]
+                        var type = item[0]
+                        if (type === COIN || type === BATTERY || type === HEART) {
+                            item.push(0)
+                        } else if (type === UPDOWN || type === LEFTRIGHT) {
+                            item.push(0, 0)
+                        } else if (type === PORTAL) {
+                            item.push(array[i++])
+                        } else if (type === MOD || type === GEAR) {
+                            item.push(0, array[i++] * 0.001, array[i++] * 0.001)
+                            var data = array[i++]
+                            var data2 = array[i++]
+                            // Signed to unsigned 16-bit
+                            if (data2 < 0) {
+                                data2 = 65536 + data2
+                            }
+                            item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625))
+                            data = array[i++]
+                            item.push((data * 0.00025) % 1, data > 4000 ? 1 : 0)
+                            data = array[i++]
+                            if (data < 0) {
+                                data = 65536 + data
+                            }
+                            item.push(data % 256, floor(data * 0.00390625), array[i++], array[i++], array[i++])
+                        }
+                        result.push(item)
+                    }
+                } else if (version === "0.0.6") {
+                    for (i = 3; i < len;) {
+                        var item = [array[i++], array[i++], array[i++]]
+                        var type = item[0]
+                        if (type === COIN || type === BATTERY || type === HEART) {
+                            item.push(0)
+                        } else if (type === UPDOWN || type === LEFTRIGHT) {
+                            item.push(0, 0)
+                        } else if (type === PORTAL) {
+                            item.push(array[i++])
+                        } else if (type === MOD || type === GEAR) {
+                            item.push(0, array[i++] * 0.001, array[i++] * 0.001)
+                            var data = array[i++]
+                            var data2 = under16(array[i++])
+                            item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625))
+                            data = array[i++]
+                            var useGradient = data > 4000 ? 1 : 0
+                            // The toFixed is so that
+                            item.push((data * 0.00025).toFixed(2) % 1, useGradient)
+                            if (useGradient) {
+                                // Only add additional elements if gradients are being used
+                                data = under16(array[i++])
+                                item.push(data % 256, floor(data * 0.00390625), array[i++], array[i++], array[i++])
+                            } else {
+                                item.push(0, 0, 0, 0, array[i++])
+                            }
+                        }
+                        result.push(item)
+                    }
+                } else {
+                    for (i = 3; i < len;) {
+                        var item = [array[i++], array[i++], array[i++]]
+                        var type = item[0]
+                        if (type === COIN || type === BATTERY || type === HEART) {
+                            item.push(0)
+                        } else if (type === UPDOWN || type === LEFTRIGHT) {
+                            item.push(0, 0)
+                        } else if (type === PORTAL) {
+                            item.push(array[i++])
+                        } else if (type === MOD || type === GEAR) {
+                            item.push(0, array[i++] * 0.001, array[i++] * 0.001)
+                            var data = array[i++]
+                            var data2 = under16(array[i++])
+                            item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625))
+                            data = array[i++]
+                            var useGradient = data > 4000 ? 1 : 0
+                            // The toFixed is so that
+                            item.push((data * 0.00025).toFixed(2) % 1, useGradient)
+                            if (useGradient) {
+                                // Only add additional elements if gradients are being used
+                                data = under16(array[i++])
+                                item.push(data % 256, floor(data * 0.00390625), array[i++], array[i++], array[i++])
+                            } else {
+                                item.push(0, 0, 0, 0, array[i++])
+                            }
+                        }
+                        result.push(item)
+                    }
+                }
+            }
+            tiles = result
+            reset()
+        }
+
+        function shuffle(array) {
+            for (var i = array.length - 1; i !== 0; i--) {
+                var rand = floor(random() * (i + 1))
+                var temp = array[i]
+                array[i] = array[rand]
+                array[rand] = temp
+            }
+            return array
+        }
+
+        var audioUnwarned = true
+
+        function createAudio() {
+            clearTimeout(audioFrame)
+            if (audioIndex !== -1) {
+                // Stop the previous audio
+                audio.pause()
+            }
+            audioIndex = audioIndex !== audioLen - 1 ? audioIndex + 1 : 0
+            audio = new Audio("Music/" + allAudio[audioIndex] + ".mp3")
+
+            audio.onerror = () => false
+
+            audio.play().catch(e => {
+                if (!String(e).includes("src attribute")) {
+                    audioIndex = -1
+                }
+            })
+
+            // Play the next song when it ends (it gets canceled in case you play the next song before it autoplays)
+            audio.onended = () => audioFrame = setTimeout(createAudio, 750)
+        }
+
+        // Draws a circle
+        function circle(x, y, radius) {
+            ctx.beginPath()
+            ctx.arc(round(x + 0.5 * scale), round(y + 0.5 * scale), radius, 0, 6.283185307179586)
+            ctx.fill()
+        }
+
+        function drawHeart(x, y, w, h) {
+            var wHalf = w * 0.5
+            var curve = h * 0.3
+            var yCurve = y + curve
+            var hCurve = (h + curve) * 0.5
+
+            ctx.save()
+            ctx.beginPath()
+
+            ctx.bezierCurveTo(x, y + curve, x - wHalf, y, x - wHalf, yCurve)
+            ctx.bezierCurveTo(x - wHalf, y + hCurve, x, y + hCurve, x, y + h)
+            ctx.bezierCurveTo(x, y + hCurve, x + wHalf, y + hCurve, x + wHalf, yCurve)
+            ctx.bezierCurveTo(x + wHalf, y + curve, x, y, x, yCurve)
+
+            ctx.closePath()
+            ctx.fill()
+            ctx.restore()
+        }
+
+        function reset(force) {
+            immunity = 0
+            frame = 0
+            resetVelocity = true
+            if (force) {
+                lives = normalLives
+                effect = NONE
+                // Reset quick spawn
+                liveX = spawnX
+                liveY = spawnY
+                // You keep the modifier block's effects upon death (but not during forced resets)
+                resetMod()
+                for (var i = 0; i < tiles.length; i++) {
+                    var tile = tiles[i]
+                    var type = tile[0]
+                    if (type === MOD || type === GEAR) {
+                        tile[3] = 0
+                    } else if (type === UPDOWN) {
+                        // Reset enemy coordinates (instead of using tile[3] to store the bias, we do this so when calculating collisions, we don't have to do extra math)
+                        tile[2] = tile[3]
+                    } else if (type === LEFTRIGHT) {
+                        tile[1] = tile[3]
+                    } else if (type !== PORTAL) {
+                        // Fill all tiles with zeros after the y-coordinate for the block
+                        tile.fill(0, 3)
+                    }
+                }
+            }
+            mainX = liveX
+            mainY = liveY
+            resetPan()
+        }
+
+        function toggleDoubleJump() {
+            doubleJump = !doubleJump
+            doubleJumped = 0
+            document.getElementById("doubleJump").textContent = doubleJump ? "On" : "Off"
+        }
+
+        function resetMod() {
+            rotation = 0
+            enemySpeed = 0.04
+            speed = 0.12
+            jump = 0.3
+            canvas.style.backgroundImage = null
+            document.body.style.backgroundColor = null
+            setTimeout(() => {
+                for (var i = 0; i < 10; i++) {
+                    imageElements[i].style.opacity = 0
+                }
+            }, 100)
+        }
+
+        // Load the map on paste
+        document.addEventListener("paste", e => {
+            var text = e.clipboardData.getData("text")
+            loadMap(text)
+            state.save(tiles)
+            if (text === atob(atob("Wm14NWFHRmphdz09"))) {
+                flying = true
+            } else if (text === atob(atob("Wm14NVkyeHBjQT09"))) {
+                clip = true
+                flying = true
+            } else if (text === atob(atob("WTJ4cGNBPT0="))) {
+                clip = true
+            }
+        })
+
+        // Override copy
+        document.addEventListener("copy", function (e) {
+            saveMap()
+            e.preventDefault()
+        }, { passive: false })
+
+        function polygon(x, y, sides, size, r = 0) {
+            x += 0.5 * scale
+            y += 0.5 * scale
+            ctx.beginPath()
+            var value = r
+            ctx.moveTo(x + size * cos(r), y + size * sin(r))
+            var m = 6.283185307179586 / sides
+            for (var i = 0; i < sides; i++) {
+                ctx.lineTo(round(x + size * cos(value)), round(y + size * sin(value)))
+                value += m
+            }
+            ctx.fill()
+        }
+
+        // Mouse and touchscreen events are quite convoluted, but this large mess solves all the issues!
+        var down = false, touch = false, selectType = SOLID
+        onmousedown = e => {
+            // Consider the rotated point
+            var rotate = rotatePoint(e.pageX, e.pageY, playerX, playerY, rotation)
+            selectX = floor(rotate[0] / zoom - panX)
+            selectY = floor(rotate[1] / zoom - panY)
+            if (e.which === 1 && mode !== PLAY && !["A", "BUTTON", "INPUT", "SELECT", "OPTION", "LABEL"].includes(e.target.tagName) && e.target.parentElement.tagName !== "BUTTON") {
+                down = true
+                if (add([selectType, selectX, selectY])) {
+                    state.save(tiles)
+                }
+            }
+        }
+
+        onmousemove = e => {
+            var oldX = selectX
+            var oldY = selectY
+            var rotate = rotatePoint(e.pageX, e.pageY, playerX, playerY, rotation)
+            selectX = floor(rotate[0] / zoom - panX)
+            selectY = floor(rotate[1] / zoom - panY)
+            if (mode !== PLAY && selectType !== PLAYER && down) {
+                drawLine(oldX, oldY, selectX, selectY)
+            }
+        }
+
+        document.body.addEventListener("touchstart", e => {
+            if (e.touches.length !== 1) {
+                e.preventDefault()
+            } else if (mode !== PLAY) {
+                e = e.touches[0]
+                var elem = document.elementFromPoint(e.pageX, e.pageY)
+                if (elem === null) {
+                    return
+                }
+                if (!["A", "BUTTON", "INPUT", "SELECT", "OPTION", "LABEL"].includes(elem.tagName) && elem.parentElement.tagName !== "BUTTON") {
+                    var rotate = rotatePoint(e.pageX, e.pageY, playerX, playerY, rotation)
+                    selectX = floor(rotate[0] / zoom - panX)
+                    selectY = floor(rotate[1] / zoom - panY)
+                    touch = true
+                    if (add([selectType, selectX, selectY])) {
+                        state.save(tiles)
+                    }
+                }
+            }
+        }, { passive: false })
+
+        document.body.addEventListener("touchmove", e => {
+            if (e.touches.length !== 1) {
+                e.preventDefault()
+                // Don't allow adding blocks again:
+                touch = false
+            } else if (touch && mode !== PLAY && selectType !== PLAYER) {
+                e.preventDefault()
+                e = e.touches[0]
+                var oldX = selectX
+                var oldY = selectY
+                var rotate = rotatePoint(e.pageX, e.pageY, playerX, playerY, rotation)
+                selectX = floor(rotate[0] / zoom - panX)
+                selectY = floor(rotate[1] / zoom - panY)
+                drawLine(oldX, oldY, selectX, selectY)
+            }
+        }, { passive: false })
+
+        onmouseup = () => {
+            down = false
+            selectX = Infinity
+        }
+        document.body.addEventListener("touchup", () => {
+            touch = false
+            selectX = Infinity
+        })
+
+        // If you leave the page, then the game resets your pointer, touchscreen, and key info.
+        onblur = () => {
+            moveL = moveR = moveU = moveD = false
+            down = false
+            touch = false
+            selectX = Infinity
+        }
+
+        // Disable pinching through a touchpad:
+        document.addEventListener("wheel", e => {
+            down = false
+            touch = false
+            selectX = Infinity
+            if (e.ctrlKey) {
+                e.preventDefault()
+            }
+        }, { passive: false })
+
+        function rotate(deg, x = playerX, y = playerY) {
+            ctx.save(tiles)
+            ctx.translate(x, y)
+            // Convert the degrees to radians
+            ctx.rotate(0.017453292519943295 * deg)
+            ctx.translate(-x, -y)
+        }
+
+        function rotatePoint(x, y, centerX, centerY, deg) {
+            var angle = 0.017453292519943295 * deg
+            var angleX = Math.cos(angle)
+            var angleY = Math.sin(angle)
+            return [angleX * (x - centerX) + angleY * (y - centerY) + centerX, angleX * (y - centerY) - angleY * (x - centerX) + centerY]
+        }
+
+        function add(t) {
+            var a = t[0], b = t[1], c = t[2]
+            // There are lots of cases here!
+            if (a === PLAYER) {
+                // Yes, there's nothing to prevent you from putting the player INSIDE a block.
+                spawnX = b + 0.25
+                spawnY = c + 0.25
+                // Set checkpoint coordinates
+                liveX = spawnX
+                liveY = spawnY
+                reset()
+                return
+            } else if (a === COIN || a === BATTERY || a === HEART || a === GATEL || a === GATER) {
+                t.push(0)
+            } else if (a === PORTAL) {
+                // If there's already a portal at that exact spot, don't add it
+                for (var i = 0; i < tiles.length; i++) {
+                    var tile = tiles[i]
+                    if (tile[0] === PORTAL && tile[1] === b && tile[2] === c) {
+                        return
+                    }
+                }
+                // Here, we calculate what the next portal ID should be: the smallest number starting from one that doesn't occur more than once. What a mess!
+                var id = 1
+                var q = 99
+                do {
+                    q = 0
+                    for (i = 0; i < tiles.length; i++) {
+                        var tile = tiles[i]
+                        if (tile[0] === PORTAL && tile[3] === id && ++q === 2) {
+                            id++
+                            break
+                        }
+                    }
+                } while (q > 1)
+                t.push(id)
+            } else if (a === UPDOWN) {
+                t.push(c, 0)
+            } else if (a === LEFTRIGHT) {
+                t.push(b, 0)
+            } else if (a === MOD || a === GEAR) {
+                t.push(0)
+                t.push(...settings)
+            }
+            // If the type is tall, also remove blocks above it
+            if (selectType === TALL) {
+                var s = c + 1
+                for (var i = 0; i < tiles.length; i++) {
+                    var tile = tiles[i]
+                    var x = tile[1]
+                    var y = tile[2]
+                    if (tile[0] === TALL && x === b && (y === c || y === s)) {
+                        tiles.splice(i, 1)
+                        break
+                    } else if (x === b && y === c) {
+                        tiles.splice(i, 1)
+                        break
+                    }
+                }
+                s = c - 1
+                for (var i = 0; i < tiles.length; i++) {
+                    var tile = tiles[i]
+                    var x = tile[1]
+                    var y = tile[2]
+                    if (x === b && (y === c || y === s)) {
+                        // Overlay the previous tile with the new one:
+                        if (selectType === 0) {
+                            tiles.splice(i, 1)
+                        } else {
+                            tiles.splice(i, 1, t)
+                        }
+                        return
+                    }
+                }
+            } else {
+                for (var i = 0; i < tiles.length; i++) {
+                    var tile = tiles[i]
+                    var type = tile[0]
+                    var x = tile[1]
+                    var y = tile[2]
+                    if ((x === b && y === c) || (tile[0] === TALL && x === b && y === c + 1)) {
+                        // Overlay the previous tile with the new one:
+                        if (selectType === 0) {
+                            tiles.splice(i, 1)
+                        } else {
+                            tiles.splice(i, 1, t)
+                        }
+                        return true
+                    }
+                }
+            }
+            // Add the tile
+            if (selectType !== NONE) {
+                tiles.push(t)
+                return true
+            }
+            return false
+        }
+
+        // You died. Congrats!
+        function die(force) {
+            // Check for immunity
+            if (force || time > immunity) {
+                // Play a drum sound effect upon death
+                play(failSound)
+                lives--
+                if (lives === 0) {
+                    reset(true)
+                    message("<b>Out of lives!</b>", 1500)
+                } else {
+                    reset()
+                    message("<b>ded</b>", 1500)
+                }
+                if (lives !== Infinity) {
+                    currentLives.textContent = lives !== 1 ? lives + " lives" : "1 life"
+                }
+            }
+        }
+
+        // Send a message to the player by overwriting the title
+        function message(info, time = 1000) {
+            text.innerHTML = info
+            note = Date.now() + time
+        }
+
+        // Return a possibly animated sprite image (the second variable is in case there's a custom time input)
+        function getSprite(type, t = time) {
+            var sprite = SPRITES[type]
+            if (sprite instanceof Array) {
+                return sprite[floor(t / sprite[0]) % (sprite.length - 1) + 1]
+            } else {
+                // Return the image
+                return sprite
+            }
+        }
+
+        // We draw a line of pixels rather than a single so the user doesn't have to waste time because they moved their pointer too quickly
+        function drawLine(x1, y1, x2, y2) {
+            var dx = abs(x2 - x1)
+            var dy = abs(y2 - y1)
+            var sx = (x1 < x2) ? 1 : -1
+            var sy = (y1 < y2) ? 1 : -1
+            var err = dx - dy
+            var notSaved = true
+            // Using a do/while loop so that it always adds the first block
+            do {
+                // Check if there actually were any changes
+                if (add([selectType, x1, y1]) && notSaved) {
+                    state.save(tiles)
+                    notSaved = false
+                }
+                var e2 = 2 * err
+                if (e2 > -dy) {
+                    err -= dy
+                    x1 += sx
+                }
+                if (e2 < dx) {
+                    err += dx
+                    y1 += sy
+                }
+            } while (x1 != x2 || y1 != y2)
+        }
+
+        // Renders blocks and detects preloaded sprites:
+        function render(type, bx, by, data) {
+            // If the site is invisible, don't render anything
+            if (document.hidden) {
+                return
+            }
+            // Some effects can pan blocks
+            if (effect === INTENSE || (effect === GLITCH && random() < 0.01)) {
+                // Shake each block a bit more:
+                bx += (0.2 - 0.1 * random()) * scale
+                by += (0.2 - 0.1 * random()) * scale
+                var rand = random()
+                if (rand < 0.01) {
+                    if (rand < 0.0025) {
+                        bx += scale
+                    } else if (rand < 0.005) {
+                        bx -= scale
+                    } else if (rand < 0.0075) {
+                        by += scale
+                    } else {
+                        by -= scale
+                    }
+                }
+            }
+            var sprite = getSprite(type)
+            if (type === SOLID || type === SPRING || type === SLIME) {
+                if (!sprite) {
+                    ctx.fillStyle = type === SOLID ? "#333" : type === SPRING ? "#2b5" : "#46b"
+                    // Draw boring rounded rectangles if there's no sprite
+                    roundRect(bx, by, scale, scale, 5)
+                } else {
+                    // It's pretty shocking how fast drawImage is! It has no problem rendering dozens of these.
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            } else if (type === FIRE) {
+                if (!sprite) {
+                    ctx.fillStyle = "#d44"
+                    // Draw boring rounded rectangles if there's no sprite
+                    roundRect(bx + 0.1 * scale, by + 0.1 * scale, 0.8 * scale, 0.8 * scale, 8)
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            } else if (type === TALL) {
+                if (!sprite) {
+                    ctx.fillStyle = "#d44"
+                    // Draw boring rounded rectangles if there's no sprite
+                    roundRect(bx + 0.08 * scale, by - 0.92 * scale, 0.84 * scale, 1.84 * scale, 999999)
+                } else {
+                    ctx.drawImage(sprite, bx, by - scale, scale, 2 * scale)
+                }
+            } else if (type === GATEL || type === GATER) {
+                // Change this value so the images are in the right spot
+                bx += (type === GATEL ? -0.3 : 0.3) * scale
+                sprite = getSprite(GATETOP)
+                if (!sprite) {
+                    ctx.fillStyle = "#877"
+                    // Draw boring rounded rectangles if there's no sprite
+                    roundRect(bx, by, scale, scale, 5)
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+                if (data == null || data[3] !== 1) {
+                    return
+                }
+                var x = data[0]
+                var y = data[1] + 1
+                var lim = data[2] - 0.5
+                // Also draw the blocks below the top
+                var t = 0
+                var coord = 0
+                sprite = getSprite(GATEMAIN)
+                // If the bar falls below the screen with no collisions, then we don't render
+                while (coord < h && y < lim) {
+                    coord = (y++ + panY) * scale
+                    ctx.drawImage(sprite, bx, coord, scale, scale)
+                }
+            } else if (type === SWITCH || type === ONBLOCK || type === OFFBLOCK || type === FIRE || type === TALL) {
+                // Renders later
+            } else if (type === FLAG) {
+                if (!sprite) {
+                    var bottom = round(by + scale * 0.8)
+                    ctx.fillStyle = "#e3911e"
+                    ctx.strokeStyle = "#777"
+                    ctx.lineWidth = ceil(0.04 * scale) * 2
+                    ctx.beginPath()
+                    ctx.moveTo(round(bx + scale * 0.15), bottom)
+                    ctx.lineTo(round(bx + scale * 0.85), bottom)
+                    ctx.closePath()
+                    ctx.stroke()
+                    ctx.beginPath()
+                    ctx.strokeStyle = "#222"
+                    ctx.moveTo(round(bx + half), bottom)
+                    ctx.lineTo(round(bx + half), round(bottom - 0.8 * scale))
+                    ctx.closePath()
+                    ctx.stroke()
+                    ctx.beginPath()
+                    var left = round(bx + scale * 0.54)
+                    ctx.moveTo(left, round(bottom - 0.8 * scale))
+                    ctx.lineTo(round(bx + scale * 0.9), round(bottom - 0.55 * scale))
+                    ctx.lineTo(left, round(bottom - 0.3 * scale))
+                    ctx.closePath()
+                    ctx.fill()
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            } else if (type === COIN) {
+                if (!sprite) {
+                    ctx.fillStyle = "#ebb523"
+                    circle(bx, by, 0.35 * scale)
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            } else if (type === HEART) {
+                if (data !== 1) {
+                    if (!sprite) {
+                        ctx.fillStyle = "#c24"
+                        drawHeart(bx + scale * 0.5, by + scale * 0.05, scale * 0.8, scale * 0.8)
+                    } else {
+                        ctx.drawImage(sprite, bx, by, scale, scale)
+                    }
+                }
+            } else if (type === BATTERY) {
+                if (data !== 1) {
+                    if (!sprite) {
+                        ctx.fillStyle = "#000"
+                        var s = scale * 0.1
+                        ctx.fillRect(bx + 1.5 * s, by + 3 * s, 6.5 * s, 6 * s)
+                        ctx.fillRect(bx + 8.2 * s, by + 4.5 * s, s, 3 * s)
+                        ctx.fillStyle = "#3d5"
+                        ctx.fillRect(bx + 2 * s, by + 3.5 * s, 1.5 * s, 5 * s)
+                        ctx.fillRect(bx + 4 * s, by + 3.5 * s, 1.5 * s, 5 * s)
+                        // Create a flashing effect
+                        if (time % 1000 > 500) {
+                            ctx.fillRect(bx + 6 * s, by + 3.5 * s, 1.5 * s, 5 * s)
+                        }
+                    } else {
+                        ctx.drawImage(sprite, bx, by, scale, scale)
+                    }
+                }
+            } else if (type === GEAR && mode !== PLAY) {
+                // Add some transparency
+                if (mode === PRACTICE) {
+                    ctx.globalAlpha = opacity * (data === 1 ? 0.2 : 0.35)
+                }
+                if (!sprite) {
+                    ctx.fillStyle = "#23c7"
+                    circle(bx, by, 0.4 * scale)
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+                if (mode === PRACTICE) {
+                    ctx.globalAlpha = opacity
+                }
+            } else if (type === MOD) {
+                if (!sprite) {
+                    var taken = data === 1
+                    if (taken) {
+                        ctx.globalAlpha = opacity * 0.3
+                    }
+                    // These blocks look cool and can modify a lot of the game, adding an extra fun layer!
+                    ctx.fillStyle = "#555"
+                    ctx.strokeStyle = "#161616"
+                    ctx.lineWidth = max(0.05 * scale, 1)
+                    roundRect(bx, by, scale, scale, 8, BOTH)
+
+                    ctx.fillStyle = "#0b8a35"
+                    var s = scale * 0.1
+                    var move = (1 + 0.2 * cos(time * 0.005 + modID))
+                    var b = bx + 1.5 * s * move
+                    // Draw the fake code lines:
+                    ctx.fillRect(b, by + s, 4 * s, s)
+                    ctx.fillRect(b + 5.5 * s * move, by + s, s, s)
+                    ctx.fillRect(b, by + 2.5 * s, 5 * s, s)
+                    ctx.fillRect(b, by + 4 * s, 3 * s, s)
+                    ctx.fillRect(b + 4 * s, by + 4 * s, 3 * s, s)
+                    ctx.fillRect(b, by + 5.5 * s, 4 * s, s)
+                    ctx.fillRect(b, by + 7 * s, sin(move ** 5) * 4 * s, s)
+                    ctx.fillRect(b + 5 * s, by + 7 * s, 2 * s, s)
+
+                    // Minor detail, but the flashing rectangle looks kind of interesting:
+                    var size = 0.5 + sin(time * 0.002 + 0.4 * modID) * 0.5
+                    ctx.fillStyle = "#" + (floor(16 + 80 * Math.sqrt(random())) * 65793).toString(16)
+                    ctx.fillRect(round(b + 2 * s * size), round(by + 8.75 * s), round(5 * s * size), round(0.5 * s))
+
+                    // Draw the "</>" text in the middle of the block:
+                    ctx.fillStyle = "#00" + floor(90 + 60 * sin(0.01 * time)).toString(16) + "00"
+                    ctx.strokeStyle = "#020"
+                    ctx.lineWidth = 0.2 + 0.01 * scale
+                    ctx.font = "bold " + (0.5 * scale) + 'px Calibri,"Trebuchet MS"'
+                    var a = bx + (scale - ctx.measureText("</>").width) * 0.5
+                    var b = by + (scale * 1.3) * 0.5
+                    if (taken) {
+                        ctx.globalAlpha = opacity * 0.4
+                    }
+                    ctx.fillText("</>", a, b)
+                    if (taken) {
+                        ctx.globalAlpha = opacity
+                    }
+                    ctx.strokeText("</>", a, b)
+
+                    // Increase the ID so these blocks look weirdly in sync:
+                    modID += 0.6 + 0.2 * sin(time * 0.0007)
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            } else if (type === PORTAL) {
+                if (!sprite) {
+                    ctx.fillStyle = "#dd75" + floor(40 + 160 * random()).toString(16)
+                    polygon(bx, by, 8, 0.35 * scale, time * 0.002)
+                    if (data != null) {
+                        ctx.font = 0.3 * scale + "px Verdana"
+                        ctx.fillStyle = "#000"
+                        var id = data
+                        ctx.fillText(id, bx + (scale - ctx.measureText(id).width) * 0.5, by + (scale * 1.2) * 0.5)
+                    }
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            } else if (type === UPDOWN) {
+                if (!sprite) {
+                    // The polygon has a fun rotation effect:
+                    ctx.fillStyle = "#b33"
+                    polygon(bx, by, 6, scale * 0.4, 0.17 * cos(0.008 * time + data))
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            } else if (type === LEFTRIGHT) {
+                if (!sprite) {
+                    ctx.fillStyle = "#e0a989"
+                    polygon(bx, by, 6, scale * 0.4, 0.17 * cos(0.008 * time + data))
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            } else if (type === GOAL) {
+                if (!sprite) {
+                    ctx.fillStyle = "#fb1"
+                    var mod = 0.002 * (time % 3000)
+                    if (mod > 4) {
+                        polygon(bx, by, 3 + floor(5 * abs(sin((time + 300 * mod) * 0.005))), scale * 0.4, mod > 5 ? 6 - mod : (mod - 4))
+                    } else {
+                        polygon(bx, by, 3 + floor(5 * abs(sin(time * 0.005))), scale * 0.4)
+                    }
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            } else {
+                // Unknown type (glitch block, normal or not)
+                if (!sprite) {
+                    if (random() < 0.7) {
+                        var sum = random() < 0.6 ? 0.2 : 0.5
+                        for (var x = 0; x < 1; x += sum) {
+                            for (var y = 0; y < 1; y += sum) {
+                                ctx.fillStyle = "#" + random().toString(16).slice(-6)
+                                ctx.fillRect(bx + scale * (x - 0.15 * random()), by + scale * (y - 0.15 * random()), scale * 1.3 * sum * random(), scale * 1.3 * sum * random())
+                            }
+                        }
+                    } else {
+                        var sum = random() < 0.7 ? 0.25 : 0.5
+                        var s = scale * sum
+                        for (var x = 0; x < 1; x += sum) {
+                            for (var y = 0; y < 1; y += sum) {
+                                ctx.fillStyle = "#" + random().toString(16).slice(-6)
+                                ctx.fillRect(bx + x * scale, by + y * scale, s, s)
+                            }
+                        }
+                    }
+                } else {
+                    ctx.drawImage(sprite, bx, by, scale, scale)
+                }
+            }
+        }
+
+        function drawShadow(size) {
+            // The shadow is slightly blurry
+            ctx.shadowColor = "#333"
+            ctx.shadowBlur = 5 * devicePixelRatio
+            roundRect((panX + mainX) * scale, (panY + mainY + 0.5 - size) * scale - 3, 0.5 * scale, size * scale, 3)
+        }
+
+        function renderSwitches(switchable, switchableX, switchableY, t) {
+            if (document.hidden) {
+                return
+            }
+            // Render switchable blocks
+            var s = scale * 0.18
+            ctx.lineWidth = 0.1 * scale
+            ctx.strokeStyle = "#33839e"
+            ctx.fillStyle = "#8ecaf5"
+            for (var i = 0; i < switchable.length; i++) {
+                var type = switchable[i]
+                if (type === t) {
+                    ctx.setLineDash([s, s])
+                }
+                var bx = switchableX[i]
+                var by = switchableY[i]
+                roundRect(bx, by, scale, scale, 6, BOTH)
+                if (type === t) {
+                    // Remove line dash
+                    ctx.setLineDash([])
+                }
+            }
+        }
+
+        // HUGE updating function, but it gets everything done:
+        function draw() {
+            time = Date.now()
+            ctx.clearRect(0, 0, w, h)
+            var limit = spawnY
+            if (!resetVelocity) {
+                // We check if the velocity is zero so that if it is, we just move the player a teeny bit downwards so that you can't tell
+                velocity = max(-0.35, velocity !== 0 ? velocity - 0.017 : -0.000000001)
+            }
+            collide = NONE
+            ctx.imageSmoothingEnabled = false
+
+            if (effect === OLD && (time % 1000 < 200 || time % 1240 < 150 || random() < 0.4)) {
+                var rand = random()
+                if (rand < 0.6) {
+                    // Adding film-like static at lower resolution
+                    var img = ctx.createImageData(w, h)
+                    var data = img.data
+                    var add = 0.05 + 0.04 * random()
+                    var maximum = 4 * w * h
+                    for (var m = 0; m !== maximum;) {
+                        var value = 20 + random() * 200
+                        var opacity = 160 + 30 * random()
+                        data[m++] = data[m++] = data[m++] = value
+                        data[m++] = opacity
+                        if (m === maximum) {
+                            break
+                        }
+                        // Do it three more times
+                        data[m++] = data[m++] = data[m++] = value + 60 * random() - 30
+                        data[m++] = opacity
+                        if (m === maximum) {
+                            break
+                        }
+                        data[m++] = data[m++] = data[m++] = value + 30 * random() - 15
+                        data[m++] = opacity
+                        if (m === maximum) {
+                            break
+                        }
+                        data[m++] = data[m++] = data[m++] = value + 30 * random() - 15
+                        data[m++] = opacity
+                    }
+                    ctx.putImageData(img, 0, 0, 0, 0, w, h)
+                } else if (rand < 0.75) {
+                    canvas.style.filter = "blur(" + (2 + 3 * random()) + "px)"
+                }
+                // Slight rotation effect
+                rotate(1.6 * random() - 0.8 + rotation)
+            } else if (effect === GLITCH) {
+                panX += 0.08 * random() - 0.04
+                panY += 0.08 * random() - 0.04
+            } else if (effect === INTENSE) {
+                // More rotation (even a few degrees makes a huge difference)
+                rotate(5 * random() - 2.5 + rotation)
+                // Add some screen panning:
+                if (time % 1000 < 300 && random() < 0.5) {
+                    // Pan the screen randomly
+                    panX += (0.4 * random() - 0.2)
+                    panY += (0.4 * random() - 0.2)
+                } else {
+                    panX += (0.06 * random() - 0.03)
+                    panY += (0.06 * random() - 0.03)
+                }
+                ctx.shadowColor = "#000"
+            } else {
+                // Otherwise, remove filters and use the default rotation
+                canvas.style.filter = null
+                if (rotation !== 0) {
+                    rotate(rotation)
+                }
+            }
+
+            var hasSpring = false
+            var force = false
+            var mul = 1
+            var directions = []
+            var directionsOn = [], directionsOff = [], maybeOn = false, maybeOff = false
+            var switchable = [], switchableX = [], switchableY = []
+            var noPortal = true
+            modID = 0
+            var canJump = false
+            var hasSwitch = true
+
+            // Win condition from collecting all the coins if there's no win block
+            var allCoins = true
+            var hasCoins = false
+            var gotCoin = false
+
+            // Update and render everything at the same time
+            for (var i = 0; i < tiles.length; i++) {
+                var tile = tiles[i]
+                var type = tile[0]
+                var x = tile[1], y = tile[2]
+                limit = max(limit, y)
+                var bx = (panX + x) * scale
+                var by = (panY + y) * scale
+                if (type === ONBLOCK || type === OFFBLOCK) {
+                    switchable.push(type)
+                    switchableX.push(bx)
+                    switchableY.push(by)
+                } else if (type === MOD && tile[3] !== 1) {
+                    // Allow jumping on top before the block goes POOF!
+                    canJump = rect(mainX, mainY, 0.5, 0.5, x, y, 1, 1) !== NONE
+                } else if (type === UPDOWN) {
+                    // Complicated enemy code!
+                    var up = tile[4]
+                    // The enemy is dead now (no animals were harmed)
+                    if (tile[5]) {
+                        continue
+                    }
+                    // Precompute enemy coordinates
+                    var tx = x + 0.1
+                    var ty = y + 0.2
+                    // math is hard
+                    for (var m = 0; m < tiles.length; m++) {
+                        if (m !== i) {
+                            var t = tiles[m]
+                            var a = t[1], b = t[2]
+                            var type2 = t[0]
+                            if (type2 === COIN || ((type2 === BATTERY || type2 === HEART) && t[3] === 1) || (type2 === UPDOWN || type2 === LEFTRIGHT && t[5])) {
+                                continue
+                            }
+                            var r = rect(a, b, 1, 1, tx, ty, 0.8, 0.6)
+                            // Collision! Swap directions
+                            if (r === UP || r === DOWN) {
+                                up = up === 0 ? 1 : 0
+                                tile[4] = up
+                                break
+                            }
+                        }
+                    }
+                    // Move the enemy in the direction it goes in
+                    var bias = up ? -enemySpeed : enemySpeed
+                    y += bias
+                    by += scale * bias
+                    tile[2] = y
+                } else if (type === LEFTRIGHT) {
+                    var left = tile[4]
+                    if (tile[5]) {
+                        continue
+                    }
+                    var tx = x + 0.1
+                    var ty = y + 0.2
+                    for (var m = 0; m < tiles.length; m++) {
+                        if (m !== i) {
+                            var t = tiles[m]
+                            var a = t[1], b = t[2]
+                            var type2 = t[0]
+                            if (type2 === COIN || ((type2 === BATTERY || type2 === HEART) && t[3] === 1) || (type2 === UPDOWN || type2 === LEFTRIGHT && t[5])) {
+                                continue
+                            }
+                            var r = rect(a, b, 1, 1, tx, ty, 0.8, 0.6)
+                            if (r === LEFT || r === RIGHT) {
+                                left = left === 0 ? 1 : 0
+                                tile[4] = left
+                                break
+                            }
+                        }
+                    }
+                    var bias = left ? -enemySpeed : enemySpeed
+                    x += bias
+                    bx += scale * bias
+                    tile[1] = x
+                } else if (type === COIN) {
+                    if (tile[3]) {
+                        // Tell the game that there actually are coins!
+                        hasCoins = true
+                        continue
+                    }
+                } else if (type === GOAL) {
+                    // Ignore the coin win condition
+                    allCoins = false
+                } else if (type === -32768) {
+                    // Glitch block: ignore and allow the player to go through it
+                    render(type, bx, by)
+                    continue
+                }
+                var isGate = type === GATEL || type === GATER
+                if (isGate) {
+                    // Calculate where the gate ends
+                    var lim = Infinity
+                    for (var m = 0; m < tiles.length; m++) {
+                        var tile = tiles[m]
+                        var tx = tile[1]
+                        var ty = tile[2]
+                        if (tx === x && ty > y) {
+                            // Update the gate end limit
+                            lim = Math.min(lim, ty)
+                        }
+                    }
+                }
+                // Some collisions are a bit different, as you can see.
+                var c
+                if (type === PORTAL || type === ONBLOCK || type === OFFBLOCK) {
+                    c = rect(mainX, mainY, 0.5, 0.5, x + 0.12, y + 0.12, 0.76, 0.76)
+                } else if (type === FIRE) {
+                    c = rect(mainX, mainY, 0.5, 0.5, x + 0.02, y + 0.02, 0.96, 0.96)
+                } else if (type === TALL) {
+                    // Tall fire is pretty weird
+                    c = rect(mainX, mainY, 0.5, 0.5, x + 0.02, y - 1.02, 0.96, 1.96)
+                } else if (type === GATEL) {
+                    c = rect(mainX, mainY, 0.5, 0.5, x, y, 0.5, 1 + lim - y)
+                } else if (type === GATER) {
+                    c = rect(mainX, mainY, 0.5, 0.5, x, y + 0.5, 0.5, 1 + lim - y)
+                } else if (type === COIN) {
+                    c = circ(mainX, mainY, 0.5, 0.5, x + 0.5, y + 0.5, 0.35)
+                    if (c === NONE) {
+                        // The player hasn't collected all the coins
+                        allCoins = false
+                    }
+                } else if (type === UPDOWN || type === LEFTRIGHT) {
+                    c = rect(mainX, mainY, 0.5, 0.5, x, y, 1, 1)
+                    var d = rect(mainX, mainY, 0.5, 0.5, x, y, 1, 0.3)
+                } else {
+                    c = rect(mainX, mainY, 0.5, 0.5, x, y, 1, 1)
+                }
+                if (isGate) {
+                    if (tile[3] === 0) {
+                        render(type, bx, by, [x, y, lim, 0])
+                        if (!(type === GATER && c !== LEFT || type === GATEL && c !== RIGHT)) {
+                            // Slam the gate down so you can't pass into it again
+                            tile[3] = 1
+                            continue
+                        }
+                    } else {
+                        render(type, bx, by, [x, y, lim, 1])
+                    }
+                } else {
+                    render(type, bx, by, (type === UPDOWN || type === LEFTRIGHT) ? i : tile[3])
+                }
+                if (c !== NONE) {
+                    if (type === COIN) {
+                        hasCoins = true
+                        gotCoin = true
+                        tile[3] = 1
+                        continue
+                    } else if (type === BATTERY) {
+                        if (tile[3] === 0) {
+                            tile[3] = 1
+                            immunity = time + 3600
+                        }
+                        continue
+                    } else if (type === HEART) {
+                        if (tile[3] === 0) {
+                            tile[3] = 1
+                            if (lives !== Infinity) {
+                                // We don't have to worry about the special "1 life" case as you'll have at least two lives after this
+                                lives++
+                                currentLives.textContent = lives + " lives"
+                            }
+                        }
+                        continue
+                    } else if (type === SWITCH) {
+                        ctx.fillStyle = "#22ab0f"
+                        circle(bx, by, 0.35 * scale)
+                        hasSwitch = !hasSwitch
+                        continue
+                    } else if (type === PORTAL) {
+                        // Find the connected portal
+                        noPortal = false
+                        if (portal !== i) {
+                            var id = tile[3]
+                            for (var m = 0; m < tiles.length; m++) {
+                                var t = tiles[m]
+                                if (t[0] === PORTAL && t[3] === id && m !== i) {
+                                    mainX = t[1] + 0.25
+                                    mainY = t[2] + 0.25
+                                    portal = m
+                                }
+                            }
+                        }
+                    } else if (type === GOAL) {
+                        // Play the winning sound effect
+                        play(winSound)
+                        message("<b style='color:#ed992b'>You win!</b>", 2500)
+                        reset(true)
+                    } else if (type === FIRE || type === TALL) {
+                        die()
+                    } else if (type === UPDOWN || type === LEFTRIGHT) {
+                        if (d || c === UP) {
+                            if (!resetVelocity) {
+                                // The creature is dead now
+                                velocity = jump * 0.8
+                            }
+                            tile[5] = 1
+                            continue
+                        } else {
+                            die()
+                        }
+                    } else if (type === MOD || type === GEAR) {
+                        if (tile[3] === 0) {
+                            resetMod()
+                            tile[3] = 1
+                            speed = tile[4]
+                            jump = tile[5]
+                            if (tile[6] !== KEEP) {
+                                effect = tile[6]
+                            }
+                            enemySpeed = tile[10]
+                            if (tile[11] === 1) {
+                                canvas.style.backgroundImage = "linear-gradient(" + tile[15] + "deg,rgb(" + tile[7] + "," + tile[8] + "," + tile[9] + "),rgb(" + tile[12] + "," + tile[13] + "," + tile[14] + "))"
+                                document.body.style.backgroundColor = null
+                            } else {
+                                document.body.style.backgroundColor = "rgb(" + tile[7] + "," + tile[8] + "," + tile[9] + ")"
+                                canvas.style.backgroundImage = null
+                            }
+                            rotation = tile[16]
+                        }
+                        if (type === GEAR) {
+                            continue
+                        }
+                    } else if (type === FLAG) {
+                        liveX = x + 0.25
+                        liveY = y + 0.25
+                    }
+                    if (type !== FLAG && type !== PORTAL && type !== MOD && !clip) {
+                        if (type === ONBLOCK) {
+                            // Maybe valid directions: we check switches at the end
+                            directionsOn.push(c)
+                            maybeOn = true
+                        } else if (type === OFFBLOCK) {
+                            directionsOff.push(c)
+                            maybeOff = true
+                        } else {
+                            directions.push(c)
+                            if (c === UP) {
+                                if (type === SPRING) {
+                                    hasSpring = true
+                                } else if (type === SLIME) {
+                                    mul = 0.6
+                                }
+                                collide = type
+                                if (!resetVelocity) {
+                                    velocity = 0
+                                }
+                            }
+                        }
+                    }
+                } else if (type === SWITCH) {
+                    ctx.fillStyle = "#20f77a"
+                    circle(bx, by, 0.35 * scale)
+                }
+            }
+
+            if (allCoins && hasCoins) {
+                // You win if you collect all the coins as well
+                message("<b style='color:#f7c019'>You win!</b>", 2500)
+                play(winSound)
+                reset(true)
+            } else if (gotCoin) {
+                // Play the coin sound
+                play(coinSound)
+            }
+
+            if (hasSwitch) {
+                // The switch is actually somewhat simple: if there's an odd number of switches (which is considered by the boolean flipping), then add the collision from the switchable blocks.
+                if (maybeOn) {
+                    velocity = 0
+                    collide = OFFBLOCK
+                }
+                directions.push(...directionsOn)
+
+            } else {
+                if (maybeOff) {
+                    velocity = 0
+                    collide = ONBLOCK
+                }
+                directions.push(...directionsOff)
+            }
+            var t = hasSwitch ? OFFBLOCK : ONBLOCK
+            renderSwitches(switchable, switchableX, switchableY, t)
+
+            if (!flying && mainY > limit + 4) {
+                // You fell out of the world, oops
+                die(true)
+            } else if (mode === EDIT) {
+                // Complete reset if you're now editing
+                reset(true)
+            }
+            // Updates portal data
+            if (noPortal) {
+                portal = true
+            }
+
+            // Draw the selection block
+            if (mode !== PLAY) {
+                if (selectType === NONE || selectType === PLAYER) {
+                    ctx.fillStyle = "#f006"
+                    roundRect(floor((panX + selectX) * scale), floor((panY + selectY) * scale), scale, scale, 5)
+                } else if (selectType === OFFBLOCK || selectType === ONBLOCK) {
+                    ctx.globalAlpha = 0.3
+                    // Render a single switch (pretending that the player isn't on a switch)
+                    renderSwitches([selectType], [(panX + selectX) * scale], [(panY + selectY) * scale], ONBLOCK)
+                    ctx.globalAlpha = 1
+                } else if (selectType === SWITCH) {
+                    ctx.globalAlpha = 0.3
+                    ctx.fillStyle = "#20f77a"
+                    circle((panX + selectX) * scale, (panY + selectY) * scale, 0.35 * scale)
+                    ctx.globalAlpha = 1
+                } else {
+                    // Setting the opacity of the selected block so it looks normal
+                    ctx.globalAlpha = 0.3
+                    opacity = 0.3
+                    render(selectType, (panX + selectX) * scale, (panY + selectY) * scale)
+                    opacity = 1
+                    ctx.globalAlpha = 1
+                }
+            }
+
+            // Check for movement and left/right collisions, and also render the shadow
+            var size = 0.5 + 0.1 * sin(time * 0.005)
+            ctx.fillStyle = "#000b"
+            if (moveL > moveR) {
+                if (!directions.includes(RIGHT)) {
+                    var diff = speed * mul
+                    drawShadow(size)
+                    mainX -= diff
+                }
+            } else if (moveR > moveL) {
+                if (!directions.includes(LEFT)) {
+                    var diff = speed * mul
+                    drawShadow(size)
+                    mainX += diff
+                }
+            }
+
+            // Update player panning
+            var diffX = spawnX - mainX
+            if (diffX < -12) {
+                panX = centerX + diffX + 12
+            } else if (diffX > 12) {
+                panX = centerX + diffX - 12
+            }
+
+            var diffY = spawnY - mainY
+            if (diffY < -6) {
+                panY = centerY + diffY + 6
+            } else if (diffY > 6) {
+                panY = centerY + diffY - 6
+            }
+
+            // Changing color for the player and title (unless the player is immune)
+            var color = time > immunity ? "hsl(" + (200 * cos(0.00075 * time)).toFixed(1) + ",80%,35%)" : "#2e6"
+            ctx.fillStyle = color
+            playerX = (panX + mainX) * scale
+            playerY = (panY + mainY + 0.5 - size) * scale
+            // Add some blur
+            ctx.shadowColor = color
+            if (time < immunity) {
+                // Add a heavier shadow
+                for (var i = 0; i < 6; i++) {
+                    ctx.shadowBlur = 5 * i * devicePixelRatio
+                    roundRect(playerX, playerY, 0.5 * scale, size * scale, 5)
+                }
+            } else {
+                ctx.shadowBlur = 15 * devicePixelRatio
+                roundRect(playerX, playerY, 0.5 * scale, size * scale, 2)
+            }
+            ctx.shadowBlur = 0
+
+            // Here's how the game renders the colorful title!
+            frame++
+            if (note < time) {
+                text.innerHTML = "Doodle<sup style='color:" + color + "'>Square</sup><br><sup style='font-size:16px'>Frame #" + frame + "</sup>"
+            }
+
+            if (directions.includes(UP)) {
+                mainY = floor(mainY) + 0.5
+            } else if (directions.includes(DOWN)) {
+                if (flying) {
+                    // Tell the code there's a collision above the player
+                    collide = DOWN
+                    mainY = ceil(mainY)
+                } else {
+                    // Add a little bounce effect
+                    velocity = -max(abs(velocity * 0.6), 0.1)
+                }
+            }
+
+            // The down key allows you to go downward a bit faster, which is a small detail that helps you if you like slamming into the ground.
+            if (moveD > moveU && velocity < -0.04) {
+                mainY += 0.2
+            } else if (moveU > moveD && flying && collide !== DOWN) {
+                // Wheeeee!
+                mainY -= 0.2
+            }
+
+            // This variable tries to prevent jump exploits that make the player jump after dying
+            if (resetVelocity) {
+                resetVelocity = false
+            } else {
+                if (hasSpring && !(directions.includes(LEFT) || directions.includes(RIGHT))) {
+                    velocity = jump * 1.35 * mul
+                    play(bounceSound)
+                    force = true
+                } else if (canJump || moveU > moveD && collide !== NONE) {
+                    velocity = canJump ? jump * mul * 0.7 : (jump * mul)
+                    doubleJumped = -1
+                    force = true
+                } else if (doubleJump && doubleJumped === 0) {
+                    velocity = jump
+                    doubleJumped = 1
+                    force = true
+                }
+
+                if ((force || collide === NONE) && !flying) {
+                    mainY -= velocity
+                }
+            }
+            // First remove the rotation before we do anything else
+            ctx.restore()
+            if (mode !== EDIT) {
+                // Don't create effects in edit mode
+                if (effect === DARKNESS) {
+                    // Speedy darkness effect with gradients and CSS box shadows:
+                    var px = playerX + 0.25 * scale
+                    var py = playerY + 0.25 * scale
+                    var size = (3.3 + 0.4 * sin(time * 0.006)) * scale
+                    var gradient = ctx.createRadialGradient(px, py, 0.1 * scale, px, py, size)
+                    gradient.addColorStop(0, "#0000")
+                    if (mode === PRACTICE) {
+                        gradient.addColorStop(0.3, "#0004")
+                        gradient.addColorStop(0.6, "#0008")
+                        gradient.addColorStop(0.8, "#000a")
+                        gradient.addColorStop(1, "#000c")
+                        hole.style.boxShadow = "0 0 0 25000px #000c"
+                    } else {
+                        gradient.addColorStop(0.3, "#0005")
+                        gradient.addColorStop(0.6, "#000c")
+                        gradient.addColorStop(0.8, "#000e")
+                        gradient.addColorStop(1, "#000")
+                        hole.style.boxShadow = "0 0 0 25000px #000"
+                    }
+                    hole.style.left = (px - size + 1) / devicePixelRatio + "px"
+                    hole.style.top = (py - size + 1) / devicePixelRatio + "px"
+                    hole.style.width = 2 * (size - 1) / devicePixelRatio + "px"
+                    hole.style.height = 2 * (size - 1) / devicePixelRatio + "px"
+                    ctx.fillStyle = gradient
+                    ctx.arc(px, py, size, 0, 6.283185307179586)
+                    ctx.fill()
+                } else if (effect === FLASH) {
+                    // All of this is just to draw a rectangle overlay:
+                    var mod = time % 2000
+                    if (mod < 600 || (mod > 800 && mod < 1400)) {
+                        var t = 30 * cos(2 * sin(sin(time * 0.004))) + 10
+                        ctx.fillStyle = "rgba(" + t + "," + t + "," + t + ",0.78)"
+                    } else {
+                        ctx.fillStyle = "#000"
+                    }
+                    ctx.fillRect(0, 0, w, h)
+                } else if (effect === OLD) {
+                    ctx.fillStyle = "hsl(20," + (30 + random() * 10) + "%," + (40 + random() * 10) + "%,0.6)"
+                    ctx.fillRect(0, 0, w, h)
+                    // Add some vertical lines
+                    var amount = 0.7 + 1.7 * random()
+                    for (i = 0; i < amount; i++) {
+                        ctx.fillStyle = "#000" + "35578ad"[floor(random() * 7)]
+                        ctx.fillRect(round(w * random()), 0, (random() < 0.5 ? 1 : 2), h)
+                    }
+                    // Add a few black splotches with fillRect:
+                    amount = random() < 0.6 ? 3 : 4
+                    var duplicates = []
+                    for (var i = 0; i < amount; i++) {
+                        var id = floor(random() * 6)
+                        // Prevent duplicates
+                        if (!duplicates.includes(id)) {
+                            ctx.fillStyle = "#000" + "7889abcc"[floor(random() * 9)]
+                            var imageX = w * random(), imageY = h * random()
+                            rotate(random() * 360, imageX, imageY)
+                            ctx.drawImage(grainImages[id], imageX, imageY)
+                            duplicates.push(id)
+                            ctx.restore()
+                        }
+                    }
+                    // Adding small dots:
+                    amount = random() * 80 + 10
+                    for (var i = 0; i < amount; i++) {
+                        ctx.fillStyle = ["#000", "#555555", "#777"][floor(random() * 3)]
+                        ctx.fillRect(floor(w * random()), floor(h * random()), 2, 2)
+                    }
+                } else if ((effect === INTENSE && random() < 0.8) || (effect === GLITCH && random() < 0.4)) {
+                    // Only glitches small sections at a time
+                    glitch({ amount: floor(20 + 15 * random()), quality: 70, iterations: floor(15 + random() * 10) }).fromImageData(ctx.getImageData(0, w * 0.1 * glitchFrame, w, h * 0.1 + 2 + round(random() * 6))).toDataURL().then(function (data) {
+                        var image = imageElements[glitchFrame]
+                        image.src = data
+                        image.style.opacity = 0.4 + 0.5 * random()
+                    })
+                    if (effect === INTENSE) {
+                        // The intense effect LOOKS intense, but it's shockingly fast, as panning and flashing are virtually free. The small cost of the glitch effect with both also doesn't do much, as the screen is split into ten sections.
+                        if (time % 300 < 80 || random() < 0.12) {
+                            // Clear the screen
+                            ctx.clearRect(0, 0, w, h)
+                        }
+
+                        // Also add a cool effect that makes things black and green:
+                        if (random() < 0.3) {
+                            var imgX = floor(0.4 * w * random())
+                            var imgY = floor(0.4 * h * random())
+                            var img = ctx.getImageData(imgX, imgY, ceil(1 + 0.6 * w * random()), ceil(1 + 0.6 * h * random()))
+                            var data = img.data
+                            var len = data.length * 4
+                            for (var m = 0; m < len;) {
+                                var brightness = data[m] + data[m + 1] + data[m + 2]
+                                data[m++] = 0
+                                data[m++] = brightness * 0.35
+                                data[m++] = 0
+                                data[m++] = 180
+                            }
+                            ctx.putImageData(img, imgX, imgY)
+                        }
+                    } else if (random() < 0.1) {
+                        // Clear the screen less often in normal glitch mode
+                        ctx.clearRect(0, 0, w, h)
+                    }
+                    // Update glitch frame
+                    if (random() < 0.7) {
+                        glitchFrame += floor(3 * random() - 0.3)
+                        if (glitchFrame > 10) {
+                            glitchFrame -= 10
+                        } else if (glitchFrame < 0) {
+                            glitchFrame += 10
+                        }
+                    } else {
+                        glitchFrame = floor(8 * random())
+                    }
+                }
+            }
+
+            // Update the CSS for the darkness hole
+            hole.style.display = effect === DARKNESS ? null : "none"
+
+            // The realFrame variable is so that, in theory, the game is actually 60fps
+            nextDraw = setTimeout(draw, (realFrame++ % 3 === 0 ? 16 : 17) - Date.now() + time)
+        }
+
+        var lastSound = 0, repeatSound = null
+        // Plays the sound effects while taking care not to play too often
+        function play(sound) {
+            if (mode !== EDIT && (sound !== repeatSound || time - lastSound > 125)) {
+                // Clone the sound so multiple effects can play at once
+                sound.cloneNode().play().catch(() => { })
+                lastSound = time
+
+                // Don't let that sound play again too quickly
+                repeatSound = sound
+            }
+        }
+
+        // Polyfill in case your browser (usually Firefox) can't handle it
+        function roundRect(x, y, width, height, r, mode) {
+            ctx.beginPath()
+            r *= devicePixelRatio
+            if (ctx.roundRect) {
+                // Use the default browser function:
+                ctx.roundRect(x, y, width, height, r)
+            } else {
+                // Make sure the radius isn't larger than it should be (otherwise it looks weird)
+                var radius = min(r, 0.5 * min(width, height))
+                var xw = x + width
+                var yh = y + height
+                ctx.moveTo(x + r, y)
+                ctx.arcTo(xw, y, xw, yh, radius)
+                ctx.arcTo(xw, yh, x, yh, radius)
+                ctx.arcTo(x, yh, x, y, radius)
+                ctx.arcTo(x, y, xw, y, radius)
+            }
+            if (mode === OUTLINE) {
+                ctx.stroke()
+            } else if (mode === BOTH) {
+                ctx.fill()
+                ctx.stroke()
+            } else {
+                ctx.fill()
+            }
+        }
+
+        // Rectangle to circle collision detection
+        function circ(x1, y1, w, h, x2, y2, r) {
+            var distX = abs(x2 - x1)
+            var distY = abs(y2 - y1)
+            var wHalf = w * 0.5
+            var hHalf = h * 0.5
+            if (distX >= wHalf + r) {
+                return NONE
+            }
+            if (distY >= hHalf + r) {
+                return NONE
+            }
+
+            if (distX < wHalf) {
+                return UP
+            }
+            if (distY < hHalf) {
+                return UP
+            }
+
+            var dw = distX - wHalf
+            var dh = distY - hHalf
+            // Fake direction
+            return dw * dw + dh * dh < r * r ? UP : NONE
+        }
+
+        // Rectangle to rectangle collision detection
+        function rect(x1, y1, w1, h1, x2, y2, w2, h2) {
+            var dx = x1 * 2 + w1 - (x2 * 2 + w2)
+            var dy = y1 * 2 + h1 - (y2 * 2 + h2)
+            var width = w1 + w2
+            var height = h1 + h2
+            var crossWidth = width * dy
+            var crossHeight = height * dx
+            var collision = NONE
+            var absY = abs(dy)
+            if (abs(dx) < width && absY < height) {
+                if (crossWidth > crossHeight) {
+                    collision = (crossWidth > (-crossHeight)) ? DOWN : LEFT
+                } else {
+                    collision = (crossWidth > -(crossHeight)) ? RIGHT : UP
+                }
+            }
+            return collision
+        }
+
+        function clear() {
+            tiles = []
+            // By default, the SaveState saves an empty array
+            state.save()
+            mainX = liveX = spawnX = 1.25
+            mainY = liveY = spawnY = 1.25
+            effect = NONE
+            resetMod()
+        }
+
+        // Set the type and update label data
+        function setType(newType) {
+            if (selectType === newType && selectType !== PLAYER) {
+                newType = NONE
+            }
+            selectType = newType
+            if (newType === MOD || newType === GEAR) {
+                modLabel.style.display = "block"
+                label.style.display = "block"
+            } else {
+                modLabel.removeAttribute("style")
+                label.removeAttribute("style")
+            }
+        }
+
+        function toggleInfo() {
+            showInfo = !showInfo
+            if (showInfo) {
+                info.style.display = "block"
+                for (var i = 0; i < strong.length; i++) {
+                    strong[i].style.display = "block"
+                }
+            } else {
+                info.style.display = null
+                for (var i = 0; i < strong.length; i++) {
+                    strong[i].style.display = null
+                }
+            }
+        }
+
+        // Complex key detection system:
+        onkeydown = e => {
+            var code = e.keyCode
+            if (e.shiftKey) {
+                if (code === 13) {
+                    setMode(mode === 0 ? 2 : (mode - 1))
+                    // Prevent buttons from being clicked
+                    return false
+                } else if (e.ctrlKey || e.metaKey && code === 90) {
+                    tiles = state.forward()
+                }
+            } else if (e.ctrlKey || e.metaKey) {
+                if (code === 90) {
+                    tiles = state.back()
+                } else if (code === 89) {
+                    tiles = state.forward()
+                }
+            } else if (!e.altKey) {
+                // Check on the audio and autoplay it
+                var justPlayed = audioIndex === -1
+                if (justPlayed) {
+                    createAudio()
+                }
+                if (code === 13) {
+                    setMode(mode === 2 ? 0 : (mode + 1))
+                    // Prevent buttons from being clicked
+                    return false
+                } else if (code === 90) {
+                    setType(OFFBLOCK)
+                } else if (code === 89) {
+                    setType(ONBLOCK)
+                } else if (code === 86) {
+                    setType(SWITCH)
+                } else if (code === 85) {
+                    setType(GEAR)
+                } else if (code === 84) {
+                    setType(TALL)
+                } else if (code === 83) {
+                    if (mode === PRACTICE) {
+                        liveX = mainX
+                        liveY = mainY
+                    }
+                } else if (code === 82) {
+                    reset(true)
+                } else if (code === 80) {
+                    setType(PLAYER)
+                } else if (code === 79) {
+                    toggleDoubleJump()
+                } else if (code === 77) {
+                    setType(MOD)
+                } else if (code === 76) {
+                    // Prevent the audio from being played twice
+                    if (!justPlayed) {
+                        createAudio()
+                    }
+                } else if (code === 75) {
+                    setType(GATER)
+                } else if (code === 74) {
+                    setType(GATEL)
+                } else if (code === 73) {
+                    toggleInfo()
+                } else if (code === 72) {
+                    setType(HEART)
+                } else if (code === 71) {
+                    setType(-32768)
+                } else if (code === 70) {
+                    setType(FLAG)
+                } else if (code === 67) {
+                    clear()
+                } else if (code === 66) {
+                    setType(BATTERY)
+                } else if (code >= 48 && code <= 57 || code >= 96 && code <= 105) {
+                    setType(code >= 96 ? code - 96 : (code - 48))
+                } else if (code === 32 || code === UP || code === 87) {
+                    // The reason we use four variables is in case you press one key, then another, then let go. With only a moveX and moveY, you can't revert your movement to the previous key.
+                    moveU = moveD + 1
+                    if (doubleJumped === -1) {
+                        doubleJumped = 0
+                    }
+                    return false
+                } else if (code === DOWN || code === 83) {
+                    moveD = moveU + 1
+                    return false
+                } else if (code === LEFT || code === 65) {
+                    moveL = moveR + 1
+                    return false
+                } else if (code === RIGHT || code === 68) {
+                    moveR = moveL + 1
+                    return false
+                }
+            }
+        }
+
+        // Disable movement if you released the key
+        onkeyup = e => {
+            var code = e.keyCode
+            if (code === 32 || code === UP || code === 87) {
+                moveU = 0
+                return false
+            } else if (code === DOWN || code === 83) {
+                moveD = 0
+                return false
+            } else if (code === LEFT || code === 65) {
+                moveL = 0
+                return false
+            } else if (code === RIGHT || code === 68) {
+                moveR = 0
+                return false
+            }
+        }
+
+        function resetPan() {
+            // Move the screen so the player is centered
+            centerX = 0.5 * w / scale - mainX - 0.25
+            centerY = 0.5 * h / scale - mainY - 0.25
+            panX = centerX
+            panY = centerY
+        }
+
+        // Custom resize function! We add an extra pixel so you don't see the canvas edges.
+        function resize() {
+            w = round((innerWidth + 1) * devicePixelRatio)
+            h = round((innerHeight + 1) * devicePixelRatio)
+            canvas.width = w
+            canvas.height = h
+            canvas.style.width = (innerWidth + 1) + "px"
+            canvas.style.height = (innerHeight + 1) + "px"
+            scale = ceil(max(w * 0.65, h) * 0.045)
+            zoom = ceil(max(innerWidth * 0.65, innerHeight) * 0.045)
+            half = scale * 0.5
+
+            // Instantly redraw so there's no moment where the blocks aren't rendered
+            reset()
+            clearTimeout(nextDraw)
+            draw()
+
+        }
+        onresize = resize
+
+        resize()
+        resetPan()
+    </script>
+</body>
+
+</html>
