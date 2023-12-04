@@ -6160,7 +6160,7 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(1), buttonPower = 1, speed = H(1), buttonPower = 1, cpt = -1, time = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false
+        var baseSpeed = H(true), buttonPower = 1, speed = H(true), buttonPower = 1, cpt = -1, time = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:dark)")
         if (darkModeMedia.matches) {
@@ -7524,12 +7524,10 @@
             var shards = C("shards")
             var shardInfoElement = ID("shardInfo")
             if (shards.isZero()) {
-                speed = baseSpeed
                 if (shardInfoElement.style.display !== "none") {
                     shardInfoElement.style.display = "none"
                 }
             } else {
-                speed = baseSpeed.mul(shards).mul(10000).sqrt(true).sqrt(true)
                 updateId("shardCount", format(shards))
                 updateId("clickPower", format(speed.mul(10)))
                 shardInfoElement.removeAttribute("style")
@@ -7691,7 +7689,7 @@
 
             // Update the amount of clocks that you have
             var familySqrt = C("family", issue).sqrt()
-            cpt = cpt.add(clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.225 : 0)).add(familySqrt.mul(familySqrt.sqrt()).mul(0.05))
+            cpt = cpt.add(clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.225 : 0)).add(familySqrt.mul(familySqrt.sqrt()).mul(0.05)).mul(shards).mul(10000).sqrt(true).sqrt(true)
             add("clocks", cpt)
 
             multiExchange(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore"], [miningPower.mul(0.0145), miningPower.mul(0.065), miningPower.mul(0.04), miningPower.mul(0.01825), miningPower.mul(0.003), miningPower.mul(0.0025), miningPower.mul(0.0175), miningPower.mul(0.0075), miningPower.mul(0.00325), miningPower.mul(0.0025), miningPower.mul(0.0002), miningPower.mul(0.0000027725)], "money", miners.mul(0.1))
@@ -7871,7 +7869,7 @@
 
             // Update spells
             var len = spellFunctions.length
-            var divSpeed = speed / 60
+            var divSpeed = speed.mul(".01666666666666666666666666666666666666666666666667")
             for (var i = 0; i < len;) {
                 if (spellFunctions[i](divSpeed, i)) {
                     spellFunctions.splice(i, 1)
@@ -7882,9 +7880,6 @@
                     i++
                 }
             }
-
-            // Reset the speed
-            speed = new H(baseSpeed)
 
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
         }
@@ -8117,7 +8112,7 @@
             // Update everything within the game (like wood)
             updateGame()
 
-            // Update research
+            // Update the research elements
             var researchElem = ID("research")
             if (C("scientists", issue).isPositive()) {
                 if (!researchElem.hasAttribute("style")) {
@@ -8147,7 +8142,7 @@
                 researchElem.removeAttribute("style")
             }
 
-            // Update buttons (like fade-in from unlocking or multi-buy)
+            // Update buttons (such as creating a fade in effect or changing the text based on the amount of managers)
             for (i = 0; i < buttons.length; i++) {
                 var button = buttons[i]
                 var hideRequirements = button.getAttribute("data-hide")
@@ -8325,6 +8320,9 @@
                     }
                 }
             }
+
+            // Reset the speed
+            speed = new H(baseSpeed)
 
             // Reset the button click variable
             alreadyClicked = false
