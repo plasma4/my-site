@@ -3756,13 +3756,16 @@
                     <div class="small">
                         Collect shards by sacrificing everything in exchange for gold shards.
                         You get more gold shards if you have more golden clocks!
+                        <br>
                         NOTE: You will lose ALL non-ascension, workers, buildings, and researches!
                     </div>
 
-                    Your current clock earnings multiplier is <b id="shardPower"></b>
-                    because you have <b id="shardCount"></b> shards.
-                    <br>
-                    You also earn <b id="clickPower"></b> clocks per click instead of just <b>1</b>.
+                    <div id="shardInfo">
+                        Your current clock earnings multiplier is <b id="shardPower"></b>
+                        because you have <b id="shardCount"></b> shards.
+                        <br>
+                        You also earn <b id="clickPower"></b> clocks per click instead of just <b>1</b>.
+                    </div>
 
                     <br>
                     <button class="cherrybg" id="shardAscend"
@@ -7519,11 +7522,20 @@
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
         function updateGame() {
             var shards = C("shards")
-            speed = shards.isZero() ? baseSpeed : baseSpeed.mul(shards).mul(10000).sqrt(true).sqrt(true)
+            var shardInfoElement = ID("shardInfo")
+            if (shards.isZero()) {
+                speed = baseSpeed
+                if (shardInfoElement.style.display !== "none") {
+                    shardInfoElement.style.display = "none"
+                }
+            } else {
+                speed = baseSpeed.mul(shards).mul(10000).sqrt(true).sqrt(true)
+                updateId("shardCount", format(shards))
+                updateId("clickPower", format(speed.mul(10)))
+                shardInfoElement.removeAttribute("style")
+            }
 
             updateId("shardPower", format(speed) + "×")
-            updateId("shardCount", format(shards))
-            updateId("clickPower", format(speed.mul(10)))
 
             // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
             speed = speed.mul(frame + 1).floor(true).sub(speed.mul(frame).floor(true))
