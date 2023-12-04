@@ -6138,7 +6138,10 @@
                             } else {
                                 var number = new H(part2).mul(multiplier)
                                 if (part1 === "clocks") {
-                                    number = number.mul(C("shards")).mul(10)
+                                    var shards = C("shards")
+                                    if (shards.isPositive()) {
+                                        number = number.mul(shards).mul(10000).sqrt(true).sqrt(true)
+                                    }
                                 }
                                 if (e === true) {
                                     rawAdd(part1, number)
