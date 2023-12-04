@@ -6140,7 +6140,7 @@
                                 if (part1 === "clocks") {
                                     var shards = C("shards")
                                     if (shards.isPositive()) {
-                                        number = number.mul(shards).mul(10000).sqrt(true).sqrt(true)
+                                        number = number.mul(shards).mul(1e8).sqrt(true).sqrt(true)
                                     }
                                 }
                                 if (e === true) {
@@ -7523,7 +7523,7 @@
 
             updateId("shardPower", format(speed) + "×")
             updateId("shardCount", format(shards))
-            updateId("clickPower", format(speed.mul(10)) + "×")
+            updateId("clickPower", format(speed.mul(10)))
 
             // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
             speed = speed.mul(frame + 1).floor(true).sub(speed.mul(frame).floor(true))
