@@ -5979,7 +5979,7 @@
                         }
 
                         alreadyClicked = true
-                        var multiplier = hasMultiBuild ? C("cmanagers", "This happened while trying to check for build manager multipliers.").add(1) : (hasOmegaMulti ? C("omegamanagers", "This happened while trying to check for MEGA-manager multipliers.").add(1) : (hasMegaMulti ? C("megamanagers", "This happened while trying to check for MEGA-manager multipliers.").add(1) : (hasMulti ? C("managers", "This happened while trying to check for manager multipliers.").add(1) : 1)))
+                        var multiplier = hasMultiBuild ? C("cmanagers", "This happened while trying to check for build manager multipliers.").add(1) : (hasOmegaMulti ? C("omegamanagers", "This happened while trying to check for MEGA-manager multipliers.").add(1) : (hasMegaMulti ? C("megamanagers", "This happened while trying to check for MEGA-manager multipliers.").add(1) : (hasMulti ? C("managers", "This happened while trying to check for manager multipliers.").add(1) : H(true))))
 
                         if (e !== true) {
                             var types = Array(len)
@@ -6068,8 +6068,8 @@
                             e.stopPropagation()
                         }
 
-                        if (buttonPower !== 1 && isNotBase) {
-                            multiplier = buttonPower.mul(multiplier)
+                        if (!(buttonPower.equals(1)) && isNotBase) {
+                            multiplier = multiplier.mul(buttonPower)
                         }
 
                         for (t = 0; t < onclicks.length; t++) {
@@ -6165,7 +6165,7 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(true), buttonPower = 1, speed = H(true), buttonPower = 1, cpt = -1, time = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false
+        var baseSpeed = H(true), speed = H(true), buttonPower = H(true), cpt = -1, time = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:dark)")
         if (darkModeMedia.matches) {
@@ -8335,7 +8335,7 @@
             }
 
             // Reset the speed
-            speed = new H(baseSpeed)
+            speed = new H(true)
 
             // Reset the button click variable
             alreadyClicked = false
