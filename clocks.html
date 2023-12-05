@@ -2534,6 +2534,7 @@
             eraclocks: %ERAClock (3, What lies ahead...)
             jewelers: Jeweler (2, Ooooh, shiny!)
             miners: Miner (2, Digs beneath the earth)
+            coalminers: Coal Miner Machine (2, Uncovers large amounts of coal)
             diggers: Digger (2, Also digs the earth, but differently)
             cokeovens: Coke Oven (2, A large industrial-grade oven to make coke, a much better fuel)
             steel: Steel$ (2, Light gray with a metallic sheen)
@@ -2879,6 +2880,13 @@
                         <span class="mini stripe2" data-earn="diggers+1" data-cost="money-50000"
                             data-desc="You can get more MEGA-managers to buy diggers faster.$diggers$"
                             data-show="miners>0" data-megabuy></span>
+                    </button>
+
+                    <br>
+                    <button data-earn="coalminers+1" data-cost="steel-5e6|miners-5" data-show="$coal"
+                        data-desc="Get a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 100,000 watts.$coalminers$"
+                        class="gold">
+                        Get a coal miner machine <span class="coal"></span>
                     </button>
 
                     <br>
@@ -3267,7 +3275,7 @@
                     <span class="big star"></span>
                     Creativity and science are essential for technological advancements.
                     <br>
-                    Who knows what you can unlock?
+                    Who knows what else you can unlock?
 
                     <br>
                     <button class="crystal"
@@ -3318,22 +3326,22 @@
                     </span>
                     <div id="research">
                         <div data-show="$creative" data-cost="1e9" data-research="magic"
-                            data-desc="Science isn't always the solution: try MAGIC!\n(Unlocks all rocket parts.)">
+                            data-desc="Science isn't always the solution: try MAGIC!">
                             The Magical Realm: <span class="green">$1,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$rocketry2" data-cost="2.5e14" data-research="rocketry3"
-                            data-desc="More rocket science? All right...\n(Unlocks all rocket parts.)">
+                            data-desc="More rocket science? All right...\n(Unlocks all rocket parts)">
                             Rocket Science 2.0: <span class="green">$250,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$rocketry" data-cost="5e13" data-research="rocketry2"
-                            data-desc="Well, it's not rocket science anymore!\n(Unlocks a few rocket parts that you can build.)">
+                            data-desc="Well, it's not rocket science anymore!\n(Unlocks a few rocket parts that you can build)">
                             Rocket Science: <span class="green">$50,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$smart|naphtha>0|science>1e12" data-cost="1e12" data-research="rocketry"
-                            data-desc="Learn the basic components of rockets.\n(Unlocks the rocket panel, although you'll need further research to do anything at all.)">
+                            data-desc="Learn the basic components of rockets.\n(Unlocks the rocket panel, although you'll need further research to do anything at all)">
                             Basic Rocketry: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -3348,7 +3356,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="$factories" data-cost="7.5e15" data-research="massarms"
-                            data-desc="You can get up to 100 MILLION steel or aluminum robot arms at once if you get this!\n(Unlocks a new button on robot arms allowing you to buy 100 million at once)">
+                            data-desc="You can get up to 100 MILLION steel or aluminum robot arms at once if you get this!\n(Unlocks a new button on robot arms, allowing you to buy 100 million of them at once)">
                             More robot arms: <span class="green">$7,500,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -3388,7 +3396,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="computers>0" data-cost="2.5e7" data-research="ai"
-                            data-desc="You get your smartest employees (and family members) together to discuss how to continue.\nAI seems to be the only solution! Note that to get more effective AI, you need lots of science.\n(Unlocks the AI brain)">
+                            data-desc="You get your smartest employees (and family members) together to discuss how to continue.\nAI seems to be the only solution! Note that to get more effective AI, you need lots of science.\n(Unlocks the AI brain, which learns using computers)">
                             Research basic AI: <span class="green">$25,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -3455,8 +3463,13 @@
                             Hotter turbines: <span class="green">$5,000,000</span>
                             <span class="money"></span>
                         </div>
+                        <div data-show="$turbines" data-cost="1e12" data-research="coal"
+                            data-desc="Machines can make lots of clocks, so why not give them the ability to mine coal commercially?\n(Unlocks coal miner machines in the mining menu)">
+                            Coal mining machines: <span class="green">$1,000,000,000,000</span>
+                            <span class="money"></span>
+                        </div>
                         <div data-show="science>=4e6|$coke2" data-cost="5e11" data-research="coke3"
-                            data-desc="As it turns out, coal tar is an effective binder material, and increases the effectiveness of coke ovens.\nBut it will cost a lot to make! You knew that already though, right?\n(3× efficiency of coke ovens)">
+                            data-desc="As it turns out, coal tar is an effective binder material, and increases the effectiveness of coke ovens.\n(whatever that means)\nBut it will cost a lot to make! You knew that already though, right?\n(3× efficiency of coke ovens)">
                             Coal tar: <span class="green">$500,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -3486,7 +3499,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="science>1000|creativity>2500" data-cost="8e7" data-research="radium"
-                            data-desc="Radium ore looks quite scary, but with proper care, it can be turned into radium bars and ##.\n(Unlocks radium mills and ##!)">
+                            data-desc="Radium ore looks quite scary, but with proper care, it can be turned into radium bars and ##.\n(Unlocks radium ## and mills!)">
                             Research radium enrichment: <span class="green">$80,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -3506,7 +3519,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="furnaces>0" data-cost="250000" data-research="mills"
-                            data-desc="Learn how to create steel mills and how to use them.\n(Unlocks steel mills, allowing you to construct robot arms, which increases # production tremendously!)">
+                            data-desc="Learn how to create steel mills and how to use them.\n(Unlocks steel mills in the build menu, allowing you to construct robot arms, which increases # production tremendously!)">
                             Research steel-working: <span class="green">$250,000</span>
                             <span class="money"></span>
                         </div>
@@ -3842,6 +3855,9 @@
                         Made by Leo Zhang. All rights reserved!
                     </strong>
                     <br>
+                    NEW minor update (December 5, 2023): Coal miner machines! <span class="coal"></span>
+
+                    <br><br>
                     Version <b>0.0.3</b>: <span class="rainbow">mystery</span>!
                     <span class="question"></span><span class="question"></span><span class="question"></span>
 
@@ -3849,6 +3865,7 @@
                         <li>Working on improving ascensions</li>
                         <li>Trying to simplify the game</li>
                         <li>How about I add more when the game is better?</li>
+                        <li>oh wait programming doesn't work like that</li>
                     </ul>
 
                     FUTURE Features:
@@ -5672,7 +5689,7 @@
                 input.setSelectionRange(0, 99999999)
                 document.execCommand("copy")
                 input.remove()
-                console.info("Copied! (text is " + (newSave.length / 1000).toFixed(2) + "KB long)")
+                alert("Copied in " + (newSave.length / 1000).toFixed(2) + "KB!")
             }
         })
 
@@ -5701,11 +5718,11 @@
         })
         ID("cheat").addEventListener("click", cheat)
 
-        var defaultWattagePriority = ["printers", "computers", "aluminumarms", "factories", "arms"], wattageNames = ["3D Printers", "Computers", "Aluminum Robot Arms", "Factories", "Robot Arms"]
+        var defaultWattagePriority = ["coalminers", "printers", "computers", "aluminumarms", "factories", "arms"], wattageNames = ["Coal Mining Machines", "3D Printers", "Computers", "Aluminum Robot Arms", "Factories", "Robot Arms"]
         ID("resetPower").addEventListener("click", function () {
             wattageOrder = defaultWattagePriority.slice(0)
             var newHTML = ""
-            for (i = 0; i < wattageOrder.length; i++) {
+            for (var i = 0; i < wattageOrder.length; i++) {
                 newHTML += '<span data-for="' + wattageOrder[i] + '">' + wattageNames[i] + "</span>"
             }
             updateHTML(ID("dragParent"), newHTML)
@@ -6447,6 +6464,7 @@
 
         var wattageOrder = defaultWattagePriority.slice(0)
         var machineConsumption = {
+            coalminers: 100000,
             printers: 500,
             computers: 100,
             aluminumarms: [100, 20],
@@ -7575,6 +7593,8 @@
             var miningPower = miners.mul(hasResearch("mining") ? 1.5 : 1)
             var diggers = C("diggers", issue)
 
+            var coalMinerPower = C("coalminers", issue).mul(3210)
+
             var woodcutters = C("woodcutters", issue)
             var woodPower = woodcutters.mul(hasResearch("axes") ? 2.5 : 1)
             var bluecutters = C("bluecutters", issue)
@@ -7704,6 +7724,7 @@
             add("clocks", cpt)
 
             multiExchange(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore"], [miningPower.mul(0.0145), miningPower.mul(0.065), miningPower.mul(0.04), miningPower.mul(0.01825), miningPower.mul(0.003), miningPower.mul(0.0025), miningPower.mul(0.0175), miningPower.mul(0.0075), miningPower.mul(0.00325), miningPower.mul(0.0025), miningPower.mul(0.0002), miningPower.mul(0.0000027725)], "money", miners.mul(0.1))
+            add("coal", coalMinerPower)
 
             exchange("radium", radiumMills.mul(0.001), "radiumore")
             exchange("copper", furnacePower, "copperore")
@@ -8240,7 +8261,7 @@
                         text = text.slice(0, matches.index) + "<br>(You have " + getAmount(type)
                         if (defaultWattagePriority.includes(type)) {
                             var consumption = machineConsumption[type]
-                            text += " that [require " + (typeof consumption === "number" ? consumption : consumption[0]) + " watts to operate]"
+                            text += " that [require " + formatInteger(typeof consumption === "number" ? consumption : consumption[0]) + " watts to operate]"
                         }
                         text += ")"
                     }
