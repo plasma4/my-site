@@ -6350,6 +6350,9 @@
                 return (amount.equals(100) ? "a completed " + item.names[3] : "built " + format(amount, "step") + " of the " + item.names[3] + " with " + (100 * (Number(amount) % 1)).toFixed(4) + "% of that step completed") + ", as well as " + format(C("$" + id, "This happened while formatting name and quantity information for the amount of workers working on a rocket part."), "worker") + " helping to build it"
             } else if (id === "money") {
                 return "$" + formatted
+            } else if (id === "iq") {
+                amount = amount.mul(0.2).sqrt(true).sqrt(true)
+                formatted = amount.isMoreOrEqual(1000000) ? format(amount) : Number(amount).toFixed(4)
             }
 
             var isPlural = amount.isPlural()
