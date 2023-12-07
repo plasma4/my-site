@@ -65,9 +65,7 @@
 
         #content {
             background-color: #753609;
-            border-top-right-radius: 5px;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
+            border-radius: 20px 20px 5px 5px;
             border-spacing: 8px 2px;
             position: absolute;
             display: table;
@@ -309,6 +307,7 @@
 
         #navigation {
             font-size: 12px;
+            text-align: center;
         }
 
         #navigation>span {
@@ -467,6 +466,11 @@
         }
 
         @media (min-width: 425px) {
+            #navigation {
+                margin-left: 20px;
+                text-align: left;
+            }
+
             #navigation>span:hover {
                 padding: 6px 8px 12px 8px;
             }
@@ -2607,7 +2611,7 @@
             <span data-tab="mining" title="Mining menu" data-show="money>=15000"><span class="rock"></span></span>
             <span data-tab="robots" title="Robot menu" data-show="steelmills>0"><span class="chip"></span></span>
             <span data-tab="inums" title="Aluminum menu" data-show="$aluminum"><span class="aluminum"></span></span>
-            <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span>
+            <!-- <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span> -->
             <span data-tab="phoenix" title="Phoenix menu" data-show="bricks>0"><span class="feather"></span></span>
             <span data-tab="construction" title="Building menu" data-show="miners>0"><span class="brick"></span></span>
             <span data-tab="tech" title="Technology menu" data-show="woodcutters>0"><span class="flask"></span></span>
@@ -3326,11 +3330,11 @@
                         Time to SCIENCE!
                     </span>
                     <div id="research">
-                        <div data-show="$creative" data-cost="1e9" data-research="magic"
+                        <!-- <div data-show="$creative" data-cost="1e9" data-research="magic"
                             data-desc="Science isn't always the solution: try MAGIC!">
                             The Magical Realm: <span class="green">$1,000,000,000</span>
                             <span class="money"></span>
-                        </div>
+                        </div> -->
                         <div data-show="$rocketry2" data-cost="2.5e14" data-research="rocketry3"
                             data-desc="More rocket science? All right...\n(Unlocks all rocket parts)">
                             Rocket Science 2.0: <span class="green">$250,000,000,000,000</span>
@@ -3895,6 +3899,7 @@
                     FUTURE Features:
                     <ul>
                         <li>More features for ascending <span class="cross"></span></li>
+                        <li>Add magical stuff back in <span class="cross"></span></li>
                         <li>More magical spells and researches <span class="cross"></span></li>
                         <li>A weird magical marketplace <span class="cross"></span></li>
                     </ul>
@@ -7212,7 +7217,7 @@
 
         var resetTimeout = -1
         function reset(force) {
-            // Completely resets everything if "force" is set to true
+            // Resets everything if the parameter is set to true
             if (force) {
                 time = Date.now()
 
@@ -7247,7 +7252,7 @@
                     if (!child.hasAttribute("tabindex")) {
                         child.setAttribute("tabindex", 0)
                     }
-                    child.removeAttribute("style")
+                    child.removeAttribute("class")
                 }
 
                 // Setup everything...again
@@ -7629,11 +7634,11 @@
                 }
             } else {
                 updateId("shardCount", format(shards))
-                updateId("clickPower", format(speed.mul(10)))
+                updateId("shardPower", format(shards.mul(10000).sqrt(true).sqrt(true)) + "×")
+                updateId("clickPower", format(shards.mul(1e8).sqrt(true).sqrt(true)))
                 shardInfoElement.removeAttribute("style")
             }
 
-            updateId("shardPower", format(speed) + "×")
 
             // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
             speed = speed.mul(frame + 1).floor(true).sub(speed.mul(frame).floor(true))
@@ -7918,7 +7923,19 @@
             }
 
             // Yeah, there's a lot of things the game can say!
-            if (cps.isMore("1e100000")) {
+            if (cps.isMore("ee100")) {
+                updateId("potential", "...you know what, how about A LOT")
+            } else if (cps.isMore("ee10")) {
+                updateId("potential", "...items<sup>5</sup>")
+            } else if (cps.isMore("ee9")) {
+                updateId("potential", "...items<sup>4</sup>")
+            } else if (cps.isMore("ee8")) {
+                updateId("potential", "...items<sup>3</sup>")
+            } else if (cps.isMore("ee7")) {
+                updateId("potential", "...items<sup>2</sup>")
+            } else if (cps.isMore("ee6")) {
+                updateId("potential", "...items")
+            } else if (cps.isMore("1e100000")) {
                 updateId("potential", "...many, many things indeed")
             } else if (cps.isMore("1e10000")) {
                 updateId("potential", "...many things indeed")
@@ -7946,29 +7963,53 @@
                 updateId("potential", "...many clocks, I guess")
             } else if (cps.isMore("1e400")) {
                 updateId("potential", "...some clocks, I guess")
-            } else if (cps.isMore(1e300)) {
+            } else if (cps.isMore("1e300")) {
                 updateId("potential", "...a few clocks, I guess")
-            } else if (cps.isMore(1e200)) {
+            } else if (cps.isMore("1e200")) {
                 updateId("potential", " WAY TOO MUCH potential")
-            } else if (cps.isMore(1e100)) {
+            } else if (cps.isMore("1e100")) {
                 updateId("potential", " maybe a bit too much potential")
-            } else if (cps.isMore(1e25)) {
+            } else if (cps.isMore("1e50")) {
                 updateId("potential", " ABSOLUTELY RiDcUlOuS potential")
-            } else if (cps.isMore(1e10)) {
+            } else if (cps.isMore("1e40")) {
+                updateId("potential", " RiDcUlOuS potential")
+            } else if (cps.isMore("1e30")) {
                 updateId("potential", " EXTREMELY INSANE potential")
-            } else if (cps.isMore(1e9)) {
+            } else if (cps.isMore("1e20")) {
+                updateId("potential", " LOTS OF INSANE potential")
+            } else if (cps.isMore("1e19")) {
+                updateHTML(ID("potential"), " INSANE<sup>10</sup> potential")
+            } else if (cps.isMore("1e18")) {
+                updateHTML(ID("potential"), " INSANE<sup>9</sup> potential")
+            } else if (cps.isMore("1e17")) {
+                updateHTML(ID("potential"), " INSANE<sup>8</sup> potential")
+            } else if (cps.isMore("1e16")) {
+                updateHTML(ID("potential"), " INSANE<sup>7</sup> potential")
+            } else if (cps.isMore("1e15")) {
+                updateHTML(ID("potential"), " INSANE<sup>6</sup> potential")
+            } else if (cps.isMore("1e14")) {
+                updateHTML(ID("potential"), " INSANE<sup>5</sup> potential")
+            } else if (cps.isMore("1e13")) {
+                updateHTML(ID("potential"), " INSANE<sup>4</sup> potential")
+            } else if (cps.isMore("1e12")) {
+                updateHTML(ID("potential"), " INSANE<sup>3</sup> potential")
+            } else if (cps.isMore("1e11")) {
+                updateHTML(ID("potential"), " INSANE<sup>2</sup> potential")
+            } else if (cps.isMore("1e10")) {
+                updateHTML(ID("potential"), " INSANE potential")
+            } else if (cps.isMore("1e9")) {
                 updateId("potential", " SUPER DUPER CRAZY potential")
-            } else if (cps.isMore(1e8)) {
+            } else if (cps.isMore("1e8")) {
                 updateId("potential", " LOTS AND LOTS of potential")
-            } else if (cps.isMore(1e7)) {
+            } else if (cps.isMore("1e7")) {
                 updateId("potential", " LOTS of potential")
-            } else if (cps.isMore(1e6)) {
+            } else if (cps.isMore("1e6")) {
                 updateId("potential", " significant potential")
-            } else if (cps.isMore(1e5)) {
+            } else if (cps.isMore("1e5")) {
                 updateId("potential", " some potential")
-            } else if (cps.isMore(1e4)) {
+            } else if (cps.isMore("1e4")) {
                 updateId("potential", " earning many clocks")
-            } else if (cps.isMore(1e3)) {
+            } else if (cps.isMore("1e3")) {
                 updateId("potential", " earning some clocks")
             } else {
                 updateId("potential", " not much else")
