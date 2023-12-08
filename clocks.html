@@ -7809,7 +7809,7 @@
             var familySqrt = C("family", issue).sqrt()
             cpt = cpt.add(clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.225 : 0)).add(familySqrt.mul(familySqrt.sqrt()).mul(0.05))
             if (shards.isPositive()) {
-                cpt = cpt.mul(shards).mul(10000).sqrt(true).sqrt(true)
+                cpt = cpt.mul(shards.mul(10000).sqrt(true).sqrt(true))
             }
             add("clocks", cpt)
 
