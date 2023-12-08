@@ -448,7 +448,7 @@
         }
 
         #more:active {
-            background-color: #755d4f66;
+            background-color: #9e817166;
         }
 
         .smallish {
@@ -1481,6 +1481,7 @@
 
         .retro:active {
             background: linear-gradient(#dc9552 0%, #eace19 50%, #1f1402 50%, #0f4a05 100%);
+            text-shadow: 0 0 2.5px black;
             color: #eda68e;
         }
 
@@ -1726,7 +1727,7 @@
 
         .warn {
             font-weight: 400;
-            background-color: #f09b09;
+            background-color: #f5540f;
             border-color: white;
             border-radius: 25px 14px 55px 17px / 16px 8px 14px 11px;
         }
@@ -3015,7 +3016,7 @@
                         data-desc="You can get natural gas with these drillers, which slowly gather oil beneath the ground.\nCosts 2,500 steel and $2,000,000 to make. To store the oil, get a natural gas tank!\n(This can be made into plastic, which helps unlock a variety of technologies!)$gasdrills$">
                         Get a natural gas driller
                     </button>
-                    <button class="silver" data-earn="gastanks+1" data-cost="steel-10000" data-show="steel>10000"
+                    <button class="silver" data-earn="gastanks+1" data-cost="steel-10000" data-show="$plastic"
                         data-desc="These huge tanks can hold 4,000 gallons of natural gas EACH!\nHowever, they cost a hefty 10,000 pieces of steel and $4,000 to build.$gastanks$">
                         Get a natural gas tank
                     </button>
@@ -3062,7 +3063,7 @@
                         </span>
                         <span class="mini stripe4" data-earn="arms+1e8" data-sound="build"
                             data-desc="Do you [really] need 100 MILLION robot arms?$arms$" data-cost="steel-1.25e10"
-                            data-show="$massarms">
+                            data-show="$massarms|constructors>3">
                             100,000,000×
                         </span>
                     </button>
@@ -3087,7 +3088,7 @@
                         </span>
                         <span class="mini stripe4" data-earn="aluminumarms+1e8" data-sound="build"
                             data-desc="Do you [really] need 100 MILLION aluminum robot arms?$aluminumarms$"
-                            data-cost="aluminum-2.5e10" data-show="$massarms">
+                            data-cost="aluminum-2.5e10" data-show="$massarms|constructors>3">
                             100,000,000×
                         </span>
                     </button>
@@ -3465,7 +3466,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="$factories" data-cost="7.5e15" data-research="massarms"
-                            data-desc="You can get up to 100 MILLION steel or aluminum robot arms at once if you get this!\n(Unlocks a new button on robot arms, allowing you to buy 100 million of them at once)">
+                            data-desc="You can get up to 100 MILLION steel or aluminum robot arms at once you purchase this!\n(Unlocks a new button on robot arms, allowing you to buy 100 million of them at once if you have 4 constructors or more)">
                             More robot arms: <span class="green">$7,500,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -3755,7 +3756,7 @@
                         Buy a MEGA-<span class="battery" role="img" aria-label="battery"></span>
                     </button>
                     <button class="diamond"
-                        data-desc="Instead of storing electricity the conventional way, use ANOTHER non-renewable source: blue wood.\nThese store 25,000× as much as a normal battery though, and they look cool, from what you're told!\nCosts a MILLION blue wood, and, hmm, $10,000 for the packaging.$bluebatteries$"
+                        data-desc="Instead of storing electricity the conventional way, use ANOTHER non-renewable source: blue wood.\nThese store WAY MORE than a normal battery, plus they look snazzy from what you're told!\nCosts a MILLION blue wood (plus $10,000 for the packaging).$bluebatteries$"
                         data-cost="bwood-1e6|money-10000" data-earn="bluebatteries+1"
                         data-show="megabatteries>0|megaturbines>0">
                         Buy a <span class="battery" role="img" aria-label="battery"></span> made of blue wood
@@ -3901,7 +3902,7 @@
                     </div>
 
                     <div id="shardInfo">
-                        Your current clock earnings multiplier is <b id="shardPower"></b>
+                        Your current normal clock earning multiplier is <b id="shardPower"></b>
                         because you have <b id="shardCount"></b> shards.
                         <br>
                         You also earn <b id="clickPower"></b> clocks per click instead of just <b>1</b>.
@@ -5657,7 +5658,7 @@
                 var touch = e.touches[0]
                 var target = document.elementFromPoint(touch.clientX, touch.clientY)
 
-                if (target.getAttribute) {
+                if (target !== null && target.getAttribute) {
                     hovered = target
                 } else {
                     hovered = null
@@ -5726,7 +5727,7 @@
             var target = e.target
             updateRemoveAmount(e)
             if (!(["INPUT", "SELECT", "TEXTAREA", "U"]).includes(target.tagName)) {
-                if (e.repeat) {
+                if (e.repeat && e.keyCode !== 9) {
                     e.preventDefault()
                 } else {
                     if (e.keyCode === 32 || e.keyCode === 13) {
@@ -6262,7 +6263,7 @@
                             var action = onclicks[t]
                             if (action === "wattseconds=max") {
                                 var issue = "This happened while finding the maximum amount allowed for a value."
-                                var limit = C("batteries", issue).mul(600000).add(C("megabatteries", issue).mul(600000000)).add(C("bluebatteries", issue).mul(150000000000))
+                                var limit = C("batteries", issue).mul(600000).add(C("megabatteries", issue).mul(60000000)).add(C("bluebatteries", issue).mul(150000000000))
                                 stuffTotals.wattseconds = stuffTotals.wattseconds.add(limit).sub(stuff.wattseconds)
                                 stuff.wattseconds = limit
                                 continue
@@ -6532,6 +6533,7 @@
                     return formatted + " of these"
                 }
             }
+
             if (rocketParts.includes(id)) {
                 return (amount.equals(100) ? "a completed " + item.names[3] : "built " + format(amount, "step") + " of the " + item.names[3] + " with " + (100 * (Number(amount) % 1)).toFixed(4) + "% of that step completed") + ", as well as " + format(C("$" + id, "This happened while formatting name and quantity information for the amount of workers working on a rocket part."), "worker") + " helping to build it"
             } else if (id === "money") {
@@ -6558,7 +6560,7 @@
                     }
                 }
             }
-            return formatted + " " + name
+            return formatted + " " + name.replace(/nuggets|nugget/, "ore")
         }
 
         var alreadyDragged = false
