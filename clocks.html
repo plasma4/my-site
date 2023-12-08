@@ -25,6 +25,31 @@
             user-select: none;
         }
 
+        body::-webkit-scrollbar {
+            background-color: transparent;
+            width: 12px;
+        }
+
+        body::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 10px white;
+            border-radius: 8px;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: #f63c04;
+            box-shadow: inset 0 0 6px black;
+            border-radius: 8px;
+        }
+
+        body::-webkit-scrollbar-thumb:hover {
+            background-color: #f66504;
+        }
+
+        body::-webkit-scrollbar-thumb:active {
+            background-color: #f68d04;
+            box-shadow: 6px;
+        }
+
         #hover {
             position: fixed;
             display: none;
@@ -58,8 +83,8 @@
         #everything {
             position: absolute;
             top: 12.5%;
-            left: 10%;
-            width: 80%;
+            left: 5%;
+            width: 90%;
             height: 75%;
         }
 
@@ -722,7 +747,7 @@
         }
 
         button {
-            width: 300px;
+            width: 333.333px;
             max-width: 75vw;
             min-height: 60px;
         }
@@ -1680,8 +1705,8 @@
         }
 
         .warn {
-            font-size: 18px;
-            background-color: red;
+            font-weight: 600;
+            background-color: #f09b09;
             border-color: white;
             border-radius: 25px 14px 55px 17px / 16px 8px 14px 11px;
         }
@@ -1689,11 +1714,32 @@
         .warn:hover,
         .warn:focus {
             background-color: white;
+            color: #f09b09;
+            border-color: #f09b09;
+        }
+
+        .warn:active {
+            background-color: #f0c497;
+            color: #ed9b49;
+            border-color: #f09b09;
+        }
+
+        .warn2 {
+            font-size: 18px;
+            background-color: red;
+            border-color: white;
+            border-radius: 25px 14px 55px 17px / 16px 8px 14px 11px;
+        }
+
+        .warn2:hover,
+        .warn2:focus {
+            font-weight: 700;
+            background-color: white;
             color: red;
             border-color: red;
         }
 
-        .warn:active {
+        .warn2:active {
             background-color: #ff9090;
             color: #d53737;
             border-color: red;
@@ -2669,8 +2715,9 @@
                     <button class="bronze" data-earn="furnaces+1" data-cost="bricks-1250|money-1000" data-show="kilns>0"
                         data-sound="build"
                         data-desc="Get a blast furnace to help extract ores from materials you have mined.\nCosts 1,250 bricks and $1,000 to make.$furnaces$">
-                        Construct a furnace <span class="coppern"></span><span class="silvern"></span><span
-                            class="goldn"></span><span class="platinumn"></span>
+                        Construct a furnace
+                        <span class="coppern"></span><span class="silvern"></span><span class="goldn"></span><span
+                            class="platinumn"></span>
                         <span class="mini stripe1" data-earn="furnaces+1" data-sound="build"
                             data-cost="bricks-1250|money-1000" data-show="platinum>=1e10"
                             data-desc="You can get more furnaces at once by getting more construction managers!$furnaces$"
@@ -3822,7 +3869,7 @@
                 </div>
 
                 <div id="settings" style="display: none">
-                    <button id="wipe" class="warn"
+                    <button id="wipe" class="warn2"
                         data-desc="(RESETTING EVERYTHING LIKELY A BAD IDEA: YOU CAN EXPORT IF YOU WANT)">
                         WIPE EVERYTHING
                     </button>
@@ -5890,8 +5937,7 @@
         ID("shardAscend").addEventListener("click", function () {
             var newShards = C("gc").mul(1e-9).floor()
             if (confirm(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You will NOT EARN ANY SHARDS OR BONUSES." : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
-                newShards = newShards.add(C("shards"))
-
+                var oldShards = C("shards")
                 var t = H(".001666666666666666666666666666666666666666666666667")
                 rawAdd("crystal3", stuff.bonus3.mul(t).floor(), false)
                 rawAdd("crystal2", stuff.bonus2.mul(t).floor(), false)
@@ -5901,11 +5947,11 @@
                 var blueCrystals = C("crystal3")
 
                 reset(true)
-                add("shards", newShards)
+                add("shards", newShards.add(oldShards))
                 add("crystal1", purpleCrystals.mul(0.25).ceil(true))
                 add("crystal2", greenCrystals.mul(0.25).ceil(true))
                 add("crystal3", blueCrystals.mul(0.25).ceil(true))
-                console.log("The shard reset has finished!")
+                console.log("A shard reset was done for " + format(newShards) + " new shards.")
             }
         })
 
@@ -5925,7 +5971,7 @@
                     elem.click()
                 }
             }, ms)
-            console.info("Autoclicker activated!")
+            console.info("An autoclicker has been activated.")
         }
 
         var currentTab = "main"
@@ -6928,6 +6974,7 @@
                 } else if (!load(localSave)) {
                     console.info("COPY YOUR SAVE IN CASE IT IS GONE WHEN YOU RELOAD!")
                     console.log(localSave)
+                    showLogs()
                     reset(true)
                 }
 
@@ -8529,7 +8576,7 @@
                     addScripts()
                 })
                 panel.addEventListener("dblclick", function (e) {
-                    if (confirm("Remove ALL mods?") && confirm("Are you ABSOLUTELY SURE you want to remove all mods? This CANNOT be undone!")) {
+                    if (confirm("Remove ALL mods?") && confirm("Are you ABSOLUTELY SURE you want to remove all mods?\nThis CANNOT be undone and may break the game!")) {
                         clearTimeout(moddingTimeout)
                         var lenPlusOne = clockMods.length + 1
                         for (var i = 1; i < lenPlusOne; i++) {
