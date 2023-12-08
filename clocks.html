@@ -60,10 +60,25 @@
             background-color: white;
             border: solid 4px white;
             border-radius: 8px;
-            animation: size 4s linear infinite;
+            animation: size1 4s linear infinite;
+            line-height: 18px;
         }
 
-        @keyframes size {
+        @keyframes size1 {
+            0% {
+                font-size: 14px;
+            }
+
+            50% {
+                font-size: 16px;
+            }
+
+            100% {
+                font-size: 14px;
+            }
+        }
+
+        @keyframes size2 {
             0% {
                 font-size: 18px;
                 line-height: 22px;
@@ -475,6 +490,11 @@
         }
 
         @media (min-width: 750px) and (min-height: 400px) {
+            #hover {
+                animation: size2 4s linear infinite;
+                line-height: 22px;
+            }
+
             #navigation {
                 padding: 8px 2px 2px 2px;
             }
@@ -5608,20 +5628,31 @@
         const cssElement = document.getElementsByTagName("style")[1]
         const main = ID("main")
 
-        var hovered = null, mouseX = -1, mouseY = -1
+        var hovered = null, mouseX = -1, mouseY = -1, noTouching = true
         document.addEventListener("mousemove", function (e) {
-            mouseX = e.clientX
-            mouseY = e.clientY
-            var target = e.target
+            if (noTouching) {
+                mouseX = e.clientX
+                mouseY = e.clientY
+                var target = e.target
 
-            if (target.getAttribute) {
-                hovered = target
-            } else {
-                hovered = null
+                if (target.getAttribute) {
+                    hovered = target
+                } else {
+                    hovered = null
+                }
             }
         })
 
         document.addEventListener("touchstart", function (e) {
+            updateTouch(e)
+            noTouching = false
+        })
+        document.addEventListener("touchmove", updateTouch)
+        document.addEventListener("touchend", function (e) {
+            noTouching = e.touches.length === 0
+        })
+
+        function updateTouch(e) {
             if (e.touches.length === 1) {
                 var touch = e.touches[0]
                 var target = document.elementFromPoint(touch.clientX, touch.clientY)
@@ -5634,7 +5665,7 @@
             } else {
                 hovered = null
             }
-        })
+        }
 
         function updateSounds() {
             var keys = Object.keys(audioSources)
@@ -8141,7 +8172,7 @@
         const HALLOWEEN = 1
         const CHRISTMAS = 2
         const NEWYEAR = 2
-        var season = -1, holiday = NONE
+        var season = -1, holiday = NONE, activeElement = document.activeElement
         draw = function () {
             var date = new Date()
             holiday = isDate(date, 10, 31) ? HALLOWEEN : (isDate(date, 12, 25) ? CHRISTMAS : (isDate(date, 1, 1) ? NEWYEAR : NONE))
@@ -8190,6 +8221,13 @@
                     updateOfflineTime()
                 }
                 time = newTime
+            }
+
+            if (document.activeElement !== activeElement) {
+                activeElement = document.activeElement
+                if (activeElement.getAttribute) {
+                    hovered = activeElement
+                }
             }
 
             var researchLen = researches.length
