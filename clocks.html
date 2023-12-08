@@ -1557,19 +1557,38 @@
         }
 
         .glow,
-        .valuable {
+        .valuable,
+        .valuable2 {
             text-shadow: 0 0 4px #edae1b;
             transition: text-shadow 250ms;
         }
 
         .glow:hover,
-        .valuable:hover {
+        .valuable:hover,
+        .valuable2:hover {
             text-shadow: 0 0 8px #f3e0b5;
         }
 
         .glow:active,
-        .valuable:active {
+        .valuable:active,
+        .valuable2:active {
             text-shadow: 0 0 10px #f0e2ce, 0 0 4px #edc72d;
+        }
+
+        .valuable {
+            background: linear-gradient(90deg, #ebce7e, #eabc19);
+        }
+
+        .valuable2 {
+            background: linear-gradient(90deg, #ebb57e, #ea5f19);
+        }
+
+        .valuable,
+        .valuable2 {
+            font-weight: 600;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .red {
@@ -1628,14 +1647,6 @@
             100% {
                 color: #0e2b61;
             }
-        }
-
-        .valuable {
-            background: linear-gradient(90deg, #ebce7e, #eabc19);
-            font-weight: 600;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .graydient {
@@ -3963,8 +3974,7 @@
                 </div>
                 <!-- ??? -->
 
-                <div id="shards" class="valuable"
-                    data-desc="Golden shards can be exchanged for a variety of boosts and multiply CPS by itself!"
+                <div id="shards" class="valuable2" data-desc="Golden shards allow you to acquire MASSIVE boosts!"
                     data-for="$shard"></div>
                 <div id="clocks" class="gray" data-desc="Your average #. Can be sold or merged." data-for="$clock">
                 </div>
@@ -7639,7 +7649,6 @@
                 shardInfoElement.removeAttribute("style")
             }
 
-
             // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
             speed = speed.mul(frame + 1).floor(true).sub(speed.mul(frame).floor(true))
             if (speed.isZero()) {
@@ -7924,15 +7933,15 @@
 
             // Yeah, there's a lot of things the game can say!
             if (cps.isMore("ee100")) {
-                updateId("potential", "...you know what, how about A LOT")
+                updateId("potential", "...well uh how about A LOT")
             } else if (cps.isMore("ee10")) {
-                updateId("potential", "...items<sup>5</sup>")
+                updateHTML(ID("potential"), "...items<sup>5</sup>")
             } else if (cps.isMore("ee9")) {
-                updateId("potential", "...items<sup>4</sup>")
+                updateHTML(ID("potential"), "...items<sup>4</sup>")
             } else if (cps.isMore("ee8")) {
-                updateId("potential", "...items<sup>3</sup>")
+                updateHTML(ID("potential"), "...items<sup>3</sup>")
             } else if (cps.isMore("ee7")) {
-                updateId("potential", "...items<sup>2</sup>")
+                updateHTML(ID("potential"), "...items<sup>2</sup>")
             } else if (cps.isMore("ee6")) {
                 updateId("potential", "...items")
             } else if (cps.isMore("1e100000")) {
