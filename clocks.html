@@ -2489,6 +2489,42 @@
             top: 40px;
             left: 40px;
         }
+
+        #crystal {
+            position: absolute;
+            pointer-events: auto;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+            display: none;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: scale(5);
+            }
+
+            10% {
+                transform: scale(5) rotate(-15deg);
+            }
+
+            25% {
+                transform: scale(5) rotate(40deg);
+            }
+
+            55% {
+                transform: scale(5) rotate(-5deg);
+            }
+
+            65% {
+                transform: scale(5) rotate(-65deg);
+            }
+
+            100% {
+                transform: scale(5);
+            }
+        }
     </style>
 
     <script>
@@ -2712,7 +2748,7 @@
             <span data-tab="clock" title="Normal clock menu"><span class="clock"></span></span>
             <span data-tab="goldc" title="Golden clock menu" data-show="money>=10"><span class="gc"></span></span>
             <span data-tab="radiumc" title="Radium clock menu" data-show="$radium"><span class="rc"></span></span>
-            <span data-tab="mining" title="Mining menu" data-show="money>=15000"><span class="rock"></span></span>
+            <span data-tab="earth" title="Mining menu" data-show="money>=5000"><span class="rock"></span></span>
             <span data-tab="robots" title="Robot menu" data-show="steelmills>0"><span class="chip"></span></span>
             <span data-tab="inums" title="Aluminum menu" data-show="$aluminum"><span class="aluminum"></span></span>
             <!-- <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span> -->
@@ -2972,7 +3008,7 @@
                     </button>
                 </div>
 
-                <div id="mining" style="display: none">
+                <div id="earth" style="display: none">
                     <span class="big limestone"></span>
                     You can extract many items from under the earth, albeit with a price.
 
@@ -3396,16 +3432,16 @@
 
                     <br>
                     <button class="stripe4"
-                        data-desc="Omega managers...now the possibilities are INFINITE!\nThey cost 1 BILLION gold blocks though!\n(HINT: [might unlock new game mechanics!!!])$omegamanagers$"
-                        data-cost="goldb-1e9" data-earn="omegamanagers+1" data-show="megamanagers>0">
+                        data-desc="Omega managers...now the possibilities are INFINITE!\nThey cost 25 MILLION gold blocks though!\n(HINT: [might unlock new game mechanics!!!])$omegamanagers$"
+                        data-cost="goldb-2.5e7" data-earn="omegamanagers+1" data-show="megamanagers>0">
                         +1 <b>O</b>MEGA-manager
                         <span class="coin"></span> <span class="coin"></span> <span class="coin"></span>
                     </button>
 
                     <br>
                     <button class="stripe3"
-                        data-desc="Mega-managers allow you to buy multiple managers at once, as well as jewelers and all steam turbines.\nHowever, these people cost fifty MILLION golden ## and a MILLION gold bars each!\n(Well, managers are greedy, after all.)$megamanagers$"
-                        data-cost="gc-5e7|goldb-1e6" data-earn="megamanagers+1" data-show="managers>0">
+                        data-desc="Mega-managers allow you to buy multiple managers at once, as well as jewelers and all steam turbines.\nHowever, these people cost twenty MILLION golden ## and a MILLION gold bars each!\n(Well, managers are greedy, after all.)$megamanagers$"
+                        data-cost="gc-2e7|goldb-1e6" data-earn="megamanagers+1" data-show="managers>0">
                         +1 MEGA-manager <span class="coin"></span> <span class="coin"></span>
                         <span class="mini stripe3"
                             data-desc="Get multiple MEGA-managers at once.\nFor every OMEGA-manager you get, you get +1 purchase power!$megamanagers$"
@@ -4243,6 +4279,8 @@
             <span data-for="crystal2">0×</span> <span class="crystal2" role="presentation"></span>
             <span data-for="crystal1">0×</span> <span class="crystal1" role="presentation"></span>
         </div>
+
+        <span id="crystal"></span>
 
         <div id="modPanel" tabindex="0">
             You have mods that are active. Press any key or wait to make this panel disappear.
@@ -5994,7 +6032,7 @@
 
         ID("shardAscend").addEventListener("click", function () {
             var newShards = C("gc").mul(1e-9).floor()
-            if (confirm(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You will NOT EARN ANY SHARDS OR BONUSES." : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
+            if (confirm(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You WILL NOT EARN ANY SHARDS OR BONUSES!!!" : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
                 var oldShards = C("shards")
                 var t = H(".001666666666666666666666666666666666666666666666667")
                 rawAdd("crystal3", stuff.bonus3.mul(t).floor(), false)
@@ -6011,6 +6049,19 @@
                 add("crystal3", blueCrystals.mul(0.25).ceil(true))
                 console.log("A shard reset was done for " + format(newShards) + " new shards.")
             }
+        })
+
+        var crystalTotal = 0, crystalTime = -1, crystalSpeed = 30000
+        ID("crystal").addEventListener("mousedown", function () {
+            if (alreadyClicked) {
+                return
+            }
+
+            alreadyClicked = true
+            var crystalType = (crystalTotal % 3) + 1
+            rawAdd("crystal" + crystalType, H(5 - crystalType))
+            crystalTime = Date.now() + crystalSpeed * (Math.floor(++crystalTotal / 3) + 1)
+            ID("crystal").removeAttribute("style")
         })
 
         // Checks for a research: can be modified
@@ -7343,6 +7394,7 @@
             // Resets everything if the parameter is set to true
             if (force) {
                 time = Date.now()
+                crystalTime = time + crystalSpeed
 
                 // Reset all property values
                 stuff = {}
@@ -8207,7 +8259,11 @@
                 updateHTML(cssElement, themeCSS + extraCSS)
             }
 
-            var t = Date.now() + 250
+            if (newTime >= crystalTime) {
+                var crystalImage = ID("crystal")
+                crystalImage.style.display = "block"
+                crystalImage.className = "crystal" + ((crystalTotal % 3) + 1)
+            }
 
             if (!document.hidden) {
                 var diff = newTime - time
