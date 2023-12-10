@@ -2493,17 +2493,12 @@
 
         #crystal {
             position: absolute;
-            cursor: pointer;
-            display: none;
             pointer-events: auto;
-            z-index: 9;
             top: 0;
             left: 0;
+            cursor: pointer;
+            display: none;
             animation: rotate 2s linear infinite;
-        }
-
-        #crystal:focus {
-            filter: contrast(3);
         }
 
         @keyframes rotate {
@@ -2748,8 +2743,6 @@
             crystal2: Green Crystal (100, Provides a 25× speed boost for ten seconds)
             crystal1: Blue Crystal (100, Provides a 10× speed boost for ten seconds)
         </div>
-
-        <span id="crystal" tabindex="0"></span>
 
         <nav id="navigation" aria-label="Navigation to switch tabs">
             <span data-tab="main" title="Main menu"><span class="hammer"></span></span>
@@ -4315,6 +4308,8 @@
             <span data-for="crystal1">0×</span> <span class="crystal1" role="presentation"></span>
         </div>
 
+        <span id="crystal"></span>
+
         <div id="modPanel" tabindex="0">
             You have mods that are active. Press any key or wait to make this panel disappear.
             <br>
@@ -4528,7 +4523,7 @@
                                 var beforeLength = beforeValue.length
                                 if (beforeDot !== -1) {
                                     beforeValue = beforeValue.slice(0, beforeDot) + beforeValue.slice(beforeDot + 1)
-                                    beforeTemp += 2 * (digitDot - beforeLength) + 1
+                                    beforeTemp += beforeDot - beforeLength
                                 }
                                 var beforeDigits = BigInt(beforeTemp)
 
@@ -5458,7 +5453,8 @@
                 var part2 = this.$[2].toString()
                 var i = part2.length
                 while (part2.charCodeAt(--i) === 48) { }
-                return (--category >= 5 ? "e^" + category + " " : "e".repeat(category)) + (i === 0 ? part2[0] : (part2[0] + "." + part2.slice(1, i + 1))) + "e" + part1
+                var mainResult = (i === 0 ? part2[0] : (part2[0] + "." + part2.slice(1, i + 1))) + "e" + part1
+                return (--category >= 4 ? mainResult + "F" + category : ("e".repeat(category) + mainResult))
             }
 
             var firstPart = this.$[2].toString()
@@ -6157,7 +6153,7 @@
         })
 
         var crystalTotal = 0, crystalTime = -1, crystalSpeed = 30000
-        ID("crystal").addEventListener("click", function () {
+        ID("crystal").addEventListener("mousedown", function () {
             if (alreadyClicked) {
                 return
             }
