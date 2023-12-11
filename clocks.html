@@ -1501,6 +1501,7 @@
         }
 
         .comical {
+            pointer-events: none;
             font-size: 16px;
             background: linear-gradient(#0000, #fff7), linear-gradient(90deg, #0f0, #f00, #ff0, #f0f, #40405c, black, #ffffff);
             font-family: "Comic Sans MS", "Comic Sans", cursive;
@@ -2502,8 +2503,13 @@
             animation: rotate 2s linear infinite;
         }
 
-        #crystal:focus {
-            filter: contrast(3);
+        #crystal:hover {
+            filter: contrast(1.5);
+        }
+
+        #crystal:focus,
+        #crystal:active {
+            filter: contrast(8);
         }
 
         @keyframes rotate {
@@ -2619,7 +2625,7 @@
         </header>
 
         <div id="properties">
-            coke|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silver|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq|shards
+            coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silver|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq|shards
         </div>
         <div id="shown">
             clocks|gc|goldore
@@ -2713,8 +2719,6 @@
             omegamanagers: OMEGA-Manager (5, That's omega for you...)
             cmanagers: Construction Manager (6, Someone who manages construction and allows you to build faster)
             scientists: Scientist (3, A scientist who dedicates their entire life into producing science and creativity)
-            printers: %GOOD&trade; Printer (6, Can be used to print digital clocks)
-            dc: Digital Clock (4, A small rectangular digital clock)
             watches: Silver Watch$es (3, An IriSH WristWatch made with Silver ShowOff)
             watts: Permanent Watt (2, Voltage that can be used to actively power machines)
             wattseconds: Temporary Watt (1, Voltage that is stored in batteries and is used as backup wattage)
@@ -2754,7 +2758,7 @@
         <nav id="navigation" aria-label="Navigation to switch tabs">
             <span data-tab="main" title="Main menu"><span class="hammer"></span></span>
             <span data-tab="clock" title="Normal clock menu"><span class="clock"></span></span>
-            <span data-tab="goldc" title="Golden clock menu" data-show="money>=10"><span class="gc"></span></span>
+            <span data-tab="goldc" title="Golden clock menu" data-show="money>0"><span class="gc"></span></span>
             <span data-tab="radiumc" title="Radium clock menu" data-show="$radium"><span class="rc"></span></span>
             <span data-tab="earth" title="Mining menu" data-show="money>=5000"><span class="rock"></span></span>
             <span data-tab="robots" title="Robot menu" data-show="steelmills>0"><span class="chip"></span></span>
@@ -2762,7 +2766,7 @@
             <!-- <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span> -->
             <span data-tab="phoenix" title="Phoenix menu" data-show="bricks>0"><span class="feather"></span></span>
             <span data-tab="construction" title="Building menu" data-show="miners>0"><span class="brick"></span></span>
-            <span data-tab="tech" title="Technology menu" data-show="woodcutters>0"><span class="flask"></span></span>
+            <span data-tab="tech" title="Technology menu" data-show="furnaces>0"><span class="flask"></span></span>
             <span data-tab="electric" title="Electricity menu" data-show="steelmills>0"><span
                     class="bolt"></span></span>
             <span data-tab="rocket" title="Rocket menu" data-show="$rocketry"><span class="rocket"></span></span>
@@ -2779,6 +2783,10 @@
                     <span role="presentation"></span><span role="presentation"></span><span role="presentation"></span>
                 </div>
 
+                <div class="small">
+                    Tip #<span id="tipNumber" class="small beige"></span>: <span id="tip" class="small"></span>
+                </div>
+
                 You have <span id="money" class="green"></span> <span class="money"></span> and
                 <span id="potential" class="wow"></span>!
                 <br>
@@ -2792,19 +2800,20 @@
                         Remove them by holding the Shift key.
                         You can also press the button below, and the game will ask you how much you want to remove.
                         <br>
-                        <button id="removeButton" class="warn"
-                            data-desc="This button toggles whether you are removing an item or not.">
-                            Enable Item Removal
-                        </button>
                     </div>
+
+                    <button id="removeButton" class="warn"
+                        data-desc="This button toggles whether you are removing an item or not.">
+                        Enable Item Removal
+                    </button>
 
                     <i class="rainbow small">
                         Well, have fun!
                     </i>
 
                     <br>
-                    <button class="bronze" data-earn="furnaces+1" data-cost="bricks-1250|money-1000" data-show="kilns>0"
-                        data-sound="build"
+                    <button class="bronze" data-earn="furnaces+1" data-cost="bricks-1250|money-1000"
+                        data-show="bricks>0" data-sound="build"
                         data-desc="Get a blast furnace to help extract ores from materials you have mined.\nCosts 1,250 bricks and $1,000 to make.$furnaces$">
                         Construct a furnace
                         <span class="coppern"></span><span class="silvern"></span><span class="goldn"></span><span
@@ -2945,18 +2954,18 @@
                     Gold is valuable and can be used as an amazing decoration.
 
                     <br>
-                    <button data-earn="goldore+10" data-cost="money-10" data-show="money>10"
+                    <button data-earn="goldore+10" data-cost="money-10" data-show="money>=10"
                         data-desc="Ten pieces of ore only cost $10 because the technology to extract the gold out is significantly more complex.\nDon't get too much!$goldore$"
                         class="silver">
                         Buy 10 pieces of gold ore <span class="goldbar"></span>
                     </button>
-                    <button data-earn="gold+1" data-cost="money-25" data-show="money>40|goldore>0"
+                    <button data-earn="gold+1" data-cost="money-25" data-show="goldore>0"
                         data-desc="You take a bite of the tiny piece of gold. It leaves teeth marks.\nCosts $25.$gold$"
                         class="gold">
                         Buy a nugget <span class="goldn"></span>
                     </button>
                     <button data-earn="goldb+1" data-cost="gold-25|clocks-50" data-show="family>0"
-                        data-desc="You look at the blocks (or, really, bars) on display. They all say 999.99 on them. You wonder what that means.\nYou need 25 gold nuggets and 50 ## as payment to exchange for one of these rare products.$goldb$"
+                        data-desc="You look at the blocks (or, really, bars) on display.\nYou need 25 gold nuggets and 50 ## as payment to exchange for one of these rare products.$goldb$"
                         class="r1">
                         Buy a <span class="glow">shiny GOLD</span> BLOCK! <span class="goldbar"></span>
                     </button>
@@ -2964,12 +2973,10 @@
                     <br>
                     <!-- Veri Good... -->
                     <button class="retro" data-earn="jewelers+1" data-cost="goldb-25" data-show="goldb>0"
-                        data-desc="pro fesinall$jewelers$">
-                        <span class="comical"
-                            data-desc="The jeweler makers loves gold and will be on your side for 25 gold blocks.\nThat seems overpriced, but you need them on your side to help take some work off your hands.\nWith their skilled hands, it only costs 4 ## and 1 gold to make one.$jewelers$">
+                        data-desc="The jeweler makers loves gold and will be on your side for 25 gold blocks.\nThat seems overpriced, but you need them on your side to help take some work off your hands.\nWith their skilled hands, it only costs 4 ## and 1 gold to make one.$jewelers$">
+                        <span class="comical">
                             Get a pro fesin al jewe=er verigood <span class="person"></span> :o
                         </span>
-                        &nbsp;
                         <span class="mini retro" data-earn="jewelers+1" data-cost="goldb-25"
                             data-desc="much good to get mega-managers to buy more of us at once$jewelers$"
                             data-show="managers>0" data-megabuy></span>
@@ -3092,17 +3099,16 @@
                         Build a robot arm
                         <span class="mini stripe1" data-earn="arms+100" data-sound="build"
                             data-desc="Build one hundred arms out of lots of steel.\nMuch faster to create than buying from someone else!$arms$"
-                            data-cost="steel-12500" data-show="arms>=100|constructors>0">
+                            data-cost="steel-12500" data-show="constructors>0">
                             100×
                         </span>
                         <span class="mini stripe2" data-earn="arms+10000" data-sound="build"
                             data-desc="Mass-produce TEN THOUSAND arms at once! Too bad YOU only have two of them...$arms$"
-                            data-cost="steel-1.25e6" data-show="arms>=101|constructors>1">
+                            data-cost="steel-1.25e6" data-show="constructors>1">
                             10,000×
                         </span>
                         <span class="mini stripe3" data-earn="arms+1e6" data-sound="build"
-                            data-desc="...more arms...$arms$" data-cost="steel-1.25e8"
-                            data-show="arms>=102|constructors>2">
+                            data-desc="...more arms...$arms$" data-cost="steel-1.25e8" data-show="constructors>2">
                             1,000,000×
                         </span>
                         <span class="mini stripe4" data-earn="arms+1e8" data-sound="build"
@@ -3153,13 +3159,6 @@
                         data-desc="Constructors allow you to mass-buy robot arms (each subsequent constructor increases the amount by 100 times, up to a million).\nThey also slowly construct arms as well! The constructors might be friendly, but you'll need to pay!\nYou need 200 gold blocks to get one along with you, not to mention 5,000 golden ##...$constructors$"
                         data-cost="goldb-200|gc-5000" data-show="arms>=10|gc>=50" class="diamond">
                         Get a human constructor
-                    </button>
-
-                    <br>
-                    <button data-earn="printers+1"
-                        data-desc="Powerful 3D printers are costly to make, costing six circuit boards and ten robot arms.\nThey also require 200 watts to power, and make digital ## out of circuits and plastic.\n(Uses 4 plastic and 2 circuits for each digital #)$printers$"
-                        data-cost="boards-6|arms-10" data-show="constructors>0|factories>5" class="caribbean">
-                        Build a 3D GOOD&trade; printer
                     </button>
 
                     <br><br>
@@ -3350,11 +3349,6 @@
                         data-cost="fc-1000|phoenixes-20|megaclocks-10|eraclocks-5|clocks-1" data-show="fcmakers>0">
                         Get a phoenix pen
                     </button>
-                    <button class="stripe3" data-earn="pens+4"
-                        data-desc="Instead of getting a bunch of phoenixes together, you can simply sacrifice 50,000 golden ##, 100,000 watches, and twenty digital ## for four pens at once.$pens$"
-                        data-cost="gc-50000|watches-1e5|dc-20" data-show="pens>0|watches>0|dc>0">
-                        Sacrifice for 4 phoenix pens <span class="feather"></span>
-                    </button>
 
                     <br>
                     <button class="goldbg" data-earn="nests+1"
@@ -3397,12 +3391,12 @@
                     <br>
                     <button class="bronze"
                         data-desc="Molders help create 1 hand-made brick from each piece of clay you dig.\nMolders require an initial cost of $10,000 and a pay of $5 a second.$molders$"
-                        data-cost="money-10000" data-earn="molders+1" data-show="bricks>=10|diggers>0">
+                        data-cost="money-10000" data-earn="molders+1" data-show="diggers>0">
                         Get a molder <span class="mold"></span>
                     </button>
                     <button class="silver"
                         data-desc="Get a solid kiln to start firing brick molds into hardened bricks, along with wood.\nCosts fifty bricks. Hmm...if only you could purchase bricks to make more bricks...$kilns$"
-                        data-cost="bricks-50" data-earn="kilns+1" data-show="molds>0" data-sound="build">
+                        data-cost="bricks-50" data-earn="kilns+1" data-show="molders>0" data-sound="build">
                         Get a kiln <span class="brick"></span>
                         <span class="mini stripe1" data-earn="kilns+1" data-cost="bricks-50" data-show="platinum>=1e10"
                             data-sound="build"
@@ -3412,7 +3406,7 @@
 
                     <br>
                     <button class="silver"
-                        data-desc="Woodcutters are free to get, but require a ridiculous $15 a second!\nNot blue wood just yet. You'll see the cost of that...\n(NOTE: To prevent yourself from losing money too quickly, don't get too many of these!)$woodcutters$"
+                        data-desc="Woodcutters are free to get, but get paid $15 a second!\nNot blue wood just yet. You'll see the cost of that...\n(NOTE: To prevent yourself from losing money too quickly, don't get too many of these!)$woodcutters$"
                         data-earn="woodcutters+1" data-show="kilns>0">
                         Get a woodcutter <span class="wood"></span>
                     </button>
@@ -3478,6 +3472,7 @@
                     <span class="small rainbow" data-desc="Researches stack, by the way, so get them fast!">
                         Time to SCIENCE!
                     </span>
+
                     <div id="research">
                         <!-- <div data-show="$creative" data-cost="1e9" data-research="magic"
                             data-desc="Science isn't always the solution: try MAGIC!">
@@ -3748,11 +3743,6 @@
                     <label for="coalMachinesOn" data-desc="Toggle the operation of coal mining machines.">
                         <input type="checkbox" id="coalMachinesOn" checked></input>
                         Coal Mining Machines On
-                    </label>
-                    <br>
-                    <label for="printersOn" data-desc="Toggle the operation of 3D printers.">
-                        <input type="checkbox" id="printersOn" checked></input>
-                        3D Printers On
                     </label>
                     <br>
                     <label for="computersOn" data-desc="Toggle the operation of computers.">
@@ -4154,8 +4144,6 @@
                 <div id="rwatches" class="dangerous"
                     data-desc="A distinctly green watch that is glowing and worryingly radioactive.\nSmall yet dangerous!"
                     data-for="$rwatch"></div>
-                <div id="dc" class="digital" data-desc="A digital #.\nWelcome to the digital age!" data-for="digital #">
-                </div>
 
                 <br>
 
@@ -4540,14 +4528,15 @@
                                     return
                                 }
 
-                                beforeE = "1"
                                 digits = BigInt(beforeValue)
                                 beforeDigits += BigInt(digitEIndex - 1)
                                 digits = beforeDigits >= 0n ? digits * (10n ** beforeDigits) : (digits / (10n ** -beforeDigits))
                                 if (digits >= 100000000000000000000000000000000000000000000000000n) {
-                                    eTotal = Math.max(3, eTotal + 1)
+                                    eTotal = Math.max(2, eTotal + 1)
                                     digits = digits.toString().length - 1
                                     isBig = false
+                                } else {
+                                    beforeE = "1"
                                 }
                             }
 
@@ -6026,7 +6015,7 @@
             showTab("cheats")
         })
 
-        var defaultWattagePriority = ["coalminers", "printers", "computers", "aluminumarms", "factories", "arms"], wattageNames = ["Coal Mining Machines", "3D Printers", "Computers", "Aluminum Robot Arms", "Factories", "Robot Arms"]
+        var defaultWattagePriority = ["coalminers", "computers", "aluminumarms", "factories", "arms"], wattageNames = ["Coal Mining Machines", "Computers", "Aluminum Robot Arms", "Factories", "Robot Arms"]
         ID("resetPower").addEventListener("click", function () {
             wattageOrder = defaultWattagePriority.slice(0)
             var newHTML = ""
@@ -6095,15 +6084,12 @@
             }
         })
 
-        var overclocked = false, factoriesOverclocked = false, coalMachinesEnabled = true, turbinesEnabled = true, printersEnabled = true, computersEnabled = true, factoriesEnabled = true, aluminumArmsEnabled = true, armsEnabled = true
+        var overclocked = false, factoriesOverclocked = false, coalMachinesEnabled = true, turbinesEnabled = true, computersEnabled = true, factoriesEnabled = true, aluminumArmsEnabled = true, armsEnabled = true
         ID("coalMachinesOn").addEventListener("change", function (e) {
             coalMachinesEnabled = e.target.checked
         })
         ID("turbinesOn").addEventListener("change", function (e) {
             turbinesEnabled = e.target.checked
-        })
-        ID("printersOn").addEventListener("change", function (e) {
-            printersEnabled = e.target.checked
         })
         ID("computersOn").addEventListener("change", function (e) {
             computersEnabled = e.target.checked
@@ -6497,11 +6483,8 @@
                                         number = number.mul(shards.mul(1e8).sqrt(true).sqrt(true)).floor(true)
                                     }
                                 }
-                                if (e === true) {
-                                    rawAdd(part1, number)
-                                } else {
-                                    add(part1, number)
-                                }
+
+                                add(part1, number)
                             }
 
                         }
@@ -6511,7 +6494,7 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(true), speed = H(true), buttonPower = H(true), cpt = -1, time = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false
+        var baseSpeed = H(1), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:dark)")
         if (darkModeMedia.matches) {
@@ -6719,7 +6702,7 @@
                     }
                 }
             }
-            return formatted + " " + name.replace(/nuggets|nugget/, "ore")
+            return formatted + " " + (id.includes("ore") ? name.replace(/nuggets|nugget/, "ore") : name)
         }
 
         var alreadyDragged = false
@@ -6795,7 +6778,6 @@
         var wattageOrder = defaultWattagePriority.slice(0)
         var machineConsumption = {
             coalminers: 100000,
-            printers: 500,
             computers: 100,
             aluminumarms: [100, 20],
             factories: [8000, 600],
@@ -6943,14 +6925,12 @@
                         factoriesOverclocked = $.charCodeAt(1) === 121;
                         if (factoriesOverclocked) ID("factoryOverclock").checked = !0;
                         turbinesEnabled = $.charCodeAt(2) !== 121;
-                        printersEnabled = $.charCodeAt(3) !== 121;
                         computersEnabled = $.charCodeAt(4) !== 121;
                         factoriesEnabled = $.charCodeAt(5) !== 121;
                         aluminumArmsEnabled = $.charCodeAt(6) !== 121;
                         coalMachinesEnabled = $.charCodeAt(7) !== 121;
                         armsEnabled = $.charCodeAt(6) !== 121;
                         if (!turbinesEnabled) ID("turbinesOn").checked = !1;
-                        if (!printersEnabled) ID("printersOn").checked = !1;
                         if (!computersEnabled) ID("computersOn").checked = !1;
                         if (!factoriesEnabled) ID("factoriesOn").checked = !1;
                         if (!armsEnabled) ID("armsOn").checked = !1;
@@ -7125,7 +7105,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "@" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + (printersEnabled ? "K" : "y") + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "@" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -7479,7 +7459,7 @@
             if (element === null) {
                 console.error("The element ID given does not correspond to an HTML element.")
             }
-            var string = value.toString()
+            var string = String(value)
             if (element.textContent !== string) {
                 element.textContent = string
             }
@@ -7514,10 +7494,10 @@
                 var crystalImage = ID("crystal")
                 crystalImage.removeAttribute("class")
                 crystalImage.removeAttribute("style")
+                crystalTotal = 0
                 crystalTime = time + crystalSpeed
 
                 turbinesEnabled = true
-                printersEnabled = true
                 computersEnabled = true
                 factoriesEnabled = true
                 aluminumArmsEnabled = true
@@ -7919,6 +7899,56 @@
             return amount
         }
 
+        var progress = -1, progressNotes = [
+            'Start by clicking the "Build a clock" button.',
+            "Keep clicking! Note that hovering your finger or mouse over a button allows you to see a description.",
+            "You can sell your clocks for money! Click on the sell button in the clock menu. The mini buttons also have descriptions telling you what they do.",
+            "After you get $10, you can get gold ore!",
+            "Note that you should focus on buying golden nuggets rather than gold ore for now. Gold ore is only useful after you progress farther.",
+            "Keep buying gold nuggets until you get 5 of them.",
+            "You can make a golden clock from 5 clocks and 1 golden nugget. If you create 5, you can exchange them for a family member.",
+            "Keep getting family members! Once you save up $20,000, you can get your first miner. Note that you can click on the moving crystals at the top left of the screen to collect blue, green, or purple crystals. Spend these in the crystal menu for significant speed boosts!",
+            "Miners give you ore, but you'll need a furnace to use them. At this point, you can get bricks for $1 each. If you get 1,250 bricks, you can get a furnace (in the first build menu).",
+            "It's a good idea to automate brick production by first getting a digger. Then, in the construction (brick) menu, get a molder and then a kiln. You'll also need a woodcutter to power the kiln! Once you automate it, you might want to spend some crystals to speed up brick production.",
+            "Buy your first furnace for 1,250 bricks!",
+            "Congrats on getting a furnace and automating brick production! It's time to get your first manager in the new technology menu. You'll need to get 1,000 golden clocks for them though. (This is a perfect time to get some gold bars in the golden clock menu. Once you have 25 gold bars, get a jeweler. Jewelers will SLOWLY produce golden clocks. You might want to spend some crystals to speed up this process!)",
+            "Note that if you close or hide the game, you will gain a purple crystal every 15 minutes."
+        ]
+
+        function updateTip() {
+            var tipElement = ID("tip")
+            if (stuffTotals.clocks.isZero()) {
+                progress = 0
+            } else if (stuffTotals.clocks.isLess(10)) {
+                progress = 1
+            } else if (stuffTotals.money.isZero()) {
+                progress = 2
+            } else if (stuffTotals.goldore.isLess(10)) {
+                progress = 3
+            } else if (stuffTotals.gold.isZero()) {
+                progress = 4
+            } else if (stuffTotals.gold.isLess(5)) {
+                progress = 5
+            } else if (stuffTotals.family.isZero()) {
+                progress = 6
+            } else if (stuffTotals.miners.isZero()) {
+                progress = 7
+            } else if (stuffTotals.bricks.isZero()) {
+                progress = 8
+            } else if (stuffTotals.woodcutters.isZero()) {
+                progress = 9
+            } else if (stuffTotals.furnaces.isZero()) {
+                progress = 10
+            } else if (stuffTotals.managers.isZero()) {
+                progress = 11
+            } else {
+                progress = 12
+            }
+            update(tipElement, progressNotes[progress])
+            updateClass(tipElement, "small " + ["red", "orange", "yellow", "green", "blue", "pink"][progress % 6])
+            updateId("tipNumber", progress + 1)
+        }
+
         function updateOfflineTime() {
             if (offlineFrames < 0 || !isFinite(offlineFrames)) {
                 // Check for issues with the offline frame count
@@ -7985,7 +8015,6 @@
 
             var watchmakerPower = C("watchmakers", issue).mul(hasResearch("watches") ? 1.5 : 1)
             var clockmakers = C("clockmakers", issue)
-            var printers = C("printers", issue)
 
             var molders = C("molders", issue)
             var barmolders = C("barmolds", issue)
@@ -8088,11 +8117,6 @@
 
             if (coalMachinesEnabled) {
                 add("coal", useableData.coalminers.mul(3210).mul(hasResearch("coal2") ? 2.5 : 1))
-            }
-
-            if (printersEnabled) {
-                var printersUseable = useableData.printers
-                multiExchange("dc", printersUseable.mul(0.002), ["plastic", "circuits"], [printersUseable.mul(0.008), printersUseable.mul(0.004)])
             }
 
             if (computersEnabled && hasResearch("ai")) {
@@ -8227,7 +8251,9 @@
             }
 
             // Yeah, there's a lot of things the game can say!
-            if (cps.isMore("ee100")) {
+            if (cps.isMore("ee1000")) {
+                updateId("potential", "...how about A WHOLE LOT")
+            } else if (cps.isMore("ee100")) {
                 updateId("potential", "...well uh how about A LOT")
             } else if (cps.isMore("ee10")) {
                 updateHTML(ID("potential"), "...items<sup>5</sup>")
@@ -8239,9 +8265,9 @@
                 updateHTML(ID("potential"), "...items<sup>2</sup>")
             } else if (cps.isMore("ee6")) {
                 updateId("potential", "...items")
-            } else if (cps.isMore("1e100000")) {
+            } else if (cps.isMore("1e50000")) {
                 updateId("potential", "...many, many things indeed")
-            } else if (cps.isMore("1e10000")) {
+            } else if (cps.isMore("1e25000")) {
                 updateId("potential", "...many things indeed")
             } else if (cps.isMore("1e10000")) {
                 updateId("potential", "...many things")
@@ -8249,7 +8275,7 @@
                 updateId("potential", "...things")
             } else if (cps.isMore("1e4000")) {
                 updateId("potential", "...way too much stuff")
-            } else if (cps.isMore("1e300")) {
+            } else if (cps.isMore("1e3000")) {
                 updateId("potential", "...plenty of stuff")
             } else if (cps.isMore("1e2000")) {
                 updateId("potential", "...some amount of stuff")
@@ -8318,6 +8344,8 @@
             } else {
                 updateId("potential", " not much else")
             }
+
+            updateTip()
 
             // Update spells
             var len = spellFunctions.length
@@ -8787,7 +8815,7 @@
             }
 
             // Reset the speed
-            speed = new H(true)
+            speed = baseSpeed
 
             // Reset the button click variable
             alreadyClicked = false
