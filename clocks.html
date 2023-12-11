@@ -3674,7 +3674,7 @@
                         </div>
                         <div data-show="furnaces>0" data-cost="250000" data-research="mills"
                             data-desc="Learn how to create steel mills and how to use them.\n(Unlocks steel mills in the build menu, allowing you to construct robot arms, which increases # production tremendously!)">
-                            Research steel-working: <span class="green">$250,000</span>
+                            Research steel working: <span class="green">$250,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="bwood>0" data-cost="1e9" data-research="blue"
@@ -3796,7 +3796,7 @@
                         Buy a <span class="battery" role="img" aria-label="battery"></span> made of blue wood
                     </button>
                     <button class="diamond" data-earn="turbines+1" data-cost="money-500000|steel-125000"
-                        data-show="megabatteries>0|bottles>0"
+                        data-show="bottles>0"
                         data-desc="Each steam turbine needs 300 coal a second to power and produces 2,000 watts each (enough to power 20 machines).\nYou need $500,000 and 125,000 steel to build one of these!$turbines$">
                         Get a steam turbine
                         <span class="mini caribbean" data-earn="turbines+1" data-desc="*too lazy to add a description*"
@@ -7912,7 +7912,9 @@
             "It's a good idea to automate brick production by first getting a digger. Then, in the construction (brick) menu, get a molder and then a kiln. You'll also need a woodcutter to power the kiln! Once you automate it, you might want to spend some crystals to speed up brick production.",
             "Buy your first furnace for 1,250 bricks!",
             "Congrats on getting a furnace and automating brick production! It's time to get your first manager in the new technology menu. You'll need to get 1,000 golden clocks for them though. (This is a perfect time to get some gold bars in the golden clock menu. Once you have 25 gold bars, get a jeweler. Jewelers will SLOWLY produce golden clocks. You might want to spend some crystals to speed up this process!)",
-            "Note that if you close or hide the game, you will gain a purple crystal every 15 minutes."
+            "Now that you have a manager, get a scientist! Scientists generate science and creativity. You'll want to have a lot of both to get new researches!",
+            'With a scientist, you now have access to research upgrade! It is a good idea to first get the "Research steel working" upgrade. A new button will then pop up in the first menu.',
+            "Note that if you close or hide the game, you will gain a purple crystal every 15 minutes. Keep progressing through the rest of the game and have fun!"
         ]
 
         function updateTip() {
@@ -7941,8 +7943,12 @@
                 progress = 10
             } else if (stuffTotals.managers.isZero()) {
                 progress = 11
-            } else {
+            } else if (stuffTotals.scientists.isZero()) {
                 progress = 12
+            } else if (!hasResearch("mills")) {
+                progress = 13
+            } else {
+                progress = 14
             }
             update(tipElement, progressNotes[progress])
             updateClass(tipElement, "small " + ["red", "orange", "yellow", "green", "blue", "pink"][progress % 6])
@@ -8183,7 +8189,7 @@
             exchangeLimit(C("bottles", issue), "naphtha", separators.mul(0.015), "ngas")
             exchange("plastic", petroplants.mul(0.05), "naphtha")
 
-            multiExchange("watches", watchmakerPower.mul(0.02), ["money", "silver"], [watchmakerPower.mul(H(".66666666666666666666666666666666666666666666666667")), watchmakerPower.mul(0.01)])
+            multiExchange("watches", watchmakerPower.mul(0.08), ["money", "silver"], [watchmakerPower.mul(H(".66666666666666666666666666666666666666666666666667")), watchmakerPower.mul(0.04)])
 
             multiExchange("bottles", glassmakers.mul(0.01), ["money", "sand", "sodaash", "limestone"], [glassmakers.mul(0.5), glassmakers.mul(0.007), glassmakers.mul(0.0018), glassmakers.mul(0.0012)])
 
