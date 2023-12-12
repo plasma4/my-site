@@ -32,13 +32,13 @@
 
         body::-webkit-scrollbar-track {
             box-shadow: inset 0 0 10px white;
-            border-radius: 8px;
+            border-radius: 2px;
         }
 
         body::-webkit-scrollbar-thumb {
             background-color: #f63c04;
             box-shadow: inset 0 0 6px black;
-            border-radius: 8px;
+            border-radius: 2px;
         }
 
         body::-webkit-scrollbar-thumb:hover {
@@ -536,6 +536,14 @@
         }
 
         @media (min-width: 500px) {
+            body::-webkit-scrollbar-track {
+                border-radius: 8px;
+            }
+
+            body::-webkit-scrollbar-thumb {
+                border-radius: 8px;
+            }
+
             * {
                 font-size: 24px;
             }
@@ -1675,11 +1683,11 @@
             color: #27a0cc;
         }
 
-        .navy {
-            animation: bluey 2s linear infinite;
+        .bluey {
+            animation: bluish 2s linear infinite;
         }
 
-        @keyframes bluey {
+        @keyframes bluish {
             0% {
                 color: #0e2b61;
             }
@@ -3197,7 +3205,7 @@
                     </button>
                     <button class="diamond" data-sound="build"
                         data-desc="Construct an circuit board out of 25 integrated circuits, 400 pieces of silicon, and 100 pieces of plastic.$boards$"
-                        data-cost="circuits-25|silicon-400|plastic-100" data-earn="boards+1" data-show="diodes>0">
+                        data-cost="circuits-25|silicon-400|plastic-100" data-earn="boards+1" data-show="$assembly">
                         Build a <span class="chip" role="img" aria-label="circuit board"></span>
                     </button>
                     <button class="caribbean" data-sound="build"
@@ -3415,28 +3423,27 @@
                     <button class="caribbean"
                         data-desc="Blue wood can be used as advanced fuel, and each of these workers need 1,000 flying ## to start, as well as a flying # every few seconds to keep going.\nThey sure take a weird payment...but it works!$bluecutters$"
                         data-earn="bluecutters+1" data-cost="fc-1000" data-show="circuits>0">
-                        Get a <span class="navy">BLUE</span> woodcutter <span class="bwood"></span>
+                        Get a <span class="bluey">BLUE</span> woodcutter <span class="bwood"></span>
                     </button>
                 </div>
 
                 <div id="tech" style="display: none">
                     <span class="big star"></span>
                     Creativity and science are essential for technological advancements.
-                    <br>
-                    Who knows what else you can unlock?
 
-                    <br>
-                    <button class="crystal"
-                        data-desc="Construction managers oversee the creation of brand new buildings at the cost of 25 BILLION platinum!$cmanagers$"
-                        data-cost="platinum-2.5e10" data-earn="cmanagers+1" data-show="platinum>1e10">
-                        <span class="move4">+1 construction manager</span> <span class="platinumn"></span>
+                    <div class="smallish">
+                        (Who knows <span class="smallish move4">what else</span> you can unlock?)
+                    </div>
+
+                    <button class="special"
+                        data-desc="Construction managers oversee the creation of brand new buildings at the cost of 999,999 platinum!$cmanagers$"
+                        data-cost="platinum-999999" data-earn="cmanagers+1" data-show="platinum>=999999">
+                        +1 construction manager <span class="platinumn"></span>
                     </button>
-
-                    <br>
-                    <button class="stripe4"
+                    <button class="special"
                         data-desc="Omega managers...now the possibilities are INFINITE!\nThey cost 25 MILLION gold blocks though!\n(HINT: [might unlock new game mechanics!!!])$omegamanagers$"
                         data-cost="goldb-2.5e7" data-earn="omegamanagers+1" data-show="megamanagers>0">
-                        +1 <b>O</b>MEGA-manager
+                        +1 <b class="red">O</b>MEGA-manager
                         <span class="coin"></span> <span class="coin"></span> <span class="coin"></span>
                     </button>
 
@@ -3653,13 +3660,23 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="science>1000|creativity>2500" data-cost="8e7" data-research="radium"
-                            data-desc="Radium ore looks quite scary, but with proper care, it can be turned into radium bars and ##.\n(Unlocks radium ## and mills!)">
+                            data-desc="Radium ore looks quite scary, but with proper care, it can be turned into radium bars and ##.\n(Unlocks radium mills and workers. Radium mills make radium rods, which be used to make RADIOACTIVE clocks. Oh, and you can sacrifice them in the phoenix menu for 50,000 glue!)">
                             Research radium enrichment: <span class="green">$80,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="science>500|creativity>1000" data-cost="2e8" data-research="slag"
                             data-desc="Making steel is a slow process. Get your steel mills to slowly use slag to turn into steel, for FREE.\n(Allows you to turn slag into steel at no cost!)">
                             Slag recycling: <span class="green">$200,000,000</span>
+                            <span class="money"></span>
+                        </div>
+                        <div data-show="$plastic" data-cost="5e9" data-research="assembly"
+                            data-desc="In computer programming, an assembly language is one that...oh wait, sorry, wrong one.\nASSEMBLE YOUR CIRCUITS INTO CIRCUIT BOARDS AND COMPUTERRRRRRS!\n(Allows you to assemble circit boards and compters in the technology menu)">
+                            ASSEMBLYYYYYY!!!!!!!!!!!!!! <span class="green">$5,000,000,000</span>
+                            <span class="money"></span>
+                        </div>
+                        <div data-show="$steelwork" data-cost="1e9" data-research="plastic"
+                            data-desc="P-p-p-plastic? Isn't that, like, BAD for animals or something?\n(Unlocks plastic production in the technology menu, below the circuits and robot arms.)">
+                            PLASTICSTUFFS!!!!!!!!!!!!!! <span class="green">$1,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="science>500|creativity>1000" data-cost="5e7" data-research="steelwork"
@@ -3832,10 +3849,10 @@
                     </div>
 
                     <br>
-                    <button class="crystal"
-                        data-desc="Construction managers oversee the creation of brand new buildings at the cost of 25 BILLION platinum!$cmanagers$"
-                        data-cost="platinum-2.5e10" data-earn="cmanagers+1" data-show="platinum>1e10">
-                        <span class="move4">+1 construction manager</span> <span class="platinumn"></span>
+                    <button class="special"
+                        data-desc="Construction managers oversee the creation of brand new buildings at the cost of 999,999 platinum!$cmanagers$"
+                        data-cost="platinum-999999" data-earn="cmanagers+1" data-show="platinum>=999999">
+                        +1 construction manager <span class="platinumn"></span>
                     </button>
 
                     <br>
@@ -3873,14 +3890,17 @@
                 <div id="crystals" style="display: none">
                     <span class="crystal1"></span><span class="crystal2"></span><span class="crystal3"></span>
                     Crystals are rare and valuable, and can be used to speed up time.
-                    <br>
-                    You earn 1 purple crystal <span class="crystal3"></span> for every 15 minutes this tab is
-                    hidden.
-                    <br>
-                    You'll earn one after <span id="offline">15 minutes and 0 seconds</span>
-                    of time when the tab is hidden or closed.
+                    <div class="smallish">
+                        You earn 1 purple crystal <span class="crystal3"></span>
+                        for every 15 minutes this tab is hidden or closed.
+                        <br>
+                        You'll earn a new purple crystal after
+                        <span class="small bluey" id="offline">15 minutes and 0 seconds</span>
+                        of time when the tab is hidden or closed.
+                        <br>
+                        Yes, green crystals are better than blue crystals! Sorry for the color choice!
+                    </div>
 
-                    <br>
                     <button class="crystal" data-cost="crystal3-1" data-earn="base|bonus3+600"
                         data-desc="Each purple crystal increases the game's speed by 100 times for 10 seconds.\nAlthough green and blue crystals stack with this, the speed of decay for these is also multiplied.$crystal3$">
                         Use 1 <span class="crystal3" role="img" aria-label="purple crystal"></span>
@@ -4149,7 +4169,7 @@
 
                 <div id="wood" class="brown" data-desc="Wood of all kinds!" data-for="$wood">
                 </div>
-                <div id="bwood" class="navy" data-desc="Blue wood isn't easy to get...oh well." data-for="$bwood">
+                <div id="bwood" class="bluey" data-desc="Blue wood isn't easy to get...oh well." data-for="$bwood">
                 </div>
 
                 <br>
@@ -4187,7 +4207,7 @@
                     data-desc="Coal is an absolutely essential fuel source, and can be turned into coke, a more efficient fuel."
                     data-for="$coal"></div>
                 <div id="coke" class="yellow" data-desc="Math 101:\nCOKE=COOL COAL" data-for="$rock"></div>
-                <div id="ngas" class="gray"
+                <div id="ngas" class="red"
                     data-desc="Each gallon of natural gas can be used to make tons of plastic, which is used for many tasks.\nTo store natural gas, get a natural gas tank!"
                     data-for="$barrel"></div>
 
@@ -4276,9 +4296,9 @@
                     data-desc="Glue can be used to glue feathers onto golden ##, to turn them into flying ones!"
                     data-for="$glue">
                 </div>
-                <div id="clay" class="mandarin" data-desc="Clay can be used to make bricks." data-for="$clay">
+                <div id="clay" class="orange" data-desc="Clay can be used to make bricks." data-for="$clay">
                 </div>
-                <div id="molds" class="orange"
+                <div id="molds" class="mandarin"
                     data-desc="This hand-sculpted block of clay is ready to be fired and made into bricks."
                     data-for="$mold"></div>
                 <div id="bricks" class="yellow" data-desc="A hard and sturdy brick, ready to use." data-for="$brick">
@@ -6515,7 +6535,7 @@
         var buttons = []
         for (let i = 0; i < elements.length; i++) {
             var element = elements[i]
-            if ((element.tagName === "BUTTON" || element.getAttribute("data-earn") !== null) && element.className !== "special") {
+            if (element.tagName === "BUTTON" || element.getAttribute("data-earn") !== null) {
                 buttons.push(element)
             }
         }
