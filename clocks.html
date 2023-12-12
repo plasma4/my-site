@@ -2683,8 +2683,8 @@
             rwatches: Radium Watch$es (3, A watch made of radium that has a worrying green glow)
             radiummakers: Radium Maker (4, Someone who makes radium clocks and watches)
             family: Family Member (1, One way to make clocks!)
-            clockmakers: Clock Maker (2, People who make clocks for a literal living)
-            watchmakers: Watch Maker (3, They're watching your every move)
+            clockmakers: Clockmaker (2, People who make clocks for a literal living)
+            watchmakers: Watchmaker (3, They're watching your every move)
             goldb: Gold Bar (3, KaCHING!)
             megaclocks: %MEGAClock (2, A clock, but MEGA)
             eraclocks: %ERAClock (3, What lies ahead...)
@@ -6942,89 +6942,94 @@
                         la = $.indexOf("$");
                         Q = $.slice(0, la);
                         Q = Q.split("*");
-                        if (wattageOrder.length === Q.length) {
-                            w = "";
-                            for (U = 0; U < wattageOrder.length; U++) {
-                                w += '<span data-for="' + Q[U] + '">' + wattageNames[wattageOrder.indexOf(Q[U])] + "</span>";
+                        U = Q.indexOf("printers");
+                        if (U !== -1) {
+                            Q = Q.splice(U, 1);
+                        }
+                        if (wattageOrder.length !== Q.length) {
+                            Q = wattageOrder;
+                        }
+                        w = "";
+                        for (U = 0; U < wattageOrder.length; U++) {
+                            w += '<span data-for="' + Q[U] + '">' + wattageNames[wattageOrder.indexOf(Q[U])] + "</span>";
+                        }
+                        wattageOrder = Q;
+                        ID("dragParent").innerHTML = w;
+                        makeItemsDraggable();
+                        alreadyDragged = true;
+                        $ = $.slice(la + 1);
+                        la = $.indexOf("^");
+                        cooldownNames.length = 0;
+                        cooldownTimes.length = 0;
+                        spellFunctions.length = 0;
+                        var R = ID("spells").getElementsByTagName("button");
+                        if (loaded) {
+                            for (K = 0; K < R.length; K++) {
+                                B = R[K];
+                                B.getElementsByClassName("cooldown")[0].innerHTML = "";
+                                B.removeAttribute("class");
+                                B.removeAttribute("style");
+                                B.style.removeProperty("--time-left");
                             }
-                            wattageOrder = Q;
-                            ID("dragParent").innerHTML = w;
-                            makeItemsDraggable();
-                            alreadyDragged = true;
-                            $ = $.slice(la + 1);
-                            la = $.indexOf("^");
-                            cooldownNames.length = 0;
-                            cooldownTimes.length = 0;
-                            spellFunctions.length = 0;
-                            var R = ID("spells").getElementsByTagName("button");
-                            if (loaded) {
-                                for (K = 0; K < R.length; K++) {
-                                    B = R[K];
-                                    B.getElementsByClassName("cooldown")[0].innerHTML = "";
-                                    B.removeAttribute("class");
-                                    B.removeAttribute("style");
-                                    B.style.removeProperty("--time-left");
+                        }
+                        if (la !== -1) {
+                            v = $.slice(0, la).split("#");
+                            var U = R.length;
+                            for (let K = 0; K < v.length; K++) {
+                                B = v[K];
+                                L = B.length - 1 - B.split("").reverse().indexOf(".");
+                                S = B.slice(L + 1);
+                                let element = "" + U;
+                                for (let Q = 0; Q < U; Q++) {
+                                    w = R[Q];
+                                    if (w.getAttribute("data-id") === S) {
+                                        element = w;
+                                        break;
+                                    }
                                 }
-                            }
-                            if (la !== -1) {
-                                v = $.slice(0, la).split("#");
-                                var U = R.length;
-                                for (let K = 0; K < v.length; K++) {
-                                    B = v[K];
-                                    L = B.length - 1 - B.split("").reverse().indexOf(".");
-                                    S = B.slice(L + 1);
-                                    let element = "" + U;
-                                    for (let Q = 0; Q < U; Q++) {
-                                        w = R[Q];
-                                        if (w.getAttribute("data-id") === S) {
-                                            element = w;
-                                            break;
-                                        }
-                                    }
-                                    if (typeof element === "string") {
-                                        console.warn("The spell with the ID of '" + S.replace(/'/g, "\\'") + "' doesn't exist.");
-                                        continue;
-                                    }
-                                    element.className = "disabled";
-                                    cooldownNames.push(S);
-                                    cooldownTimes.push(parseInt(B.slice(0, L)));
-                                    let frames = element.getAttribute("data-cooldown");
-                                    if (frames === null) {
-                                        console.warn("A child of the element with ID 'spells' should have the 'data-cooldown' attribute.");
-                                        continue;
-                                    }
-                                    frames = Number(frames);
-                                    if (!isFinite(frames) || frames % 1 !== 0) {
-                                        console.warn("The 'data-cooldown' attribute of children in the element with ID 'spells' should be a valid integer.");
-                                    }
-                                    let cooldownInfo = element.getElementsByClassName("cooldown")[0];
-                                    spellFunctions.push(function (multiplier, K) {
-                                        var t = cooldownTimes[K] -= multiplier;
-                                        if (t <= 0.00001) {
-                                            element.style.removeProperty("--time-left");
-                                            update(cooldownInfo, "Done!");
+                                if (typeof element === "string") {
+                                    console.warn("The spell with the ID of '" + S.replace(/'/g, "\\'") + "' doesn't exist.");
+                                    continue;
+                                }
+                                element.className = "disabled";
+                                cooldownNames.push(S);
+                                cooldownTimes.push(parseInt(B.slice(0, L)));
+                                let frames = element.getAttribute("data-cooldown");
+                                if (frames === null) {
+                                    console.warn("A child of the element with ID 'spells' should have the 'data-cooldown' attribute.");
+                                    continue;
+                                }
+                                frames = Number(frames);
+                                if (!isFinite(frames) || frames % 1 !== 0) {
+                                    console.warn("The 'data-cooldown' attribute of children in the element with ID 'spells' should be a valid integer.");
+                                }
+                                let cooldownInfo = element.getElementsByClassName("cooldown")[0];
+                                spellFunctions.push(function (multiplier, K) {
+                                    var t = cooldownTimes[K] -= multiplier;
+                                    if (t <= 0.00001) {
+                                        element.style.removeProperty("--time-left");
+                                        update(cooldownInfo, "Done!");
+                                    } else {
+                                        element.style.setProperty("--time-left", (100 * t / frames) + "%");
+                                        if (t >= 86400) {
+                                            update(cooldownInfo, Math.floor(t / 86400) + "d " + Math.floor((t / 3600) % 60) + "h");
+                                        } else if (t >= 3600) {
+                                            update(cooldownInfo, Math.floor(t / 3600) + "h " + Math.floor((t / 60) % 60) + "m");
+                                        } else if (t >= 60) {
+                                            update(cooldownInfo, Math.floor(t / 60) + "m " + Math.floor(t % 60) + "s");
                                         } else {
-                                            element.style.setProperty("--time-left", (100 * t / frames) + "%");
-                                            if (t >= 86400) {
-                                                update(cooldownInfo, Math.floor(t / 86400) + "d " + Math.floor((t / 3600) % 60) + "h");
-                                            } else if (t >= 3600) {
-                                                update(cooldownInfo, Math.floor(t / 3600) + "h " + Math.floor((t / 60) % 60) + "m");
-                                            } else if (t >= 60) {
-                                                update(cooldownInfo, Math.floor(t / 60) + "m " + Math.floor(t % 60) + "s");
-                                            } else {
-                                                update(cooldownInfo, t.toFixed(1) + "s");
-                                            }
+                                            update(cooldownInfo, t.toFixed(1) + "s");
                                         }
-                                        if (t < -0.000001) {
-                                            isRemoving = false;
-                                            element.onmousedown(true);
-                                            cooldownInfo.innerHTML = "";
-                                            element.removeAttribute("class");
-                                            return true;
-                                        }
-                                        return false;
-                                    });
-                                }
+                                    }
+                                    if (t < -0.000001) {
+                                        isRemoving = false;
+                                        element.onmousedown(true);
+                                        cooldownInfo.innerHTML = "";
+                                        element.removeAttribute("class");
+                                        return true;
+                                    }
+                                    return false;
+                                });
                             }
                         }
                         $ = $.slice(la + 1);
