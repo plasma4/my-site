@@ -3440,8 +3440,8 @@
                     </div>
 
                     <button class="special"
-                        data-desc="Construction managers oversee the creation of brand new buildings at the cost of 999,999 platinum!$cmanagers$"
-                        data-cost="platinum-999999" data-earn="cmanagers+1" data-show="platinum>=999999">
+                        data-desc="Construction managers oversee the creation of brand new buildings at the cost of 99,999,999 platinum!$cmanagers$"
+                        data-cost="platinum-99999999" data-earn="cmanagers+1" data-show="platinum>=999999">
                         +1 construction manager <span class="platinumn"></span>
                     </button>
                     <button class="special"
@@ -3874,8 +3874,8 @@
 
                     <br>
                     <button class="special"
-                        data-desc="Construction managers oversee the creation of brand new buildings at the cost of 999,999 platinum!$cmanagers$"
-                        data-cost="platinum-999999" data-earn="cmanagers+1" data-show="platinum>=999999">
+                        data-desc="Construction managers oversee the creation of brand new buildings at the cost of 99,999,999 platinum!$cmanagers$"
+                        data-cost="platinum-99999999" data-earn="cmanagers+1" data-show="platinum>=999999">
                         +1 construction manager <span class="platinumn"></span>
                     </button>
 
@@ -8011,8 +8011,10 @@
                 offlineFrames = 0
             }
             // Update the text
-            var seconds = Math.ceil((54000 - offlineFrames) / 60)
-            ID("offline").textContent = seconds < 60 ? seconds + " seconds" : (Math.floor(seconds / 60) + " minutes and " + (seconds % 60) + " seconds")
+            var timeLeft = Math.ceil((54000 - offlineFrames) / 60)
+            var minutes = Math.floor(timeLeft / 60)
+            var seconds = timeLeft % 60
+            ID("offline").textContent = (minutes === 0 ? "" : ((minutes === 1 ? "1 minute and " : (minutes + " minutes and ")))) + (seconds === 1 ? "1 second" : (seconds + " seconds"))
         }
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
