@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<head lang="en">
+<head>
     <title>Doodle Square</title>
     <meta charset="utf-8" />
-    <html lang="en">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <style>
@@ -388,7 +388,7 @@
                 oninput="settings[6] = this.value * 0.00025">
             <br>
             Rotation: <input autocomplete="off" type="range" min="0" max="360" value="0"
-                oninput="settings[12] = this.value % 360"></input>
+                oninput="settings[12] = this.value % 360">
             <br>
             <select autocomplete="off" onchange="settings[2] = this.selectedIndex">
                 <option>None</option>
@@ -400,19 +400,19 @@
                 <option>Intense</option>
             </select>
             <label>
-                <input type="checkbox" autocomplete="off" onchange="settings[7] = this.checked ? 1 : 0;"></input>
+                <input type="checkbox" onchange="settings[7] = this.checked ? 1 : 0;">
                 2-color background
             </label>
             <br>
             Backgrounds:
             <br>
-            Background: <input autocomplete="off" type="color" value="#ffffff" oninput="setColor(this.value)"></input>
+            Background: <input autocomplete="off" type="color" value="#ffffff" oninput="setColor(this.value)">
             <br>
             Background 2 (enable 2-color background to use a gradient): <input autocomplete="off" type="color"
-                value="#0a8c15" oninput="setColor(this.value, 5)"></input>
+                value="#0a8c15" oninput="setColor(this.value, 5)">
             <br>
             Gradient rotation (enable 2-color backgrounds): <input autocomplete="off" type="range" min="0" max="360"
-                value="0" oninput="settings[11] = this.value % 360"></input>
+                value="0" oninput="settings[11] = this.value % 360">
         </p>
     </span>
     <div class="alertBox" tabindex="9">

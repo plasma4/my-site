@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<head lang="en">
+<head>
     <title>Simulation!</title>
     <meta charset="utf-8" />
-    <html lang="en">
 
     <style>
         * {
@@ -165,12 +164,12 @@
             Predators: <span></span>
         </b>
         <br>
-        Seed (controls all random numbers): <input oninput="reset(true)" placeholder="Simulation seed"></input>
+        Seed (controls all random numbers): <input oninput="reset(true)" placeholder="Simulation seed">
         <br>
         <b>Took <span></span> to render and <span></span> to update</b>
         <br>
-        <input value="500" placeholder="Width" oninput="mapW = bounds(this.value, 10, 100000); reset()"></input>
-        <input value="500" placeholder="Height" oninput="mapH = bounds(this.value, 10, 100000); reset()"></input>
+        <input value="500" placeholder="Width" oninput="mapW = bounds(this.value, 10, 100000); reset()">
+        <input value="500" placeholder="Height" oninput="mapH = bounds(this.value, 10, 100000); reset()">
         <br>
         <span id="info"></span>
         <em id="note" onclick="fade = 1"></em>

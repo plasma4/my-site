@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<head lang="en">
+<head>
     <title>Time Transcending Clocks</title>
     <meta charset="utf-8" />
-    <html lang="en">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <link rel="icon" type="image/png"
@@ -47,7 +47,6 @@
 
         body::-webkit-scrollbar-thumb:active {
             background-color: #f68d04;
-            box-shadow: 6px;
         }
 
         #hover {
@@ -2831,7 +2830,7 @@
                         <span class="coppern"></span><span class="silvern"></span><span class="goldn"></span><span
                             class="platinumn"></span>
                         <span class="mini stripe1" data-earn="furnaces+1" data-sound="build"
-                            data-cost="bricks-1250|money-1000" data-show="platinum>=1e10"
+                            data-cost="bricks-1250|money-1000" data-show="platinum>=1e7"
                             data-desc="You can get more furnaces at once by getting more construction managers!$furnaces$"
                             data-multibuild></span>
                     </button>
@@ -2846,7 +2845,7 @@
                         data-desc="Steel mills convert your iron to steel, with iron ore, coke, and limestone.\nYou need to repurpose five furnaces and $1,000,000 to constuct such a masterpiece!\nThe five or six workers there get paid $60 in total every second.$steelmills$">
                         Build a steel mill <span class="steel"></span>
                         <span class="mini stripe1" data-earn="steelmills+1" data-cost="furnaces-5|money-1e6"
-                            data-show="platinum>=1e10" data-sound="build"
+                            data-show="platinum>=1e7" data-sound="build"
                             data-desc="You can get more steel mills at once by getting more construction managers!$steelmills$"
                             data-multibuild></span>
                     </button>
@@ -2877,7 +2876,7 @@
                     <button data-desc="You're rich!$money$" data-earn="money+1" data-cost="clocks-1" data-sound="money">
                         Sell 1 <span class="clock" role="img" aria-label="#"></span>
                         <span class="mini silver" data-earn="money+*1" data-cost="clocks-10%" data-sound="money"
-                            data-show="clocks>=10" data-desc="Sell 10% of all your ##!" class="gold">
+                            data-show="clocks>=10" data-desc="Sell 10% of all your ##!">
                             10% <span class="clock" role="img" aria-label="of ##"></span>
                         </span>
                         <span data-earn="money+*1" data-cost="clocks-all" data-show="clocks>=10" class="mini night"
@@ -2891,7 +2890,7 @@
                         data-show="watches>0" data-earn="money+200" data-cost="watches-1" data-sound="money">
                         Sell 1 <span class="watch" role="img" aria-label="watch"></span>
                         <span class="mini silver" data-earn="money+*200" data-cost="watches-10%"
-                            data-desc="Sell 10% of all your watches!" data-sound="money" class="gold">
+                            data-desc="Sell 10% of all your watches!" data-sound="money">
                             10% <span class="watch" role="img" aria-label="of watches"></span>
                         </span>
                         <span data-earn="money+*200" data-cost="watches-all" class="mini night" data-sound="money"
@@ -2904,7 +2903,7 @@
                         data-show="rwatches>0" data-earn="money+1e6" data-cost="rwatches-1" data-sound="money">
                         Sell 1 <span class="rwatch" role="img" aria-label="radioactive watch"></span>
                         <span class="mini silver" data-earn="money+*1e6" data-cost="rwatches-10%"
-                            data-desc="Sell 10% of all your radioactive watches!" class="gold" data-sound="money">
+                            data-desc="Sell 10% of all your radioactive watches!" data-sound="money">
                             10% <span class="rwatch" role="img" aria-label="of radioactive watches"></span>
                         </span>
                         <span data-earn="money+*1e6" data-cost="rwatches-all" class="mini night" data-sound="money"
@@ -2998,7 +2997,7 @@
                         data-desc="Bar molders make gold bars automatically by smelting them.\nCosts 400 steel and 80 gold bars, as well as a robot arm to automate the process.$barmolds$">
                         Get a gold bar molder <span class="goldbar"></span>
                         <span class="mini retro" data-earn="barmolds+1" data-cost="steel-400|goldb-80|arms-1"
-                            data-show="platinum>=1e10"
+                            data-show="platinum>=1e7"
                             data-desc="Get the costly construction managers to get more gold bar molders at once!$barmolds$"
                             data-multibuild></span>
                     </button>
@@ -3069,7 +3068,7 @@
                         data-desc="These tiny coke ovens are made using 5,000 bricks, and help convert coal into coke: a COOLER fuel.\n(Requires a pay of $15 a second)$cokeovens$">
                         Get a coke oven
                         <span class="mini stripe1" data-earn="cokeovens+1" data-cost="bricks-5000"
-                            data-show="platinum>=1e10" data-sound="build"
+                            data-show="platinum>=1e7" data-sound="build"
                             data-desc="You can get more coke ovens at once by getting more construction managers!$cokeovens$"
                             data-multibuild></span>
                     </button>
@@ -3139,7 +3138,7 @@
                         data-cost="arms-100|gc-500|money-400000" data-show="arms>=10|gc>=50" class="orangebg">
                         Build a large factory
                         <span class="mini stripe4" data-earn="factories+1" data-cost="arms-100|gc-500|money-400000"
-                            data-show="arms>=10|gc>=50" data-show="platinum>=1e10" data-sound="build"
+                            data-show="platinum>=1e7" data-sound="build"
                             data-desc="You can get more factories at once by getting more construction managers!$factories$"
                             data-multibuild></span>
                     </button>
@@ -3410,7 +3409,7 @@
                         data-desc="Get a solid kiln to start firing brick molds into hardened bricks, along with wood.\nCosts fifty bricks. Hmm...if only you could purchase bricks to make more bricks...$kilns$"
                         data-cost="bricks-50" data-earn="kilns+1" data-show="molders>0" data-sound="build">
                         Get a kiln <span class="brick"></span>
-                        <span class="mini stripe1" data-earn="kilns+1" data-cost="bricks-50" data-show="platinum>=1e10"
+                        <span class="mini stripe1" data-earn="kilns+1" data-cost="bricks-50" data-show="platinum>=1e7"
                             data-sound="build"
                             data-desc="You can get more kilns at once by getting more construction managers!$kilns$"
                             data-multibuild></span>
@@ -3468,7 +3467,6 @@
                         <span class="mini stripe2"
                             data-desc="Get multiple managers at once.\nFor every MEGA-manager you get, you get +1 purchase power!$managers$"
                             data-cost="gc-1000" data-earn="managers+1" data-show="managers>0" data-megabuy></span>
-                    </button>
                     </button>
                     <button class="ocean"
                         data-desc="Scientists generate science and a little bit of creativity.\nNote that you'll need a LOT of them to unlock new researches, so try to get many scientists!\nPay up though: these trained tinker-people require an up-front payment of $500,000...each!\n(Requries a pay of $120 a second)$scientists$"
@@ -3756,7 +3754,7 @@
                         Amount of watts requested (use the input element to modify instead)
                     </label>
                     <input type="range" min="0" max="25000" value="0" tabindex="-1" id="wattSlider" aria-hidden="true">
-                    <input id="wattCount" value="0" aria-label="Amount of watts requested (up to 25,000)"></input>
+                    <input id="wattCount" value="0" aria-label="Amount of watts requested (up to 25,000)">
                     <span id="wattText" class="orange">watts</span><span class="yellow">/</span><span
                         class="lime">25,000</span>.
                     <div class="small">(Each watt costs $0.10 a second, and you need enough money to receive power)
@@ -3782,41 +3780,41 @@
 
                     <br>
                     <label for="coalMachinesOn" data-desc="Toggle the operation of coal mining machines.">
-                        <input type="checkbox" id="coalMachinesOn" checked></input>
+                        <input type="checkbox" id="coalMachinesOn" checked>
                         Coal Mining Machines On
                     </label>
                     <br>
                     <label for="computersOn" data-desc="Toggle the operation of computers.">
-                        <input type="checkbox" id="computersOn" checked></input>
+                        <input type="checkbox" id="computersOn" checked>
                         Computers On
                     </label>
                     <br>
                     <label for="factoriesOn" data-desc="Toggle the operation of factories.">
-                        <input type="checkbox" id="factoriesOn" checked></input>
+                        <input type="checkbox" id="factoriesOn" checked>
                         Factories On
                     </label>
                     <br>
                     <label for="aluminumArmsOn" data-desc="Toggle the operation of aluminum robot arms.">
-                        <input type="checkbox" id="aluminumArmsOn" checked></input>
+                        <input type="checkbox" id="aluminumArmsOn" checked>
                         Aluminum Robot Arms On
                     </label>
                     <label for="armsOn" data-desc="Toggle the operation of normal steel robot arms.">
-                        <input type="checkbox" id="armsOn" checked></input>
+                        <input type="checkbox" id="armsOn" checked>
                         Normal Robot Arms On
                     </label>
                     <br>
                     <label for="turbinesOn" data-desc="Toggle the operation of coal-consuming turbines.">
-                        <input type="checkbox" id="turbinesOn" checked></input>
+                        <input type="checkbox" id="turbinesOn" checked>
                         Enable Turbines
                     </label>
                     <br>
                     <label for="overclock" id="turbineBoost">
-                        <input type="checkbox" id="overclock"></input>
+                        <input type="checkbox" id="overclock">
                         Overclock Turbines (5× coal usage for 2× wattage production)
                     </label>
                     <br>
                     <label for="factoryOverclock" id="factoryBoost">
-                        <input type="checkbox" id="factoryOverclock"></input>
+                        <input type="checkbox" id="factoryOverclock">
                         Overclock Factories (3× wattage required for 1.5× wattage production)
                     </label>
 
@@ -3934,7 +3932,8 @@
                         </span>
                         <span class="mini crystal" data-cost="crystal3-all" data-earn="base|bonus3+*600"
                             data-desc="Use ALL of your purple crystals.$crystal3$">ALL
-                            <span class="crystal3" role="img" aria-label="purple crystals"></span></button>
+                            <span class="crystal3" role="img" aria-label="purple crystals"></span>
+                        </span>
                     </button>
 
                     <br>
@@ -3947,7 +3946,8 @@
                         </span>
                         <span class="mini crystal" data-cost="crystal2-all" data-earn="base|bonus2+*600"
                             data-desc="Use ALL of your green crystals.$crystal2$">ALL
-                            <span class="crystal2" role="img" aria-label="green crystals"></span></button>
+                            <span class="crystal2" role="img" aria-label="green crystals"></span>
+                        </span>
                     </button>
 
                     <br>
@@ -3960,7 +3960,8 @@
                         </span>
                         <span class="mini crystal" data-cost="crystal1-all" data-earn="base|bonus1+*600"
                             data-desc="Use ALL of your blue crystals.$crystal1$">ALL
-                            <span class="crystal1" role="img" aria-label="blue crystals"></span></button>
+                            <span class="crystal1" role="img" aria-label="blue crystals"></span>
+                        </span>
                     </button>
 
                     <br><br>
@@ -4087,7 +4088,6 @@
                         </li>
                         <li>Working on improving ascensions</li>
                         <li>Trying to simplify the game</li>
-                        <br>
                         <li>How about I add more when the game is better?</li>
                         <li>oh wait programming doesn't work like that</li>
                     </ul>
@@ -4244,8 +4244,6 @@
                 <div id="plastic" class="gray"
                     data-desc="Plastic is the only way construct advanced technology and digital ##!"
                     data-for="plastic$">
-                </div>
-                <div id="plastic" class="beige" data-desc="Rubber can be turned into glue." data-for="%rubber">
                 </div>
 
                 <br>
