@@ -1675,6 +1675,10 @@
             color: #2fbd10;
         }
 
+        .foam {
+            color: #0df08e;
+        }
+
         .lime {
             color: #a1ed45;
         }
@@ -3422,7 +3426,7 @@
                     <br>
                     <button class="caribbean"
                         data-desc="Blue wood can be used as advanced fuel, and each of these workers need 1,000 flying ## to start, as well as a flying # every few seconds to keep going.\nThey sure take a weird payment...but it works!$bluecutters$"
-                        data-earn="bluecutters+1" data-cost="fc-1000" data-show="circuits>0">
+                        data-earn="bluecutters+1" data-cost="fc-1000" data-show="$bwood">
                         Get a <span class="bluey">BLUE</span> woodcutter <span class="bwood"></span>
                     </button>
                 </div>
@@ -3481,34 +3485,59 @@
                     </span>
 
                     <div id="research">
-                        <!-- <div data-show="$creative" data-cost="1e9" data-research="magic"
-                            data-desc="Science isn't always the solution: try MAGIC!">
-                            The Magical Realm: <span class="green">$1,000,000,000</span>
+                        <div data-show="$digital" data-iq="25" data-cost="1e12" data-research="autofix"
+                            data-desc="[You NEED 50 digital knowlege to purchase this research!]\nSo far, you have to manually fix issues in your robot arms.\nBut you can use technology to do the job for your!\n(1.5× efficiency of ALL robot arms and factories, yes, that's right!)">
+                            Auto-fix: <span class="foam">$1,000,000,000,000</span>
+                            <span class="ticket"></span>
+                        </div>
+                        <div data-show="$digital" data-iq="25" data-cost="5e10" data-research="schedule"
+                            data-desc="[You NEED 25 digital knowlege to purchase this research!]\nGive all of your workers a highly rigorous schedule to double their effectiveness!\n(2× efficiency of coke ovens)">
+                            Coke oven efficiency: <span class="foam">$100,000,000,000</span>
+                            <span class="ticket"></span>
+                        </div>
+                        <div data-show="$digital" data-iq="10" data-cost="5e10" data-research="bwood"
+                            data-desc="[You need just 10 digital knowlege to purchase this research!]\nOh the thinks you can th...you know what? That might actually be a copyright strike, so I'm not going to risk it.\nOn the bright side, you can think up more illogical things, if only you try!\n(Unlocks BLUE woodcutters, which cut blue wood and are found in the building menu)">
+                            <span class="move3">Blue wood:</span> <span class="foam">$50,000,000,000</span>
+                            <span class="ticket"></span>
+                        </div>
+                        <div data-show="computers>0" data-cost="1e10" data-research="digital"
+                            data-desc="AHAHHHAHHAAHHAHHAHAHAHAHHAH THE ROBOTS ARE HEREEEEE!!!!\n(Allows computers to generate digital knowlege, which allows you to unlock EVEN MORE researches)">
+                            Digital research: <span class="foam">$10,000,000,000</span>
                             <span class="money"></span>
-                        </div> -->
+                        </div>
+                        <div data-show="$plastic" data-cost="5e9" data-research="assembly"
+                            data-desc="In computer programming, an assembly language is one that...oh wait, sorry, wrong one.\nASSEMBLE YOUR CIRCUITS INTO CIRCUIT BOARDS AND COMPUTERRRRRRS!\n(Allows you to assemble circit boards and compters in the technology menu)">
+                            ASSEMBLYYYYYY!!!!!!!!!!!!!! <span class="foam">$5,000,000,000</span>
+                            <span class="money"></span>
+                        </div>
+                        <div data-show="$steelwork" data-cost="1e9" data-research="plastic"
+                            data-desc="P-p-p-plastic? Isn't that, like, BAD for animals or something?\n(Unlocks plastic production in the technology menu, below the circuits and robot arms.)">
+                            PLASTICSTUFFS!!!!!!!!!!!!!! <span class="foam">$1,000,000,000</span>
+                            <span class="money"></span>
+                        </div>
                         <div data-show="$rocketry2" data-cost="2.5e14" data-research="rocketry3"
                             data-desc="More rocket science? All right...\n(Unlocks all rocket parts)">
-                            Rocket Science 2.0: <span class="green">$250,000,000,000,000</span>
+                            Rocket science 2.0: <span class="green">$250,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$rocketry" data-cost="5e13" data-research="rocketry2"
                             data-desc="Well, it's not rocket science anymore!\n(Unlocks a few rocket parts that you can build)">
-                            Rocket Science: <span class="green">$50,000,000,000,000</span>
+                            Rocket science: <span class="green">$50,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$smart|naphtha>0|science>1e12" data-cost="1e12" data-research="rocketry"
                             data-desc="Learn the basic components of rockets.\n(Unlocks the rocket panel, although you'll need further research to do anything at all)">
-                            Basic Rocketry: <span class="green">$1,000,000,000,000</span>
+                            Basic rocketry: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$creative" data-cost="1e12" data-research="smart"
                             data-desc="That's smart...\n(Scientists generate 2× more science)">
-                            Smarter Scientists: <span class="green">$1,000,000,000,000</span>
+                            Smarter scientists: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="creativity>5e10|scientists>=25" data-cost="1" data-research="creative"
                             data-desc="Creativity isn't cheap..unless you already have lots of creative scientists, of course.\n(Scientists generate 3× more creativity)">
-                            Creative Scientists: <span class="green">$1</span>
+                            Creative scientists: <span class="green">$1</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$factories" data-cost="7.5e15" data-research="massarms"
@@ -3667,16 +3696,6 @@
                         <div data-show="science>500|creativity>1000" data-cost="2e8" data-research="slag"
                             data-desc="Making steel is a slow process. Get your steel mills to slowly use slag to turn into steel, for FREE.\n(Allows you to turn slag into steel at no cost!)">
                             Slag recycling: <span class="green">$200,000,000</span>
-                            <span class="money"></span>
-                        </div>
-                        <div data-show="$plastic" data-cost="5e9" data-research="assembly"
-                            data-desc="In computer programming, an assembly language is one that...oh wait, sorry, wrong one.\nASSEMBLE YOUR CIRCUITS INTO CIRCUIT BOARDS AND COMPUTERRRRRRS!\n(Allows you to assemble circit boards and compters in the technology menu)">
-                            ASSEMBLYYYYYY!!!!!!!!!!!!!! <span class="green">$5,000,000,000</span>
-                            <span class="money"></span>
-                        </div>
-                        <div data-show="$steelwork" data-cost="1e9" data-research="plastic"
-                            data-desc="P-p-p-plastic? Isn't that, like, BAD for animals or something?\n(Unlocks plastic production in the technology menu, below the circuits and robot arms.)">
-                            PLASTICSTUFFS!!!!!!!!!!!!!! <span class="green">$1,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="science>500|creativity>1000" data-cost="5e7" data-research="steelwork"
@@ -4310,7 +4329,7 @@
                     data-for="$flask"></div>
                 <div id="creativity" class="orange" data-desc="Creativity helps unlock new and exciting researches."
                     data-for="$star"></div>
-                <div id="iq" class="pink" data-desc="FEED THE (AI) BEAST" data-for="AI intelligence points">
+                <div id="iq" class="pink" data-desc="1+1=thwee!" data-for="digital knowlege">
                 </div>
             </div>
         </div>
@@ -5955,7 +5974,8 @@
                 var cost = new H(elem.getAttribute("data-cost"))
                 var research = elem.getAttribute("data-research")
                 if (cost !== null && research !== null) {
-                    if (!hasResearch(research)) {
+                    var iqAmount = elem.getAttribute("data-iq")
+                    if ((iqAmount === null || C("iq").mul(0.2).sqrt(true).sqrt(true).isMoreOrEqual(iqAmount)) && !hasResearch(research)) {
                         var money = C("money", "This happened while checking for research cost.")
                         if (money.isMoreOrEqual(cost)) {
                             remove("money", cost)
@@ -6700,7 +6720,7 @@
                 return (amount.equals(100) ? "a completed " + item.names[3] : "built " + format(amount, "step") + " of the " + item.names[3] + " with " + (100 * (Number(amount) % 1)).toFixed(4) + "% of that step completed") + ", as well as " + format(C("$" + id, "This happened while formatting name and quantity information for the amount of workers working on a rocket part."), "worker") + " helping to build it"
             } else if (id === "money") {
                 return "$" + formatted
-            } else if (id === "iq") {
+            } else if (id === "iq" && hasResearch("digital")) {
                 amount = amount.mul(0.2).sqrt(true).sqrt(true)
                 formatted = amount.isMoreOrEqual(1000000) ? format(amount) : Number(amount).toFixed(4)
             }
@@ -8024,7 +8044,7 @@
             var millPower = H(hasResearch("steelwork") ? 2.5 : 1).mul(hasResearch("steel") ? 1.25 : 1)
 
             var kilns = C("kilns", issue)
-            var ovenPower = C("cokeovens", issue).mul(hasResearch("coke3") ? 3 : 1).mul(hasResearch("coke2") ? 2 : 1).mul(hasResearch("coke") ? 1.5 : 1)
+            var ovenPower = C("cokeovens", issue).mul(hasResearch("schedule") ? 2 : 1).mul(hasResearch("coke3") ? 3 : 1).mul(hasResearch("coke2") ? 2 : 1).mul(hasResearch("coke") ? 1.5 : 1)
 
             var steelMills = C("steelmills", issue)
             var steelPower = steelMills.mul(millPower)
@@ -8142,6 +8162,10 @@
                     } else if ((factoriesEnabled || wattageKey !== "factories") && (armsEnabled || wattageKey !== "arms")) {
                         itemToAdd = requestWatts(wattageKey, itemData[0]).mul(itemData[1])
                     }
+
+                    if ((wattageKey === "arms" || wattageKey === "factories") && hasResearch("autofix")) {
+                        itemToAdd = itemToAdd.mul(1.5)
+                    }
                     cpt = cpt.add(itemToAdd)
                 }
             }
@@ -8195,7 +8219,7 @@
 
             exchange("arms", constructors.mul(0.0000888777), "steel", 125)
             if (hasResearch("factories")) {
-                exchange("factories", constructors.mul(0.000000175251505), "arms", 100)
+                exchange("factories", constructors.mul(0.00000175251505), "arms", 100)
             }
 
             multiExchange(["steel", "slag"], [steelPower.mul(0.012), steelPower.mul(0.003)], ["money", "ironore", "coke", "limestone"], [millCost.mul(steelMills), steelPower.mul(0.015), steelPower.mul(0.005), steelPower.mul(0.0025)])
