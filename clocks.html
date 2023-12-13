@@ -3485,14 +3485,19 @@
                     </span>
 
                     <div id="research">
-                        <div data-show="$digital" data-iq="25" data-cost="1e12" data-research="autofix"
-                            data-desc="[You NEED 50 digital knowlege to purchase this research!]\nSo far, you have to manually fix issues in your robot arms.\nBut you can use technology to do the job for your!\n(1.5× efficiency of ALL robot arms and factories, yes, that's right!)">
-                            Auto-fix: <span class="foam">$1,000,000,000,000</span>
+                        <div data-show="$digital" data-iq="80" data-cost="1e13" data-research="marketing"
+                            data-desc="[You NEED 80 digital knowlege to purchase this research!]\nUse your computers to mass-advertise your clocks!\n(All items sell for +4% for each powered computer you have!)">
+                            Computer advertising: <span class="foam">$10,000,000,000,000</span>
                             <span class="ticket"></span>
                         </div>
-                        <div data-show="$digital" data-iq="25" data-cost="5e10" data-research="schedule"
+                        <div data-show="$digital" data-iq="50" data-cost="1e12" data-research="autofix"
+                            data-desc="[You NEED 50 digital knowlege to purchase this research!]\nSo far, you have to manually fix issues in your robot arms.\nBut you can use technology to do the job for your!\n(1.5× efficiency of ALL robot arms and factories, yes, that's right!)">
+                            Auto-fixing machines: <span class="foam">$1,000,000,000,000</span>
+                            <span class="ticket"></span>
+                        </div>
+                        <div data-show="$digital" data-iq="25" data-cost="7.5e11" data-research="schedule"
                             data-desc="[You NEED 25 digital knowlege to purchase this research!]\nGive all of your workers a highly rigorous schedule to double their effectiveness!\n(2× efficiency of coke ovens)">
-                            Coke oven efficiency: <span class="foam">$100,000,000,000</span>
+                            Coke oven efficiency: <span class="foam">$750,000,000,000</span>
                             <span class="ticket"></span>
                         </div>
                         <div data-show="$digital" data-iq="10" data-cost="5e10" data-research="bwood"
@@ -3506,7 +3511,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="$plastic" data-cost="5e9" data-research="assembly"
-                            data-desc="In computer programming, an assembly language is one that...oh wait, sorry, wrong one.\nASSEMBLE YOUR CIRCUITS INTO CIRCUIT BOARDS AND COMPUTERRRRRRS!\n(Allows you to assemble circit boards and compters in the technology menu)">
+                            data-desc="In computer programming, an assembly language is one that...oh wait, sorry, wrong one.\nASSEMBLE YOUR CIRCUITS INTO CIRCUIT BOARDS AND COMPUTERRRRRRS!\n(Allows you to assemble circit boards and computers in the technology menu)">
                             ASSEMBLYYYYYY!!!!!!!!!!!!!! <span class="foam">$5,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -6490,15 +6495,19 @@
                             if (part1.charCodeAt(0) === 36) {
                                 var num = new H(part2)
                                 var oldManagersUsed = cManagersUsed
-                                add(part1, num)
+                                rawAdd(part1, num)
                                 cManagersUsed = cManagersUsed.add(num)
                                 var cManagers = C("cmanagers", "This happened while checking for the maximum amount of construction managers that can work on a rocket part.")
                                 var diff = cManagersUsed.sub(cManagers)
                                 if (diff !== false) {
                                     cManagersUsed = new H(cManagers)
-                                    remove(part1, diff)
+                                    rawRemove(part1, diff)
                                 }
                                 continue
+                            }
+
+                            if (part1 === "money" && hasResearch("marketing")) {
+                                multiplier = multiplier.mul(H(true).add(C("computers").mul(0.04)))
                             }
 
                             if (part2.charCodeAt(0) === 42 && !isRemoving) {
@@ -6507,11 +6516,7 @@
                                 } else {
                                     multipliedAmount = multipliedAmount.mul(buttonPower)
                                     // * sign: multiply the amount of the item with "%" or "all" spent (so a data-cost of "gold-1%" with the playing having 200 gold as well as an data-earn of "money+*4" means that the user earns 2 * 4 = 8 dollars)
-                                    if (e === true) {
-                                        rawAdd(part1, multipliedAmount.mul(part2.slice(1)))
-                                    } else {
-                                        add(part1, multipliedAmount.mul(part2.slice(1)))
-                                    }
+                                    rawAdd(part1, multipliedAmount.mul(part2.slice(1)).mul(multiplier))
                                 }
                             } else if (isRemoving) {
                                 createRemoveMenu(part1)
@@ -6524,7 +6529,7 @@
                                     }
                                 }
 
-                                add(part1, number)
+                                rawAdd(part1, number)
                             }
 
                         }
