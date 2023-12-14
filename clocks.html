@@ -6587,7 +6587,7 @@
         var buttons = []
         for (let i = 0; i < elements.length; i++) {
             var element = elements[i]
-            if (element.tagName === "BUTTON" || element.getAttribute("data-earn") !== null) {
+            if ((element.tagName === "BUTTON" || element.getAttribute("data-earn") !== null) && element.id !== "noBoosts") {
                 buttons.push(element)
             }
         }
@@ -8217,7 +8217,7 @@
 
             // Update the amount of clocks that you have
             var familySqrt = C("family", issue).sqrt()
-            cpt = cpt.add(clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.225 : 0)).add(familySqrt.mul(familySqrt.sqrt()).mul(0.05))
+            cpt = cpt.add(clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)).add(familySqrt.mul(familySqrt.sqrt()).mul(0.05))
             if (shards.isPositive()) {
                 cpt = cpt.mul(shards.mul(10000).sqrt(true).sqrt(true))
             }
@@ -8316,7 +8316,7 @@
             // Update the CPS element and change the color by modifying the class
             var cps = cpt.mul(60)
             var cpsElem = ID("cps")
-            update(cpsElem, cps.floor(true).isZero() ? "no clocks currently" : (cps.plural((cps.isLess(10) ? "only " : "") + format(cps) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))) + " a second (CPS)"))
+            update(cpsElem, (cps.plural((cps.floor(true).isZero() ? "no " : ((cps.isLess(10) ? "only " : "") + format(cps))) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))) + " a second (CPS)"))
             if (cps.isMoreOrEqual(1e11)) {
                 updateClass(cpsElem, "move3")
             } else if (cps.isMoreOrEqual(1e10)) {
@@ -8684,7 +8684,7 @@
 
             var noBoosts = ID("noBoosts")
             if (speed.equals(baseSpeed)) {
-                if (!noBoosts.hasAttribute("style")) {
+                if (noBoosts.style.display !== "none") {
                     noBoosts.style.display = "none"
                 }
             } else {
