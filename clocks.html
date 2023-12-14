@@ -6768,9 +6768,9 @@
                     }
                 } else if (season === CHRISTMAS) {
                     if (isPlural) {
-                        name = name.replace("clocks", "[Christmas trees]")
+                        name = name.replace("clocks", "[trees]")
                     } else {
-                        name = name.replace("clock", "[Christmas tree]")
+                        name = name.replace("clock", "[tree]")
                     }
                 }
             }
@@ -8316,7 +8316,7 @@
             // Update the CPS element and change the color by modifying the class
             var cps = cpt.mul(60)
             var cpsElem = ID("cps")
-            update(cpsElem, cps.floor(true).isZero() ? "no clocks currently" : (cps.plural((cps.isLess(10) ? "only " : "") + format(cps) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " Christmas tree" : " clock"))) + " a second (CPS)"))
+            update(cpsElem, cps.floor(true).isZero() ? "no clocks currently" : (cps.plural((cps.isLess(10) ? "only " : "") + format(cps) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))) + " a second (CPS)"))
             if (cps.isMoreOrEqual(1e11)) {
                 updateClass(cpsElem, "move3")
             } else if (cps.isMoreOrEqual(1e10)) {
@@ -8473,7 +8473,7 @@
         const NONE = 0
         const HALLOWEEN = 1
         const CHRISTMAS = 2
-        const NEWYEAR = 2
+        const NEWYEAR = 3
         var season = -1, holiday = NONE, activeElement = document.activeElement
         draw = function () {
             var date = new Date()
@@ -8487,7 +8487,7 @@
                     var element = elements[i]
                     var label = element.getAttribute("aria-label")
                     if (label !== null) {
-                        var newLabel = label.replace(/##/g, season === HALLOWEEN ? "pumpkins" : (season === CHRISTMAS ? "Christmas trees" : "clocks")).replace(/#|clock|pumpkin|Christmas tree/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "Christmas tree" : "clock"))
+                        var newLabel = label.replace(/##/g, season === HALLOWEEN ? "pumpkins" : (season === CHRISTMAS ? "trees" : "clocks")).replace(/#|clock|pumpkin|tree/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "tree" : "clock"))
                         if (newLabel !== label) {
                             element.setAttribute("aria-label", newLabel)
                         }
@@ -8560,7 +8560,7 @@
                         if (name === null) {
                             console.warn("An element with ID '" + key.replace(/'/g, "\\'") + "' should have the 'data-for' attribute.")
                         } else if (shownProperties.includes(key) || stuffTotals[key].isPositive()) {
-                            name = name.replace(/##/g, season === HALLOWEEN ? "pumpkins" : (season === CHRISTMAS ? "Christmas trees" : "clocks")).replace(/#/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "Christmas tree" : "clock"))
+                            name = name.replace(/##/g, season === HALLOWEEN ? "pumpkins" : (season === CHRISTMAS ? "trees" : "clocks")).replace(/#/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "tree" : "clock"))
                             var firstChar = name.charCodeAt(0)
                             var isSpecial = firstChar === 36 || firstChar === 37
                             var formatted
@@ -8882,7 +8882,7 @@
                         }
                     }
 
-                    text = text.replace(/##/g, season === HALLOWEEN ? "pumpkins" : (season === CHRISTMAS ? "Christmas trees" : "clocks")).replace(/#/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "Christmas tree" : "clock"))
+                    text = text.replace(/##/g, season === HALLOWEEN ? "pumpkins" : (season === CHRISTMAS ? "trees" : "clocks")).replace(/#/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "tree" : "clock"))
                     var formattedText = text.replace(/\{/g, "<i>").replace(/\}|\]/g, "</i>").replace(/\[/g, '<i class="orange inherit">')
                     text = formattedText.replace(/<br>/g, "; ").replace(/<.+?>/g, "")
                     if (hoverElem.innerHTML !== formattedText) {
