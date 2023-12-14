@@ -4179,7 +4179,7 @@
                 <div class="small">
                     <u title="Open the devlog" id="viewDevlog" class="linky" role="link">View devlog</u>
                     &nbsp;
-                    <u title="Open the devlog" id="viewSettings" class="linky" role="link">View settings</u>
+                    <u title="View the settings" id="viewSettings" class="linky" role="link">View settings</u>
                     &nbsp;
                     <u title="Copy the save file to your clipboard" class="save" id="copy" role="link">
                         Copy save
@@ -4388,7 +4388,7 @@
         script.remove()
 
         // Set the version
-        const version = "0.0.4"
+        const version = "0.0.4.1"
 
         /** @type {string[]} An array with abbreviations for numbers up to 50 digits */
         const shortSuffixes = ["", "K", "M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "Ud", "Dd", "Td", "qd", "Qd"]
@@ -6566,7 +6566,7 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(1), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false
+        var baseSpeed = H(1), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:dark)")
         if (darkModeMedia.matches) {
@@ -6983,7 +6983,17 @@
                     if (loaded) {
                         reset(true);
                     }
-                    if (version === "0.0.4") {
+                    if (version === "0.0.4.1") {
+                        w = $.indexOf("Wb");
+                        showTab($.slice(0, w));
+                        $ = $.slice(w + 1), w = $.indexOf("@");
+                        startingTime = parseInt($.slice(0, w), 20);
+                        $ = $.slice(w + 1), w = $.indexOf("@");
+                        crystalTotal = parseInt($.slice(0, w), 20);
+                        $ = $.slice(w + 1), w = $.indexOf("z");
+                        crystalTime = parseInt($.slice(0, w), 30);
+                        $ = $.slice(w + 1);
+                    } if (version === "0.0.4") {
                         w = $.indexOf("@");
                         crystalTotal = parseInt($.slice(0, w), 20);
                         $ = $.slice(w + 1);
@@ -7010,7 +7020,7 @@
                         if (!coalMachinesEnabled) ID("aluminumArmsOn").checked = !1;
                         $ = $.slice(la + 1);
                     }
-                    if (version === "0.0.3" || version === "0.0.4") {
+                    if (version === "0.0.3" || version === "0.0.4" || version === "0.0.4.1") {
                         la = $.indexOf("$");
                         Q = $.slice(0, la);
                         Q = Q.split("*");
@@ -7132,7 +7142,7 @@
                     for (var SSS = 0; SSS < properties.length; SSS++) {
                         stuff2[properties[SSS]] = new H();
                     }
-                    if (version === "0.0.4" || version === "0.0.3" || version === "0.0.2") {
+                    if (version === "0.0.4.1" || version === "0.0.4" || version === "0.0.3" || version === "0.0.2") {
                         var ca = parseCompact($.slice(la + 1));
                         stuff = Object.assign(stuff2, ca);
                         cManagersUsed = stuff["$rocketbody"];
@@ -7182,7 +7192,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "@" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + currentTab + "Wb" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -7568,6 +7578,8 @@
             // Resets everything if the parameter is set to true
             if (force) {
                 time = Date.now()
+                startingTime = time
+
                 var crystalImage = ID("crystal")
                 crystalImage.removeAttribute("class")
                 crystalImage.removeAttribute("style")
