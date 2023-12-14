@@ -3516,7 +3516,7 @@
                             <span class="ticket"></span>
                         </div>
                         <div data-show="computers>0" data-cost="1e10" data-research="digital"
-                            data-desc="AHAHHHAHHAAHHAHHAHAHAHAHHAH THE ROBOTS ARE HEREEEEE!!!!\n(Allows computers to generate digital knowlege, which allows you to unlock EVEN MORE researches)">
+                            data-desc="AHAHHHAHHAAHHAHHAHAHAHAHHAH THE ROBOTS ARE HEREEEEE!!!!\n(Unlocks EVEN MORE researches. Note that to get digital knowlege, you need AI upgrades!)">
                             Digital research: <span class="foam">$10,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -3587,7 +3587,7 @@
                         </div>
                         <div data-show="$ai2|science>=10000" data-cost="1e9" data-research="ai3"
                             data-desc="1/(1+e^(-x))\n(AI learns 2× better)">
-                            Research activation functions for AI: <span class="green">$1,000,000,000</span>
+                            AI in digital knowlege: <span class="green">$1,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="computers>0|$ai" data-cost="1e8" data-research="ai2"
@@ -3596,7 +3596,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="computers>0" data-cost="2.5e7" data-research="ai"
-                            data-desc="You get your smartest employees (and family members) together to discuss how to continue.\nAI seems to be the only solution! Note that to get more effective AI, you need lots of science.\n(Unlocks the AI brain, which learns using computers)">
+                            data-desc="You get your smartest employees (and family members) together to discuss how to continue.\nAI seems to be the only solution! Note that to get more effective AI, you need lots of science.\n(Finally gives you digital knowlege!)">
                             Research basic AI: <span class="green">$25,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -3736,6 +3736,21 @@
                         <div data-research="aluminum" data-cost="2e10"
                             data-desc="Aluminum is important in the construction of rockets!\nwait, it's aluminium in british english!!?\n(Allows you to create aluminum with significant effort, or aluminium if you're British.)">
                             Aluminum 101: <span class="green">$20,000,000,000</span>
+                            <span class="money"></span>
+                        </div>
+                        <div data-show="science>1e12|$saws2" data-research="call" data-cost="1e13"
+                            data-desc="Woodcutters can now encourage each other when they work!\n(Woodcutters are +1% more effective for every woodcutter in total)">
+                            Woodcutter Call&trade; <span class="green">$10,000,000,000,000</span>
+                            <span class="money"></span>
+                        </div>
+                        <div data-show="science>1e9|$saws" data-research="saws2" data-cost="1e10"
+                            data-desc="Turns out you got scammed by the last research and got unbranded chainsaws. Have a good day!\n(5× efficiency of woodcutters)">
+                            Get legita, MATE chainsaws: <span class="green">$1,000,000,000</span>
+                            <span class="money"></span>
+                        </div>
+                        <div data-show="science>1e6|$axes" data-research="saws" data-cost="1e9"
+                            data-desc="Axes are slow. Use something better!\n(Okay, I have to make hundreds of descriptions, okay? Give me a break...)\n(3× efficiency of woodcutters)">
+                            Get chainsaws: <span class="green">$1,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-research="axes" data-cost="5e6"
@@ -6760,7 +6775,7 @@
                 return (amount.equals(100) ? "a completed " + item.names[3] : "built " + format(amount, "step") + " of the " + item.names[3] + " with " + (100 * (Number(amount) % 1)).toFixed(4) + "% of that step completed") + ", as well as " + format(C("$" + id, "This happened while formatting name and quantity information for the amount of workers working on a rocket part."), "worker") + " helping to build it"
             } else if (id === "money") {
                 return "$" + formatted
-            } else if (id === "iq" && hasResearch("digital")) {
+            } else if (id === "iq") {
                 amount = amount.mul(0.2).sqrt(true).sqrt(true)
                 formatted = amount.isMoreOrEqual(1000000) ? format(amount) : Number(amount).toFixed(4)
             }
@@ -8114,7 +8129,11 @@
             var diggers = C("diggers", issue)
 
             var woodcutters = C("woodcutters", issue)
-            var woodPower = woodcutters.mul(hasResearch("axes") ? 2.5 : 1)
+            var woodPower = woodcutters.mul(hasResearch("saws2") ? 5 : 1).mul(hasResearch("saws") ? 3 : 1).mul(hasResearch("axes") ? 0.125 : 0.05)
+            if (hasResearch("call")) {
+                woodPower = woodPower.mul(H(true).add(woodcutters.mul(0.01)))
+            }
+
             var bluecutters = C("bluecutters", issue)
             var bluePower = bluecutters.mul(hasResearch("blue") ? 4 : 1)
 
@@ -8264,7 +8283,7 @@
             add("nests", labs.mul(0.0000333222111))
 
             multiExchange(["clay", "sand"], [diggers.mul(0.035), diggers.mul(0.05)], "money", diggers.mul(H(".16666666666666666666666666666666666666666666666667")))
-            exchange("wood", woodPower.mul(0.05), "money", woodcutters.mul(0.25), true)
+            exchange("wood", woodPower, "money", woodcutters.mul(0.25), true)
             exchange("bwood", bluePower.mul(0.00155), "fc", bluecutters.mul(0.006), true)
             add("rubber", trees.mul(0.0004))
 
