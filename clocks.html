@@ -3497,17 +3497,22 @@
                     </span>
 
                     <div id="research">
-                        <div data-show="$shardsci" data-cost="1e17" data-research="polish2"
+                        <div data-show="$shardsci" data-cost="S1e19" data-research="goldjewelers"
+                            data-desc="With all of that ridiculousness for shards and normal clocks, what about jewelers?\nAfter some careful studying, apparently golden shards make jewelers happier!\n(4× efficiency of jewelers!)">
+                            Golden tier: <span class="bluey">10,000,000,000,000,000,000</span>
+                            <span class="big flask"></span>
+                        </div>
+                        <div data-show="$shardsci" data-cost="S1e17" data-research="polish2"
                             data-desc="{Good news: spending science DOES NOT remove previous researches and does not slow progress to future researches!\nIt will also not slow/reset progress to unlocking new researches, as the unlock conditions are based on the TOTAL amount of science.}\nUse the power of SCIENCE to increase shard multiplier!\n(CPS effect of shards is squared!)">
                             Lab-level polishing: <span class="bluey">100,000,000,000,000,000</span>
                             <span class="big flask"></span>
                         </div>
-                        <div data-show="$shardsci" data-cost="1e14" data-research="polish"
+                        <div data-show="$shardsci" data-cost="S1e14" data-research="polish"
                             data-desc="{Good news: spending science DOES NOT remove previous researches and does not slow progress to future researches!\nIt will also not slow/reset progress to unlocking new researches, as the unlock conditions are based on the TOTAL amount of science.}\nShards are valuable, so you might as well study how to study them optimally.\n(Shard CPS multiplier is increased by +10!)">
                             Polished shards: <span class="bluey">100,000,000,000,000</span>
                             <span class="big flask"></span>
                         </div>
-                        <div data-show="$shardsci" data-cost="1e12" data-research="shardsci2"
+                        <div data-show="$shardsci" data-cost="S1e12" data-research="shardsci2"
                             data-desc="{Good news: spending science DOES NOT remove previous researches and does not slow progress to future researches!\nIt will also not slow/reset progress to unlocking new researches, as the unlock conditions are based on the TOTAL amount of science.}\nIncreases science/creativity production of scientists 25 TIMES!\n(25× efficiency of scientists, no strings attached!)">
                             ShardScience&trade; <span class="bluey">1,000,000,000,000</span>
                             <span class="big flask"></span>
@@ -6081,15 +6086,26 @@
                 if (parent !== this) {
                     elem = parent
                 }
-                var cost = new H(elem.getAttribute("data-cost"))
+                var costString = elem.getAttribute("data-cost")
                 var research = elem.getAttribute("data-research")
-                if (cost !== null && research !== null) {
+                if (costString !== null && research !== null) {
                     var iqAmount = elem.getAttribute("data-iq")
                     if ((iqAmount === null || C("iq").mul(0.2).sqrt(true).sqrt(true).isMoreOrEqual(iqAmount)) && !hasResearch(research)) {
-                        var money = C("money", "This happened while checking for research cost.")
-                        if (money.isMoreOrEqual(cost)) {
-                            remove("money", cost)
-                            researches.push(research)
+                        var item, cost
+                        if (costString.charCodeAt(0) === 83) {
+                            item = C("science", "This happened while checking for research cost.")
+                            cost = H(costString.slice(1))
+                            if (item.isMoreOrEqual(cost)) {
+                                remove("science", cost)
+                                researches.push(research)
+                            }
+                        } else {
+                            item = C("money", "This happened while checking for the research cost.")
+                            cost = H(costString)
+                            if (item.isMoreOrEqual(cost)) {
+                                remove("money", cost)
+                                researches.push(research)
+                            }
                         }
                     }
                 } else {
@@ -8213,7 +8229,7 @@
 
             var molders = C("molders", issue)
             var barmolders = C("barmolds", issue)
-            var jewelerPower = C("jewelers", issue).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1)
+            var jewelerPower = C("jewelers", issue).mul(hasResearch("goldjewelers") ? 4 : 1).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1)
 
             var managers = C("managers", issue)
             var managerPower = managers.mul(0.006 - 0.006 * Math.exp(-0.04 * managers))
