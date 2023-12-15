@@ -2635,7 +2635,7 @@
         </header>
 
         <div id="properties">
-            coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silver|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq|shards
+            coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silver|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             clocks|gc|goldore
@@ -2681,6 +2681,7 @@
             slag: Slag Piece (0, Mostly a waste)
             bricks: Brick (1, A solid red brick)
             furnaces: Blast Furnace (2, A blast furnace used to extract out some ores to use)
+            gfurnaces: *Golden* Furnace (2, A furnace that exclusively makes golden nuggets)
             steelmills: Steel Mill (3, A mill in order to farm steel, ahem, farm...)
             millmakers: Steel Millmaker (3, A mill to make more steel mills)
             money: Dollar (0, Moneymoneymoney)
@@ -2833,7 +2834,18 @@
                             data-desc="You can get more furnaces at once by getting more construction managers!$furnaces$"
                             data-multibuild></span>
                     </button>
-                    <button class="caribbean" data-earn="radiummills+1"
+                    <button class="gold" data-earn="gfurnaces+1" data-cost="goldb-1e6"
+                        data-show="$gfurnaces" data-sound="build"
+                        data-desc="Make a rare {shiny GOLDEN} FURNACE that specializes in smelting gold ore into golden nuggets!\nHowever, the size of these furnaces requires you to pay 1,000,000 gold blocks.$gfurnaces$">
+                        Construct a GOLDEN furnace <span class="goldn"></span>
+                        <span class="mini stripe2" data-earn="gfurnaces+1" data-sound="build"
+                            data-cost="goldb-1e6" data-show="platinum>=1e7"
+                            data-desc="You can get more {shiny golden} furnaces at once by getting more construction managers!$gfurnaces$"
+                            data-multibuild></span>
+                    </button>
+
+                    <br>
+                    <button class="caribbean" data-earn="radiummills+1" data-sound="build"
                         data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="$radium"
                         data-desc="Radium mills crush radium ore and make the radium enriched for use.\nCosts 50,000 steel and 40 # makers to operate this, as well as $25,000,000.$radiummills$">
                         Construct a RADIUM MILL <span class="radiumbar"></span>
@@ -2964,7 +2976,7 @@
                     Gold is valuable and can be used as an amazing decoration.
 
                     <br>
-                    <button data-earn="goldore+10" data-cost="money-10" data-show="money>=10"
+                    <button data-earn="goldore+10" data-cost="money-10"
                         data-desc="Ten pieces of ore only cost $10 because the technology to extract the gold out is significantly more complex.\nDon't get too much!$goldore$"
                         class="silver">
                         Buy 10 pieces of gold ore <span class="goldbar"></span>
@@ -2975,7 +2987,7 @@
                         Buy a nugget <span class="goldn"></span>
                     </button>
                     <button data-earn="goldb+1" data-cost="gold-25|clocks-50" data-show="family>0"
-                        data-desc="You look at the blocks (or, really, bars) on display.\nYou need 25 gold nuggets and 50 ## as payment to exchange for one of these rare products.$goldb$"
+                        data-desc="You look at the blocks (or, really, bars) on display.\nYou need 25 golden nuggets and 50 ## as payment to exchange for one of these rare products.$goldb$"
                         class="r1">
                         Buy a <span class="glow">shiny GOLD</span> BLOCK! <span class="goldbar"></span>
                     </button>
@@ -3014,9 +3026,9 @@
                     Radioactive stuff is bright and dangerous.
 
                     <br>
-                    <button class="stripe3" data-earn="radiummills+1" data-cost="steel-50000|clockmakers-40|money-2.5e7"
-                        data-show="$radium"
-                        data-desc="Radium mills crush radium ore and make sure that it is enriched.\nCosts 50,000 steel and 40 # makers to operate this, as well as $25,000,000.$radiummills$">
+                    <button class="caribbean" data-earn="radiummills+1" data-sound="build"
+                        data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="$radium"
+                        data-desc="Radium mills crush radium ore and make the radium enriched for use.\nCosts 50,000 steel and 40 # makers to operate this, as well as $25,000,000.$radiummills$">
                         Construct a RADIUM MILL <span class="radiumbar"></span>
                     </button>
                     <br>
@@ -3485,6 +3497,21 @@
                     </span>
 
                     <div id="research">
+                        <div data-show="$shardsci" data-cost="1e17" data-research="polish2"
+                            data-desc="{Good news: spending science DOES NOT remove previous researches and does not slow progress to future researches!\nIt will also not slow/reset progress to unlocking new researches, as the unlock conditions are based on the TOTAL amount of science.}\nUse the power of SCIENCE to increase shard multiplier!\n(CPS effect of shards is squared!)">
+                            Lab-level polishing: <span class="bluey">100,000,000,000,000,000</span>
+                            <span class="big flask"></span>
+                        </div>
+                        <div data-show="$shardsci" data-cost="1e14" data-research="polish"
+                            data-desc="{Good news: spending science DOES NOT remove previous researches and does not slow progress to future researches!\nIt will also not slow/reset progress to unlocking new researches, as the unlock conditions are based on the TOTAL amount of science.}\nShards are valuable, so you might as well study how to study them optimally.\n(Shard CPS multiplier is increased by +10!)">
+                            Polished shards: <span class="bluey">100,000,000,000,000</span>
+                            <span class="big flask"></span>
+                        </div>
+                        <div data-show="$shardsci" data-cost="1e12" data-research="shardsci2"
+                            data-desc="{Good news: spending science DOES NOT remove previous researches and does not slow progress to future researches!\nIt will also not slow/reset progress to unlocking new researches, as the unlock conditions are based on the TOTAL amount of science.}\nIncreases science/creativity production of scientists 25 TIMES!\n(25× efficiency of scientists, no strings attached!)">
+                            ShardScience&trade; <span class="bluey">1,000,000,000,000</span>
+                            <span class="big flask"></span>
+                        </div>
                         <div data-show="$bingol" data-iq="125" data-cost="5e14" data-research="madgpt"
                             data-desc="[You NEED 125 digital knowlege to purchase this research!]\n(Science and creativity production of scientists is +1000% higher for each powered computer, and MULTIPLIES with previous production boosts!)">
                             MadGPT: <span class="foam">$500,000,000,000,000</span>
@@ -3540,12 +3567,12 @@
                             Rocket science: <span class="green">$50,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
-                        <div data-show="$smart|naphtha>0|science>=1e11" data-cost="1e12" data-research="rocketry"
+                        <div data-show="$smart|naphtha>0|science>=1e13" data-cost="1e12" data-research="rocketry"
                             data-desc="Learn the basic components of rockets.\n(Unlocks the rocket panel, although you'll need further research to do anything at all)">
                             Basic rocketry: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
-                        <div data-show="$creative" data-cost="1e12" data-research="smart"
+                        <div data-show="$creative|science>=1e12" data-cost="1e12" data-research="smart"
                             data-desc="That's smart...\n(Scientists generate 2× more science)">
                             Smarter scientists: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
@@ -4005,6 +4032,8 @@
                         You get more gold shards if you have more golden clocks!
                         <br>
                         NOTE: You will lose ALL non-ascension, workers, buildings, and researches!
+                        <br>
+                        Shards work because, uh, they're shiny?
                     </div>
 
                     <div id="shardInfo">
@@ -4019,6 +4048,14 @@
                         data-desc="Sacrifice all non-ascension items in exchange for golden shards?">
                         Ascend for golden shards!
                     </button>
+
+                    <br>
+                    <span class="mini special" data-cost="shards-1" data-earn="$shardsci" data-hide="$shardsci">
+                        -1 <span class="shard"></span> for new researches costing science!
+                    </span>
+                    <span class="mini special" data-cost="shards-10" data-earn="$gfurnaces" data-hide="$gfurnaces">
+                        -10 <span class="shard"></span> for GOLDEN FURNACES!
+                    </span>
                 </div>
 
                 <div id="settings" style="display: none">
@@ -5963,13 +6000,14 @@
             var target = e.target
             updateRemoveAmount(e)
             if (!(["INPUT", "SELECT", "TEXTAREA", "U"]).includes(target.tagName)) {
-                if (e.repeat && e.keyCode !== 9) {
-                    e.preventDefault()
-                } else {
-                    if (e.keyCode === 32 || e.keyCode === 13) {
-                        target.click()
+                var isSpaceOrEnter = e.keyCode === 32 || e.keyCode === 13
+                if (e.repeat) {
+                    if (isSpaceOrEnter) {
                         e.preventDefault()
                     }
+                } else if (isSpaceOrEnter) {
+                    target.click()
+                    e.preventDefault()
                 }
             }
         })
@@ -5996,7 +6034,9 @@
         }
 
         attachEvent("skip", function () {
-            ID(currentTab).getElementsByTagName("button")[0].focus()
+            setTimeout(function () {
+                ID(currentTab).getElementsByTagName("button")[0].focus()
+            }, 5)
         })
 
         var logsHidden = true
@@ -6516,6 +6556,9 @@
                                 var limit = C("batteries", issue).mul(600000).add(C("megabatteries", issue).mul(60000000)).add(C("bluebatteries", issue).mul(150000000000))
                                 stuffTotals.wattseconds = stuffTotals.wattseconds.add(limit).sub(stuff.wattseconds)
                                 stuff.wattseconds = limit
+                                continue
+                            } else if (action.charCodeAt(0) === 36) {
+                                researches.push(action.slice(1))
                                 continue
                             }
 
@@ -8027,8 +8070,8 @@
             "You can sell your clocks for money! Click on the sell button in the clock menu. The mini buttons also have descriptions telling you what they do.",
             "After you get $10, you can get gold ore!",
             "Note that you should focus on buying golden nuggets rather than gold ore for now. Gold ore is only useful after you progress farther.",
-            "Keep buying gold nuggets until you get 5 of them.",
-            "You can make a golden clock from 5 clocks and 1 golden nugget. If you create 5, you can exchange them for a family member.",
+            "Keep buying golden nuggets until you get 5 of them.",
+            "You can make a golden clock from 5 clocks and 1 golden nugget. Once you collect 5 golden clocks, you'll be able to purchase a family member and start earning clocks!",
             "Keep getting family members! Once you save up $20,000, you can get your first miner. Note that you can click on the moving crystals at the top left of the screen to collect blue, green, or purple crystals. Spend these in the crystal menu for significant speed boosts!",
             "Miners give you ore, but you'll need a furnace to use them. At this point, you can get bricks for $1 each. If you get 1,250 bricks, you can get a furnace (in the first build menu).",
             "It's a good idea to automate brick production by first getting a digger. Then, in the construction (brick) menu, get a molder and then a kiln. You'll also need a woodcutter to power the kiln! Once you automate it, you might want to spend some crystals to speed up brick production.",
@@ -8089,11 +8132,20 @@
             ID("offline").textContent = (minutes === 0 ? "" : ((minutes === 1 ? "1 minute and " : (minutes + " minutes and ")))) + (seconds === 1 ? "1 second" : (seconds + " seconds"))
         }
 
-        var wattStuff, useableData
+        var wattStuff, useableData, shardPower
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
         function updateGame() {
             var shards = C("shards")
+            var shardPower = shards.mul(10000).sqrt(true).sqrt(true)
+            if (hasResearch("polish")) {
+                shardPower = shardPower.add(10)
+            }
+
+            if (hasResearch("polish2")) {
+                shardPower = shardPower.sqr()
+            }
+
             var shardInfoElement = ID("shardInfo")
             if (shards.isZero()) {
                 if (shardInfoElement.style.display !== "none") {
@@ -8101,7 +8153,7 @@
                 }
             } else {
                 updateId("shardCount", format(shards))
-                updateId("shardPower", format(shards.mul(10000).sqrt(true).sqrt(true)) + "×")
+                updateId("shardPower", format(shardPower) + "×")
                 updateId("clickPower", format(shards.mul(1e8).sqrt(true).sqrt(true)))
                 shardInfoElement.removeAttribute("style")
             }
@@ -8119,6 +8171,8 @@
 
             var fcMakers = C("fcmakers", issue)
             var labs = C("labs", issue)
+
+            var goldFurnacePower = C("gfurnaces", issue).mul(2500)
 
             var furnacePower = C("furnaces", issue).mul(0.07)
             var millCost = H(hasResearch("steelwork") ? 4 : 1)
@@ -8268,7 +8322,7 @@
             var familySqrt = C("family", issue).sqrt()
             cpt = cpt.add(clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)).add(familySqrt.mul(familySqrt.sqrt()).mul(0.05))
             if (shards.isPositive()) {
-                cpt = cpt.mul(shards.mul(10000).sqrt(true).sqrt(true))
+                cpt = cpt.mul(shardPower)
             }
             add("clocks", cpt)
 
@@ -8278,6 +8332,7 @@
             exchange("copper", furnacePower, "copperore")
             exchange("silver", furnacePower, "silverore")
             exchange("gold", furnacePower, "goldore")
+            exchange("gold", goldFurnacePower, "goldore")
             exchange("platinum", furnacePower, "platinumore")
 
             exchange("cbauxite", aluminum1Power, "bauxite")
@@ -8299,7 +8354,7 @@
 
             add("creativity", managerPower)
 
-            var computerScience = (hasResearch("madgpt") ? H(true).add(useableData.computers.mul(10)) : H(true)).mul(hasResearch("bingol") ? H(true).add(useableData.computers.mul(0.5)) : H(true))
+            var computerScience = (hasResearch("madgpt") ? H(true).add(useableData.computers.mul(10)) : H(true)).mul(hasResearch("bingol") ? H(true).add(useableData.computers.mul(0.5)) : H(true)).mul(hasResearch("shardsci2") ? 25 : 1)
             multiExchange(["science", "creativity"], [scientists.mul(computerScience).mul(hasResearch("smart") ? 0.0006 : 0.0003), scientists.mul(computerScience).mul(hasResearch("creative") ? 0.000375 : 0.000125)], "money", scientists.mul(2))
 
             multiExchange("fc", fcMakers.mul(0.008), ["feathers", "gc", "glue"], [fcMakers.mul(0.016), fcMakers.mul(0.008), fcMakers.mul(0.0002)])
