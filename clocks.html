@@ -866,8 +866,6 @@
         }
 
         .special {
-            display: inline-block;
-            opacity: 1;
             border-color: #d6da51;
             background-color: #f3b20e;
             box-shadow: 0 0 5px #f58925;
@@ -2553,7 +2551,7 @@
         }
     </style>
 
-    <script>
+    <script id="errorScript">
         "use strict"
         var loaded = false
 
@@ -2608,6 +2606,13 @@
                 failed.textContent = text + "\r\n\r\nRecent logs:\r\n" + document.getElementById("logs").textContent
                 document.body.insertBefore(failed, document.body.firstChild)
                 document.getElementById("everything").remove()
+                var modPanel = document.getElementById("modPanel")
+                if (modPanel != null) {
+                    modPanel.remove()
+                }
+                console.log = function () { }
+                console.warn = function () { }
+                console.error = function () { }
                 window.draw = function () { }
             }
 
@@ -2995,7 +3000,7 @@
                     <br>
                     <!-- Veri Good... -->
                     <button class="retro" data-earn="jewelers+1" data-cost="goldb-25" data-show="goldb>0"
-                        data-desc="The jeweler makers loves gold and will be on your side for 25 gold blocks.\nThat seems overpriced, but you need them on your side to help take some work off your hands.\nWith their skilled hands, it only costs 4 ## and 1 gold to make one.$jewelers$">
+                        data-desc="The jeweler makers loves gold and will be on your side for 25 gold blocks.\nThat seems overpriced, but you need them on your side to help take some work off your hands.\nWith their skilled hands, it only costs 4 ## and a single golden nugget to make one.$jewelers$">
                         <span class="comical">
                             Get a pro fesin al jewe=er verigood <span class="person"></span> :o
                         </span>
@@ -4054,11 +4059,13 @@
                         Ascend for golden shards!
                     </button>
 
-                    <br>
-                    <span class="mini special" data-cost="shards-1" data-earn="$shardsci" data-hide="$shardsci">
+                    <div class="small">The researches below WILL NOT STAY after ascending again!</div>
+                    <span class="mini special" data-cost="shards-1" data-earn="$shardsci" data-hide="$shardsci"
+                        data-sound="money">
                         -1 <span class="shard"></span> for new researches costing science!
                     </span>
-                    <span class="mini special" data-cost="shards-10" data-earn="$gfurnaces" data-hide="$gfurnaces">
+                    <span class="mini special" data-cost="shards-10" data-earn="$gfurnaces" data-hide="$gfurnaces"
+                        data-sound="money">
                         -10 <span class="shard"></span> for GOLDEN FURNACES!
                     </span>
                 </div>
@@ -4453,19 +4460,20 @@
             <span data-for="crystal2">0×</span> <span class="crystal2" role="presentation"></span>
             <span data-for="crystal1">0×</span> <span class="crystal1" role="presentation"></span>
         </div>
+    </div>
 
-        <div id="modPanel" tabindex="0">
-            You have mods that are active. Press any key or wait to make this panel disappear.
-            <br>
-            <b class="red">IMPORTANT: If you want to remove all mods, quickly double click on this panel.</b>
-        </div>
+    <div id="modPanel" tabindex="0">
+        You have mods that are active. Press any key or wait to make this panel disappear.
+        <br>
+        <b class="red">IMPORTANT: If you want to remove all mods, quickly double click on this panel.</b>
     </div>
 
     <script id="script">
         "use strict"
 
-        // Remove this script element from the HTML
-        script.remove()
+        // Remove this script elements from the HTML
+        ID("errorScript").remove()
+        ID("script").remove()
 
         // Set the version
         const version = "0.0.4.1"
@@ -8809,11 +8817,10 @@
 
             var noBoosts = ID("noBoosts")
             if (speed.equals(baseSpeed)) {
-                if (noBoosts.style.display !== "none") {
-                    noBoosts.style.display = "none"
-                }
-            } else {
                 noBoosts.removeAttribute("style")
+            } else {
+                noBoosts.style.display = "inline-block"
+                noBoosts.style.opacity = 1
             }
 
             update(speedElements[0], speed.equals(1) ? "" : ("Speed multiplier: " + (speed < 1 ? speed.toFixed(2) : format(speed)) + "×"))
