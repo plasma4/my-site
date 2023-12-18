@@ -235,9 +235,8 @@
             margin: 5px;
         }
 
-        td {
+        tr {
             background-color: #eabc80;
-            border-radius: 5px;
             text-shadow: 2px 2px 2px black;
             min-width: 250px;
             text-align: center;
@@ -2683,7 +2682,7 @@
         </header>
 
         <div id="properties">
-            fierypower|fierywood|coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silver|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            f5|f4|f3|f2|fierypower|fierywood|coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silver|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -2761,11 +2760,16 @@
             glue: Glue Stick (1, Just glue...just glue...)
             rubber: Rubber$ (1, Rubber that can be exchanged for glue)
             trees: Rubber Tree (2, Rubber trees are cheap and produce rubber that can be turned into plastic)
-            fierypower: Fiery power (5, A multiplier for your firefruit production)
-            fierywood: Fiery Wood$ (8, A very special wood made by sacrificing all the fire trees you made)
+            fierypower: %Fiery Power$ (5, A multiplier for your firefruit production)
+            f2: %Tier 2 Fiery Power$ (5, Multiplies Fiery Power production)
+            f3: %Tier 3 Fiery Power$ (5, Multiplies Tier 2 Fiery Power production)
+            f4: %Tier 4 Fiery Power$ (5, Multiplies Tier 3 Fiery Power production)
+            f5: %Tier 5 Fiery Power$ (5, Multiplies Tier 4 Fiery Power production)
+            fierywood: Fiery Wood$ (9, A very special wood made by sacrificing all the fire trees you made)
             firefruit: Firefruit$ (5, A rare and valuable fruit with a warm and friendly glow)
             firetrees: Firetree (6, Produces firefruit for you automatically)
-            firefields: Firefield (6, A giant field dedicated specifically for fire trees)
+            firefields: Firefield (7, A giant field dedicated specifically for fire trees)
+            firefarm: Firefarm (8, A giant farm that creates firefields and Tier 5 Fiery Power)
             fireplanters: Fireplanter (7, A special planter allowing you to purchase more firetrees simultaneously)
             phoenixes: Phoenix$es (4, Rare and elusive creatures that will drop their rare feathers occasionally)
             feathers: Feather (3, It tickles!)
@@ -3340,28 +3344,40 @@
                 <div id="apples" style="display: none">
                     <span class="big fwood"></span><span class="big swood"></span><span class="big gwood"></span>
                     <table>
-                        <tr>
-                            <td id="firefruit" class="burning"
-                                data-desc="Firefruit can be used to plant special fire trees." data-for="firefruit$">
-                            </td>
-                            <td id="firetrees" class="burning"
-                                data-desc="Fire trees allow you to make firefruit automatically. Plus, they are warm and act as a light for your workers to find a way home."
-                                data-for="firetree">
-                            </td>
-                            <td id="firefields" class="burning"
-                                data-desc="A giant firefield dedicated to your special firetrees.\nThese huge fields produce firetrees and [fiery power] that provides a multiplier to your firefruit production!"
-                                data-for="firefield">
-                            </td>
+                        <tr id="firefruit" class="burning"
+                            data-desc="Firefruit can be used to plant special fire trees." data-for="firefruit$">
                         </tr>
-                        <tr>
-                            <td id="fierypower" class="burning"
-                                data-desc="Fiery power is multiplied along with your firefruit production and can provide a MASSIVE firefruit boost."
-                                data-for="fiery power$">
-                            </td>
-                            <td id="fierywood" class="burning"
-                                data-desc="Fiery wood is obtained when sacrificing fire progress and gives a furnace production boost!"
-                                data-for="$big fwood">
-                            </td>
+                        <tr id="firetrees" class="burning"
+                            data-desc="Fire trees allow you to make firefruit automatically. Plus, they are warm and act as a light for your workers to find a way home."
+                            data-for="firetree">
+                        </tr>
+                        <tr id="firefields" class="burning"
+                            data-desc="A giant firefield dedicated to your special firetrees.\nThese huge fields produce firetrees and [fiery power] that provides a multiplier to your firefruit production!"
+                            data-for="firefield">
+                        </tr>
+                        <tr id="fierypower" class="burning"
+                            data-desc="Fiery power is multiplied along with your firefruit production and can provide a MASSIVE firefruit boost."
+                            data-for="fiery power$">
+                        </tr>
+                        <tr id="f2" class="burning"
+                            data-desc="This is your Level 2 fiery power, which produces normal fiery power."
+                            data-for="FP #2$">
+                        </tr>
+                        <tr id="f3" class="burning"
+                            data-desc="This is your Level 3 fiery power, which produces level 2 fiery power."
+                            data-for="FP #3$">
+                        </tr>
+                        <tr id="f4" class="burning"
+                            data-desc="This is your Level 4 fiery power, which produces level 3 fiery power."
+                            data-for="FP #4$">
+                        </tr>
+                        <tr id="f5" class="burning"
+                            data-desc="This is your Level 5 fiery power, which produces level 4 fiery power."
+                            data-for="FP #5$">
+                        </tr>
+                        <tr id="fierywood" class="burning"
+                            data-desc="Fiery wood is obtained when sacrificing fire progress and gives a furnace production boost!"
+                            data-for="$big fwood">
                         </tr>
                     </table>
                     Apples!
@@ -3382,11 +3398,16 @@
                         data-desc="Get a fireplanter on your side to increase the amount of firetrees you can plant at once.\nYou'll have to impress them with a hefty $2.500Q and 250 firefruit though!$fireplanters$">
                         +1 fireplanter
                     </button>
+
                     <br>
                     <button class="flashy" data-show="firetrees>0" data-earn="firefields+1"
                         data-cost="firetrees-10000|firefruit-2e6"
                         data-desc="Convert 10,000 of your firetrees and 2,000,000 firefruit into a giant firefield, which allows firetrees to reproduce and spread their seeds.\nIt also produces [fiery power] that multiplies firefruit production.$firefields$">
                         +1 firefield
+                    </button>
+                    <button class="flashy" data-show="firetrees>0" data-earn="firefarms+1" data-cost="firefields-10"
+                        data-desc="Get 10 firefields to create a firefarm!\nFirefarms produce firefields extremely quickly and also Level 5 fiery power.$firefarms$">
+                        +1 firefarm
                     </button>
                 </div>
 
@@ -8550,7 +8571,7 @@
             var issue = "This occured while trying to update properties."
 
             var trees = C("trees", issue)
-            var firefields = C("firefields", issue)
+            var firefarms = C("firefarms", issue)
             if (C("fierypower").isLess(1)) {
                 stuff.fierypower = H(true)
                 stuffTotals.fierypower = H(true)
@@ -8741,6 +8762,15 @@
             exchange("bwood", bluePower.mul(0.00155), "fc", bluecutters.mul(0.006), true)
             add("rubber", trees.mul(0.0004))
 
+            add("firefields", firefarms.mul(0.1))
+
+            add("f5", firefarms.mul(1))
+            add("f4", C("f5"))
+            add("f3", C("f4"))
+            add("f2", C("f3"))
+            add("fierypower", C("f2"))
+
+            var firefields = C("firefields")
             add("fierypower", firefields.mul(0.005))
             add("firetrees", firefields.mul(0.00123456789))
             add("firefruit", C("firetrees").mul(C("fierypower")).mul(0.000325))
