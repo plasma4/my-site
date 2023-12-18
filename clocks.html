@@ -2683,10 +2683,10 @@
         </header>
 
         <div id="properties">
-            fierypower|coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silver|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            fierypower|fierywood|coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silver|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
-            clocks|gc|goldore
+            firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
         </div>
         <div id="rocketParts">
             rocketbody
@@ -2762,6 +2762,7 @@
             rubber: Rubber$ (1, Rubber that can be exchanged for glue)
             trees: Rubber Tree (2, Rubber trees are cheap and produce rubber that can be turned into plastic)
             fierypower: Fiery power (5, A multiplier for your firefruit production)
+            fierywood: Fiery Wood$ (8, A very special wood made by sacrificing all the fire trees you made)
             firefruit: Firefruit$ (5, A rare and valuable fruit with a warm and friendly glow)
             firetrees: Firetree (6, Produces firefruit for you automatically)
             firefields: Firefield (6, A giant field dedicated specifically for fire trees)
@@ -3357,9 +3358,9 @@
                                 data-desc="Fiery power is multiplied along with your firefruit production and can provide a MASSIVE firefruit boost."
                                 data-for="fiery power$">
                             </td>
-                            <td id="firewood" class="burning"
+                            <td id="fierywood" class="burning"
                                 data-desc="Fiery wood is obtained when sacrificing fire progress and gives a furnace production boost!"
-                                data-for="fiery wood">
+                                data-for="$big fwood">
                             </td>
                         </tr>
                     </table>
@@ -6757,6 +6758,7 @@
                 console.warn("Cannot format a value that is not a HyperNumber.")
                 return "???"
             }
+
             var formatted = value.format(additionalDigits)
             if (string == null) {
                 return formatted
@@ -9055,11 +9057,12 @@
                         if (name === null) {
                             console.warn("An element with ID '" + key.replace(/'/g, "\\'") + "' should have the 'data-for' attribute.")
                         } else if (shownProperties.includes(key) || stuffTotals[key].isPositive()) {
-                            var isSpecial = firstChar === 36 || firstChar === 37
                             if (firstChar !== 36) {
                                 name = name.replace(/clock/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "tree" : "clock"))
                             }
                             var firstChar = name.charCodeAt(0)
+                            var isSpecial = firstChar === 36 || firstChar === 37
+
                             var formatted
                             if (key === "iq") {
                                 amount = amount.mul(0.2).sqrt(true).sqrt(true)
@@ -9070,6 +9073,7 @@
                                 }
                                 formatted = isSpecial ? format(amount) : format(amount, name)
                             }
+
                             var lastPart = key.length - 3
                             if (key.slice(lastPart) === "ore") {
                                 var newKey = key.slice(0, lastPart)
@@ -9077,6 +9081,7 @@
                                     formatted = format(amount) + "/" + format(C(newKey, "This happened while updating the non-ore property (" + newKey.replace(/'/g, "\\'") + ")"), isSpecial ? null : name)
                                 }
                             }
+
                             if (firstChar === 36) {
                                 // The text starts with a dollar sign, so an span image with that class is shown instead
                                 updateHTML(elem, formatted + '× <span class="' + name.slice(1) + '"></span>')
