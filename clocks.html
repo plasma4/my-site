@@ -5412,6 +5412,45 @@
                         digits--
                     }
                     b.$[2] = multiplied
+                } else if (c1 === 2 && c2 === 2) {
+                    var d1 = this.$[1]
+                    var d2 = b.$[1]
+                    var max = d1 > d2 ? d1 : d2
+                    var sum
+                    var diff = d1 - d2
+                    if (d1 === d2) {
+                        sum = this.$[2] - b.$[2]
+                    } else if (d1 > d2) {
+                        if (d1 - d2 > 49n) {
+                            return new HyperNumber(this)
+                        }
+                        sum = this.$[2] - b.$[2] / (10n ** diff)
+                    } else {
+                        if (d2 - d1 > 49n) {
+                            return num
+                        }
+                        sum = this.$[2] / (10n ** -diff) - b.$[2]
+                    }
+                    if (sum >= 100000000000000000000000000000000000000000000000000n) {
+                        if (max === 100000000000000000000000000000000000000000000000000n) {
+                            b.$ = [3, 50n, 10000000000000000000000000000000000000000000000000n]
+                            return b
+                        }
+                        b.$ = [2, max + 1n, sum / 10n]
+                    } else if (sum < 50n) {
+                        if (sum < 16n) {
+                            if (sum <= -16n) {
+                                b.$ = [0, 0, 0n]
+                            } else {
+                                b.$ = [0, Math.pow(10, Number(sum)), 10000000000000000000000000000000000000000000000000n]
+                            }
+                        } else {
+                            b.$ = [1, 10n ** sum, 10000000000000000000000000000000000000000000000000n]
+                        }
+                    } else {
+                        b.$ = [2, max, sum]
+                    }
+                    return b
                 } else if (c1 === 0 && c2 === 1) {
                     var multiplied = this.$[2] * 10000000000000000000000000000000000000000000000000n / b.$[2]
                     digits = BigInt(digits) - b.$[1]
@@ -5428,6 +5467,60 @@
                         digits--
                     }
                     b.$[2] = multiplied
+                } else if (c1 === 2 && c2 === 1) {
+                    var d1 = this.$[1]
+                    var minorPart = b.$[1]
+                    var d2 = BigInt(minorPart.toString().length - 1)
+                    var max = d1 > d2 ? d1 : d2
+                    var sum
+                    sum = this.$[2] - minorPart / (10n ** (d1 - d2))
+                    if (sum >= 100000000000000000000000000000000000000000000000000n) {
+                        if (max === 100000000000000000000000000000000000000000000000000n) {
+                            b.$ = [3, 50n, 10000000000000000000000000000000000000000000000000n]
+                            return b
+                        }
+                        b.$ = [2, max + 1n, sum / 10n]
+                    } else if (sum < 50n) {
+                        if (sum < 16n) {
+                            if (sum <= -16n) {
+                                b.$ = [0, 0, 0n]
+                            } else {
+                                b.$ = [0, Math.pow(10, Number(sum)), 10000000000000000000000000000000000000000000000000n]
+                            }
+                        } else {
+                            b.$ = [1, 10n ** sum, 10000000000000000000000000000000000000000000000000n]
+                        }
+                    } else {
+                        b.$ = [2, max, sum]
+                    }
+                    return b
+                } else if (c1 === 1 && c2 === 2) {
+                    var minorPart = this.$[1]
+                    var d1 = BigInt(minorPart.toString().length - 1)
+                    var d2 = b.$[1]
+                    var max = d1 > d2 ? d1 : d2
+                    var sum
+                    sum = minorPart / (10n ** (d2 - d1)) - b.$[2]
+                    if (sum >= 100000000000000000000000000000000000000000000000000n) {
+                        if (max === 100000000000000000000000000000000000000000000000000n) {
+                            b.$ = [3, 50n, 10000000000000000000000000000000000000000000000000n]
+                            return b
+                        }
+                        b.$ = [2, max + 1n, sum / 10n]
+                    } else if (sum < 50n) {
+                        if (sum < 16n) {
+                            if (sum <= -16n) {
+                                b.$ = [0, 0, 0n]
+                            } else {
+                                b.$ = [0, Math.pow(10, Number(sum)), 10000000000000000000000000000000000000000000000000n]
+                            }
+                        } else {
+                            b.$ = [1, 10n ** sum, 10000000000000000000000000000000000000000000000000n]
+                        }
+                    } else {
+                        b.$ = [2, max, sum]
+                    }
+                    return b
                 } else if (c1 === c2) {
                     if (this.$[1] === b.$[1]) {
                         return this.$[2] > b.$[2] ? new HyperNumber(this) : new HyperNumber()
@@ -5625,17 +5718,35 @@
              */
             const POW10_E = new HyperNumber(".43429448190325182765112891891660508229439700580366")
 
+            function HPow10(value, noClone) {
+                if (!noClone) {
+                    value = new HyperNumber(value)
+                }
+
+                if (value.$[0] !== 0) {
+                    value.$[0]++
+                }
+                return value
+            }
+
+            function HLog10(value, noClone) {
+                if (!noClone) {
+                    value = new HyperNumber(value)
+                }
+
+                if (value.$[0] >= 2) {
+                    value.$[0]--
+                }
+                return value
+            }
+
             /**
              * Finds the value of a base taken to a power.
              * @param {boolean} noClone If set to true, then the number is not cloned (recommended when possible).
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.pow10 = function (noClone) {
-                var value = noClone ? this : new HyperNumber(this)
-                if (value.$[0] !== 0) {
-                    value.$[0]++
-                }
-                return value
+                return HPow10(value, noClone)
             }
 
             /**
@@ -5644,11 +5755,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.pow = function (noClone) {
-                var value = noClone ? this : new HyperNumber(this)
-                if (value.$[0] !== 0) {
-                    value.$[0]++
-                }
-                return value.mul(POW10_E)
+                return HPow10(value, noClone).mul(POW10_E)
             }
 
             /**
@@ -5657,11 +5764,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.pow2 = function (noClone) {
-                var value = noClone ? this : new HyperNumber(this)
-                if (value.$[0] !== 0) {
-                    value.$[0]++
-                }
-                return value.mul(POW10_2)
+                return HPow10(value, noClone).mul(POW10_2)
             }
 
             /**
@@ -5670,11 +5773,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.log10 = function (noClone) {
-                var value = noClone ? this : new HyperNumber(this)
-                if (value.$[0] !== 0) {
-                    value.$[0]--
-                }
-                return value
+                return HLog10(value, noClone)
             }
 
             /**
@@ -5683,11 +5782,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.log = function (noClone) {
-                var value = noClone ? this : new HyperNumber(this)
-                if (value.$[0] !== 0) {
-                    value.$[0]--
-                }
-                return value.mul(LOG10_E)
+                return HLog10(value, noClone).mul(LOG10_E)
             }
 
             /**
@@ -5696,11 +5791,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.log2 = function (noClone) {
-                var value = noClone ? this : new HyperNumber(this)
-                if (value.$[0] !== 0) {
-                    value.$[0]--
-                }
-                return value.mul(LOG10_2)
+                return HLog10(value, noClone).mul(LOG10_2)
             }
 
             /**
