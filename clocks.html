@@ -4733,7 +4733,7 @@
                         }
 
                         var digits = value.toString().length - 1
-                        this.$ = [0, digits, value / (10n ** BigInt(digits - 49))]
+                        this.$ = [0, digits, (digits > 49 ? value / (10n ** BigInt(digits - 49)) : (value * (10n ** BigInt(49 - digits))))]
                     } else if (typeof value === "number" && !isFinite(value)) {
                         if (!noWarnings) {
                             console.error("Values given must be positive and finite.")
@@ -5744,8 +5744,7 @@
             HyperNumber.prototype.digits = function (noClone) {
                 var value = noClone ? this : new HyperNumber(this)
                 if (value.$[0] === 0) {
-                    var digits = value.toString().length - 1
-                    value.$ = [0, digits, value / (10n ** BigInt(digits - 49))]
+                    value.$ = new HyperNumber(value.$[1]).$
                 } else {
                     value.$[0]--
                 }
