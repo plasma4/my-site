@@ -5744,9 +5744,11 @@
             HyperNumber.prototype.digits = function (noClone) {
                 var value = noClone ? this : new HyperNumber(this)
                 if (value.$[0] === 0) {
-                    return new HyperNumber(value.$[1])
+                    var digits = value.toString().length - 1
+                    value.$ = [0, digits, value / (10n ** BigInt(digits - 49))]
+                } else {
+                    value.$[0]--
                 }
-                value.$[0]--
                 return value
             }
 
