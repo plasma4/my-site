@@ -366,7 +366,7 @@
             cursor: pointer;
             transition: border-radius 500ms 500ms, padding 500ms, background-color 250ms;
             background-color: #843511;
-            filter: drop-shadow(0 4px 3px #632004);
+            filter: drop-shadow(0 4px 3px black);
             border-radius: 4px 4px 0 0;
         }
 
@@ -470,6 +470,13 @@
         .small {
             padding-top: 4px;
             font-size: 16px;
+        }
+
+        sup {
+            font-size: 30px;
+            vertical-align: baseline;
+            position: relative;
+            top: -0.4em;
         }
 
         #modding {
@@ -2674,6 +2681,7 @@
                 console.warn = function () { }
                 console.error = function () { }
                 window.draw = function () { }
+                notify = function () { }
             }
 
             onerror = function (e, a, b, c, d) {
@@ -2878,6 +2886,7 @@
 
                 You have <span id="money" class="green"></span> <span class="money"></span> and
                 <span id="potential" class="wow"></span>!
+
                 <br>
                 You're earning
                 <span id="cps" class="red"
@@ -3437,6 +3446,10 @@
                     <button class="orangebg" data-show="firefarms>0" data-earn="firetowns+1" data-cost="firefarms-500"
                         data-desc="[Firetowns do NOT create firefarms but give other huge boosts instead!]\nFiretowns increase all fiery power production significantly but cost an astounding 500 firefarms.$firetowns$">
                         +1 firetown
+                    </button>
+
+                    <button class="cherrybg" data-show="firefruit>=1e50" id="fireReset"
+                        data-desc="Reset for fiery wood! Each piece of fiery wood grants a +25% boost to all furnace smelting (it doesn't even increase the cost!).\nYou can also get various upgrades, and unlock something else new...\n{This button will reset all of your fiery progress in exchange for fiery wood.}">
                     </button>
                 </div>
 
@@ -4243,7 +4256,7 @@
 
                     <br>
                     <button class="cherrybg" id="shardAscend"
-                        data-desc="Sacrifice all non-ascension items in exchange for golden shards?">
+                        data-desc="Are you REALLY going to sacrifice all non-ascension items in exchange for golden shards?\n{This button will reset all of your items and progress, excluding golden shards themselves!}">
                         Ascend for golden shards!
                     </button>
 
@@ -4263,6 +4276,16 @@
                         data-desc="(RESETTING EVERYTHING LIKELY A BAD IDEA: YOU CAN EXPORT IF YOU WANT)">
                         WIPE EVERYTHING
                     </button>
+
+                    <br>
+                    <label for="mainColor">
+                        <input type="color" value="#753609" id="mainColor"></input>
+                        Main color
+                    </label>
+                    <label for="backColor">
+                        <input type="color" value="#000000" id="backColor"></input>
+                        Background color
+                    </label>
 
                     <br>
                     <b>Modding:</b>
@@ -4318,17 +4341,24 @@
 
                 <div id="devlog" style="display: none">
                     <!-- Hello! -->
-                    <strong class="small">
+                    <strong class="smallish">
                         Made by Leo Zhang. All rights reserved!
                     </strong>
 
                     <br>
-                    <div class="small yellow">
-                        Firefruit is a thing, so go check it out!
+                    <div class="small pink">
+                        0.0.4.2 (December 18, 2023)! Added firewood and CUSTOMIZED THEMES!
+                        <i>(literally just two color pickers to choose the main and background colors)</i>
+                        <span class="wonder"></span><span class="wonder"></span><span class="wonder"></span><span
+                            class="wonder"></span><span class="wonder"></span>
+                    </div>
+                    ---
+                    <div class="small blue">
+                        Firefruit is a thing, so save up for it if you have computer research!
                         <span class="fwood"></span><span class="swood"></span><span class="gwood"></span>
                     </div>
                     ---
-                    <div class="small yellow">
+                    <div class="small green">
                         Golden shards now give you IMPRESSIVE RESEARCHES AND BONUSES!
                         <span class="shard"></span><span class="shard"></span><span class="shard"></span>
                     </div>
@@ -4338,21 +4368,15 @@
                         <span class="gwood"></span>
                     </div>
                     ---
-                    <div class="small yellow">
+                    <div class="small orange">
                         0.0.4.1 (December 14, 2023)! Minor save improvements
                         (now the game saves the tab that you were on previously)
                         <span class="circuit"></span>
                     </div>
                     ---
-                    <div class="small yellow">
+                    <div class="small red">
                         Update (December 13, 2023)! A bunch of NEW researches related to computers are here!
                         <span class="circuit"></span>
-                    </div>
-
-                    <br>
-                    <div class="rainbow2 small">
-                        Yes, new gameplay may be centered around this, but there isn't much except for a boost yet!
-                        I may balance out the crystals and add/change upgrades for them.
                     </div>
 
                     <br>
@@ -4419,12 +4443,12 @@
                     </ul>
 
                     <br>
-                    <div class="small yellow">
+                    <div class="small orange">
                         Minor update (December 7, 2023): You can drag and drop or export your game to a file!
                         <span class="gwood"></span>
                     </div>
                     ---
-                    <div class="small yellow">
+                    <div class="small red">
                         Minor update (December 5, 2023): Coal miner machines! <span class="coal"></span>
                     </div>
 
@@ -4665,7 +4689,7 @@
         ID("script").remove()
 
         // Set the version
-        const version = "0.0.4.1"
+        const version = "0.0.4.2"
 
         /** @type {string[]} An array with abbreviations for numbers up to 50 digits */
         const shortSuffixes = ["", "K", "M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "Ud", "Dd", "Td", "qd", "Qd"]
@@ -5702,6 +5726,20 @@
             }
 
             /**
+             * Returns the amount of digits of the current number.
+             * @param {boolean} noClone If set to true, then the number is not cloned (recommended when possible).
+             * @returns {HyperNumber}
+             */
+            HyperNumber.prototype.digits = function (noClone) {
+                var value = noClone ? this : new HyperNumber(this)
+                if (value.$[0] === 0) {
+                    return new HyperNumber(value.$[1])
+                }
+                value.$[0]--
+                return value
+            }
+
+            /**
              * HyperNumber value for log10(x)/log2(x)
              */
             const LOG10_2 = new HyperNumber("3.3219280948873623478703194294893901758648313930245")
@@ -6466,7 +6504,7 @@
             var amount = prompt('How much do you want to remove? To remove ALL of an item, you can also type "all".\r\n(You can use values like 123.456M and 4e100.)', 1)
             if (amount !== null) {
                 if (amount === "all") {
-                    stuff[property] = new H()
+                    clear(property)
                 }
                 var amountToRemove = new H(amount.replace(/,/, ""), true).floor(true)
                 if (property === "cmanagers" && cManagersUsed.isMore(C(property).sub(amountToRemove))) {
@@ -6682,10 +6720,9 @@
         })
 
         ID("noBoosts").addEventListener("click", function () {
-            var t = H(".001666666666666666666666666666666666666666666666667")
-            rawAdd("crystal3", stuff.bonus3.mul(t).floor(), false)
-            rawAdd("crystal2", stuff.bonus2.mul(t).floor(), false)
-            rawAdd("crystal1", stuff.bonus1.mul(t).floor(), false)
+            rawAdd("crystal3", stuff.bonus3.div(600).floor(), false)
+            rawAdd("crystal2", stuff.bonus2.div(600).floor(), false)
+            rawAdd("crystal1", stuff.bonus1.div(600).floor(), false)
             stuff.bonus1 = new H()
             stuff.bonus2 = new H()
             stuff.bonus3 = new H()
@@ -6729,6 +6766,14 @@
                 }
             }
             updateId("wattText", wattUsage === 1 ? "watt" : "watts")
+        })
+
+        ID("mainColor").addEventListener("input", function (e) {
+            mainColor = ID("mainColor").value
+        })
+
+        ID("backColor").addEventListener("input", function (e) {
+            backColor = ID("backColor").value
         })
 
         ID("wattCount").addEventListener("change", function (e) {
@@ -6780,10 +6825,9 @@
             var newShards = C("gc").mul(1e-9).floor()
             if (confirm(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You WILL NOT EARN ANY SHARDS OR BONUSES!!!" : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
                 var oldShards = C("shards")
-                var t = H(".001666666666666666666666666666666666666666666666667")
-                rawAdd("crystal3", stuff.bonus3.mul(t).floor(), false)
-                rawAdd("crystal2", stuff.bonus2.mul(t).floor(), false)
-                rawAdd("crystal1", stuff.bonus1.mul(t).floor(), false)
+                rawAdd("crystal3", stuff.bonus3.div(600).floor(), false)
+                rawAdd("crystal2", stuff.bonus2.div(600).floor(), false)
+                rawAdd("crystal1", stuff.bonus1.div(600).floor(), false)
                 var purpleCrystals = C("crystal1")
                 var greenCrystals = C("crystal2")
                 var blueCrystals = C("crystal3")
@@ -6794,6 +6838,13 @@
                 add("crystal2", greenCrystals.mul(0.25).ceil(true))
                 add("crystal3", blueCrystals.mul(0.25).ceil(true))
                 console.log("A shard reset was done for " + format(newShards) + " new shards.")
+            }
+        })
+
+        ID("fireReset").addEventListener("click", function () {
+            if (confirm("Are you sure? You will LOSE all of your fiery progress!")) {
+                add("firewood", C("firefruit").digits(true).sub(30).div(3).floor(true))
+                clear(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
             }
         })
 
@@ -7157,7 +7208,7 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false
+        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false, mainColor = "#753609", backColor = "d"
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:dark)")
         if (darkModeMedia.matches) {
@@ -7324,7 +7375,7 @@
         function getAmount(id, overrideAmount) {
             var amount = overrideAmount == null ? C(id, "This happened while formatting name and quantity information.") : new H(overrideAmount)
             if (id === "wattseconds") {
-                amount = amount.mul(new H(".01666666666666666666666666666666666666666666666667"))
+                amount = amount.mul(".01666666666666666666666666666666666666666666666667")
             }
             var item = wikiData[id]
             var formatted = format(amount, null, id === "money" ? 2 : null)
@@ -7574,10 +7625,16 @@
                     if (loaded) {
                         reset(true);
                     }
-                    if (version === "0.0.4.1") {
+                    if (version === "0.0.4.1" || version === "0.0.4.2") {
                         w = $.indexOf("Wb");
                         showTab($.slice(0, w));
-                        $ = $.slice(w + 1), w = $.indexOf("@");
+                        if (version === "0.0.4.2") {
+                            $ = $.slice(w + 2), w = $.indexOf("Wc");
+                            mainColor = $.slice(0, w);
+                            $ = $.slice(w + 2), w = $.indexOf("Wd");
+                            backColor = $.slice(0, w);
+                        }
+                        $ = $.slice(w + 2), w = $.indexOf("@");
                         startingTime = parseInt($.slice(0, w), 20);
                         $ = $.slice(w + 1), w = $.indexOf("@");
                         crystalTotal = parseInt($.slice(0, w), 20);
@@ -7611,7 +7668,7 @@
                         if (!coalMachinesEnabled) ID("aluminumArmsOn").checked = !1;
                         $ = $.slice(la + 1);
                     }
-                    if (version === "0.0.3" || version === "0.0.4" || version === "0.0.4.1") {
+                    if (version === "0.0.3" || version === "0.0.4" || version === "0.0.4.1" || version === "0.0.4.2") {
                         la = $.indexOf("$");
                         Q = $.slice(0, la);
                         Q = Q.split("*");
@@ -7733,7 +7790,7 @@
                     for (var SSS = 0; SSS < properties.length; SSS++) {
                         stuff2[properties[SSS]] = new H();
                     }
-                    if (version === "0.0.4.1" || version === "0.0.4" || version === "0.0.3" || version === "0.0.2") {
+                    if (version === "0.0.4.2" || version === "0.0.4.1" || version === "0.0.4" || version === "0.0.3" || version === "0.0.2") {
                         var ca = parseCompact($.slice(la + 1));
                         stuff = Object.assign(stuff2, ca);
                         cManagersUsed = stuff["$rocketbody"];
@@ -7783,7 +7840,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + currentTab + "Wb" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + currentTab + "Wb" + mainColor + "Wc" + backColor + "Wd" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -8182,6 +8239,11 @@
                 aluminumArmsEnabled = true
                 coalMachinesEnabled = true
 
+                mainColor = "#753609"
+                backColor = "d"
+                ID("mainColor").value = mainColor
+                ID("backColor").value = backColor
+
                 // Reset all property values
                 stuff = {}
 
@@ -8242,6 +8304,30 @@
                     ID("wipe").onclick = function () {
                         reset()
                     }
+                }
+            }
+        }
+
+        function clear(data, clearTotals) {
+            if (clearTotals) {
+                if (data instanceof Array) {
+                    for (var i = 0; i < data.length; i++) {
+                        var property = data[i]
+                        stuff[property] = new H()
+                        stuffTotals[property] = new H()
+                    }
+                } else {
+                    stuff[data] = new H()
+                    stuffTotals[data] = new H()
+                }
+            } else {
+                if (data instanceof Array) {
+                    for (var i = 0; i < data.length; i++) {
+                        var property = data[i]
+                        stuff[property] = new H()
+                    }
+                } else {
+                    stuff[data] = new H()
                 }
             }
         }
@@ -8698,7 +8784,7 @@
 
             var goldFurnacePower = C("gfurnaces", issue).mul(2500)
 
-            var furnacePower = C("furnaces", issue).mul(0.07)
+            var furnacePower = C("furnaces", issue).mul(0.07).mul(H(1).add(C("fierywood").mul(0.25)))
             var millCost = H(hasResearch("steelwork") ? 4 : 1)
             var millPower = H(hasResearch("steelwork") ? 2.5 : 1).mul(hasResearch("steel") ? 1.25 : 1)
 
@@ -8873,7 +8959,7 @@
             add("pens", C("nests", issue).mul(0.000054321))
             add("phoenixes", C("pens", issue).mul(0.0001))
 
-            multiExchange(["clay", "sand"], [diggers.mul(0.035), diggers.mul(0.05)], "money", diggers.mul(H(".16666666666666666666666666666666666666666666666667")))
+            multiExchange(["clay", "sand"], [diggers.mul(0.035), diggers.mul(0.05)], "money", diggers.div(6))
             exchange("wood", woodPower, "money", woodcutters.mul(0.25), true)
             exchange("bwood", bluePower.mul(0.00155), "fc", bluecutters.mul(0.006), true)
             add("rubber", trees.mul(0.0004))
@@ -8919,7 +9005,7 @@
             exchangeLimit(C("bottles", issue), "naphtha", separators.mul(0.015), "ngas")
             exchange("plastic", petroplants.mul(0.05), "naphtha")
 
-            multiExchange("watches", watchmakerPower.mul(0.08), ["money", "silver"], [watchmakerPower.mul(H(".66666666666666666666666666666666666666666666666667")), watchmakerPower.mul(0.04)])
+            multiExchange("watches", watchmakerPower.mul(0.08), ["money", "silver"], [watchmakerPower.mul(H(2).div(3)), watchmakerPower.mul(0.04)])
 
             multiExchange("bottles", glassmakers.mul(0.01), ["money", "sand", "sodaash", "limestone"], [glassmakers.mul(0.5), glassmakers.mul(0.007), glassmakers.mul(0.0018), glassmakers.mul(0.0012)])
 
@@ -8950,11 +9036,18 @@
                 negativeElement.style.visibility = "hidden"
             }
 
-            var ws = format(C("wattseconds", issue).mul(H(".01666666666666666666666666666666666666666666666667")))
+            var ws = format(C("wattseconds", issue).div(60))
             updateId("backup", ws)
             updateId("backupPlural", ws === "1" ? "" : "s")
 
             updateId("constructorPlural", C("cmanagers", issue).isPlural() ? "s" : "")
+
+            var firefruitDigits = C("firefruit").digits(true)
+            if (firefruitDigits.isLess(30)) {
+                updateId("fireReset", "")
+            } else {
+                updateId("fireReset", "Gain " + format(firefruitDigits.sub(30).div(3)) + " fiery wood")
+            }
 
             // Update the CPS element and change the color by modifying the class
             var cps = cpt.mul(60)
@@ -9085,7 +9178,7 @@
 
             // Update spells
             var len = spellFunctions.length
-            var divSpeed = speed.mul(".01666666666666666666666666666666666666666666666667")
+            var divSpeed = speed.div(60)
             for (var i = 0; i < len;) {
                 if (spellFunctions[i](divSpeed, i)) {
                     spellFunctions.splice(i, 1)
@@ -9148,6 +9241,14 @@
                 updateHTML(cssElement, themeCSS + ".clock{filter:drop-shadow(2px 2px 1px black)}.clock{background-position:-32px -48px}" + extraCSS)
             } else {
                 updateHTML(cssElement, themeCSS + extraCSS)
+            }
+
+            if (mainColor !== "753609") {
+                ID("content").style.backgroundColor = mainColor
+            }
+
+            if (backColor !== "b") {
+                document.documentElement.style.backgroundColor = backColor
             }
 
             if (newTime >= crystalTime) {
@@ -9215,7 +9316,7 @@
                                 formatted = amount.isMoreOrEqual(1000000) ? format(amount) : Number(amount).toFixed(4) + " " + name
                             } else {
                                 if (key === "wattseconds") {
-                                    amount = amount.mul(new H(".01666666666666666666666666666666666666666666666667"))
+                                    amount = amount.div(60)
                                 }
                                 formatted = isSpecial ? format(amount) : format(amount, name)
                             }
@@ -9302,7 +9403,7 @@
                 if (remove("bonus3", H(speed))) {
                     speed = speed.mul(100)
                 } else {
-                    stuff.bonus3 = new H()
+                    clear("bonus3")
                 }
             } else {
                 updateClass(speedElements[1], "big graystal")
@@ -9313,7 +9414,7 @@
                 if (remove("bonus2", H(speed))) {
                     speed = speed.mul(25)
                 } else {
-                    stuff.bonus2 = new H()
+                    clear("bonus2")
                 }
             } else {
                 updateClass(speedElements[2], "big graystal")
@@ -9324,7 +9425,7 @@
                 if (remove("bonus1", H(speed))) {
                     speed = speed.mul(10)
                 } else {
-                    stuff.bonus1 = new H()
+                    clear("bonus1")
                 }
             } else {
                 updateClass(speedElements[3], "big graystal")
