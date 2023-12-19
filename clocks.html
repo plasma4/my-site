@@ -9238,16 +9238,17 @@
                 updateHTML(cssElement, themeCSS + extraCSS)
             }
 
-            if (mainColor !== "#753609") {
+            if (ID("content").style.backgroundColor !== mainColor) {
                 ID("content").style.backgroundColor = mainColor
             }
 
-            if (backColor !== "d") {
-                document.documentElement.style.backgroundColor = backColor
+            var backHex = backColor === "d" ? "#000000" : backColor
+            if (document.documentElement.style.backgroundColor !== backHex) {
+                document.documentElement.style.backgroundColor = backHex
             }
 
             updateInput("mainColor", mainColor)
-            updateInput("backColor", backColor === "d" ? "#000000" : backColor)
+            updateInput("backColor", backHex)
 
             if (newTime >= crystalTime) {
                 var crystalImage = ID("crystal")
