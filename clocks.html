@@ -4278,14 +4278,20 @@
                     </button>
 
                     <br>
-                    <label for="mainColor">
-                        <input type="color" value="#753609" id="mainColor"></input>
-                        Main color
+                    <label for="useTheme">
+                        <input type="checkbox" id="useTheme"></input>
+                        Use a custom theme
                     </label>
-                    <label for="backColor">
-                        <input type="color" value="#000000" id="backColor"></input>
-                        Background color
-                    </label>
+                    <div id="colorSettings">
+                        <label for="mainColor">
+                            <input type="color" value="#753609" id="mainColor"></input>
+                            Main color
+                        </label>
+                        <label for="backColor">
+                            <input type="color" value="#000000" id="backColor"></input>
+                            Background color
+                        </label>
+                    </div>
 
                     <br>
                     <b>Modding:</b>
@@ -4304,8 +4310,8 @@
                         <br>
                         You can use <i>the comments in the source code</i> to guide you. Mods will automatically save.
                         <br>
-                        To modify CSS, change the <tt>extraCSS</tt> variable.
-                        To change the theme, change <tt>themeCSS</tt> and set <tt>overrideTheme</tt> to <tt>true</tt>.
+                        To modify add CSS, change the <tt>extraCSS</tt> variable.
+                        (Note that the CSS code added is added AFTER the game's own style sheet.)
                         <br>
                         To detect whenever the game updates everything, call <tt>Game.addEventListener("save", f)</tt>.
                         Replace the variable <tt>f</tt> with a function.
@@ -4330,7 +4336,7 @@
                         <tt>Game.addEventListener("event name")</tt>,
                         and trigger them with <tt>Game.triggerEventListeners("event name", data)</tt>.
                         Note that <tt>Game.triggerEventListeners</tt> returns an array of the values
-                        returned by all functions.
+                        returned by all functions, and will work on default events such as <tt>"load"</tt>.
                         You can set the <tt>data</tt> variable to an object, which will get passed to all events
                         added through <tt>addEventListener()</tt>.
                         <br>
@@ -4346,6 +4352,11 @@
                     </strong>
 
                     <br>
+                    Version <b>0.0.5</b>: <span class="shake">CUSTOM <span class="rainbow">THEMES!!!!!</span></span>
+                    <br>
+                    Made themes official! (Fixed like 234738481234 bugs right here)
+
+                    <br><br><br>
                     <div class="small pink">
                         0.0.4.2 (December 18, 2023)! Added firewood and CUSTOMIZED THEMES!
                         <i>(literally just two color pickers to choose the main and background colors)</i>
@@ -4689,7 +4700,7 @@
         ID("script").remove()
 
         // Set the version
-        const version = "0.0.4.2"
+        const version = "0.0.5"
 
         /** @type {string[]} An array with abbreviations for numbers up to 50 digits */
         const shortSuffixes = ["", "K", "M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "Ud", "Dd", "Td", "qd", "Qd"]
@@ -5749,16 +5760,6 @@
              */
             const LOG10_E = new HyperNumber("2.3025850929940456840179914546843642076011014886287")
 
-            /**
-             * HyperNumber value for log2(x)/log10(x)
-             */
-            const POW10_2 = new HyperNumber(".3010299956639811952137388947244930267681898814621")
-
-            /**
-             * HyperNumber value for ln(x)/log10(x)
-             */
-            const POW10_E = new HyperNumber(".43429448190325182765112891891660508229439700580366")
-
             function HPow10(value, noClone) {
                 if (!noClone) {
                     value = new HyperNumber(value)
@@ -5787,7 +5788,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.pow10 = function (noClone) {
-                return HPow10(value, noClone)
+                return HPow10(this, noClone)
             }
 
             /**
@@ -5796,7 +5797,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.pow = function (noClone) {
-                return HPow10(value, noClone).mul(POW10_E)
+                return HPow10(this.mul(LOG10_E), noClone)
             }
 
             /**
@@ -5805,7 +5806,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.pow2 = function (noClone) {
-                return HPow10(value, noClone).mul(POW10_2)
+                return HPow10(this.mul(LOG10_2), noClone)
             }
 
             /**
@@ -5814,7 +5815,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.log10 = function (noClone) {
-                return HLog10(value, noClone)
+                return HLog10(this, noClone)
             }
 
             /**
@@ -5823,7 +5824,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.log = function (noClone) {
-                return HLog10(value, noClone).mul(LOG10_E)
+                return HLog10(this, noClone).mul(LOG10_E)
             }
 
             /**
@@ -5832,7 +5833,7 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.log2 = function (noClone) {
-                return HLog10(value, noClone).mul(LOG10_2)
+                return HLog10(this, noClone).mul(LOG10_2)
             }
 
             /**
@@ -6676,9 +6677,9 @@
 
         attachEvent("export", function () {
             var a = document.createElement("a")
-            var file = new Blob([save()], { type: "txt" })
+            var file = new Blob([save()])
             a.href = URL.createObjectURL(file)
-            a.download = "clocks"
+            a.download = "clocks.txt"
             a.click()
             a.remove()
         })
@@ -6766,6 +6767,10 @@
                 }
             }
             updateId("wattText", wattUsage === 1 ? "watt" : "watts")
+        })
+
+        ID("useTheme").addEventListener("change", function (e) {
+            usingTheme = ID("useTheme").checked
         })
 
         ID("mainColor").addEventListener("input", function (e) {
@@ -7208,20 +7213,15 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", overrideTheme = false, mainColor = "#753609", backColor = "d"
+        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#753609", backColor = "d", isDark = false
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:dark)")
         if (darkModeMedia.matches) {
-            themeCSS = "*{color:#fff}html{background-color:#000}#hover{background-color:#000}"
+            isDark = true
         }
+
         darkModeMedia.addEventListener("change", function (e) {
-            if (!overrideTheme) {
-                if (e.matches) {
-                    themeCSS = "*{color:#fff}html{background-color:#000}#hover{background-color:#000}"
-                } else {
-                    themeCSS = ""
-                }
-            }
+            isDark = e.matches
         })
 
         // Determine what elements are buttons
@@ -7625,10 +7625,14 @@
                     if (loaded) {
                         reset(true);
                     }
-                    if (version === "0.0.4.1" || version === "0.0.4.2") {
+                    if (version === "0.0.4.1" || version === "0.0.4.2" || version === "0.0.5") {
                         w = $.indexOf("Wb");
                         showTab($.slice(0, w));
-                        if (version === "0.0.4.2") {
+                        if (version !== "0.0.4.1") {
+                            if (version === "0.0.5") {
+                                $ = $.slice(w + 2), w = $.indexOf("Xz");
+                                usingTheme = $.slice(0, w) === "true";
+                            }
                             $ = $.slice(w + 2), w = $.indexOf("Wc");
                             mainColor = $.slice(0, w);
                             $ = $.slice(w + 2), w = $.indexOf("Wd");
@@ -7668,7 +7672,7 @@
                         if (!coalMachinesEnabled) ID("aluminumArmsOn").checked = !1;
                         $ = $.slice(la + 1);
                     }
-                    if (version === "0.0.3" || version === "0.0.4" || version === "0.0.4.1" || version === "0.0.4.2") {
+                    if (version === "0.0.3" || version === "0.0.4" || version === "0.0.4.1" || version === "0.0.4.2" || version === "0.0.5") {
                         la = $.indexOf("$");
                         Q = $.slice(0, la);
                         Q = Q.split("*");
@@ -7790,7 +7794,7 @@
                     for (var SSS = 0; SSS < properties.length; SSS++) {
                         stuff2[properties[SSS]] = new H();
                     }
-                    if (version === "0.0.4.2" || version === "0.0.4.1" || version === "0.0.4" || version === "0.0.3" || version === "0.0.2") {
+                    if (version === "0.0.5" || version === "0.0.4.2" || version === "0.0.4.1" || version === "0.0.4" || version === "0.0.3" || version === "0.0.2") {
                         var ca = parseCompact($.slice(la + 1));
                         stuff = Object.assign(stuff2, ca);
                         cManagersUsed = stuff["$rocketbody"];
@@ -7840,7 +7844,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + currentTab + "Wb" + mainColor + "Wc" + backColor + "Wd" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + currentTab + "Wb" + usingTheme + "Xz" + mainColor + "Wc" + backColor + "Wd" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -8732,6 +8736,15 @@
             ID("offline").textContent = (minutes === 0 ? "" : ((minutes === 1 ? "1 minute and " : (minutes + " minutes and ")))) + (seconds === 1 ? "1 second" : (seconds + " seconds"))
         }
 
+        function colorIsBright(hex) {
+            var base16 = parseInt(hex.slice(1), 16)
+            var r = (base16 >> 16) & 0xff
+            var g = (base16 >> 8) & 0xff
+            var b = base16 & 0xff
+
+            return (0.2126 * ((base16 >> 16) & 0xff) + 0.7152 * ((base16 >> 8) & 0xff) + 0.0722 * (base16 & 0xff)) > 65
+        }
+
         var wattStuff, useableData, shardPower
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
@@ -9226,6 +9239,35 @@
                 }
             }
 
+            if (usingTheme) {
+                ID("colorSettings").removeAttribute("style")
+                if (!ID("useTheme").checked) {
+                    ID("useTheme").checked = true
+                }
+            } else {
+                if (ID("useTheme").checked) {
+                    ID("useTheme").checked = false
+                }
+                if (!ID("colorSettings").hasAttribute("style")) {
+                    ID("colorSettings").style.display = "none"
+                }
+            }
+
+            var mainHex = usingTheme ? mainColor : "#753609"
+            if (ID("content").style.backgroundColor !== mainHex) {
+                ID("content").style.backgroundColor = mainHex
+            }
+
+            var backHex = backColor === "d" || !usingTheme ? "#000000" : backColor
+            if (document.documentElement.style.backgroundColor !== backHex) {
+                document.documentElement.style.backgroundColor = backHex
+            }
+
+            var themeCSS = colorIsBright(mainHex) ? "" : "*{color:#fff}html{background-color:#000}#hover{background-color:#000}"
+
+            updateInput("mainColor", mainHex)
+            updateInput("backColor", backHex)
+
             var day = date.getDay()
             var newTime = date.getTime()
             if (season === HALLOWEEN) {
@@ -9237,18 +9279,6 @@
             } else {
                 updateHTML(cssElement, themeCSS + extraCSS)
             }
-
-            if (ID("content").style.backgroundColor !== mainColor) {
-                ID("content").style.backgroundColor = mainColor
-            }
-
-            var backHex = backColor === "d" ? "#000000" : backColor
-            if (document.documentElement.style.backgroundColor !== backHex) {
-                document.documentElement.style.backgroundColor = backHex
-            }
-
-            updateInput("mainColor", mainColor)
-            updateInput("backColor", backHex)
 
             if (newTime >= crystalTime) {
                 var crystalImage = ID("crystal")
