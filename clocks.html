@@ -4356,7 +4356,11 @@
                         Made by Leo Zhang. All rights reserved!
                     </strong>
 
-                    <br>
+                    <div class="small red">
+                        0.0.5.1 (December 20, 2023) Added a bug fix with crystal colors
+                    </div>
+
+                    <br><br>
                     Version <b>0.0.5</b>: <span class="shake">CUSTOM <span class="rainbow">THEMES!!!!!</span></span>
                     <br>
                     Made themes official! (Fixed like 234738481234 bugs right here)
@@ -7634,7 +7638,7 @@
                     if (loaded) {
                         reset(true);
                     }
-                    if (version === "0.0.4.1" || version === "0.0.4.2" || version === "0.0.5") {
+                    if (version === "0.0.4.1" || version === "0.0.4.2" || version === "0.0.5" || version === "0.0.5.1") {
                         w = $.indexOf("Wb");
                         showTab($.slice(0, w));
                         if (version !== "0.0.4.1") {
@@ -7648,7 +7652,7 @@
                             backColor = $.slice(0, w);
                         }
                         $ = $.slice(w + 2), w = $.indexOf("@");
-                        startingTime = parseInt($.slice(0, w), 20);
+                        startingTime = parseInt($.slice(0, w), 35);
                         $ = $.slice(w + 1), w = $.indexOf("@");
                         crystalTotal = parseInt($.slice(0, w), 20);
                         $ = $.slice(w + 1), w = $.indexOf("z");
@@ -7681,7 +7685,7 @@
                         if (!coalMachinesEnabled) ID("aluminumArmsOn").checked = !1;
                         $ = $.slice(la + 1);
                     }
-                    if (version === "0.0.3" || version === "0.0.4" || version === "0.0.4.1" || version === "0.0.4.2" || version === "0.0.5") {
+                    if (version === "0.0.3" || version === "0.0.4" || version === "0.0.4.1" || version === "0.0.4.2" || version === "0.0.5" || version === "0.0.5.1") {
                         la = $.indexOf("$");
                         Q = $.slice(0, la);
                         Q = Q.split("*");
@@ -7803,7 +7807,7 @@
                     for (var SSS = 0; SSS < properties.length; SSS++) {
                         stuff2[properties[SSS]] = new H();
                     }
-                    if (version === "0.0.5" || version === "0.0.4.2" || version === "0.0.4.1" || version === "0.0.4" || version === "0.0.3" || version === "0.0.2") {
+                    if (version === "0.0.5.1" || version === "0.0.5" || version === "0.0.4.2" || version === "0.0.4.1" || version === "0.0.4" || version === "0.0.3" || version === "0.0.2") {
                         var ca = parseCompact($.slice(la + 1));
                         stuff = Object.assign(stuff2, ca);
                         cManagersUsed = stuff["$rocketbody"];
@@ -7851,7 +7855,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + currentTab + "Wb" + usingTheme + "Xz" + mainColor + "Wc" + backColor + "Wd" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + currentTab + "Wb" + usingTheme + "Xz" + mainColor + "Wc" + backColor + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
