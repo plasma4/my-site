@@ -4278,39 +4278,38 @@
                         WIPE EVERYTHING
                     </button>
 
-                    <br>
-                    <label for="useTheme">
-                        <input type="checkbox" id="useTheme"></input>
-                        Use a custom theme
-                    </label>
-                    <div id="colorSettings">
-                        <label for="mainColor">
-                            <input type="color" value="#753609" id="mainColor"></input>
-                            Main color
+                    <div id="modding">
+                        <label for="useTheme">
+                            <input type="checkbox" id="useTheme"></input>
+                            Use a custom theme
                         </label>
-                        <label for="backColor">
-                            <input type="color" value="#000000" id="backColor"></input>
-                            Background color
-                        </label>
-                    </div>
+                        <div id="colorSettings">
+                            <label for="mainColor">
+                                <input type="color" value="#753609" id="mainColor"></input>
+                                Main color
+                            </label>
+                            <label for="backColor">
+                                <input type="color" value="#000000" id="backColor"></input>
+                                Background color
+                            </label>
+                        </div>
 
-                    <br>
-                    <b>Modding:</b>
-                    <textarea id="modSource" placeholder="To add a script, paste it in here."
-                        aria-label="Paste in a script here that mods the game."></textarea>
-                    <button data-desc="Load the mod" id="addMod" class="night">Load script</button>
+                        <br>
+                        <b>Modding:</b>
+                        <textarea id="modSource" placeholder="To add a script, paste it in here."
+                            aria-label="Paste in a script here that mods the game."></textarea>
+                        <button data-desc="Load the mod" id="addMod" class="night">Load script</button>
 
-                    <br>
-                    <u id="toggle" title="Show/hide the debug logs" role="link">Show logs</u>
-                    <br>
+                        <br>
+                        <u id="toggle" title="Show/hide the debug logs" role="link">Show logs</u>
+                        <br>
 
-
-                    <div id="moddingInfo">
                         <b>
-                            Note that mods <i class="red">may compromise your privacy</i>
-                            and are not validated by me.
+                            Note that mods <i class="red">may compromise your privacy</i> and are not validated by me.
+                            Please be aware of this when trying to add a mod!
                         </b>
 
+                        <br><br>
                         Mods allow you to customize the game. Scripts should be in JavaScript.
                         <br>
                         You can use <i>the comments in the source code</i> to guide you. Mods will automatically save.
@@ -4336,7 +4335,7 @@
                         The keys of the object are from the identifiers you added from the <tt>"save"</tt> event.
                         <br>
                         The best way to understand this is to play around with it <i>yourself</i> and test it out!
-                        <br><br><br><br>
+                        <br><br>
                         You may also choose to create additional events. You can input any event name into
                         <tt>Game.addEventListener("event name")</tt>,
                         and trigger them with <tt>Game.triggerEventListeners("event name", data)</tt>.
