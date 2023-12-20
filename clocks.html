@@ -1743,6 +1743,7 @@
 
         .bluey {
             animation: bluish 2s linear infinite;
+            text-shadow: 3px 3px 4px white;
         }
 
         @keyframes bluish {
@@ -4303,9 +4304,13 @@
                     <u id="toggle" title="Show/hide the debug logs" role="link">Show logs</u>
                     <br>
 
-                    <b>Note that mods <i class="red">may compromise your security</i> and are not validated by me.</b>
 
-                    <div id="modding">
+                    <div id="moddingInfo">
+                        <b>
+                            Note that mods <i class="red">may compromise your privacy</i>
+                            and are not validated by me.
+                        </b>
+
                         Mods allow you to customize the game. Scripts should be in JavaScript.
                         <br>
                         You can use <i>the comments in the source code</i> to guide you. Mods will automatically save.
@@ -7570,12 +7575,15 @@
                     return !1;
                 }
                 text = String(text).trim();
+                if (text.length === 0) {
+                    return !1;
+                }
                 var dotIndex = text.indexOf("."), dotIndex2 = dotIndex;
                 if (dotIndex !== -1) {
                     dotIndex = text.slice(dotIndex + 1);
                     text = text.slice(0, dotIndex2);
                 }
-                if (null !== text) try {
+                try {
                     var n = text.split("").reverse(),
                         I = n[4],
                         ha = n[3],
@@ -7837,8 +7845,6 @@
                     return !0
                 } catch (e) {
                     alert("Loading the save failed (maybe it was invalid).")
-                } else {
-                    console.log("No save data was found.")
                 }
                 return !1
             }
