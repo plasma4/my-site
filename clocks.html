@@ -1869,6 +1869,8 @@
         .failed {
             -webkit-user-select: all;
             user-select: all;
+            border-radius: 15px;
+            box-shadow: 4px 4px 4px white;
             padding: 10px;
             font-size: 25px;
             color: #f14662;
@@ -5746,10 +5748,10 @@
              */
             HyperNumber.prototype.digits = function (noClone) {
                 var value = noClone ? this : new HyperNumber(this)
-                if (value.$[0] === 0) {
-                    value.$ = new HyperNumber(value.$[1]).$
+                if (value.$[0] < 2) {
+                    value.$ = new HyperNumber(value.$[1]).add(1).$
                 } else {
-                    value.$[0]--
+                    value.$[0] = value.$[0]
                 }
                 return value
             }
@@ -6857,7 +6859,7 @@
             }
         })
 
-        var crystalTotal = 0, crystalTime = -1, crystalSpeed = 30000
+        var crystalTotal = 0, crystalTime = -1, crystalSpeed = 1
         ID("crystal").addEventListener("click", function () {
             if (alreadyClicked) {
                 return
