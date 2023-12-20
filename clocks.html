@@ -7946,13 +7946,15 @@
             saveLocally()
         }
 
-        document.addEventListener("paste", function (e) {
+        function pasteEvent(e) {
             var pasted = e.clipboardData.getData("text/plain")
             if (!(["INPUT", "SELECT", "TEXTAREA"]).includes(document.activeElement.tagName) && pasted.length !== 0 && (stuffTotals.clocks === 0 || confirm("Attempt to load the save? Your current save will be lost!"))) {
                 load(pasted)
                 e.preventDefault()
             }
-        })
+        }
+
+        document.addEventListener("paste", pasteEvent)
 
         // Optional.   Show the copy icon when dragging over.  Seems to only work for chrome.
         document.addEventListener("dragover", function (e) {
