@@ -4609,9 +4609,7 @@
                     data-desc="Naphtha is a orangy-yellow liquid that is an intermediate step in plastic production, and is stored in a bottle."
                     data-for="naphtha bottle">
                 </div>
-                <div id="plastic" class="gray"
-                    data-desc="Plastic is required for computers!"
-                    data-for="plastic$">
+                <div id="plastic" class="gray" data-desc="Plastic is required for computers!" data-for="plastic$">
                 </div>
 
                 <br>
@@ -6162,8 +6160,8 @@
                         return "0"
                     }
 
-                    if (additionalDigits === null || additionalDigits === 0) {
-                        return formatValue(startingDigits.slice(0, digits + 1), additionalDigits)
+                    if (additionalDigits == null || additionalDigits == 0) {
+                        return formatValue(startingDigits.slice(0, digits + 1))
                     } else {
                         return formatValue(startingDigits.slice(0, digits + 1) + "." + startingDigits.slice(digits + 1), additionalDigits)
                     }
@@ -6194,7 +6192,7 @@
             }
             if (integer < 1e7) {
                 string = string.replace(/\B(?=(.{3})+(?!.))/g, ",")
-                if (additionalDigits != null) {
+                if (additionalDigits != null && additionalDigits != 0) {
                     additionalDigits = parseInt(additionalDigits)
                     if (!isFinite(additionalDigits) || additionalDigits > 100) {
                         console.error("Precision " + additionalDigits + " is out of range.")
@@ -7425,7 +7423,7 @@
                 return "$" + formatted
             } else if (id === "iq") {
                 amount = amount.mul(0.2).sqrt(true).sqrt(true)
-                formatted = amount.isMoreOrEqual(1000000) ? format(amount) : Number(amount).toFixed(4)
+                formatted = format(amount, null, 4)
             }
 
             var isPlural = amount.isPlural()
@@ -9393,7 +9391,7 @@
                             var formatted
                             if (key === "iq") {
                                 amount = amount.mul(0.2).sqrt(true).sqrt(true)
-                                formatted = amount.isMoreOrEqual(1000000) ? format(amount) : Number(amount).toFixed(4) + " " + name
+                                formatted = format(amount, null, 4) + " " + name
                             } else {
                                 if (key === "wattseconds") {
                                     amount = amount.div(60)
@@ -9519,7 +9517,7 @@
                 noBoosts.style.opacity = 1
             }
 
-            update(speedElements[0], speed.equals(1) ? "" : ("Speed multiplier: " + (speed < 1 ? speed.toFixed(2) : format(speed)) + "×"))
+            update(speedElements[0], speed.equals(1) ? "" : ("Speed multiplier: " + speed.format(speed < 1 ? 2 : 0) + "×"))
 
             // Update everything within the game (like wood)
             updateGame()
