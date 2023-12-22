@@ -270,6 +270,20 @@
             color: #efc192;
         }
 
+        del,
+        ins {
+            font-size: inherit;
+            font-weight: 400;
+        }
+
+        del {
+            color: #f1141f;
+        }
+
+        ins {
+            color: #3eabf3;
+        }
+
         li {
             font-size: 20px;
             font-weight: 300;
@@ -2993,26 +3007,26 @@
 
         <nav id="navigation" aria-label="Navigation to switch tabs">
             <span data-tab="main" title="Main menu"><span class="hammer"></span></span>
-            <span data-tab="basic" title="Normal clock menu"><span class="clock"></span></span>
+            <span data-tab="normalc" title="Normal clock menu"><span class="clock"></span></span>
             <span data-tab="goldc" title="Golden clock menu" data-show="money>0"><span class="gc"></span></span>
-            <span data-tab="radic" title="Radium clock menu" data-show="$radium"><span class="rc"></span></span>
-            <span data-tab="earth" title="Mining menu" data-show="money>=5000"><span class="rock"></span></span>
-            <span data-tab="robot" title="Robot menu" data-show="steelmills>0"><span class="chip"></span></span>
-            <span data-tab="inums" title="Aluminum menu" data-show="$aluminum"><span class="aluminum"></span></span>
-            <span data-tab="apple" title="Fiery planting menu" data-show="$apples"><span class="fwood"></span></span>
-            <span data-tab="silva" title="Silver planting menu" data-show="fierywood>0">
+            <span data-tab="radiumc" title="Radium clock menu" data-show="$radium"><span class="rc"></span></span>
+            <span data-tab="earth" title="Underground menu" data-show="money>=5000"><span class="rock"></span></span>
+            <span data-tab="machines" title="Machine menu" data-show="steelmills>0"><span class="chip"></span></span>
+            <span data-tab="metal" title="Aluminum menu" data-show="$aluminum"><span class="aluminum"></span></span>
+            <span data-tab="fierya" title="Fiery planting menu" data-show="$apples"><span class="fwood"></span></span>
+            <span data-tab="silvera" title="Silver planting menu" data-show="fierywood>0">
                 <span class="swood"></span>
             </span>
-            <!-- <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span> -->
-            <span data-tab="flyer" title="Phoenix menu" data-show="bricks>0"><span class="feather"></span></span>
-            <span data-tab="build" title="Building menu" data-show="miners>0"><span class="brick"></span></span>
+            <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span>
+            <span data-tab="phoenix" title="Phoenix menu" data-show="bricks>0"><span class="feather"></span></span>
+            <span data-tab="building" title="Building menu" data-show="miners>0"><span class="brick"></span></span>
             <span data-tab="tech" title="Technology menu" data-show="furnaces>0"><span class="flask"></span></span>
             <span data-tab="zappy" title="Electricity menu" data-show="steelmills>0"><span class="bolt"></span></span>
-            <span data-tab="space" title="Rocket menu" data-show="$rocketry"><span class="rocket"></span></span>
+            <span data-tab="rocket" title="Rocket menu" data-show="$rocketry"><span class="rocket"></span></span>
             <span data-tab="ascend" title="Ascension menu" data-show="omegamanagers>0/shards>0">
                 <span class="ticket"></span>
             </span>
-            <span data-tab="boost" title="Crystal menu"><span class="crystal3"></span></span>
+            <span data-tab="boosting" title="Crystal menu"><span class="crystal3"></span></span>
         </nav>
 
         <div id="content">
@@ -3058,39 +3072,39 @@
 
                     <br>
                     <button class="bronze" data-earn="furnaces+1" data-cost="bricks-1250|money-1000"
-                        data-show="bricks>0" data-sound="build"
+                        data-show="bricks>0" data-sound="building"
                         data-desc="Get a blast furnace to help extract ores from materials you have mined.\nCosts 1,250 bricks and $1,000 to make.$furnaces$">
                         Construct a furnace
                         <span class="coppern"></span><span class="silvern"></span><span class="goldn"></span><span
                             class="platinumn"></span>
-                        <span class="mini stripe1" data-earn="furnaces+1" data-sound="build"
+                        <span class="mini stripe1" data-earn="furnaces+1" data-sound="building"
                             data-cost="bricks-1250|money-1000" data-show="platinum>=1e7"
                             data-desc="You can get more furnaces at once by getting more construction managers!$furnaces$"
                             data-multibuild></span>
                     </button>
                     <button class="gold" data-earn="gfurnaces+1" data-cost="goldb-1e6" data-show="$gfurnaces"
-                        data-sound="build"
+                        data-sound="building"
                         data-desc="Make a rare {shiny GOLDEN} FURNACE that specializes in smelting gold ore into golden nuggets!\nHowever, the size of these furnaces requires you to pay 1,000,000 gold blocks.$gfurnaces$">
                         Construct a GOLDEN furnace <span class="goldn"></span>
-                        <span class="mini stripe2" data-earn="gfurnaces+1" data-sound="build" data-cost="goldb-1e6"
+                        <span class="mini stripe2" data-earn="gfurnaces+1" data-sound="building" data-cost="goldb-1e6"
                             data-show="platinum>=1e7"
                             data-desc="You can get more {shiny golden} furnaces at once by getting more construction managers!$gfurnaces$"
                             data-multibuild></span>
                     </button>
 
                     <br>
-                    <button class="caribbean" data-earn="radiummills+1" data-sound="build"
+                    <button class="caribbean" data-earn="radiummills+1" data-sound="building"
                         data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="$radium"
                         data-desc="Radium mills crush radium ore and make the radium enriched for use.\nCosts 50,000 steel and 40 clockmakers to operate this, as well as $25,000,000.$radiummills$">
                         Construct a RADIUM MILL <span class="radiumbar"></span>
                     </button>
 
                     <button class="silver" data-earn="steelmills+1" data-cost="furnaces-5|money-1e6" data-show="$mills"
-                        data-sound="build"
+                        data-sound="building"
                         data-desc="Steel mills convert your iron to steel, with iron ore, coke, and limestone.\nYou need to repurpose five furnaces and $1,000,000 to constuct such a masterpiece!\nThe five or six workers there get paid $60 in total every second.$steelmills$">
                         Build a steel mill <span class="steel"></span>
                         <span class="mini stripe1" data-earn="steelmills+1" data-cost="furnaces-5|money-1e6"
-                            data-show="platinum>=1e7" data-sound="build"
+                            data-show="platinum>=1e7" data-sound="building"
                             data-desc="You can get more steel mills at once by getting more construction managers!$steelmills$"
                             data-multibuild></span>
                     </button>
@@ -3112,7 +3126,7 @@
                     </button>
                 </div>
 
-                <div id="basic" style="display: none">
+                <div id="normalc" style="display: none">
                     <!-- stuff.clocks = Infinity -->
                     <span class="big clock"></span>
                     <tt>clocks++</tt>
@@ -3196,10 +3210,10 @@
 
                     <br><br>
                     <!-- HUGE CLOCKS 4 HUGE GAINS -->
-                    <button data-earn="megaclocks+1" data-sound="build"
+                    <button data-earn="megaclocks+1" data-sound="building"
                         data-desc="Build a MegaClock for selling by painstakingly combining 250,000 clocks. All rights reserved.$megaclocks$"
                         data-cost="clocks-250000" data-show="clocks>=50000" class="goldbg">Build a MegaClock</button>
-                    <button data-earn="eraclocks+1" data-sound="build"
+                    <button data-earn="eraclocks+1" data-sound="building"
                         data-desc="Build an ERAClock Pro+ Limited Maximus-50 Goldius ExtraUltimate...\nSuperior Edition Final Superfinale Extreme Bigger EvenBigger BiggestHuge.\nThis thing sure takes up a lot of space, and costs a hefty 100M clocks and 4,000 bricks!$eraclocks$"
                         data-cost="clocks-1e8|bricks-4000" data-show="clocks>=8e7|megaclocks>0|bricks>=4000"
                         class="goldbg">
@@ -3257,12 +3271,12 @@
                     </button>
                 </div>
 
-                <div id="radic" style="display: none">
+                <div id="radiumc" style="display: none">
                     <span class="big rc"></span>
                     Radioactive stuff is bright and dangerous.
 
                     <br>
-                    <button class="caribbean" data-earn="radiummills+1" data-sound="build"
+                    <button class="caribbean" data-earn="radiummills+1" data-sound="building"
                         data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="$radium"
                         data-desc="Radium mills crush radium ore and make the radium enriched for use.\nCosts 50,000 steel and 40 clock makers to operate this, as well as $25,000,000.$radiummills$">
                         Construct a RADIUM MILL <span class="radiumbar"></span>
@@ -3311,17 +3325,17 @@
 
                     <br>
                     <button class="bronze" data-earn="cokeovens+1" data-cost="bricks-5000" data-show="bricks>=4000"
-                        data-sound="build"
+                        data-sound="building"
                         data-desc="These tiny coke ovens are made using 5,000 bricks, and help convert coal into coke: a COOLER fuel.\n(Requires a pay of $15 a second)$cokeovens$">
                         Get a coke oven
                         <span class="mini stripe1" data-earn="cokeovens+1" data-cost="bricks-5000"
-                            data-show="platinum>=1e7" data-sound="build"
+                            data-show="platinum>=1e7" data-sound="building"
                             data-desc="You can get more coke ovens at once by getting more construction managers!$cokeovens$"
                             data-multibuild></span>
                     </button>
                 </div>
 
-                <div id="robot" style="display: none">
+                <div id="machines" style="display: none">
                     <span class="big gears"></span>
                     You can get robot arms and factories to help with your never-ending quest for more
                     <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span
@@ -3329,50 +3343,50 @@
 
                     <br>
                     <!-- Yay, the wonderful world of unicode ×ymbols -->
-                    <button data-earn="arms+1" data-sound="build"
+                    <button data-earn="arms+1" data-sound="building"
                         data-desc="Costs 125 steel in order to construct. You'll have to painstakingly build one of metal and circuit boards, at least, until you build a constructor machine.\nMuch faster than hiring clock makers indeed!\nUses 100 watts. Robot arms will work ONLY if they have enough power.$arms$"
                         data-cost="steel-125" class="goldbg">
                         Build a robot arm
-                        <span class="mini stripe1" data-earn="arms+100" data-sound="build"
+                        <span class="mini stripe1" data-earn="arms+100" data-sound="building"
                             data-desc="Build one hundred arms out of lots of steel.\nMuch faster to create than buying from someone else!$arms$"
                             data-cost="steel-12500" data-show="constructors>0">
                             100×
                         </span>
-                        <span class="mini stripe2" data-earn="arms+10000" data-sound="build"
+                        <span class="mini stripe2" data-earn="arms+10000" data-sound="building"
                             data-desc="Mass-produce TEN THOUSAND arms every time you press this button! It sure is a shame YOU only have two of those arms...$arms$"
                             data-cost="steel-1.25e6" data-show="constructors>1">
                             10,000×
                         </span>
-                        <span class="mini stripe3" data-earn="arms+1e6" data-sound="build"
+                        <span class="mini stripe3" data-earn="arms+1e6" data-sound="building"
                             data-desc="...more arms...$arms$" data-cost="steel-1.25e8" data-show="constructors>2">
                             1,000,000×
                         </span>
-                        <span class="mini stripe4" data-earn="arms+1e8" data-sound="build"
+                        <span class="mini stripe4" data-earn="arms+1e8" data-sound="building"
                             data-desc="Do you {really} need 100 MILLION robot arms?$arms$" data-cost="steel-1.25e10"
                             data-show="$massarms|constructors>3">
                             100,000,000×
                         </span>
                     </button>
-                    <button data-earn="aluminumarms+1" data-sound="build" data-show="aluminum1>0"
+                    <button data-earn="aluminumarms+1" data-sound="building" data-show="aluminum1>0"
                         data-desc="Well-made aluminum robot arms work four times faster than normal robot arms, yet still use the same amount of power!\nHowever, they cost 250 aluminum instead of 125.$aluminumarms$"
                         data-cost="aluminum-250" class="goldbg">
                         Build an aluminum robot arm
-                        <span class="mini stripe1" data-earn="aluminumarms+100" data-sound="build"
+                        <span class="mini stripe1" data-earn="aluminumarms+100" data-sound="building"
                             data-desc="Build one hundred of these every time you press this button!$aluminumarms$"
                             data-cost="aluminum-25000" data-show="constructors>0">
                             100×
                         </span>
-                        <span class="mini stripe2" data-earn="aluminumarms+10000" data-sound="build"
+                        <span class="mini stripe2" data-earn="aluminumarms+10000" data-sound="building"
                             data-desc="You don't need descriptions anymore, right?$aluminumarms$"
                             data-cost="aluminum-2.5e6" data-show="constructors>1">
                             10,000×
                         </span>
-                        <span class="mini stripe3" data-earn="aluminumarms+1e6" data-sound="build"
+                        <span class="mini stripe3" data-earn="aluminumarms+1e6" data-sound="building"
                             data-desc="(read: previous description)$aluminumarms$" data-cost="aluminum-2.5e8"
                             data-show="constructors>2">
                             1,000,000×
                         </span>
-                        <span class="mini stripe4" data-earn="aluminumarms+1e8" data-sound="build"
+                        <span class="mini stripe4" data-earn="aluminumarms+1e8" data-sound="building"
                             data-desc="Do you {truly} need 100 MILLION aluminum robot arms?$aluminumarms$"
                             data-cost="aluminum-2.5e10" data-show="$massarms|constructors>3">
                             100,000,000×
@@ -3380,12 +3394,12 @@
                     </button>
 
                     <br>
-                    <button data-earn="factories+1" data-sound="build"
+                    <button data-earn="factories+1" data-sound="building"
                         data-desc="Get 100 arms, 500 golden clocks, and $400,000 and put them together to acquire a sizeable factory, which produces clocks even FASTER.\nNo more labor regulations to worry about!\nEach factory needs 8,000 watts. Factories work ONLY if they have enough power.$factories$"
                         data-cost="arms-100|gc-500|money-400000" data-show="arms>=10|gc>=50" class="orangebg">
                         Build a large factory
                         <span class="mini stripe4" data-earn="factories+1" data-cost="arms-100|gc-500|money-400000"
-                            data-show="platinum>=1e7" data-sound="build"
+                            data-show="platinum>=1e7" data-sound="building"
                             data-desc="You can get more factories at once by getting more construction managers!$factories$"
                             data-multibuild></span>
                     </button>
@@ -3398,45 +3412,45 @@
                     </button>
 
                     <br><br>
-                    <button class="cinammon" data-sound="build"
+                    <button class="cinammon" data-sound="building"
                         data-desc="You can make 25 resistors out of a piece of copper, 2 pieces of graphite, and 2 pieces of silicon.\nStart collecting these early!$resistors$"
                         data-cost="copper-1|graphite-2|silicon-2" data-earn="resistors+25" data-show="bottles>0">
                         +25 <span class="resistor" role="img" aria-label="resistors"></span>
                     </button>
-                    <button class="cinammon" data-sound="build"
+                    <button class="cinammon" data-sound="building"
                         data-desc="You can make 25 transistors out of five pieces of silicon.\nStart collecting them early!$transistors$"
                         data-cost="silicon-5" data-earn="transistors+25" data-show="resistors>0">
                         +25 <span class="transistor" role="img" aria-label="transistors"></span>
                     </button>
-                    <button class="cinammon" data-sound="build"
+                    <button class="cinammon" data-sound="building"
                         data-desc="You can make 25 capacitors out of two pieces of copper and a piece of plastic in the middle.\nStart collecting them early!$capacitors$"
                         data-cost="copper-2|plastic-1" data-earn="capacitors+25" data-show="transistors>0">
                         +25 <span class="capacitor" role="img" aria-label="capacitors"></span>
                     </button>
-                    <button class="cinammon" data-sound="build"
+                    <button class="cinammon" data-sound="building"
                         data-desc="You can construct 25 inductors using eight copper pieces.\nStart collecting them early!$inductors$"
                         data-cost="copper-8" data-earn="inductors+25" data-show="capacitors>0">
                         +25 <span class="inductor" role="img" aria-label="inductors"></span>
                     </button>
-                    <button class="cinammon" data-sound="build"
+                    <button class="cinammon" data-sound="building"
                         data-desc="You can make 25 diodes out two pieces of silicon and five pieces of platinum.\nStart collecting them early!$diodes$"
                         data-cost="silicon-2|platinum-5" data-earn="diodes+25" data-show="inductors>0">
                         +25 <span class="diode" role="img" aria-label="diodes"></span>
                     </button>
 
                     <br>
-                    <button class="gold" data-sound="build"
+                    <button class="gold" data-sound="building"
                         data-desc="You can make a tiny integrated circuit out of ten resistors, transistors, capacitors, inductors, and diodes.$circuits$"
                         data-cost="resistors-10|transistors-10|capacitors-10|inductors-10|diodes-10"
                         data-earn="circuits+1" data-show="diodes>0">
                         Build a <span class="circuit" role="img" aria-label="circuit"></span>
                     </button>
-                    <button class="diamond" data-sound="build"
+                    <button class="diamond" data-sound="building"
                         data-desc="Construct an circuit board out of 25 integrated circuits, 400 pieces of silicon, and 100 pieces of plastic.$boards$"
                         data-cost="circuits-25|silicon-400|plastic-100" data-earn="boards+1" data-show="$assembly">
                         Build a <span class="chip" role="img" aria-label="circuit board"></span>
                     </button>
-                    <button class="caribbean" data-sound="build"
+                    <button class="caribbean" data-sound="building"
                         data-desc="Build a small computer with 200 plastic pieces, 150 steel, and 50 copper, as well as two basic circuit boards.\nYour first computer will unlock new AI research!\nHowever, each computer uses 100 watts. You can change the priority of supplying energy to computers in the electricity menu.$computers$"
                         data-cost="boards-2|plastic-200|steel-150|copper-150" data-earn="computers+1"
                         data-show="boards>0">
@@ -3466,7 +3480,7 @@
                     </button>
                 </div>
 
-                <div id="inums" style="display: none">
+                <div id="metal" style="display: none">
                     <span class="big aluminum"></span>
                     Aluminum is a crucial part of rockets and can make robot arms!
 
@@ -3490,26 +3504,26 @@
                     </button>
 
                     <br><br>
-                    <button data-earn="aluminumarms+1" data-sound="build" data-show="aluminum1>0"
+                    <button data-earn="aluminumarms+1" data-sound="building" data-show="aluminum1>0"
                         data-desc="Well-made aluminum robot arms work four times faster than normal robot arms, yet still use the same amount of power!\nHowever, they cost 250 aluminum instead of 125.$aluminumarms$"
                         data-cost="aluminum-250" class="goldbg">
                         Build an aluminum robot arm
-                        <span class="mini stripe1" data-earn="aluminumarms+100" data-sound="build"
+                        <span class="mini stripe1" data-earn="aluminumarms+100" data-sound="building"
                             data-desc="Build one hundred of these at once!$aluminumarms$" data-cost="aluminum-25000"
                             data-show="constructors>0">
                             100×
                         </span>
-                        <span class="mini stripe2" data-earn="aluminumarms+10000" data-sound="build"
+                        <span class="mini stripe2" data-earn="aluminumarms+10000" data-sound="building"
                             data-desc="You don't need descriptions anymore, right?$aluminumarms$"
                             data-cost="aluminum-2.5e6" data-show="constructors>1">
                             10,000×
                         </span>
-                        <span class="mini stripe3" data-earn="aluminumarms+1e6" data-sound="build"
+                        <span class="mini stripe3" data-earn="aluminumarms+1e6" data-sound="building"
                             data-desc="(read: previous description)$aluminumarms$" data-cost="aluminum-2.5e8"
                             data-show="constructors>2">
                             1,000,000×
                         </span>
-                        <span class="mini stripe4" data-earn="aluminumarms+1e8" data-sound="build"
+                        <span class="mini stripe4" data-earn="aluminumarms+1e8" data-sound="building"
                             data-desc="Do you [really] need 100 MILLION aluminum robot arms?$aluminumarms$"
                             data-cost="aluminum-2.5e10" data-show="$massarms|constructors>3">
                             100,000,000×
@@ -3517,7 +3531,7 @@
                     </button>
                 </div>
 
-                <div id="apple" style="display: none">
+                <div id="fierya" style="display: none">
                     <span class="big fwood"></span><span class="big swood"></span><span class="big gwood"></span>
                     Apples!
 
@@ -3645,7 +3659,7 @@
                     </button>
                 </div>
 
-                <div id="silva" style="display: none">
+                <div id="silvera" style="display: none">
                     <span class="big fwood"></span><span class="big swood"></span><span class="big gwood"></span>
                     Apples!
 
@@ -3800,7 +3814,7 @@
                     </div>
                 </div>
 
-                <div id="flyer" style="display: none">
+                <div id="phoenix" style="display: none">
                     <span class="big feather"></span>
                     Feathers are collected from phoenixes, elusive creatures indeed.
                     <div class="small">Be sure to collect these little creatures early for your ascensions!</div>
@@ -3866,7 +3880,7 @@
                     </button>
                 </div>
 
-                <div id="build" style="display: none">
+                <div id="building" style="display: none">
                     <span class="big shovel"></span>
                     You can make bricks with a digger, molder, and kiln (kilns are powered with wood).
 
@@ -3900,10 +3914,10 @@
                     </button>
                     <button class="silver"
                         data-desc="Get a solid kiln to start firing brick molds into hardened bricks, along with wood.\nCosts fifty bricks. Hmm...if only you could purchase bricks to make more bricks...$kilns$"
-                        data-cost="bricks-50" data-earn="kilns+1" data-show="molders>0" data-sound="build">
+                        data-cost="bricks-50" data-earn="kilns+1" data-show="molders>0" data-sound="building">
                         Get a kiln <span class="brick"></span>
                         <span class="mini stripe1" data-earn="kilns+1" data-cost="bricks-50" data-show="platinum>=1e7"
-                            data-sound="build"
+                            data-sound="building"
                             data-desc="You can get more kilns at once by getting more construction managers!$kilns$"
                             data-multibuild></span>
                     </button>
@@ -4410,7 +4424,7 @@
                     </button>
                 </div>
 
-                <div id="space" style="display: none">
+                <div id="rocket" style="display: none">
                     <span class="big rocket"></span>
                     Rockets allow you to go to other planets, such as Mars.
                     <div class="small">
@@ -4468,7 +4482,7 @@
                     </button>
                 </div>
 
-                <div id="boost" style="display: none">
+                <div id="boosting" style="display: none">
                     <span class="big crystal1"></span><span class="big crystal2"></span><span
                         class="big crystal3"></span>
                     Crystals are rare and valuable, and can be used to speed up time.
@@ -4560,6 +4574,11 @@
                     <span class="mini special" data-cost="shards-1" data-earn="$shardsci" data-hide="$shardsci"
                         data-sound="transaction">
                         -1 <span class="shard" aria-label="GOLDEN shard"></span> for new researches costing science!
+                    </span>
+                    <br>
+                    <span class="mini special" data-cost="shards-1" data-earn="$magic" data-hide="$magic"
+                        data-sound="transaction">
+                        -1 <span class="shard" aria-label="GOLDEN shard"></span> for MAGIC!
                     </span>
                     <br>
                     <span class="mini special" data-cost="shards-2" data-earn="$cheapfire" data-hide="$cheapfire"
@@ -4657,22 +4676,33 @@
                         Made by Leo Zhang. All rights reserved!
                     </strong>
 
+                    <div class="small orange">
+                        Patch and update (December 22, 2023): More apple-related stuff and a bug fix
+                    </div>
+                    <div class="smaller rainbow">
+                        can you guess what the bug was? apparently i wasted multiple hours on that silly save bug
+                        because... i forgot to update the version number. yeah, terrible, i know :(((
+                    </div>
                     <div class="small red">
                         0.0.5.1 (December 20, 2023) Added a bug fix with crystal colors
                     </div>
 
                     <br><br>
-                    Version <b>0.0.5</b>: <span class="shake">CUSTOM <span class="rainbow">THEMES!!!!!</span></span>
+                    Version <b>0.0.5</b>: <span class="shake">CUSTOM <span class="red">t</span><span
+                            class="orange">h</span><span class="yellow">e</span><span class="green">m</span><span
+                            class="blue">e</span><span class="pink">s</span>!!!!</span>
                     <br>
-                    Made themes official! (Fixed like 234738481234 bugs right here)
+                    <div class="small purple">Made themes official! (Fixed like 3,575,114,936 bugs right here)</div>
+                    <tt class="smaller">(number chosen by random unsigned 32-bit int number. random every time)</tt>
 
-                    <br><br><br>
+                    <br>
                     <div class="small pink">
                         0.0.4.2 (December 18, 2023)! Added exotic wood <span class="fwood"></span> and...
                         CUSTOMIZED THEMES!
+                        <br>
                         <i>(literally just two color pickers to choose the main and background colors)</i>
-                        <span class="wonder"></span><span class="wonder"></span><span class="wonder"></span><span
-                            class="wonder"></span><span class="wonder"></span>
+                        <span class="bigger wonder"></span><span class="big wonder"></span><span
+                            class="wonder"></span><span class="big wonder"></span><span class="bigger wonder"></span>
                     </div>
                     ---
                     <div class="small blue">
@@ -4716,12 +4746,6 @@
                     <ul>
                         <li>
                             <b>
-                                Colorful themes! Maybe a few sprite changes.
-                                Maybe even multiple ones that are highly progression related
-                            </b>
-                        </li>
-                        <li>
-                            <b>
                                 Make golden shards have a LOT more uses and tie it in to researches
                                 (golden shard users, yes, that's not the only mechanic!)
                             </b>
@@ -4742,25 +4766,26 @@
                         <li>oh wait programming doesn't work like that</li>
                     </ul>
 
-                    UNIMPLEMENTED/UNRELEASED Features:
+                    Future plans for magic:
                     <ul>
-                        <li>More features for ascending <span class="cross"></span></li>
-                        <li>Add magical stuff back in <span class="cross"></span></li>
-                        <li>More magical spells and researches <span class="cross"></span></li>
+                        <li><del>Add magical stuff back in</del> <ins>DONE!</ins> <span class="check"></span></li>
+                        <li>Magical spells and researches <span class="cross"></span></li>
                         <li>A weird magical marketplace <span class="cross"></span></li>
                     </ul>
 
                     Features:
                     <ul>
-                        <li><b>NEW:</b> ASCENSION!!! <span class="check"></span></li>
-                        <li>Exotic wood types (yes, plural as of now) <span class="check"></span></li>
+                        <li>HOURS of <del>pain</del> <ins>I mean fun...fun</ins></li>
+                        <li class="rainbow">themes <span class="check"></span></li>
+                        <li>ascension again!!! <span class="check"></span></li>
                         <li>ASCENSION!!! <span class="check"></span></li>
+                        <li>Exotic wood types (yes, PLURAL!!!) <span class="check"></span></li>
                         <li>Buttons <span class="check"></span></li>
                         <li>Clock types <span class="check"></span></li>
                         <li>Clockmakers, robot arms and factories <span class="check"></span></li>
                         <li>Mining and smelting <span class="check"></span></li>
                         <li>The electric age <span class="check"></span></li>
-                        <li>Research and science <span class="check"></span></li>
+                        <li>Research and science (over FIFTY of them!) <span class="check"></span></li>
                         <li>Phoenixes <span class="check"></span></li>
                     </ul>
 
@@ -5009,7 +5034,7 @@
         ID("script").remove()
 
         // Set the version
-        const version = "0.0.5"
+        const version = "0.0.5.1"
 
         /** @type {string[]} An array with abbreviations for numbers up to 50 digits */
         const shortSuffixes = ["", "K", "M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "Ud", "Dd", "Td", "qd", "Qd"]
