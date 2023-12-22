@@ -3119,7 +3119,8 @@
                     <tt>clocks++</tt>
 
                     <br>
-                    <button data-desc="You're rich!$money$" data-earn="money+1" data-cost="clocks-1" data-sound="transaction">
+                    <button data-desc="You're rich!$money$" data-earn="money+1" data-cost="clocks-1"
+                        data-sound="transaction">
                         Sell 1 <span class="clock" role="img" aria-label="clock"></span>
                         <span class="mini silver" data-earn="money+*1" data-cost="clocks-10%" data-sound="transaction"
                             data-show="clocks>=10" data-desc="Sell 10% of all your clocks!">
@@ -3152,7 +3153,8 @@
                             data-desc="Sell 10% of all your radioactive watches!" data-sound="transaction">
                             10% <span class="rwatch" role="img" aria-label="of radioactive watches"></span>
                         </span>
-                        <span data-earn="money+*1e6" data-cost="rwatches-all" class="mini night" data-sound="transaction"
+                        <span data-earn="money+*1e6" data-cost="rwatches-all" class="mini night"
+                            data-sound="transaction"
                             data-desc="Instantly sells ALL of your radioactive watches!\nI guess they're gone now :-P">
                             ALL <span class="rwatch" role="img" aria-label="radioactive watches"></span>
                         </span>
@@ -3611,23 +3613,25 @@
                     <br>
                     <span class="mini special" data-show="fierywood>0" data-cost="fierywood-10" data-earn="$morefwood"
                         data-hide="$morefwood" data-sound="transaction">
-                        -10 <span class="fwood"></span> for a 3× fiery wood gain boost
+                        -10 <span class="fwood" aria-label="fiery wood"></span> for a 3× fiery wood gain boost
                     </span>
                     <span class="mini special" data-show="$morefwood" data-cost="fierywood-50000" data-earn="$morebwood"
                         data-hide="$morebwood" data-sound="transaction">
-                        -50,000 <span class="fwood"></span> for a 25× blue wood gain boost
+                        -50,000 <span class="fwood" aria-label="fiery wood"></span> for a 25× blue wood gain boost
                     </span>
-                    <span class="mini special" data-show="$morebwood" data-cost="fierywood-50000" data-earn="$moreftrees"
-                        data-hide="$moreftrees" data-sound="transaction">
-                        -100,000 <span class="fwood"></span> for a 2× firetree gain boost
+                    <span class="mini special" data-show="$morebwood" data-cost="fierywood-100000"
+                        data-earn="$moreftrees" data-hide="$moreftrees" data-sound="transaction">
+                        -100,000 <span class="fwood" aria-label="fiery wood"></span> for a 2× firetree gain boost
                     </span>
                     <span class="mini special" data-show="$moreftrees" data-cost="fierywood-250000"
                         data-earn="$silverfwood" data-hide="$silverfwood" data-sound="transaction">
-                        -250,000 <span class="fwood"></span> for silver wood to increase fiery wood gain
+                        -250,000 <span class="fwood" aria-label="fiery wood"></span> for silver wood to increase fiery
+                        wood gain
                     </span>
                     <span class="mini special" data-show="$silverfwood" data-cost="fierywood-5e6"
                         data-earn="$morefwood2" data-hide="$morefwood2" data-sound="transaction">
-                        -5,000,000 <span class="fwood"></span> for ANOTHER 3× fiery wood gain boost
+                        -5,000,000 <span class="fwood" aria-label="fiery wood"></span> for ANOTHER 3× fiery wood gain
+                        boost
                     </span>
 
                     <br><br>
@@ -4539,22 +4543,23 @@
                     <button class="cherrybg" id="shardAscend"
                         data-desc="Are you REALLY going to sacrifice all non-ascension items in exchange for golden shards?\n{This button will reset all of your items and progress, excluding golden shards themselves!}">
                         Ascend for golden shards!
+                        <span class="shard"></span><span class="shard"></span><span class="shard"></span>
                     </button>
 
                     <div class="small">The researches below WILL NOT STAY after ascending again!</div>
                     <span class="mini special" data-cost="shards-1" data-earn="$shardsci" data-hide="$shardsci"
                         data-sound="transaction">
-                        -1 <span class="shard"></span> for new researches costing science!
+                        -1 <span class="shard" aria-label="GOLDEN shard"></span> for new researches costing science!
                     </span>
                     <br>
                     <span class="mini special" data-cost="shards-10" data-earn="$cheapfire" data-hide="$gfurnaces"
                         data-sound="transaction">
-                        -2 <span class="shard"></span> for 10× cheaper fireplanters
+                        -2 <span class="shard" aria-label="GOLDEN shards"></span> for 10× cheaper fireplanters
                     </span>
                     <br>
                     <span class="mini special" data-cost="shards-10" data-earn="$gfurnaces" data-hide="$gfurnaces"
                         data-sound="transaction">
-                        -10 <span class="shard"></span> for GOLDEN FURNACES!
+                        -10 <span class="shard" aria-label="GOLDEN shards"></span> for GOLDEN FURNACES!
                     </span>
                 </div>
 
