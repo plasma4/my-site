@@ -8142,8 +8142,8 @@
                         if (spellData !== false) {
                             var spellSplit = spellData.split("#")
                             var U = spellElements.length
-                            for (let K = 0; K < v.length; K++) {
-                                B = v[K]
+                            for (let K = 0; K < spellSplit.length; K++) {
+                                B = spellSplit[K]
                                 L = B.length - 1 - B.split("").reverse().indexOf(".")
                                 S = B.slice(L + 1)
                                 let element = "" + U
