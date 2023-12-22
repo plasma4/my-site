@@ -253,7 +253,7 @@
             border-radius: 6px;
         }
 
-        #logsSection {
+        #logSection {
             font-size: 15px;
             display: none;
         }
@@ -3624,7 +3624,7 @@
                         -250,000 <span class="fwood"></span> for silver wood to increase fiery wood gain
                     </span>
                     <br>
-                    <span class="mini special" data-show="$silverfwood" data-cost="fierywood-250000"
+                    <span class="mini special" data-show="$silverfwood" data-cost="fierywood-5e6"
                         data-earn="$morefwood2" data-hide="$morefwood2" data-sound="money">
                         -5,000,000 <span class="fwood"></span> for ANOTHER 3× fiery wood gain boost
                     </span>
@@ -4794,7 +4794,7 @@
                     &nbsp;
                     <u title="Import a save" class="save" id="import" role="link">Import</u>
                 </div>
-                <div id="logsSection">
+                <div id="logSection">
                     Debug logs (<span id="count">0</span>):
                     <tt id="logs"></tt>
                 </div>
@@ -6674,7 +6674,7 @@
         var oldWarn = console.warn
         var oldError = console.error
 
-        var logCount = 0, colorType = -1, logsSectionHidden = true, logsNotAutoopened = true
+        var logCount = 0, colorType = -1, logSectionHidden = true, logsNotAutoopened = true
         console.log = function () {
             oldLog.apply(console, arguments)
             log(arguments)
@@ -6888,8 +6888,8 @@
 
         var logsHidden = true
         attachEvent("toggle", function () {
-            if (logsSectionHidden) {
-                ID("logsSection").style.display = "block"
+            if (logSectionHidden) {
+                ID("logSection").style.display = "block"
             }
             if (logsHidden) {
                 ID("logs").style.display = "block"
@@ -6960,8 +6960,8 @@
         })
 
         function showLogs() {
-            if (logsSectionHidden) {
-                ID("logsSection").style.display = "block"
+            if (logSectionHidden) {
+                ID("logSection").style.display = "block"
             }
             if (logsHidden) {
                 ID("logs").style.display = "block"
