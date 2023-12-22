@@ -7712,12 +7712,16 @@
 
         // Returns the amount and property name as a string and automatically considers plural and singular forms
         function getAmount(id, overrideAmount) {
-            var amount = overrideAmount == null ? C(id, "This happened while formatting name and quantity information.") : new H(overrideAmount)
+            var actualAmount = C(id, "This happened while formatting name and quantity information.")
+            var amount = overrideAmount == null ? actualAmount : new H(overrideAmount)
             if (id === "wattseconds") {
                 amount = amount.mul(".01666666666666666666666666666666666666666666666667")
             }
             var item = wikiData[id]
             var formatted = format(amount, null, id === "money" ? 2 : null)
+            if (overrideAmount != null && actualAmount.isLess(overrideAmount)) {
+                formatted = "[" + formatted + "]"
+            }
             if (item == null) {
                 var item = wikiData[id + "ore"]
                 if (item == null) {
