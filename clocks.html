@@ -3611,7 +3611,22 @@
                     <br>
                     <span class="mini special" data-show="fierywood>0" data-cost="fierywood-10" data-earn="$morefwood"
                         data-hide="$morefwood" data-sound="money">
-                        -10 <span class="fwood"></span> for 3× fiery wood gain
+                        -10 <span class="fwood"></span> for a 3× fiery wood gain boost
+                    </span>
+                    <br>
+                    <span class="mini special" data-show="$morefwood" data-cost="fierywood-50000" data-earn="$morebwood"
+                        data-hide="$morebwood" data-sound="money">
+                        -50,000 <span class="fwood"></span> for a 25× blue wood gain boost
+                    </span>
+                    <br>
+                    <span class="mini special" data-show="$morebwood" data-cost="fierywood-250000"
+                        data-earn="$silverfwood" data-hide="$silverfwood" data-sound="money">
+                        -250,000 <span class="fwood"></span> for silver wood to increase fiery wood gain
+                    </span>
+                    <br>
+                    <span class="mini special" data-show="$silverfwood" data-cost="fierywood-250000"
+                        data-earn="$morefwood2" data-hide="$morefwood2" data-sound="money">
+                        -5,000,000 <span class="fwood"></span> for ANOTHER 3× fiery wood gain boost
                     </span>
 
                     <br><br>
@@ -5727,7 +5742,7 @@
                     var multiplied = this.$[2] * 10000000000000000000000000000000000000000000000000n / b.$[2]
                     digits -= b.$[1]
                     if (multiplied < 10000000000000000000000000000000000000000000000000n) {
-                        multiplied /= 10n
+                        multiplied *= 10n
                         digits--
                     }
                     b.$[2] = multiplied
@@ -7142,7 +7157,7 @@
 
         ID("fireReset").addEventListener("click", function () {
             if (confirm("Are you sure? You will LOSE all of your fiery progress!")) {
-                add("fierywood", C("firefruit").digits().sub(30).div(hasResearch("morefwood") ? 1 : 3).floor(true))
+                add("fierywood", C("firefruit").digits().sub(30).mul(C("silverfruit", issue).add(1)).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3).floor(true))
                 clear(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
                 setup(true)
             }
@@ -9133,7 +9148,9 @@
 
             var trees = C("trees", issue)
 
-            var fWoodWizardPower = C("fwoodwizards", issue).div(6)
+            var silverfruitMultiplier = C("silverfruit", issue).add(1)
+            var fWoodWizardCost = C("fwoodwizards", issue).mul(0.01)
+            var fWoodWizardPower = fWoodWizardCost.mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 3 : 1)
             var firewizardPower = C("firewizards", issue).div(60)
             var firetowns = C("firetowns", issue)
             var firetownPower = firetowns.isLess(1) ? H(true) : firetowns.sqr().add(firetowns.mul(25)).sub(25).mul(777).add(1)
@@ -9154,7 +9171,7 @@
 
             var goldFurnacePower = C("gfurnaces", issue).mul(hasResearch("goldensci") ? 25000 : 2500)
 
-            var furnaceCost = C("furnaces", issue).mul(0.07)
+            var furnaceCost = C("furnaces", issue).mul(0.045678987654)
             var millCost = H(hasResearch("steelwork") ? 4 : 1)
             var millPower = H(hasResearch("steelwork") ? 2.5 : 1).mul(hasResearch("steel") ? 1.25 : 1)
 
@@ -9179,7 +9196,7 @@
             }
 
             var bluecutters = C("bluecutters", issue)
-            var bluePower = bluecutters.mul(hasResearch("blue") ? 4 : 1)
+            var bluePower = bluecutters.mul(hasResearch("morebwood") ? 25 : 1).mul(hasResearch("blue") ? 0.0062 : 0.00155)
 
             var constructors = C("constructors", issue)
 
@@ -9332,10 +9349,10 @@
 
             multiExchange(["clay", "sand"], [diggers.mul(0.035), diggers.mul(0.05)], "money", diggers.div(6))
             exchange("wood", woodPower, "money", woodcutters.mul(0.25), true)
-            exchange("bwood", bluePower.mul(0.00155), "fc", bluecutters.mul(0.006), true)
+            exchange("bwood", bluePower, "fc", bluecutters.mul(0.006), true)
             add("rubber", trees.mul(0.0004))
 
-            multiExchange("fierywood", fWoodWizardPower, ["bwood", "firetrees"], [fWoodWizardPower.mul(500), fWoodWizardPower.mul(1e9)])
+            multiExchange("fierywood", fWoodWizardPower, ["bwood", "firetrees"], [fWoodWizardCost.mul(500), fWoodWizardCost.mul(1e9)], true)
             add("firefarms", firewizardPower)
 
             var firefarms = C("firefarms", issue)
@@ -9431,7 +9448,7 @@
 
             var firefruitDigits = C("firefruit").digits()
             var silverfruitDigits = C("silverfruit").digits()
-            updateId("fireReset", firefruitDigits.isMoreOrEqual(50) ? "Gain " + format(firefruitDigits.sub(30).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood" : "")
+            updateId("fireReset", firefruitDigits.isMoreOrEqual(50) ? "Gain " + format(firefruitDigits.sub(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood" : "")
             updateId("silverReset", silverfruitDigits.isMoreOrEqual(50) ? "Gain " + format(silverfruitDigits.sub(10).mul(0.5)) + " silver wood" : "")
 
             // Update the CPS element and change the color by modifying the class
