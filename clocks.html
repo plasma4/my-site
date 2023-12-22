@@ -237,6 +237,7 @@
 
         .grid>* {
             background-color: #eabc80;
+            max-width: 500px;
             margin: 2px;
             border-radius: 4px;
             text-shadow: 2px 2px 2px black;
@@ -478,10 +479,10 @@
         }
 
         sup {
-            font-size: 30px;
+            font-size: 0.5em;
             vertical-align: baseline;
             position: relative;
-            top: -0.4em;
+            top: -1em;
         }
 
         #modding {
@@ -1106,8 +1107,50 @@
             animation: flashy 1s linear infinite;
         }
 
+        .flashy:hover {
+            filter: brightness(1.5);
+        }
+
+        .flashy:active {
+            filter: brightness(2.5);
+        }
+
         .burning {
             animation: burning 2s linear infinite;
+        }
+
+        .flashy2 {
+            border-color: #828282;
+            animation: flashy2 1s linear infinite;
+        }
+
+        .flashy2:hover {
+            filter: brightness(1.4);
+        }
+
+        .flashy2:active {
+            filter: brightness(2);
+        }
+
+        .burning2 {
+            animation: burning2 2s linear infinite;
+        }
+
+        .flashy3 {
+            border-color: #f9e7ba;
+            animation: flashy3 1s linear infinite;
+        }
+
+        .flashy3:hover {
+            filter: brightness(1.3);
+        }
+
+        .flashy3:active {
+            filter: brightness(1.75);
+        }
+
+        .burning3 {
+            animation: burning3 2s linear infinite;
         }
 
         @keyframes flashy {
@@ -1143,6 +1186,78 @@
 
             100% {
                 color: #ef4e3c;
+            }
+        }
+
+        @keyframes flashy2 {
+            0% {
+                background-color: #aaa;
+            }
+
+            50% {
+                background-color: #555;
+            }
+
+            90% {
+                background-color: #777;
+            }
+
+            100% {
+                background-color: #aaa;
+            }
+        }
+
+        @keyframes burning2 {
+            0% {
+                color: #aaa;
+            }
+
+            50% {
+                color: #555;
+            }
+
+            90% {
+                color: #777;
+            }
+
+            100% {
+                color: #aaa;
+            }
+        }
+
+        @keyframes flashy3 {
+            0% {
+                background-color: #efbf3c;
+            }
+
+            50% {
+                background-color: #f47b19;
+            }
+
+            90% {
+                background-color: #fe8c60;
+            }
+
+            100% {
+                background-color: #efbf3c;
+            }
+        }
+
+        @keyframes burning3 {
+            0% {
+                color: #efbf3c;
+            }
+
+            50% {
+                color: #f47b19;
+            }
+
+            90% {
+                color: #fe8c60;
+            }
+
+            100% {
+                color: #efbf3c;
             }
         }
 
@@ -2720,10 +2835,10 @@
         </header>
 
         <div id="properties">
-            f5|f4|f3|f2|fierypower|fierywood|coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silver|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            s5|s4|s3|s2|silverpower|silverwood|f5|f4|f3|f2|fierypower|coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
-            firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
+            s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
         </div>
         <div id="rocketParts">
             rocketbody
@@ -2803,13 +2918,27 @@
             f3: %Tier 3 Fiery Power$ (5, Multiplies Tier 2 Fiery Power production)
             f4: %Tier 4 Fiery Power$ (5, Multiplies Tier 3 Fiery Power production)
             f5: %Tier 5 Fiery Power$ (5, Multiplies Tier 4 Fiery Power production)
-            fierywood: Fiery Wood$ (10, A very special wood made by sacrificing all the fire trees you made)
+            silverpower: %Silver Power$ (5, A multiplier for your silverfruit production)
+            s2: %Tier 2 Silver Power$ (5, Multiplies Silver Power production)
+            s3: %Tier 3 Silver Power$ (5, Multiplies Tier 2 Silver Power production)
+            s4: %Tier 4 Silver Power$ (5, Multiplies Tier 3 Silver Power production)
+            s5: %Tier 5 Silver Power$ (5, Multiplies Tier 4 Silver Power production)
+            fwoodwizards: Fiery Wood Wizard (10, A wizard that creates fiery wood from blue wood and firetrees)
+            firewizards: Fire Wizard (10, A wizard that makes firefarms)
+            fierywood: Fiery Wood$ (10, A very special wood made by sacrificing all the firetrees you made)
             firefruit: Firefruit$ (5, A rare and valuable fruit with a warm and friendly glow)
             firetrees: Firetree (6, Produces firefruit for you automatically)
-            firefields: Firefield (7, A giant field dedicated specifically for fire trees)
+            firefields: Firefield (7, A giant field dedicated specifically for firetrees)
             firefarms: Firefarm (8, A giant farm that creates firefields and Tier 5 Fiery Power)
             firetowns: Firetown (9, A huge fire town absolutely full of farms)
-            fireplanters: Fireplanter (7, A special planter allowing you to purchase more firetrees simultaneously)
+            fireplanters: Fireplanter (7, A special planter allowing you to purchase more firetrees at once)
+            silverwood: Silver Wood$ (10, A very special wood made by sacrificing all the firetrees you made)
+            silverfruit: Silverfruit$ (5, A rare and valuable fruit with a warm and friendly glow)
+            silvertrees: Silvertree (6, Produces silverfruit for you automatically)
+            silverfields: Silverfield (7, A giant field dedicated specifically for silvertrees)
+            silverfarms: Silverfarm (8, A giant farm that creates silverfields and Tier 5 Silver Power)
+            silvertowns: Silvertown (9, A huge silver town absolutely full of farms)
+            silverplanters: Silverplanter (7, A special planter allowing you to purchase more silvertrees at once)
             phoenixes: Phoenix$es (4, Rare and elusive creatures that will drop their rare feathers occasionally)
             feathers: Feather (3, It tickles!)
             fcmakers: Flying Clock-Maker (3, Makes clocks after being sworn to absolute secrecy and a very lonely life)
@@ -2865,24 +2994,26 @@
 
         <nav id="navigation" aria-label="Navigation to switch tabs">
             <span data-tab="main" title="Main menu"><span class="hammer"></span></span>
-            <span data-tab="clock" title="Normal clock menu"><span class="clock"></span></span>
+            <span data-tab="basic" title="Normal clock menu"><span class="clock"></span></span>
             <span data-tab="goldc" title="Golden clock menu" data-show="money>0"><span class="gc"></span></span>
-            <span data-tab="radiumc" title="Radium clock menu" data-show="$radium"><span class="rc"></span></span>
+            <span data-tab="radic" title="Radium clock menu" data-show="$radium"><span class="rc"></span></span>
             <span data-tab="earth" title="Mining menu" data-show="money>=5000"><span class="rock"></span></span>
-            <span data-tab="robots" title="Robot menu" data-show="steelmills>0"><span class="chip"></span></span>
+            <span data-tab="robot" title="Robot menu" data-show="steelmills>0"><span class="chip"></span></span>
             <span data-tab="inums" title="Aluminum menu" data-show="$aluminum"><span class="aluminum"></span></span>
-            <span data-tab="apples" title="Exotic apple menu" data-show="$apples"><span class="gwood"></span></span>
+            <span data-tab="apple" title="Fiery planting menu" data-show="$apples"><span class="fwood"></span></span>
+            <span data-tab="silva" title="Silver planting menu" data-show="fierywood>0">
+                <span class="swood"></span>
+            </span>
             <!-- <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span> -->
-            <span data-tab="phoenix" title="Phoenix menu" data-show="bricks>0"><span class="feather"></span></span>
-            <span data-tab="construction" title="Building menu" data-show="miners>0"><span class="brick"></span></span>
+            <span data-tab="flyer" title="Phoenix menu" data-show="bricks>0"><span class="feather"></span></span>
+            <span data-tab="build" title="Building menu" data-show="miners>0"><span class="brick"></span></span>
             <span data-tab="tech" title="Technology menu" data-show="furnaces>0"><span class="flask"></span></span>
-            <span data-tab="electric" title="Electricity menu" data-show="steelmills>0"><span
-                    class="bolt"></span></span>
-            <span data-tab="rocket" title="Rocket menu" data-show="$rocketry"><span class="rocket"></span></span>
+            <span data-tab="zappy" title="Electricity menu" data-show="steelmills>0"><span class="bolt"></span></span>
+            <span data-tab="space" title="Rocket menu" data-show="$rocketry"><span class="rocket"></span></span>
             <span data-tab="ascend" title="Ascension menu" data-show="omegamanagers>0/shards>0">
                 <span class="ticket"></span>
             </span>
-            <span data-tab="crystals" title="Crystal menu"><span class="crystal3"></span></span>
+            <span data-tab="boost" title="Crystal menu"><span class="crystal3"></span></span>
         </nav>
 
         <div id="content">
@@ -2982,7 +3113,7 @@
                     </button>
                 </div>
 
-                <div id="clock" style="display: none">
+                <div id="basic" style="display: none">
                     <!-- stuff.clocks = Infinity -->
                     <span class="big clock"></span>
                     <tt>clocks++</tt>
@@ -3125,7 +3256,7 @@
                     </button>
                 </div>
 
-                <div id="radiumc" style="display: none">
+                <div id="radic" style="display: none">
                     <span class="big rc"></span>
                     Radioactive stuff is bright and dangerous.
 
@@ -3189,7 +3320,7 @@
                     </button>
                 </div>
 
-                <div id="robots" style="display: none">
+                <div id="robot" style="display: none">
                     <span class="big gears"></span>
                     You can get robot arms and factories to help with your never-ending quest for more
                     <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span
@@ -3385,14 +3516,14 @@
                     </button>
                 </div>
 
-                <div id="apples" style="display: none">
+                <div id="apple" style="display: none">
                     <span class="big fwood"></span><span class="big swood"></span><span class="big gwood"></span>
                     Apples!
 
                     <br><br>
                     <div class="grid">
                         <div id="firefruit" class="burning"
-                            data-desc="Firefruit can be used to plant special fire trees." data-for="firefruit$">
+                            data-desc="Firefruit can be used to plant special firetrees." data-for="firefruit$">
                         </div>
                         <div id="firetrees" class="burning"
                             data-desc="Fire trees allow you to make firefruit automatically. Plus, they are warm and act as a light for your workers to find a way home."
@@ -3404,23 +3535,23 @@
                         </div>
                         <div id="fierypower" class="gray"
                             data-desc="Fiery power is multiplied along with your firefruit production and can provide a MASSIVE firefruit boost."
-                            data-for="fiery power$">
+                            data-for="FIERY POWER!$">
                         </div>
                         <div id="f2" class="red"
-                            data-desc="This is your Level 2 fiery power, which produces normal fiery power."
-                            data-for="FP #2$">
+                            data-desc="This is your Level 2 [fiery power], which produces normal [fiery power]."
+                            data-for="#FP #2">
                         </div>
                         <div id="f3" class="orange"
-                            data-desc="This is your Level 3 fiery power, which produces level 2 fiery power."
-                            data-for="FP #3$">
+                            data-desc="This is your Level 3 [fiery power], which produces level 2 [fiery power]."
+                            data-for="#FP #3">
                         </div>
                         <div id="f4" class="yellow"
-                            data-desc="This is your Level 4 fiery power, which produces level 3 fiery power."
-                            data-for="FP #4$">
+                            data-desc="This is your Level 4 [fiery power], which produces level 3 [fiery power]."
+                            data-for="#FP #4">
                         </div>
                         <div id="f5" class="green"
-                            data-desc="This is your Level 5 fiery power, which produces level 4 fiery power."
-                            data-for="FP #5$">
+                            data-desc="This is your Level 5 [fiery power], which produces level 4 [fiery power]."
+                            data-for="#FP #5">
                         </div>
                         <div id="fierywood" class="brown"
                             data-desc="Fiery wood is obtained when sacrificing fire progress and gives a furnace production boost!"
@@ -3437,13 +3568,22 @@
                         data-desc="Plant a successful firetree for 100 firefruit.\nThese make firefruit slowly, plus, they provide free lighting at night!$firetrees$">
                         +1 firetree
                         <span class="mini flashy" data-earn="firetrees+1" data-cost="firefruit-100" data-firebuy
-                            data-desc="Every additional fireplanter allows you to get one more fire tree at once!">
+                            data-desc="Every additional fireplanter allows you to get one more firetree at once!">
                         </span>
                     </button>
+                    <button class="diamond" data-show="firefruit>0" data-earn="firetrees+5000" data-cost="firefruit-1e9"
+                        data-desc="Sacrifice a billion firefruit for 5,000 firetrees!$firetrees$">
+                        Sacrifice firefruit
+                    </button>
 
-                    <button class="caribbean" data-show="fireplanters>0" data-earn="fireplanters+1"
+                    <button class="caribbean" data-show="firetrees>0" data-hide="$cheapfire" data-earn="fireplanters+1"
                         data-cost="money-2.5e18|firefruit-250"
                         data-desc="Get a fireplanter on your side to increase the amount of firetrees you can plant at once.\nYou'll have to impress them with a hefty $2.500Q and 250 firefruit though!$fireplanters$">
+                        +1 fireplanter
+                    </button>
+                    <button class="caribbean" data-show="firetrees>0|$cheapfire" data-earn="fireplanters+1"
+                        data-cost="money-2.5e18|firefruit-250"
+                        data-desc="Get a fireplanter on your side to increase the amount of firetrees you can plant at once.\nYou'll have to impress them with a hefty $250.00q and 250 firefruit though! (Cheaper because of an ascension upgrade)$fireplanters$">
                         +1 fireplanter
                     </button>
 
@@ -3453,19 +3593,123 @@
                         data-desc="Convert 10,000 of your firetrees and 2,000,000 firefruit into a giant firefield, which allows firetrees to reproduce and spread their seeds.\nIt also produces [fiery power] that multiplies firefruit production.$firefields$">
                         +1 firefield
                     </button>
-                    <button class="goldbg" data-show="firefields>0" data-earn="firefarms+1" data-cost="firefields-10"
-                        data-desc="Get 10 firefields to create a firefarm!\nFirefarms produce firefields and the highest tier of fiery power extremely quickly.$firefarms$">
+                    <button class="goldbg" data-show="firefields>0" data-earn="firefarms+1" data-cost="firefields-25"
+                        data-desc="Get 25 firefields to create a huge and sprawling firefarm!\nFirefarms produce firefields and the highest tier of [fiery power] extremely quickly.$firefarms$">
                         +1 firefarm
                     </button>
 
                     <br><br>
                     <button class="orangebg" data-show="firefarms>0" data-earn="firetowns+1" data-cost="firefarms-500"
-                        data-desc="[Firetowns do NOT create firefarms but give other huge boosts instead!]\nFiretowns increase all fiery power production significantly but cost an astounding 500 firefarms.$firetowns$">
+                        data-desc="[Firetowns do NOT create firefarms but give a HUGE firepower boost instead!]\nFiretowns increase all [fiery power] production significantly but cost an astounding 500 firefarms.$firetowns$">
                         +1 firetown
                     </button>
 
                     <button class="cherrybg" data-show="firefruit>=1e50" id="fireReset"
-                        data-desc="Reset for fiery wood! Each piece of fiery wood grants a +25% boost to all furnace smelting (it doesn't even increase the cost!).\nYou can also get various upgrades, and unlock something else new...\n{This button will reset all of your fiery progress in exchange for fiery wood.}">
+                        data-desc="Reset for fiery wood! Each piece of fiery wood grants a +25% boost to all furnace smelting (it doesn't even increase the cost!).\nYou can also upgrades and unlock something else new...\n{This button will reset all of your fiery progress in exchange for fiery wood.}">
+                    </button>
+
+                    <br>
+                    <span class="mini special" data-show="fierywood>0" data-cost="fierywood-10" data-earn="$morefwood"
+                        data-hide="$morefwood" data-sound="money">
+                        -10 <span class="fwood"></span> for 3× fiery wood gain
+                    </span>
+
+                    <br><br>
+                    <button class="orangebg" data-show="fierywood>0" data-earn="firewizards+1" data-cost="fierywood-50"
+                        data-desc="Fire wizards might cost 50 fiery wood, but they are quite powerful and each produce a firefarm a second.$firewizards$">
+                        +1 fire wizard
+                    </button>
+                    <button class="orangebg" data-show="firewizards>0" data-earn="fwoodwizards+1"
+                        data-cost="money-5e20|fierywood-250"
+                        data-desc="Get a fiery wood wizard, which will happily convert 500 blue wood and a billion firetrees into 1 fiery wood each!\nFor the low low price of just $500.00Q and 250 fiery wood!$fwoodwizards$">
+                        +1 fiery wood wizard
+                    </button>
+                </div>
+
+                <div id="silva" style="display: none">
+                    <span class="big fwood"></span><span class="big swood"></span><span class="big gwood"></span>
+                    Apples!
+
+                    <br><br>
+                    <div class="grid">
+                        <div id="silverfruit" class="burning2"
+                            data-desc="Silverfruit can be used to plant special silvertrees." data-for="silverfruit$">
+                        </div>
+                        <div id="silvertrees" class="burning2"
+                            data-desc="Silver trees allow you to make silverfruit automatically. Plus, they are warm and act as a light for your workers to find a way home."
+                            data-for="silvertree">
+                        </div>
+                        <div id="silverfields" class="burning2"
+                            data-desc="A giant silverfield dedicated to your special silvertrees.\nThese huge fields produce silvertrees and [silver power] that provides a multiplier to your silverfruit production!"
+                            data-for="silverfield">
+                        </div>
+                        <div id="silverpower" class="gray"
+                            data-desc="Silver power is multiplied along with your silverfruit production and can provide a MASSIVE silverfruit boost."
+                            data-for="silver power$">
+                        </div>
+                        <div id="s2" class="red"
+                            data-desc="This is your Level 2 silver power, which produces normal silver power."
+                            data-for="#SP #2">
+                        </div>
+                        <div id="s3" class="orange"
+                            data-desc="This is your Level 3 silver power, which produces level 2 silver power."
+                            data-for="#SP #3">
+                        </div>
+                        <div id="s4" class="yellow"
+                            data-desc="This is your Level 4 silver power, which produces level 3 silver power."
+                            data-for="#SP #4">
+                        </div>
+                        <div id="s5" class="green"
+                            data-desc="This is your Level 5 silver power, which produces level 4 silver power."
+                            data-for="#SP #5">
+                        </div>
+                        <div id="silverwood" class="brown"
+                            data-desc="Silver wood is obtained when sacrificing ALL your silvery and shiny progress!"
+                            data-for="$big fwood">
+                        </div>
+                    </div>
+
+                    <br>
+                    <button class="flashy2" data-earn="silverfruit+1" data-cost="fierywood-1e6|silver-1e11"
+                        data-desc="Step right up! Get your very own silverfruit for 1,000,000 fiery wood and 100 BILLION silver!$silverfruit$">
+                        +1 silverfruit
+                    </button>
+                    <button class="flashy2" data-show="silverfruit>0" data-earn="silvertrees+1"
+                        data-cost="silverfruit-100"
+                        data-desc="Plant a successful silvertree for 100 silverfruit.\nThese make silverfruit slowly, plus, they provide free lighting at night!$silvertrees$">
+                        +1 silvertree
+                        <span class="mini flashy" data-earn="silvertrees+1" data-cost="silverfruit-100" data-silverbuy
+                            data-desc="Every additional silverplanter allows you to get one more silvertree at once!">
+                        </span>
+                    </button>
+
+                    <button class="caribbean" data-show="silverplanters>0" data-earn="silverplanters+1"
+                        data-cost="money-2.5e18|silverfruit-250"
+                        data-desc="Get a silverplanter on your side to increase the amount of silvertrees you can plant at once.\nYou'll have to impress them with a hefty $2.500Q and 250 silverfruit though!$silverplanters$">
+                        +1 silverplanter
+                    </button>
+
+                    <br>
+                    <button class="goldbg" data-show="silvertrees>0" data-earn="silverfields+1"
+                        data-cost="silvertrees-10000|silverfruit-2e6"
+                        data-desc="Convert 10,000 of your silvertrees and 2,000,000 silverfruit into a giant silverfield, which allows silvertrees to reproduce and spread their seeds.\nIt also produces [silver power] that multiplies silverfruit production.$silverfields$">
+                        +1 silverfield
+                    </button>
+                    <button class="goldbg" data-show="silverfields>0" data-earn="silverfarms+1"
+                        data-cost="silverfields-10"
+                        data-desc="Get 10 silverfields to create a silverfarm!\nSilverfarms produce silverfields and the highest tier of silver power extremely quickly.$silverfarms$">
+                        +1 silverfarm
+                    </button>
+
+                    <br><br>
+                    <button class="orangebg" data-show="silverfarms>0" data-earn="silvertowns+1"
+                        data-cost="silverfarms-500"
+                        data-desc="[Silvertowns do NOT create silverfarms but give other huge boosts instead!]\nSilvertowns increase all silver power production significantly but cost an astounding 500 silverfarms.$silvertowns$">
+                        +1 silvertown
+                    </button>
+
+                    <button class="cherrybg" data-show="silverfruit>=1e50" id="silverReset"
+                        data-desc="Reset for silver wood here!">
                     </button>
                 </div>
 
@@ -3537,7 +3781,7 @@
                     </div>
                 </div>
 
-                <div id="phoenix" style="display: none">
+                <div id="flyer" style="display: none">
                     <span class="big feather"></span>
                     Feathers are collected from phoenixes, elusive creatures indeed.
                     <div class="small">Be sure to collect these little creatures early for your ascensions!</div>
@@ -3603,7 +3847,7 @@
                     </button>
                 </div>
 
-                <div id="construction" style="display: none">
+                <div id="build" style="display: none">
                     <span class="big shovel"></span>
                     You can make bricks with a digger, molder, and kiln (kilns are powered with wood).
 
@@ -4024,7 +4268,7 @@
                     </div>
                 </div>
 
-                <div id="electric" style="display: none">
+                <div id="zappy" style="display: none">
                     <span class="big bolt"></span>
                     Zap!
 
@@ -4136,7 +4380,7 @@
                     </button>
                 </div>
 
-                <div id="rocket" style="display: none">
+                <div id="space" style="display: none">
                     <span class="big rocket"></span>
                     Rockets allow you to go to other planets, such as Mars.
                     <div class="small">
@@ -4167,34 +4411,34 @@
                         data-desc="Manage how many construction managers are helping to construct the rocket body (at no cost).\nUse the buttons inside this to change the number of managers working on this project.\nThere are 100 steps to finish the rocket, and each step takes 10 hours divided by the amount of construction managers working on it.\nComplete all the parts of a rocket to use it!$rocketbody$">
                         Manage Rocket Body...
                         <br>
-                        <span class="mini flashy" data-earn="$rocketbody-10"
+                        <span class="mini flashy" data-earn="Rocketbody-10"
                             data-desc="Decreases the amount of construction managers working on the rocket body by 10.$rocketbody$">
                             -10
                         </span>
-                        <span class="mini flashy" data-earn="$rocketbody-1"
+                        <span class="mini flashy" data-earn="Rocketbody-1"
                             data-desc="Decreases the amount of construction managers working on the rocket body by 1.$rocketbody$">
                             -1
                         </span>
-                        <span class="mini flashy" data-earn="$rocketbody+1"
+                        <span class="mini flashy" data-earn="Rocketbody+1"
                             data-desc="Increases the amount of construction managers working on the rocket body by 1.$rocketbody$">
                             +1
                         </span>
-                        <span class="mini flashy" data-earn="$rocketbody+10"
+                        <span class="mini flashy" data-earn="Rocketbody+10"
                             data-desc="Increases the amount of construction managers working on the rocket body by 10.$rocketbody$">
                             +10
                         </span>
-                        <span class="mini flashy" data-earn="$rocketbody-100"
+                        <span class="mini flashy" data-earn="Rocketbody-100"
                             data-desc="Decreases the amount of construction managers working on the rocket body by 100.$rocketbody$">
                             -100
                         </span>
-                        <span class="mini flashy" data-earn="$rocketbody+100"
+                        <span class="mini flashy" data-earn="Rocketbody+100"
                             data-desc="Increases the amount of construction managers working on the rocket body by 100.$rocketbody$">
                             +100
                         </span>
                     </button>
                 </div>
 
-                <div id="crystals" style="display: none">
+                <div id="boost" style="display: none">
                     <span class="big crystal1"></span><span class="big crystal2"></span><span
                         class="big crystal3"></span>
                     Crystals are rare and valuable, and can be used to speed up time.
@@ -4286,13 +4530,19 @@
                         data-sound="money">
                         -1 <span class="shard"></span> for new researches costing science!
                     </span>
+                    <br>
+                    <span class="mini special" data-cost="shards-10" data-earn="$cheapfire" data-hide="$gfurnaces"
+                        data-sound="money">
+                        -2 <span class="shard"></span> for 10× cheaper fireplanters
+                    </span>
+                    <br>
                     <span class="mini special" data-cost="shards-10" data-earn="$gfurnaces" data-hide="$gfurnaces"
                         data-sound="money">
                         -10 <span class="shard"></span> for GOLDEN FURNACES!
                     </span>
                 </div>
 
-                <div id="settings" style="display: none">
+                <div id="setup" style="display: none">
                     <button id="wipe" class="warn2"
                         data-desc="(RESETTING EVERYTHING LIKELY A BAD IDEA: YOU CAN EXPORT IF YOU WANT)">
                         WIPE EVERYTHING
@@ -4386,7 +4636,8 @@
 
                     <br><br><br>
                     <div class="small pink">
-                        0.0.4.2 (December 18, 2023)! Added firewood and CUSTOMIZED THEMES!
+                        0.0.4.2 (December 18, 2023)! Added exotic wood <span class="fwood"></span> and...
+                        CUSTOMIZED THEMES!
                         <i>(literally just two color pickers to choose the main and background colors)</i>
                         <span class="wonder"></span><span class="wonder"></span><span class="wonder"></span><span
                             class="wonder"></span><span class="wonder"></span>
@@ -4929,7 +5180,7 @@
                                     var beforeLength = beforeValue.length
                                     if (beforeDot !== -1) {
                                         beforeValue = beforeValue.slice(0, beforeDot) + beforeValue.slice(beforeDot + 1)
-                                        beforeTemp += 2 * (digitDot - beforeLength) + 1
+                                        beforeTemp += digitDot - beforeLength + 1
                                     }
                                     var beforeDigits = BigInt(beforeTemp)
 
@@ -4942,14 +5193,18 @@
                                     }
 
                                     digits = BigInt(beforeValue)
-                                    beforeDigits += BigInt(digitEIndex - 1)
-                                    digits = beforeDigits >= 0n ? digits * (10n ** beforeDigits) : (digits / (10n ** -beforeDigits))
-                                    if (digits >= 100000000000000000000000000000000000000000000000000n) {
+                                    if (beforeDigits >= 50n) {
                                         eTotal = Math.max(2, eTotal + 1)
-                                        digits = digits.toString().length - 1
+                                        digits = digits.toString().length - 1 + Number(beforeDigits)
                                         isBig = false
                                     } else {
-                                        beforeE = "1"
+                                        if (digits >= 100000000000000000000000000000000000000000000000000n) {
+                                            eTotal = Math.max(2, eTotal + 1)
+                                            digits = digits.toString().length - 1
+                                            isBig = false
+                                        } else {
+                                            beforeE = "1"
+                                        }
                                     }
                                 }
 
@@ -5770,7 +6025,14 @@
             HyperNumber.prototype.digits = function (noClone) {
                 var value = noClone ? this : new HyperNumber(this)
                 if (value.$[0] < 2) {
-                    value.$ = new HyperNumber(value.$[1]).add(1).$
+                    var digits = value.$[1]
+                    if (typeof digits == "bigint") {
+                        value.$ = new HyperNumber(value.$[1] + 1n).$
+                    } else if (value.$[1] <= 0) {
+                        value = new HyperNumber()
+                    } else {
+                        value.$ = new HyperNumber(value.$[1] + 1).$
+                    }
                 } else {
                     value.$[0] = value.$[0]
                 }
@@ -6675,7 +6937,7 @@
         })
 
         attachEvent("viewSettings", function () {
-            showTab("settings")
+            showTab("setup")
         })
 
         attachEvent("viewDevlog", function () {
@@ -6880,8 +7142,17 @@
 
         ID("fireReset").addEventListener("click", function () {
             if (confirm("Are you sure? You will LOSE all of your fiery progress!")) {
-                add("firewood", C("firefruit").digits(true).sub(30).div(3).floor(true))
+                add("fierywood", C("firefruit").digits().sub(30).div(hasResearch("morefwood") ? 1 : 3).floor(true))
                 clear(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
+                setup(true)
+            }
+        })
+
+        ID("silverReset").addEventListener("click", function () {
+            if (confirm("Are you sure? You will LOSE all of your precious silvery progress!")) {
+                add("silverwood", C("silverfruit").digits().sub(10).mul(0.5).floor(true))
+                clear(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
+                setup(true)
             }
         })
 
@@ -6899,6 +7170,10 @@
             var crystalType = (crystalTotal % 3) + 1
             rawAdd("crystal" + crystalType, H(5 - crystalType))
             crystalTime = Date.now() + crystalSpeed * (Math.floor(++crystalTotal / 3) + 1)
+
+            var sound = sounds.click
+            sound.currentTime = 0
+            sound.play()
         })
 
         // Checks for a research: can be modified
@@ -6927,7 +7202,7 @@
         var errorTabs = []
         setupTabs()
 
-        function showTab(name) {
+        function showTab(name, noError) {
             var noTab = true
             if (currentTab !== name) {
                 currentTab = name
@@ -6935,7 +7210,7 @@
                     var tab = tabs[i]
                     var elem = ID(tab)
                     if (elem === null) {
-                        if (!errorTabs.includes(tab)) {
+                        if (!errorTabs.includes(tab) && !noError) {
                             console.error("The tab with element ID '" + tab.replace(/'/g, "\\'") + "' doesn't exist.")
                             errorTabs.push(tab)
                         }
@@ -6948,7 +7223,8 @@
                         }
                     }
                 }
-                if (noTab) {
+
+                if (noTab && !noError) {
                     console.error("The tab to select ('" + name.replace(/'/g, "\\'") + "') does not exist.")
                 }
             }
@@ -6956,7 +7232,7 @@
 
         // Setup the tab IDs to use from the "data-tab" attribute and set the visibility
         function setupTabs() {
-            tabs = ["settings", "devlog", "wiki", "cheats"]
+            tabs = ["setup", "devlog", "wiki", "cheats"]
             var tabChildren = ID("navigation").children
             for (var i = 0; i < tabChildren.length; i++) {
                 var element = tabChildren[i]
@@ -7015,11 +7291,26 @@
 
                 var clickData = button.getAttribute("data-earn")
                 if (clickData != null) {
+                    let hasMultiSilver = button.hasAttribute("data-silverbuy")
                     let hasMultiFire = button.hasAttribute("data-firebuy")
                     let hasOmegaMulti = button.hasAttribute("data-omegabuy")
                     let hasMegaMulti = button.hasAttribute("data-megabuy")
                     let hasMulti = button.hasAttribute("data-multibuy")
                     let hasMultiBuild = button.hasAttribute("data-multibuild")
+                    let multiplierAttribute = null
+                    if (hasMultiSilver) {
+                        multiplierAttribute = "silverplanters"
+                    } else if (hasMultiFire) {
+                        multiplierAttribute = "fireplanters"
+                    } else if (hasOmegaMulti) {
+                        multiplierAttribute = "omegamanagers"
+                    } else if (hasMegaMulti) {
+                        multiplierAttribute = "megamanagers"
+                    } else if (hasMulti) {
+                        multiplierAttribute = "managers"
+                    } else if (hasMultiBuild) {
+                        multiplierAttribute = "cmanagers"
+                    }
 
                     var soundName = button.getAttribute("data-sound")
                     let sound = soundName === null ? sounds.click : sounds[soundName]
@@ -7058,7 +7349,7 @@
                         }
 
                         alreadyClicked = true
-                        var multiplier = hasMultiFire ? C("fireplanters", "This happened while trying to check for fireplanter multipliers.").add(1) : (hasMultiBuild ? C("cmanagers", "This happened while trying to check for build manager multipliers.").add(1) : (hasOmegaMulti ? C("omegamanagers", "This happened while trying to check for MEGA-manager multipliers.").add(1) : (hasMegaMulti ? C("megamanagers", "This happened while trying to check for MEGA-manager multipliers.").add(1) : (hasMulti ? C("managers", "This happened while trying to check for manager multipliers.").add(1) : H(true)))))
+                        var multiplier = multiplierAttribute === null ? H(true) : C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
 
                         if (e !== true) {
                             var types = Array(len)
@@ -7272,7 +7563,8 @@
         var rocketLen = rocketParts.length
         var rocketIdentifiers = Array(rocketLen)
         for (let i = 0; i < rocketLen; i++) {
-            rocketIdentifiers[i] = "$" + rocketParts[i]
+            var part = rocketParts[i]
+            rocketIdentifiers[i] = part[0].toUpperCase() + part.slice(1)
         }
 
         var shownProperties = ID("shown").textContent.trim().split("|")
@@ -7358,7 +7650,7 @@
             var newMissed = []
             for (i = 0; i < propertiesMissed.length; i++) {
                 var item = propertiesMissed[i]
-                if (!hiddenWikiItems.includes(item)) {
+                if (item.length !== 0 && !hiddenWikiItems.includes(item)) {
                     newMissed.push(item)
                 }
             }
@@ -7653,16 +7945,17 @@
                     la = $.indexOf("_");
                     if (la === -1) {
                         la.x += 4;
+                        la = la.x.digits(true);
                     }
                     var version = $.slice(0, la);
-                    $ = $.split("").splice(la + 1).join("");
+                    $ = $.split("").join("").slice(la + 1);
                     la = $.indexOf("_");
                     if (loaded) {
                         reset(true);
                     }
                     if (version === "0.0.4.1" || version === "0.0.4.2" || version === "0.0.5" || version === "0.0.5.1") {
                         w = $.indexOf("Wb");
-                        showTab($.slice(0, w));
+                        showTab($.slice(0, w), true);
                         if (version !== "0.0.4.1") {
                             if (version[4] >= 5) {
                                 $ = $.slice(w + 2), w = $.indexOf("Xz");
@@ -7803,13 +8096,14 @@
                         }
                         $ = $.slice(la + 1);
                     }
+                    $ = $, $ = $.replace("$rocketbody", "Rocketbody");
                     la = $.indexOf("$");
                     var _ = $.slice(0, la).split("&");
                     updateInput("wattCount", formatValue(+_[0]));
                     if (_[0] === "1") {
                         ID("wattText").textContent = "watt";
                     }
-                    wattUsage = _[0];
+                    wattUsage = +_[0];
                     _ = _.slice(1);
                     offlineFrames = Number(_[1]);
                     updateOfflineTime();
@@ -7817,8 +8111,8 @@
                     _ = _[0];
                     var $$ = __ === 0 ? [] : _.split("=");
                     _ = ID("research").children;
-                    var __ = _.length;
-                    for (k = 0; k < __; k++) {
+                    var __ = "_length";
+                    for (__ = _.length, k = 0; k < __; k++) {
                         B = _[k];
                         if ($$.includes(B.getAttribute("data-research"))) {
                             B.className = "researched";
@@ -7832,7 +8126,8 @@
                     if (version === "0.0.5.1" || version === "0.0.5" || version === "0.0.4.2" || version === "0.0.4.1" || version === "0.0.4" || version === "0.0.3" || version === "0.0.2") {
                         var ca = parseCompact($.slice(la + 1));
                         stuff = Object.assign(stuff2, ca);
-                        cManagersUsed = stuff["$rocketbody"];
+                        cManagersUsed = stuff.Rocketbody;
+                        cManagersUsed = cManagersUsed ? cManagersUsed : H(0);
                         B = Object.keys(stuff);
                         for (k = 0; k < ca.length; k++) {
                             var da = B[k];
@@ -7871,13 +8166,14 @@
                     return !0
                 } catch (e) {
                     alert("Loading the save failed (maybe it was invalid).")
+                    oldError.bind(console)(e)
                 }
                 return !1
             }
 
             save = function () {
                 try {
-                    for (var b = version + "_" + currentTab + "Wb" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -8184,8 +8480,8 @@
                 for (var t = 0; t < items.length; t++) {
                     var str = items[t]
                     if (str.charCodeAt(0) !== 36) {
-                        var item = str.slice(0, str.search(/[^0-9A-Za-z]/))
-                        if (!properties.includes(item)) {
+                        var item = str.slice(0, str.search(/[^0-9a-z]/))
+                        if (!properties.includes(item) && item.length !== 0) {
                             properties.push(item)
                         } else if (baseProperties.includes(item) && !warnedProperties.includes(item)) {
                             console.warn("Property '" + item.replace(/'/g, "\\'") + "' doesn't need to be specified in the 'properties' HTML element.")
@@ -8386,7 +8682,7 @@
                     value = new H(value)
                 }
 
-                if (!value.isZero()) {
+                if (value.isPositive()) {
                     value = value.mul(speed)
                     stuff[name] = stuff[name].add(value)
                     stuffTotals[name] = stuffTotals[name].add(value)
@@ -8412,7 +8708,7 @@
                     value = new H(value)
                 }
 
-                if (!value.isZero()) {
+                if (value.isPositive()) {
                     value = value
                     stuff[name] = stuff[name].add(value)
                     if (!noStuffTotals) {
@@ -8440,7 +8736,7 @@
                     value = new H(value)
                 }
 
-                if (!value.isZero()) {
+                if (value.isPositive()) {
                     var subtracted = stuff[name].sub(value.mul(speed))
                     if (subtracted === false) {
                         return false
@@ -8468,7 +8764,7 @@
                     value = new H(value)
                 }
 
-                if (!value.isZero()) {
+                if (value.isPositive()) {
                     var subtracted = stuff[name].sub(value)
                     if (subtracted === false) {
                         return false
@@ -8496,7 +8792,7 @@
                     value = new H(value)
                 }
 
-                if (!value.isZero()) {
+                if (value.isPositive()) {
                     var amount = stuff[name]
                     stuffTotals[name] = stuffTotals[name].add(amount.mul(value.sub(1)))
                     stuff[name] = amount.mul(value)
@@ -8725,7 +9021,7 @@
             "Make sure to check your researches every once in a while: you never know if you've unlocked a new upgrade. Now's a good time to increase the amount of scientists and managers that you have!",
             "At this point, you will have unlocked lots of features! You may want to start getting turbines in the electricity menu to increase the amount of watts you get. You can even start unlocking phoenixes in the feathery phoenix menu, which is...interesting.",
             "Well done! I'm out of tips for now, so you'll have to go explore on your own from now on. Just try to hire lots of scientists to generate creativity and science, which will allow you to unlock new technologies! Hey, I wonder what LITERAL EXOTIC APPLES ARE...",
-            "this isn't a tip, but more like a thank you for playing so far and unlocking literal FIERY APPLES. just don't cheat! :>"
+            "this isn't a tip, but more like a thank you for playing so far and unlocking literal FIERY APPLES. (just don't cheat!) :>"
         ]
 
         function updateTip() {
@@ -8831,17 +9127,26 @@
                 return
             }
 
-            addUpTo("rocketbody", H("4.62962962962962962962962962962962962962963e-9").mul(C("$rocketbody", issue)), 100)
+            addUpTo("rocketbody", H("4.62962962962962962962962962962962962962963e-9").mul(C("Rocketbody", issue)), 100)
 
             var issue = "This occured while trying to update properties."
 
             var trees = C("trees", issue)
 
-            var firefarms = C("firefarms", issue)
-            var firetownPower = C("firetowns", issue).mul(777).add(1)
+            var fWoodWizardPower = C("fwoodwizards", issue).div(6)
+            var firewizardPower = C("firewizards", issue).div(60)
+            var firetowns = C("firetowns", issue)
+            var firetownPower = firetowns.isLess(1) ? H(true) : firetowns.sqr().add(firetowns.mul(25)).sub(25).mul(777).add(1)
             if (C("fierypower").isLess(1)) {
                 stuff.fierypower = H(true)
                 stuffTotals.fierypower = H(true)
+            }
+
+            var silverfarms = C("silverfarms", issue)
+            var silvertownPower = C("silvertowns", issue).mul(777).add(1)
+            if (C("silverpower").isLess(1)) {
+                stuff.silverpower = H(true)
+                stuffTotals.silverpower = H(true)
             }
 
             var fcMakers = C("fcmakers", issue)
@@ -8850,7 +9155,6 @@
             var goldFurnacePower = C("gfurnaces", issue).mul(hasResearch("goldensci") ? 25000 : 2500)
 
             var furnaceCost = C("furnaces", issue).mul(0.07)
-            var furnacePower = furnaceCost.mul(H(1).add(C("fierywood").mul(0.25)))
             var millCost = H(hasResearch("steelwork") ? 4 : 1)
             var millPower = H(hasResearch("steelwork") ? 2.5 : 1).mul(hasResearch("steel") ? 1.25 : 1)
 
@@ -9006,19 +9310,20 @@
 
             multiExchange(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore"], [miningPower.mul(0.0145), miningPower.mul(0.065), miningPower.mul(0.04), miningPower.mul(0.01825), miningPower.mul(0.003), miningPower.mul(0.0025), miningPower.mul(0.0175), miningPower.mul(0.0075), miningPower.mul(0.00325), miningPower.mul(0.0025), miningPower.mul(0.0002), miningPower.mul(0.0000027725)], "money", miners.mul(0.1))
 
+            var furnacePower = furnaceCost.mul(H(1).add(C("fierywood").mul(0.25)))
             exchange("radium", radiumMills.mul(0.001), "radiumore")
-            exchange("copper", furnacePower, "copperore", furnaceCost)
-            exchange("silver", furnacePower, "silverore", furnaceCost)
-            exchange("gold", furnacePower, "goldore", furnaceCost)
-            exchange("gold", goldFurnacePower, "goldore", furnaceCost)
-            exchange("platinum", furnacePower, "platinumore", furnaceCost)
+            exchange("copper", furnacePower, "copperore", furnaceCost, 1)
+            exchange("silver", furnacePower, "silverore", furnaceCost, 1)
+            exchange("gold", furnacePower, "goldore", furnaceCost, 1)
+            exchange("gold", goldFurnacePower, "goldore", furnaceCost, 1)
+            exchange("platinum", furnacePower, "platinumore", furnaceCost, 1)
 
             exchange("cbauxite", aluminum1Power, "bauxite")
             exchange("aluminumc", aluminum2Power, "cbauxite")
             exchange("aluminumo", aluminum3Power, "aluminumc")
             exchange("aluminum", aluminum4Power, "aluminumo")
 
-            multiExchange(["rc", "rwatches"], [radiumMakers.mul(0.0004), radiumMakers.mul(0.0004)], "radiumore", radiumMakers.mul(0.04))
+            multiExchange(["rc", "rwatches"], [radiumMakers.mul(0.0004), radiumMakers.mul(0.0004)], "radium", radiumMakers.mul(0.04))
 
             add("feathers", C("phoenixes", issue).mul(hasResearch("pillows") ? 1.1 : 1).mul(hasResearch("gear") ? 1.125 : 1).mul(hasResearch("drink") ? 1.2 : 1).mul(hasResearch("food") ? 0.0005 : 0.00025))
             add("nests", labs.mul(0.0000333222111))
@@ -9030,8 +9335,11 @@
             exchange("bwood", bluePower.mul(0.00155), "fc", bluecutters.mul(0.006), true)
             add("rubber", trees.mul(0.0004))
 
-            add("firefields", firefarms.mul(0.1))
+            multiExchange("fierywood", fWoodWizardPower, ["bwood", "firetrees"], [fWoodWizardPower.mul(500), fWoodWizardPower.mul(1e9)])
+            add("firefarms", firewizardPower)
 
+            var firefarms = C("firefarms", issue)
+            add("firefields", firefarms.mul(0.1))
             add("f5", firefarms.mul(1).mul(firetownPower))
             add("f4", C("f5").mul(firetownPower))
             add("f3", C("f4").mul(firetownPower))
@@ -9042,6 +9350,19 @@
             add("fierypower", firefields.mul(0.005))
             add("firetrees", firefields.mul(0.00123456789))
             add("firefruit", C("firetrees").mul(C("fierypower")).mul(0.000325))
+
+            add("silverfields", silverfarms.mul(0.1))
+
+            add("f5", silverfarms.mul(1).mul(silvertownPower))
+            add("f4", C("f5").mul(silvertownPower))
+            add("f3", C("f4").mul(silvertownPower))
+            add("f2", C("f3").mul(silvertownPower))
+            add("fierypower", C("f2").mul(silvertownPower))
+
+            var silverfields = C("silverfields")
+            add("silverpower", silverfields.mul(0.005))
+            add("silvertrees", silverfields.mul(0.00123456789))
+            add("silverfruit", C("silvertrees").mul(C("silverpower")).mul(0.000325))
 
             add("creativity", managerPower)
 
@@ -9108,8 +9429,10 @@
 
             updateId("constructorPlural", C("cmanagers", issue).isPlural() ? "s" : "")
 
-            var firefruitDigits = C("firefruit").digits(true)
-            updateId("fireReset", firefruitDigits.isMoreOrEqual(50) ? "Gain " + format(firefruitDigits.sub(30).div(3)) + " fiery wood" : "")
+            var firefruitDigits = C("firefruit").digits()
+            var silverfruitDigits = C("silverfruit").digits()
+            updateId("fireReset", firefruitDigits.isMoreOrEqual(50) ? "Gain " + format(firefruitDigits.sub(30).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood" : "")
+            updateId("silverReset", silverfruitDigits.isMoreOrEqual(50) ? "Gain " + format(silverfruitDigits.sub(10).mul(0.5)) + " silver wood" : "")
 
             // Update the CPS element and change the color by modifying the class
             var cps = cpt.mul(60)
@@ -9387,11 +9710,11 @@
                         if (name === null) {
                             console.warn("An element with ID '" + key.replace(/'/g, "\\'") + "' should have the 'data-for' attribute.")
                         } else if (shownProperties.includes(key) || stuffTotals[key].isPositive()) {
+                            var firstChar = name.charCodeAt(0)
+                            var isSpecial = firstChar >= 35 && firstChar <= 37
                             if (firstChar !== 36) {
                                 name = name.replace(/clock/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "tree" : "clock"))
                             }
-                            var firstChar = name.charCodeAt(0)
-                            var isSpecial = firstChar === 36 || firstChar === 37
 
                             var formatted
                             if (key === "iq") {
@@ -9417,6 +9740,8 @@
                                 updateHTML(elem, formatted + '× <span class="' + name.slice(1) + '"></span>')
                             } else if (firstChar === 37) {
                                 update(elem, formatted + " " + name.slice(1))
+                            } else if (firstChar === 35) {
+                                update(elem, formatted + "× " + name.slice(1))
                             } else {
                                 var dollarIndex = name.indexOf("$")
                                 var slashIndex = name.indexOf("/")
@@ -9578,16 +9903,24 @@
                             button.textContent = text
                         }
                     }
-                    if (button.hasAttribute("data-firebuy")) {
-                        update(button, format(C("fireplanters", "This happened while trying to check for fireplanter multipliers.").add(1)) + "×")
-                    } else if (button.hasAttribute("data-multibuild")) {
-                        update(button, format(C("cmanagers", "This happened while trying to check for build manager multipliers.").add(1)) + "×")
+
+                    var multiplierAttribute = null
+                    if (button.hasAttribute("data-silverbuy")) {
+                        multiplierAttribute = "silverplanters"
+                    } else if (button.hasAttribute("data-firebuy")) {
+                        multiplierAttribute = "fireplanters"
                     } else if (button.hasAttribute("data-omegabuy")) {
-                        update(button, format(C("omegamanagers", "This happened while updating buttons with manager multibuy.").add(1)) + "×")
+                        multiplierAttribute = "omegamanagers"
                     } else if (button.hasAttribute("data-megabuy")) {
-                        update(button, format(C("megamanagers", "This happened while updating buttons with manager multibuy.").add(1)) + "×")
+                        multiplierAttribute = "megamanagers"
                     } else if (button.hasAttribute("data-multibuy")) {
-                        update(button, format(C("managers", "This happened while updating buttons with manager multibuy.").add(1)) + "×")
+                        multiplierAttribute = "managers"
+                    } else if (button.hasAttribute("data-multibuild")) {
+                        multiplierAttribute = "cmanagers"
+                    }
+
+                    if (multiplierAttribute !== null) {
+                        update(button, format(C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)) + "×")
                     }
                 } else {
                     var requirements = button.getAttribute("data-show")
