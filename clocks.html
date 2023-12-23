@@ -3053,6 +3053,10 @@
                         This game includes many hours of content, so have fun!
                     </div>
 
+                    <i class="small green" id="seasonInfo">
+                        QUESTION: Why is the clock not a clock? There is currently a season active!
+                    </i>
+
                     <i class="rainbow small">
                         Well, have fun&trade;&trade;&trade;&trade;&trade;&trade;!
                     </i>
@@ -9292,7 +9296,7 @@
         }
 
         var progress = -1, progressNotes = [
-            'Start by clicking the "Build a clock" button.',
+            'Start by clicking the "Build a clock" button. Come on, click it already!',
             "Keep clicking! Note that hovering your finger or mouse over a button allows you to see a description.",
             "You can sell your clocks for money! Click on the sell button in the clock menu. The mini buttons also have descriptions telling you what they do.",
             "After you get $10, you can get gold ore!",
@@ -9305,7 +9309,7 @@
             "Buy your first furnace for 1,250 bricks!",
             "Congrats on getting a furnace and automating brick production! It's time to get your first manager in the new technology menu. You'll need to get 1,000 golden clocks for them though. (This is a perfect time to get some gold bars in the golden clock menu. Once you have 25 gold bars, get a jeweler. Jewelers will SLOWLY produce golden clocks. You might want to spend some crystals to speed up this process!)",
             "Now that you have a manager, get a scientist! Scientists generate science and creativity. You'll want to have a lot of both to get new researches!",
-            'With a scientist, you now have access to research upgrade! It\'s a good idea to first get the "Research steel working" upgrade, which will allow you to construct steel mills in the first menu.',
+            'With a scientist, you now have access to research upgrading! It\'s a good idea to first get the "Research steel working" upgrade, which will allow you to construct steel mills in the first menu.',
             "With steel mills comes, well, STEEL! Steel is essential for fast progression and allows you to construct robot arms. Collect 125 steel to get your first one.",
             "Robot arms (as well as other machines) require electricity! A new electricity panel allows you to obtain up to an impressive 25,000 watts, which is enough to power 250 robot arms. Although requesting watts isn't cheap, using them to power robot arms gives you far greater gain. Start checking that panel to make sure you have enough electricity to power all machines!",
             "If you get more robot arms, you can get a factory: these work 120 times as fast as normal robot arms at just 80 times the cost! Note that you can also get constructors to get more robot arms at once.",
@@ -9894,6 +9898,12 @@
             holiday = isDate(date, 10, 31) ? HALLOWEEN : (isDate(date, 12, 25) ? CHRISTMAS : (isDate(date, 1, 1) ? NEWYEAR : NONE))
             var newSeason = datesClose(date, 10, 31, 7) ? HALLOWEEN : (datesClose(date, 12, 25, 12) ? CHRISTMAS : NONE)
             if (newSeason !== season) {
+                var seasonElement = ID("seasonInfo")
+                if (season === NONE) {
+                    seasonElement.removeAttribute("style")
+                } else if (seasonElement.style.display !== "block") {
+                    seasonElement.style.display = "block"
+                }
                 season = newSeason
 
                 var spans = document.getElementsByTagName("*")
