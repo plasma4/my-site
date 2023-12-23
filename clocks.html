@@ -102,7 +102,7 @@
         }
 
         #content {
-            background-color: #753609;
+            background-color: #333;
             border-radius: 20px 20px 5px 5px;
             border-spacing: 8px 2px;
             position: absolute;
@@ -4654,7 +4654,7 @@
                     <br>
                     <label for="useSeasons">
                         <input type="checkbox" id="useSeasons"></input>
-                        Enable seasonal content
+                        Enable seasonal aesthetic
                     </label>
                     <br>
                     <label for="useTheme">
@@ -4664,7 +4664,7 @@
                     <br>
                     <span id="colorSettings">
                         <label for="mainColor">
-                            <input type="color" value="#753609" id="mainColor"></input>
+                            <input type="color" value="#333" id="mainColor"></input>
                             Main color
                         </label>
                         <label for="backColor">
@@ -7677,7 +7677,7 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#753609", backColor = "d", isDark = false
+        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:light)")
         if (darkModeMedia.matches) {
@@ -8887,7 +8887,7 @@
                 coalMachinesEnabled = true
 
                 usingTheme = false
-                mainColor = "#753609"
+                mainColor = "#333"
                 backColor = "d"
 
                 // Reset all property values
@@ -9540,10 +9540,12 @@
                 }
 
                 multiplier = H(multiplier)
-                var div = multiplier.recip()
-                var avaliable = watts.mul(div).floor(true)
+                var avaliable = watts.div(multiplier).floor(true)
                 watts = watts.sub(avaliable.mul(multiplier))
-                var avaliable2 = C("wattseconds", issue).mul(div).floor(true).min(amount.sub(avaliable))
+                if (watts === false) {
+                    return new H()
+                }
+                var avaliable2 = C("wattseconds", issue).div(multiplier).floor(true).min(amount.sub(avaliable))
 
                 if (remove("wattseconds", avaliable2.mul(multiplier))) {
                     return avaliable.add(avaliable2)
@@ -9959,7 +9961,7 @@
                 ID("useSeasons").checked = seasonsEnabled
             }
 
-            var mainHex = usingTheme ? mainColor : "#753609"
+            var mainHex = usingTheme ? mainColor : "#333"
             if (ID("content").style.backgroundColor !== mainHex) {
                 ID("content").style.backgroundColor = mainHex
             }
