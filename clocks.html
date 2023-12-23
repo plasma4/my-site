@@ -3054,11 +3054,7 @@
                     </div>
 
                     <i class="small green" id="seasonInfo">
-                        QUESTION: Why is the clock not a clock? There is currently a season active!
-                    </i>
-
-                    <i class="rainbow small">
-                        Well, have fun&trade;&trade;&trade;&trade;&trade;&trade;!
+                        NOTE: Why is the so-called "clock&trade;" not a clock? There is currently a season active!
                     </i>
                 </div>
 
@@ -4650,6 +4646,17 @@
                         WIPE EVERYTHING
                     </button>
 
+                    <br>
+                    <label for="useSleek">
+                        <input type="checkbox" id="useSleek"></input>
+                        Enable sleek mode
+                    </label>
+                    <br>
+                    <label for="useSeasons">
+                        <input type="checkbox" id="useSeasons"></input>
+                        Enable seasonal content
+                    </label>
+                    <br>
                     <label for="useTheme">
                         <input type="checkbox" id="useTheme"></input>
                         Use a custom theme
@@ -7188,6 +7195,14 @@
             updateId("wattText", wattUsage === 1 ? "watt" : "watts")
         })
 
+        ID("useSleek").addEventListener("change", function (e) {
+            sleekMode = ID("useSleek").checked
+        })
+
+        ID("useSeasons").addEventListener("change", function (e) {
+            seasonsEnabled = ID("useSeasons").checked
+        })
+
         ID("useTheme").addEventListener("change", function (e) {
             usingTheme = ID("useTheme").checked
         })
@@ -7662,7 +7677,7 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#753609", backColor = "d", isDark = false
+        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#753609", backColor = "d", isDark = false
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:light)")
         if (darkModeMedia.matches) {
@@ -8096,6 +8111,8 @@
                         }
 
                         showTab(proceed("Wb"), true)
+                        sleekMode = proceed("EX") === "true"
+                        seasonsEnabled = proceed("fX") === "true"
                         usingTheme = proceed("Xz") === "true"
                         mainColor = proceed("Wc").replace("!", "#")
                         backColor = proceed("Wd").replace("!", "#")
@@ -8468,7 +8485,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + sleekMode + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -9895,15 +9912,9 @@
         var season = -1, holiday = NONE, activeElement = document.activeElement
         draw = function () {
             var date = new Date()
-            holiday = isDate(date, 10, 31) ? HALLOWEEN : (isDate(date, 12, 25) ? CHRISTMAS : (isDate(date, 1, 1) ? NEWYEAR : NONE))
-            var newSeason = datesClose(date, 10, 31, 7) ? HALLOWEEN : (datesClose(date, 12, 25, 12) ? CHRISTMAS : NONE)
+            holiday = seasonsEnabled ? isDate(date, 10, 31) ? HALLOWEEN : (isDate(date, 12, 25) ? CHRISTMAS : (isDate(date, 1, 1) ? NEWYEAR : NONE)) : NONE
+            var newSeason = seasonsEnabled ? datesClose(date, 10, 31, 7) ? HALLOWEEN : (datesClose(date, 12, 25, 12) ? CHRISTMAS : NONE) : NONE
             if (newSeason !== season) {
-                var seasonElement = ID("seasonInfo")
-                if (season === NONE) {
-                    seasonElement.removeAttribute("style")
-                } else if (seasonElement.style.display !== "block") {
-                    seasonElement.style.display = "block"
-                }
                 season = newSeason
 
                 var spans = document.getElementsByTagName("*")
@@ -9917,6 +9928,13 @@
                         }
                     }
                 }
+            }
+
+            var seasonElement = ID("seasonInfo")
+            if (season === NONE) {
+                seasonElement.style.display = "none"
+            } else if (seasonElement.style.display !== "block") {
+                seasonElement.removeAttribute("style")
             }
 
             if (usingTheme) {
@@ -9933,6 +9951,14 @@
                 }
             }
 
+            if (ID("useSleek").checked !== sleekMode) {
+                ID("useSleek").checked = sleekMode
+            }
+
+            if (ID("useSeasons").checked !== seasonsEnabled) {
+                ID("useSeasons").checked = seasonsEnabled
+            }
+
             var mainHex = usingTheme ? mainColor : "#753609"
             if (ID("content").style.backgroundColor !== mainHex) {
                 ID("content").style.backgroundColor = mainHex
@@ -9944,7 +9970,9 @@
             }
 
             var themeCSS = colorIsBright(mainHex) ? "" : "*{color:#fff}html{background-color:#000}#hover{background-color:#000}"
-
+            if (sleekMode) {
+                themeCSS += "button,.mini{border-color:white!important;color:white;background:none!important;background-color:black!important;text-shadow:none!important;filter:none!important}"
+            }
             updateInput("mainColor", mainHex)
             updateInput("backColor", backHex)
 
