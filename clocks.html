@@ -3055,10 +3055,13 @@
                     <div class="smaller purple">
                         Note that if you close or hide the game, you will gain a purple crystal every 15 minutes.
                         This game includes many hours of content, so have fun!
+                        <br>
+                        You also have the ability to change themes or disable the audio: go to settings.
+                        Sleek mode turns all the buttons black and calms the screen down.
                     </div>
 
                     <i class="small green" id="seasonInfo">
-                        NOTE: Why is the so-called "clock&trade;" not a clock? There is currently a season active!
+                        NOTE: Why is the so-called Clock&trade; not a clock? There is currently a season active!
                     </i>
                 </div>
 
@@ -3226,7 +3229,7 @@
                     <!-- HUGE CLOCKS 4 HUGE GAINS -->
                     <button data-earn="megaclocks+1" data-sound="building"
                         data-desc="Build a MegaClock for selling by painstakingly combining 250,000 clocks. All rights reserved.$megaclocks$"
-                        data-cost="clocks-250000" data-show="clocks>=50000" class="goldbg">Build a MegaClock</button>
+                        data-cost="clocks-250000" data-show="watts>0" class="goldbg">Build a MegaClock</button>
                     <button data-earn="eraclocks+1" data-sound="building"
                         data-desc="Build an ERAClock Pro+ Limited Maximus-50 Goldius ExtraUltimate...\nSuperior Edition Final Superfinale Extreme Bigger EvenBigger BiggestHuge.\nThis thing sure takes up a lot of space, and costs a hefty 100M clocks and 4,000 bricks!$eraclocks$"
                         data-cost="clocks-1e8|bricks-4000" data-show="clocks>=8e7|megaclocks>0|bricks>=4000"
@@ -4745,8 +4748,11 @@
                     </strong>
 
                     <br>
-                    <span class="large pink">Version <b>0.1.0</b>: <i>the main release!</i></span>
-                    ^^^ If you're wondering why there's not more colors, it's because it's mostly saving fixes!
+                    <div class="large pink">Version <b>0.1.0</b>: <i>the main release!</i></div>
+                    <div class="small purple">
+                        ^^^ If you're wondering why there's not more colors, it's because it's mostly bugfixes for
+                        saving!
+                    </div>
                     <div class="smaller red">
                         Added on December 22, 2023: Attempted to COMPLETELY REWORK the loading function!
                     </div>
@@ -9338,7 +9344,7 @@
             "Note that you should focus on buying golden nuggets rather than gold ore for now. Gold ore is only useful after you progress farther.",
             "Keep buying golden nuggets until you get 5 of them.",
             "You can make a golden clock from 5 clocks and 1 golden nugget. Once you collect 5 golden clocks, you'll be able to purchase a family member and start earning clocks!",
-            "Keep getting family members! Once you save up $20,000, you can get your first miner. Note that you can click on the moving crystals at the top left of the screen to collect blue, green, or purple crystals. Spend these in the crystal menu for significant speed boosts!",
+            "Keep getting family members! Once you save up $20,000, you can get your first miner. Note that you can click on the moving crystals at the top left of the screen to collect blue, green, or purple crystals. It's a good idea to these in the crystal menu for significant speed boosts, and not to hog them.",
             "Miners give you ore, but you'll need a furnace to use them. At this point, you can get bricks for $1 each. If you get 1,250 bricks, you can get a furnace (in the first build menu).",
             "It's a good idea to automate brick production by first getting a digger. Then, in the construction (brick) menu, get a molder and then a kiln. You'll also need a woodcutter to power the kiln! Once you automate it, you might want to spend some crystals to speed up brick production.",
             "Buy your first furnace for 1,250 bricks!",
@@ -9995,7 +10001,7 @@
 
             var themeCSS = colorIsBright(mainHex) ? "" : "*{color:#fff}html{background-color:#000}#hover{background-color:#000}"
             if (sleekMode) {
-                themeCSS += "button,.mini{border-color:white!important;color:white;background:none!important;background-color:black!important;text-shadow:none!important;filter:none!important}"
+                themeCSS += "#navigation>span{background-color:#999}#navigation>span:hover{background-color:#888}#navigation>span:active{background-color:#555}button,.mini{border-color:white!important;color:white;background:none!important;background-color:black!important;text-shadow:none!important;filter:none!important}"
             }
             updateInput("mainColor", mainHex)
             updateInput("backColor", backHex)
