@@ -5403,7 +5403,9 @@
                             digits += isBig ? BigInt(extraDigits) : extraDigits
                             var big50 = BigInt((beforeE.slice(0, 50) + "0000000000000000000000000000000000000000000000000").slice(0, 50))
 
-                            if (isBig) {
+                            if (digits <= -9007199254740992) {
+                                this.$ = [0, 0, 0n]
+                            } else if (isBig) {
                                 if (digits >= 9007199254740992n) {
                                     this.$ = [eTotal + 1, digits, big50]
                                 } else {
@@ -6016,27 +6018,24 @@
                     throw new RangeError("HyperNumber reciprocal of zero")
                 }
 
-                if (this.$[0] === 0) {
+                if (value.$[0] === 0) {
+                    var multiplied = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n / value.$[2]
                     var digits = -value.$[1]
-                    var multiplied
-                    if (value.$[2] === 10000000000000000000000000000000000000000000000000n) {
-                        multiplied = 10000000000000000000000000000000000000000000000000n
-                    } else {
-                        var multiplied = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n / value.$[2]
-                        if (multiplied < 10000000000000000000000000000000000000000000000000n) {
-                            multiplied /= 10n
-                            digits--
-                        }
+                    if (multiplied < 10000000000000000000000000000000000000000000000000n) {
+                        multiplied *= 10n
+                        digits--
                     }
+                    value.$[2] = multiplied
 
                     value.$[2] = multiplied
                     if (digits <= -9007199254740992) {
                         value.$ = [0, 0, 0n]
                         return value
                     }
-                    value.$[1] = digits
+                    value.$[1] = digits === -0 ? 0 : digits
                     return value
                 }
+
                 return new HyperNumber()
             }
 
