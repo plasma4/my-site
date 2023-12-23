@@ -134,6 +134,10 @@
             accent-color: #3ac3fa;
         }
 
+        .check2 {
+            accent-color: #f8a920;
+        }
+
         input[type="range"] {
             -webkit-appearance: none;
             padding-left: 2px;
@@ -4647,6 +4651,11 @@
                     </button>
 
                     <br>
+                    <label for="disableAudio">
+                        <input type="checkbox" class="check2" id="disableAudio"></input>
+                        Disable audio
+                    </label>
+                    <br>
                     <label for="useSleek">
                         <input type="checkbox" id="useSleek"></input>
                         Enable sleek mode
@@ -7195,6 +7204,10 @@
             updateId("wattText", wattUsage === 1 ? "watt" : "watts")
         })
 
+        ID("disableAudio").addEventListener("change", function (e) {
+            noAudio = ID("disableAudio").checked
+        })
+
         ID("useSleek").addEventListener("change", function (e) {
             sleekMode = ID("useSleek").checked
         })
@@ -7312,9 +7325,11 @@
             crystalTime = Date.now() + crystalSpeed * (Math.floor(++crystalTotal / 3) + 1)
 
             // Firefox acts weird for some reason here
-            var sound = sounds.press
-            sound.currentTime = 0
-            sound.play()
+            if (!noAudio) {
+                var sound = sounds.press
+                sound.currentTime = 0
+                sound.play()
+            }
         })
 
         // Checks for a research: can be modified
@@ -7566,11 +7581,13 @@
                             }
 
                             // Firefox doesn't always play the press sound for some reason
-                            if (sound === sounds.press) {
-                                sound.currentTime = 0
-                                sound.play()
-                            } else {
-                                sound.cloneNode().play()
+                            if (!noAudio) {
+                                if (sound === sounds.press) {
+                                    sound.currentTime = 0
+                                    sound.play()
+                                } else {
+                                    sound.cloneNode().play()
+                                }
                             }
 
                             if (containsSpell) {
@@ -7677,7 +7694,7 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
+        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), noAudio = false, sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:light)")
         if (darkModeMedia.matches) {
@@ -8111,6 +8128,7 @@
                         }
 
                         showTab(proceed("Wb"), true)
+                        noAudio = proceed("FX") === "true"
                         sleekMode = proceed("EX") === "true"
                         seasonsEnabled = proceed("fX") === "true"
                         usingTheme = proceed("Xz") === "true"
@@ -8485,7 +8503,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + sleekMode + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + noAudio + "FX" + sleekMode + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -9951,6 +9969,10 @@
                 if (!ID("colorSettings").hasAttribute("style")) {
                     ID("colorSettings").style.display = "none"
                 }
+            }
+
+            if (ID("disableAudio").checked !== noAudio) {
+                ID("disableAudio").checked = noAudio
             }
 
             if (ID("useSleek").checked !== sleekMode) {
