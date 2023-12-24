@@ -4492,15 +4492,16 @@
 
                 <div id="rocket" style="display: none">
                     <span class="big rocket"></span>
-                    Rockets allow you to go to other planets, such as Mars.
+                    <del>Rockets allow you to go to other planets, such as Mars.</del>
+                    <br>
+                    <ins>CURRENTLY ROCKETS ARE PRETTY MUCH USELESS: GOLDEN SHARDS SHOULD BE USED INSTEAD FOR NOW.</ins>
                     <div class="small">
                         Building rockets is a bit different than just buying stuff instantly.
                         <br>
                         You need construction managers to build items.
                         <br>
-                        You also need to fill tanks with special buildings, like oxygen.
-                        <br>
-                        Once all items are constructed, you can fire up the rocket!
+                        You also need to fill tanks with special buildings, like oxygen, but once all items are
+                        constructed, you can fire up the rocket!
                         <br>
                         <i>
                             Currently, you have <i id="constructorTotal" class="green"></i>
@@ -7640,8 +7641,8 @@
                                 if (sign !== -1) {
                                     var part1 = action.slice(0, sign)
                                     var part2 = action.slice(sign + 1)
-                                    if (part1.charCodeAt(0) !== 36) {
-                                        console.warn("Only rocket parts should use the '-' sign. The ID should start with a '$' sign.")
+                                    if (part1.charCodeAt(0) < 65 || part1.charCodeAt(0) > 90) {
+                                        console.warn("Only rocket parts should use the '-' sign. The ID should start with a capital letter.")
                                         continue
                                     }
                                     var num = new H(part2)
@@ -7667,7 +7668,7 @@
 
                             var part1 = action.slice(0, plus)
                             var part2 = action.slice(plus + 1)
-                            if (part1.charCodeAt(0) === 36) {
+                            if (part1.charCodeAt(0) >= 65 && part1.charCodeAt(0) <= 90) {
                                 var num = new H(part2)
                                 var oldManagersUsed = cManagersUsed
                                 rawAdd(part1, num)
@@ -7897,7 +7898,7 @@
             }
 
             if (rocketParts.includes(id)) {
-                return (amount.equals(100) ? "a completed " + item.names[3] : "built " + format(amount, "step") + " of the " + item.names[3] + " with " + (100 * (Number(amount) % 1)).toFixed(4) + "% of that step completed") + ", as well as " + format(C("$" + id, "This happened while formatting name and quantity information for the amount of workers working on a rocket part."), "worker") + " helping to build it"
+                return (amount.equals(100) ? "a completed " + item.names[3] : "built " + format(amount, "step") + " of the " + item.names[3] + " with " + (100 * (Number(amount) % 1)).toFixed(4) + "% of that step completed") + ", as well as " + format(C(id[0].toUpperCase() + id.slice(1), "This happened while formatting name and quantity information for the amount of workers working on a rocket part."), "worker") + " helping to build it"
             } else if (id === "money") {
                 return "$" + formatted
             } else if (id === "iq") {
