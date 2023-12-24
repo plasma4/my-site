@@ -3073,6 +3073,8 @@
                 You're earning
                 <span id="cps" class="red"
                     data-desc="The amount of clocks you are making every. Single. Second!"></span>.
+                <br>
+                <div class="lime small" id="stats"></div>
 
                 <div id="main">
                     <div class="small">
@@ -3306,7 +3308,7 @@
                     <br>
                     <button class="stripe3" data-earn="radiummakers+1" data-cost="money-1e6|goldb-5e6"
                         data-show="$radium"
-                        data-desc="Radium workers make radium clocks out of a clock and two radium rods, and radium watches out of two silver nuggets and two radium rods.\nThey don't have any wages, but cost $1,000,000 and 5 MILLION gold bars.$radiummakers$">
+                        data-desc="Radium workers make radium clocks out of a clock and two radium rods, and radium watches out of two silver nuggets and two radium rods each.\nThey don't have any wages, but cost $1,000,000 and 5 MILLION gold bars.$radiummakers$">
                         Get a radium worker <span class="goldbar"></span>
                     </button>
                     <br>
@@ -4617,7 +4619,7 @@
                     </div>
 
                     <div class="purple smallish" id="shardInfo">
-                        Your current normal clock earning multiplier is <b id="shardPower"></b>
+                        Your current normal clock earning multiplier is <b id="shardStat"></b>
                         because you have <b id="shardCount"></b> shards.
                         <br>
                         You also earn <b id="clickPower"></b> clocks per click instead of just <b>1</b>.
@@ -9355,7 +9357,7 @@
             "Note that you should focus on buying golden nuggets rather than gold ore for now. Gold ore is only useful after you progress farther.",
             "Keep buying golden nuggets until you get 5 of them.",
             "You can make a golden clock from 5 clocks and 1 golden nugget. Once you collect 5 golden clocks, you'll be able to purchase a family member and start earning clocks!",
-            "Keep getting family members! Once you save up $20,000, you can get your first miner. Note that you can click on the moving crystals at the top left of the screen to collect blue, green, or purple crystals. It's a good idea to these in the crystal menu for significant speed boosts, and not to hog them.",
+            "Keep getting family members! Saving up $20,000 allows you to obtain your first miner. Note that you can click on the moving crystals at the top left of the screen to collect blue, green, or purple crystals. It's a good idea to these in the crystal menu for significant speed boosts, and not to hog them.",
             "Miners give you ore, but you'll need a furnace to use them. At this point, you can get bricks for $1 each. If you get 1,250 bricks, you can get a furnace (in the first build menu).",
             "It's a good idea to automate brick production by first getting a digger. Then, in the construction (brick) menu, get a molder and then a kiln. You'll also need a woodcutter to power the kiln! Once you automate it, you might want to spend some crystals to speed up brick production.",
             "Buy your first furnace for 1,250 bricks!",
@@ -9446,7 +9448,11 @@
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
         function updateGame() {
-            var shards = C("shards")
+            var issue = "This occured while trying to update properties."
+
+            var oldMoney = C("money", issue)
+
+            var shards = C("shards", issue)
             var shardPower = shards.mul(10000).sqrt(true).sqrt(true)
             if (hasResearch("polish")) {
                 shardPower = shardPower.add(10)
@@ -9463,7 +9469,7 @@
                 }
             } else {
                 updateId("shardCount", format(shards))
-                updateId("shardPower", format(shardPower) + "×")
+                updateId("shardStat", format(shardPower) + "×")
                 updateId("clickPower", format(shards.mul(1e8).sqrt(true).sqrt(true)))
                 shardInfoElement.removeAttribute("style")
             }
@@ -9475,8 +9481,6 @@
             }
 
             addUpTo("rocketbody", H("4.62962962962962962962962962962962962962963e-9").mul(C("Rocketbody", issue)), 100)
-
-            var issue = "This occured while trying to update properties."
 
             var trees = C("trees", issue)
 
@@ -9516,6 +9520,7 @@
 
             var radiumMills = C("radiummills", issue)
             var radiumMakers = C("radiummakers", issue)
+            var radiumMakerPower = radiumMakers.mul(0.0005)
 
             var miners = C("miners", issue)
             var miningPower = miners.mul(hasResearch("mining") ? 1.5 : 1)
@@ -9653,7 +9658,10 @@
 
             // Update the amount of clocks that you have
             var familySqrt = C("family", issue).sqrt()
-            cpt = cpt.add(clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)).add(familySqrt.mul(familySqrt.sqrt()).mul(0.05))
+            var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.05)
+            var clockmakerIncome = clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)
+
+            cpt = cpt.add(clockmakerIncome).add(familyIncome)
             if (shards.isPositive()) {
                 cpt = cpt.mul(shardPower)
             }
@@ -9678,7 +9686,7 @@
             exchange("aluminumo", aluminum3Power, "aluminumc")
             exchange("aluminum", aluminum4Power, "aluminumo")
 
-            multiExchange(["rc", "rwatches"], [radiumMakers.mul(0.0004), radiumMakers.mul(0.0004)], "radium", radiumMakers.mul(0.04))
+            multiExchange(["rc", "rwatches"], [radiumMakerPower, radiumMakerPower], ["radium", "silver"], [radiumMakerPower.mul(4), radiumMakerPower.mul(2)])
 
             add("feathers", C("phoenixes", issue).mul(hasResearch("pillows") ? 1.1 : 1).mul(hasResearch("gear") ? 1.125 : 1).mul(hasResearch("drink") ? 1.2 : 1).mul(hasResearch("food") ? 0.0005 : 0.00025))
             add("nests", labs.mul(0.0000333222111))
@@ -9790,7 +9798,7 @@
             updateId("silverReset", silverfruitDigits.isMoreOrEqual(50) ? "Gain " + format(silverfruitDigits.sub(10).mul(0.5)) + " silver wood" : "")
 
             // Update the CPS element and change the color by modifying the class
-            var cps = cpt.mul(60)
+            var cps = cpt.mul(speed).mul(60)
             var cpsElem = ID("cps")
             update(cpsElem, (cps.plural((cps.floor(true).isZero() ? "no " : ((cps.isLess(10) ? "only " : "") + format(cps))) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))) + " a second (CPS)"))
             if (cps.isMoreOrEqual(1e11)) {
@@ -9916,7 +9924,7 @@
 
             updateTip()
 
-            // Update spells
+            // Update all of the magic spells
             var len = spellFunctions.length
             var divSpeed = speed.div(60)
             for (var i = 0; i < len;) {
@@ -9929,6 +9937,28 @@
                     i++
                 }
             }
+
+            var newMoney = C("money")
+            var moneyLoss = oldMoney.sub(newMoney)
+            var newStats = moneyLoss === false ? 'Money gain: <span class="small green">$' + newMoney.sub(oldMoney).format(2) + "</span>/sec" : ("Money loss: $" + moneyLoss.format(2) + "/sec")
+
+            if (familyIncome.isPositive()) {
+                newStats += '<br>Family member income: <span class="small green">$' + familyIncome.mul(60).format(2) + "</span>/sec"
+            }
+
+            if (clockmakerIncome.isPositive()) {
+                newStats += '<br>Clockmaker income: <span class="small green">$' + clockmakerIncome.mul(60).format(2) + "</span>/sec"
+            }
+
+            if (watchmakerPower.isPositive()) {
+                newStats += '<br>Silver watch production: <span class="small pink">about ' + watchmakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + watchmakerPower.mul(6000).format(2) + "</span>)"
+            }
+
+            if (radiumMakerPower.isPositive()) {
+                newStats += '<br>Radioactive watch production: <span class="small pink">about ' + radiumMakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + radiumMakerPower.mul(6e7).format(2) + "</span>)"
+            }
+
+            updateHTML(ID("stats"), newStats)
 
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
         }
