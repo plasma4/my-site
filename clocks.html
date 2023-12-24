@@ -266,7 +266,8 @@
             display: none;
         }
 
-        b {
+        b,
+        .bold {
             font-size: inherit;
             font-weight: 600;
             color: #f1be66;
@@ -4406,11 +4407,14 @@
                     <span class="gbolt"></span> watt-second<span id="backupPlural">s</span>.
                     <div class="small" id="wattsNegative">
                         (The amount of watts left is negative because you need more steam turbines or coal production!)
-                        <br>
-                        <i>Drag and drop to swap the priority of power-using machines.</i>
                     </div>
 
                     <div id="dragParent"></div>
+                    <i class="bold smallish">
+                        (Drag and drop to swap the priority of power-using machines.
+                        This only has any effect when you don't have enough power!)
+                    </i>
+                    <br>
                     <button class="night" id="resetPower">Reset power priority</button>
 
                     <br>
@@ -8169,14 +8173,15 @@
 
                         var newWattageOrder = proceed("$").split("*")
                         if (newWattageOrder.length !== wattageOrder.length) {
-                            newWattageOrder = wattageOrder
+                            newWattageOrder = wattageOrder.slice(0)
+                        } else {
+                            wattageOrder = newWattageOrder.slice(0)
                         }
                         var wattageHTML = ""
                         for (U = 0; U < wattageOrder.length; U++) {
-                            wattageHTML += '<span data-for="' + Q[U] + '">' + wattageNames[wattageOrder.indexOf(Q[U])] + "</span>"
+                            wattageHTML += '<span data-for="' + wattageOrder[U] + '">' + wattageNames[defaultWattagePriority.indexOf(wattageOrder[U])] + "</span>"
                         }
-                        wattageOrder = newWattageOrder
-                        ID("dragParent").innerHTML = w
+                        ID("dragParent").innerHTML = wattageHTML
                         makeItemsDraggable()
                         alreadyDragged = true
                         var spellData = proceed("^")
@@ -8627,17 +8632,13 @@
 
         document.addEventListener("paste", pasteEvent)
 
-        // Optional.   Show the copy icon when dragging over.  Seems to only work for chrome.
         document.addEventListener("dragover", function (e) {
-            e.stopPropagation()
-            e.preventDefault()
             e.dataTransfer.dropEffect = "copy"
+            e.preventDefault()
         });
 
         // Get file data on drop
         document.addEventListener("drop", function (e) {
-            e.stopPropagation()
-            e.preventDefault()
             var files = e.dataTransfer.files
             if (files.length !== 1) {
                 if (files.length !== 0) {
@@ -8653,6 +8654,8 @@
 
                 reader.readAsBinaryString(files[0])
             }
+            e.stopPropagation()
+            e.preventDefault()
         })
 
         var cooldownNames = []
@@ -8752,7 +8755,7 @@
                     draggedElem = this
                     swapElement = i
                     this.style.opacity = 0.35
-                    e.dataTransfer.effectAllowed = "move"
+                    e.dataTransfer.dropEffect = "move"
                     e.dataTransfer.setData("text/html", this.innerHTML)
                 })
 
@@ -8773,6 +8776,8 @@
                         this.innerHTML = e.dataTransfer.getData("text/html")
                         draggedElem = null
                     }
+                    e.stopPropagation()
+                    e.preventDefault()
                 })
             }
         }
@@ -9456,7 +9461,7 @@
             var oldMoney = new H(C("money", issue))
 
             var shards = C("shards", issue)
-            var shardPower = shards.mul(10000).sqrt(true).sqrt(true)
+            var shardPower = shards.isZero() ? H(true) : shards.mul(10000).sqrt(true).sqrt(true)
             if (hasResearch("polish")) {
                 shardPower = shardPower.add(10)
             }
@@ -9630,6 +9635,7 @@
             // Calculate clocks-per-tick and update clock amount
             wattStuff = {}
             useableData = {}
+            var electricCPT = new H()
             for (var t = 0; t < wattageOrder.length; t++) {
                 var wattageKey = wattageOrder[t]
                 var itemData = machineConsumption[wattageKey]
@@ -9646,7 +9652,7 @@
                     if ((wattageKey === "arms" || wattageKey === "factories") && hasResearch("autofix")) {
                         itemToAdd = itemToAdd.mul(1.5)
                     }
-                    cpt = cpt.add(itemToAdd)
+                    electricCPT = electricCPT.add(itemToAdd)
                 }
             }
 
@@ -9664,10 +9670,11 @@
             var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.05)
             var clockmakerIncome = clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)
 
-            cpt = cpt.add(clockmakerIncome).add(familyIncome)
+            cpt = cpt.add(electricCPT).add(clockmakerIncome).add(familyIncome)
             if (shards.isPositive()) {
                 cpt = cpt.mul(shardPower)
             }
+
             add("clocks", cpt)
             if (autosellOn) {
                 rawAdd("money", C("clocks"))
@@ -9945,20 +9952,25 @@
             var moneyLoss = oldMoney.sub(newMoney)
             var newStats = moneyLoss === false ? 'Money gain: <span class="small green">$' + newMoney.sub(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec"))
 
+            var valueMultiplier = (hasResearch("marketing") ? H(60).add(useableData.computers.mul(2.4)) : H(60)).mul(speed)
             if (familyIncome.isPositive()) {
-                newStats += '<br>Family member income: <span class="small green">$' + familyIncome.mul(60).format(2) + "</span>/sec"
+                newStats += '<br>Family member clock value: <span class="small green">$' + familyIncome.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
             }
 
             if (clockmakerIncome.isPositive()) {
-                newStats += '<br>Clockmaker income: <span class="small green">$' + clockmakerIncome.mul(60).format(2) + "</span>/sec"
+                newStats += '<br>Clockmaker clock value: <span class="small green">$' + clockmakerIncome.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
+            }
+
+            if (electricCPT.isPositive()) {
+                newStats += '<br>Clock value from machine production: <span class="small green">$' + electricCPT.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
             }
 
             if (watchmakerPower.isPositive()) {
-                newStats += '<br>Silver watch production from watchmakers: <span class="small pink">about ' + watchmakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + watchmakerPower.mul(6000).format(2) + "</span>)"
+                newStats += '<br>Silver watch production from watchmakers: <span class="small pink">about ' + watchmakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + watchmakerPower.mul(valueMultiplier).mul(100).format(2) + "</span>)"
             }
 
             if (radiumMakerPower.isPositive()) {
-                newStats += '<br><span class="small dangerous">RADIOACTIVE</span> watch production from radium workers: <span class="small pink">about ' + radiumMakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + radiumMakerPower.mul(6e7).format(2) + "</span>)"
+                newStats += '<br><span class="small dangerous">RADIOACTIVE</span> watch production from radium workers: <span class="small pink">about ' + radiumMakerPower.mul(valueMultiplier).format(2) + '</span> every second (worth <span class="small green">$' + radiumMakerPower.mul(valueMultiplier).mul(1e6).format(2) + "</span>)"
             }
 
             updateHTML(ID("stats"), newStats)
@@ -10502,6 +10514,9 @@
                 saveLocally()
             }
 
+            // Let the user see everything (only errors show up if the game fails to load)
+            ID("everything").removeAttribute("style")
+
             setTimeout(draw, (frame % 3 === 0 ? 16 : 17) - Date.now() + newTime)
         }
 
@@ -10592,8 +10607,6 @@
             }
         })
 
-        // Let the user see everything now (only errors show up if the game fails to load)
-        ID("everything").removeAttribute("style")
         loaded = true
     </script>
 </body>
