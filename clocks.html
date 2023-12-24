@@ -4266,7 +4266,7 @@
                             Better turbine blades: <span class="green">$100,000,000</span>
                             <span class="money"></span>
                         </div>
-                        <div data-show="money>=1e7" data-cost="5e6" data-research="turbines"
+                        <div data-show="turbines>0" data-cost="5e6" data-research="turbines"
                             data-desc="Do some research how to make turbines more effective to generate more power.\nIt turns out that heating them up helps!\n(All turbines are 2× faster)">
                             Hotter turbines: <span class="green">$5,000,000</span>
                             <span class="money"></span>
@@ -9943,7 +9943,7 @@
 
             var newMoney = C("money")
             var moneyLoss = oldMoney.sub(newMoney)
-            var newStats = moneyLoss === false ? 'Money gain: <span class="small green">$' + newMoney.sub(oldMoney).mul(60).format(2) + "</span>/sec" : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")
+            var newStats = moneyLoss === false ? 'Money gain: <span class="small green">$' + newMoney.sub(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec"))
 
             if (familyIncome.isPositive()) {
                 newStats += '<br>Family member income: <span class="small green">$' + familyIncome.mul(60).format(2) + "</span>/sec"
