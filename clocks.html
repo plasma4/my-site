@@ -8188,9 +8188,9 @@
                         usingTheme = proceed("Xz") === "true"
                         mainColor = proceed("Wc").replace("!", "#")
                         backColor = proceed("Wd").replace("!", "#")
-                        startingTime = proceed("@").toString(35)
-                        crystalTotal = proceed("@").toString(20)
-                        crystalTime = proceed("z").toString(30)
+                        startingTime = parseInt(proceed("@"), 35)
+                        crystalTotal = parseInt(proceed("@"), 20)
+                        crystalTime = parseInt(proceed("z"), 30)
 
                         overclocked = $.charCodeAt(0) === 120
                         if (overclocked) ID("overclock").checked = true
