@@ -3052,12 +3052,13 @@
 
                 <div class="small">
                     Tip #<span id="tipNumber" class="small beige"></span>: <span id="tip" class="small"></span>
-                    <div class="smaller purple">
+                    <div class="small purple">
                         Note that if you close or hide the game, you will gain a purple crystal every 15 minutes.
                         This game includes many hours of content, so have fun!
-                        <br>
+                    </div>
+                    <div class="smaller pink">
                         You also have the ability to change themes or disable the audio: go to settings.
-                        Sleek mode turns all the buttons black and calms the screen down.
+                        Enabling Sleek Mode turns all the buttons black and calms the screen down.
                     </div>
 
                     <i class="small green" id="seasonInfo">
@@ -3074,17 +3075,16 @@
                     data-desc="The amount of clocks you are making every. Single. Second!"></span>.
 
                 <div id="main">
-                    <div class="smallish">
+                    <div class="small">
                         <span class="small serif">NOTE:</span> Have too many of a worker/item?
-                        <br>
-                        Remove them by holding the Shift key.
+                        Yo can simply remove them by holding the Shift key.
                         You can also press the button below, and the game will ask you how much you want to remove.
                         <br>
                     </div>
 
-                    <button id="removeButton" class="warn"
+                    <button class="mini warn" id="removeButton"
                         data-desc="This button toggles whether you are removing an item or not.">
-                        Enable Item Removal
+                        Enable Item Removal (THIS BUTTON IS FOR REMOVING ITEMS ONLY!)
                     </button>
 
                     <br>
@@ -3162,6 +3162,10 @@
                             ALL <span class="clock" role="img" aria-label="clocks"></span>
                         </span>
                     </button>
+                    <button class="special" id="autosell"
+                        data-desc="Automatically sells any clocks you have made as soon as you obtain them.">
+                        Toggle clock autoselling <span class="money"></span>
+                    </button>
                     <button
                         data-desc="In need of money, and fast? Sell your precious silver watches for $200 each!$money$"
                         data-show="watches>0" data-earn="money+200" data-cost="watches-1" data-sound="transaction">
@@ -3191,7 +3195,8 @@
                     </button>
 
                     <br>
-                    <button data-earn="clocks+1" data-desc="A lonely clock: cheap but easy to make!$clocks$">
+                    <button data-earn="clocks+1"
+                        data-desc="A lonely clock: cheap but easy to make!\nClocks are the most basic item you can have!$clocks$">
                         Build a <span class="clock" role="img" aria-label="clock"></span>
                     </button>
                     <button data-earn="gc+1"
@@ -3244,7 +3249,7 @@
 
                     <br>
                     <button data-earn="goldore+10" data-cost="money-10"
-                        data-desc="Ten pieces of ore only cost $10 because the technology to extract the gold out is significantly more complex.\nDon't get too much!$goldore$"
+                        data-desc="Ten pieces of ore only cost $10 because the technology to extract the gold out is significantly more complex.\nDon't get too much at the start!$goldore$"
                         class="silver">
                         Buy 10 pieces of gold ore <span class="goldbar"></span>
                     </button>
@@ -3318,7 +3323,7 @@
 
                     <br>
                     <button data-earn="miners+1" data-cost="money-20000"
-                        data-desc="The miner is happy to help mine ores from beneath the ground, with a substantial starting fee of 20,000 dollars.\nTo extract the contents out of these, build a blast furnace with bricks (a future technology).\n(Each miner is also paid $6 a second)$miners$"
+                        data-desc="The miner is happy to help mine ores from beneath the ground, with a substantial starting fee of 20,000 dollars.\nTo extract the contents out of these, build a blast furnace with bricks (a future technology).\n(Each miner is also paid $6 a second. Miners obtain ores, NOT NUGGETS!)$miners$"
                         class="gold">
                         Get a miner <span class="pickaxe"></span>
                         <span class="mini stripe1" data-earn="miners+1" data-cost="money-20000"
@@ -4661,7 +4666,7 @@
                     <br>
                     <label for="useSleek">
                         <input type="checkbox" id="useSleek"></input>
-                        Enable sleek mode
+                        Enable Sleek Mode
                     </label>
                     <br>
                     <label for="useSeasons">
@@ -6956,7 +6961,7 @@
             }
             isRemoving = false
             shiftDown = false
-            updateId("removeButton", "Enable Item Removal")
+            updateId("removeButton", "Enable Item Removal (THIS BUTTON IS FOR REMOVING ITEMS ONLY!)")
         }
 
         var isRemoving = false, shiftDown = false
@@ -6970,7 +6975,7 @@
                 shiftDown = shift
                 isRemoving = shift
             }
-            updateId("removeButton", isRemoving ? "Disable Item Removal" : "Enable Item Removal")
+            updateId("removeButton", isRemoving ? "Disable Item Removal" : "Enable Item Removal (THIS BUTTON IS FOR REMOVING ITEMS ONLY!)")
         }
 
         document.addEventListener("keyup", updateRemoveAmount)
@@ -7209,6 +7214,10 @@
             updateId("wattText", wattUsage === 1 ? "watt" : "watts")
         })
 
+        ID("autosell").addEventListener("click", function (e) {
+            autosellOn = !autosellOn
+        })
+
         ID("disableAudio").addEventListener("change", function (e) {
             noAudio = ID("disableAudio").checked
         })
@@ -7268,14 +7277,14 @@
         })
 
         ID("removeButton").addEventListener("click", function (e) {
-            updateId("removeButton", isRemoving ? "Enable Item Removal" : "Disable Item Removal")
+            updateId("removeButton", isRemoving ? "Enable Item Removal (THIS BUTTON IS FOR REMOVING ITEMS ONLY!)" : "Disable Item Removal")
             isRemoving = !isRemoving
         })
 
         window.addEventListener("blur", function () {
             isRemoving = false
             shiftDown = false
-            updateId("removeButton", "Enable Item Removal")
+            updateId("removeButton", "Enable Item Removal (THIS BUTTON IS FOR REMOVING ITEMS ONLY!)")
         })
 
         ID("shardAscend").addEventListener("click", function () {
@@ -7699,7 +7708,7 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), noAudio = false, sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
+        var baseSpeed = H(true), speed = H(baseSpeed), buttonPower = H(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new H(), autosellOn = false, noAudio = false, sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:light)")
         if (darkModeMedia.matches) {
@@ -8133,6 +8142,7 @@
                         }
 
                         showTab(proceed("Wb"), true)
+                        autosellOn = proceed("AX") === "t"
                         noAudio = proceed("FX") === "true"
                         sleekMode = proceed("EX") === "true"
                         seasonsEnabled = proceed("fX") === "true"
@@ -8508,7 +8518,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + noAudio + "FX" + sleekMode + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + (autosellOn ? "t" : "fa") + "AX" + noAudio + "FX" + sleekMode + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -8628,17 +8638,19 @@
             e.preventDefault()
             var files = e.dataTransfer.files
             if (files.length !== 1) {
-                alert("You must drag exactly one file to import.")
-            }
-
-            var reader = new FileReader()
-            reader.onload = function () {
-                if (confirm("Try to import the save?")) {
-                    load(reader.result)
+                if (files.length !== 0) {
+                    alert("You must drag exactly one file to import.")
                 }
-            }
+            } else {
+                var reader = new FileReader()
+                reader.onload = function () {
+                    if (confirm("Try to import the save?")) {
+                        load(reader.result)
+                    }
+                }
 
-            reader.readAsBinaryString(files[0])
+                reader.readAsBinaryString(files[0])
+            }
         })
 
         var cooldownNames = []
@@ -9646,6 +9658,10 @@
                 cpt = cpt.mul(shardPower)
             }
             add("clocks", cpt)
+            if (autosellOn) {
+                add("money", C("clocks"))
+                stuff.clocks = new H()
+            }
 
             multiExchange(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore"], [miningPower.mul(0.0145), miningPower.mul(0.065), miningPower.mul(0.04), miningPower.mul(0.01825), miningPower.mul(0.003), miningPower.mul(0.0025), miningPower.mul(0.0175), miningPower.mul(0.0075), miningPower.mul(0.00325), miningPower.mul(0.0025), miningPower.mul(0.0002), miningPower.mul(0.0000027725)], "money", miners.mul(0.1))
 
@@ -10375,6 +10391,8 @@
                                 text += " to cast."
                             }
                         }
+                    } else if (hovered.id === "autosell") {
+                        text += "<br>[Autosell is currently " + (autosellOn ? "ENABLED" : "DISABLED") + "]"
                     }
 
                     if (parent !== null && hovered.tagName !== "BUTTON" && parent.tagName === "BUTTON") {
