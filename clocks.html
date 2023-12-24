@@ -9453,7 +9453,7 @@
         function updateGame() {
             var issue = "This occured while trying to update properties."
 
-            var oldMoney = C("money", issue)
+            var oldMoney = new H(C("money", issue))
 
             var shards = C("shards", issue)
             var shardPower = shards.mul(10000).sqrt(true).sqrt(true)
@@ -9670,7 +9670,7 @@
             }
             add("clocks", cpt)
             if (autosellOn) {
-                add("money", C("clocks"))
+                rawAdd("money", C("clocks"))
                 stuff.clocks = new H()
             }
 
@@ -9943,7 +9943,7 @@
 
             var newMoney = C("money")
             var moneyLoss = oldMoney.sub(newMoney)
-            var newStats = moneyLoss === false ? 'Money gain: <span class="small green">$' + newMoney.sub(oldMoney).format(2) + "</span>/sec" : ('Money loss: <span class="small red">$' + moneyLoss.format(2) + "</span>/sec")
+            var newStats = moneyLoss === false ? 'Money gain: <span class="small green">$' + newMoney.sub(oldMoney).mul(60).format(2) + "</span>/sec" : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")
 
             if (familyIncome.isPositive()) {
                 newStats += '<br>Family member income: <span class="small green">$' + familyIncome.mul(60).format(2) + "</span>/sec"
