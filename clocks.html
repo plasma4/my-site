@@ -9997,6 +9997,10 @@
         const NEWYEAR = 3
         var season = -1, holiday = NONE, activeElement = document.activeElement
         draw = function () {
+            if (document.hidden) {
+                requestAnimationFrame(draw)
+                return
+            }
             var date = new Date()
             holiday = seasonsEnabled ? isDate(date, 10, 31) ? HALLOWEEN : (isDate(date, 12, 25) ? CHRISTMAS : (isDate(date, 1, 1) ? NEWYEAR : NONE)) : NONE
             var newSeason = seasonsEnabled ? datesClose(date, 10, 31, 7) ? HALLOWEEN : (datesClose(date, 12, 25, 12) ? CHRISTMAS : NONE) : NONE
@@ -10084,21 +10088,19 @@
                 crystalImage.className = "crystal" + ((crystalTotal % 3) + 1)
             }
 
-            if (!document.hidden) {
-                var diff = newTime - time
-                if (diff >= 500) {
-                    var newFrames = Math.floor(diff * 0.06) - 1
-                    offlineFrames += newFrames
-                    if (offlineFrames >= 54000) {
-                        // Add an integeric amount of crystals (this way, we can figure out how much time it takes before you earn the next crystal)
-                        var newCrystals = new H(offlineFrames / 54000).floor(true)
-                        rawAdd("crystal3", newCrystals)
-                        offlineFrames = offlineFrames % 54000
-                    }
-                    updateOfflineTime()
+            var diff = newTime - time
+            if (diff >= 500) {
+                var newFrames = Math.floor(diff * 0.06) - 1
+                offlineFrames += newFrames
+                if (offlineFrames >= 54000) {
+                    // Add an integeric amount of crystals (this way, we can figure out how much time it takes before you earn the next crystal)
+                    var newCrystals = new H(offlineFrames / 54000).floor(true)
+                    rawAdd("crystal3", newCrystals)
+                    offlineFrames = offlineFrames % 54000
                 }
-                time = newTime
+                updateOfflineTime()
             }
+            time = newTime
 
             if (document.activeElement !== activeElement) {
                 activeElement = document.activeElement
