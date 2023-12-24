@@ -2917,7 +2917,7 @@
             radiummills: Radium Mill (5, A gigantic mill dedicated to slowly turn radium into tiny bars)
             rc: Radium Clock (3, Scary! Again!)
             rwatches: Radium Watch$es (3, A watch made of radium that has a worrying green glow)
-            radiummakers: Radium Maker (4, Someone who makes radium clocks and watches)
+            radiummakers: Radium Worker (4, Someone who makes radium clocks and watches)
             family: Family Member (1, One way to make clocks!)
             clockmakers: Clockmaker (2, People who make clocks for a literal living)
             watchmakers: Watchmaker (3, They're watching your every move)
@@ -9951,11 +9951,11 @@
             }
 
             if (watchmakerPower.isPositive()) {
-                newStats += '<br>Silver watch production: <span class="small pink">about ' + watchmakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + watchmakerPower.mul(6000).format(2) + "</span>)"
+                newStats += '<br>Silver watch production from watchmakers: <span class="small pink">about ' + watchmakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + watchmakerPower.mul(6000).format(2) + "</span>)"
             }
 
             if (radiumMakerPower.isPositive()) {
-                newStats += '<br>Radioactive watch production: <span class="small pink">about ' + radiumMakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + radiumMakerPower.mul(6e7).format(2) + "</span>)"
+                newStats += '<br><span class="small dangerous">RADIOACTIVE</span> watch production from radium workers: <span class="small pink">about ' + radiumMakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + radiumMakerPower.mul(6e7).format(2) + "</span>)"
             }
 
             updateHTML(ID("stats"), newStats)
