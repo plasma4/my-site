@@ -2969,7 +2969,7 @@
             silverplanters: Silverplanter (7, A special planter allowing you to purchase more silvertrees at once)
             phoenixes: Phoenix$es (4, Rare and elusive creatures that will drop their rare feathers occasionally)
             feathers: Feather (3, It tickles!)
-            fcmakers: Flying Clock-Maker (3, Makes clocks after being sworn to absolute secrecy and a very lonely life)
+            fcmakers: Flying Clockmaker (3, Makes clocks after being sworn to absolute secrecy and a very lonely life)
             fc: Flying Clock (3, It doesn't seem to fly...not yet!)
             pens: Phoenix Pen (4, A bunch of phoenixes unethically packed together into a tiny room)
             nests: Phoenix Nest (4, A bunch of phoenixes pens redecorated and combined)
@@ -3117,6 +3117,10 @@
                         data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="$radium"
                         data-desc="Radium mills crush radium ore and make the radium enriched for use.\nCosts 50,000 steel and 40 clockmakers to operate this, as well as $25,000,000.$radiummills$">
                         Construct a RADIUM MILL <span class="radiumbar"></span>
+                        <span class="mini retro" data-earn="radiummills+1"
+                            data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="platinum>=1e7"
+                            data-desc="Get those costly construction managers to get radium mills faster!$radiummills$"
+                            data-multibuild></span>
                     </button>
 
                     <button class="silver" data-earn="steelmills+1" data-cost="furnaces-5|money-1e6" data-show="$mills"
@@ -3226,6 +3230,10 @@
                     <button class="ocean" data-earn="clockmakers+1" data-cost="money-50000|gc-50" data-show="family>0"
                         data-desc="Clockmakers make clocks for a living, albeit not very much.\nYou need to entice them with 50 golden clocks and $50,000 though, so save up!\n(Requires a pay of $3 a second)$clockmakers$">
                         Get a <span class="clock" role="img" aria-label="clock"></span>-maker
+                        <span class="mini retro" data-earn="clockmakers+1" data-cost="money-50000|gc-50"
+                            data-show="megamanagers>0"
+                            data-desc="OMEGA-managers allow you to acquire more clockmakers at once.\n(With all of the modern jobs out there, it's hard to convince people to work on clocks.)$clockmakers$"
+                            data-omegabuy></span>
                     </button>
                     <button class="diamond" data-earn="watchmakers+1" data-cost="goldb-40|clockmakers-1"
                         data-show="clockmakers>0"
@@ -3305,12 +3313,19 @@
                         data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="$radium"
                         data-desc="Radium mills crush radium ore and make the radium enriched for use.\nCosts 50,000 steel and 40 clock makers to operate this, as well as $25,000,000.$radiummills$">
                         Construct a RADIUM MILL <span class="radiumbar"></span>
+                        <span class="mini retro" data-earn="radiummills+1"
+                            data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="platinum>=1e7"
+                            data-desc="Get those costly construction managers to get radium mills faster!$radiummills$"
+                            data-multibuild></span>
                     </button>
                     <br>
                     <button class="stripe3" data-earn="radiummakers+1" data-cost="money-1e6|goldb-5e6"
                         data-show="$radium"
                         data-desc="Radium workers make radium clocks out of a clock and two radium rods, and radium watches out of two silver nuggets and two radium rods each.\nThey don't have any wages, but cost $1,000,000 and 5 MILLION gold bars.$radiummakers$">
                         Get a radium worker <span class="goldbar"></span>
+                        <span class="mini retro" data-cost="money-1e6|goldb-5e6"
+                            data-desc="OMEGA-managers allow you to acquire more radium workers at once.$radiummakers$"
+                            data-omegabuy></span>
                     </button>
                     <br>
                     <!-- Scary hairy, very scary -->
@@ -4014,7 +4029,7 @@
                         +1 construction manager <span class="platinumn"></span>
                     </button>
                     <button class="special"
-                        data-desc="Omega managers...now the possibilities are INFINITE!\nThey cost 25 MILLION gold blocks though!\n(HINT: [new game mechanics!!!])$omegamanagers$"
+                        data-desc="OMEGA-managers...now the possibilities are INFINITE!\nThey cost 25 MILLION gold blocks though!\n(HINT: [new game mechanics!!!])$omegamanagers$"
                         data-cost="goldb-2.5e7" data-earn="omegamanagers+1" data-show="megamanagers>0">
                         +1 <b class="red">O</b>MEGA-manager
                         <span class="coin"></span> <span class="coin"></span> <span class="coin"></span>
