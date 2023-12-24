@@ -9940,7 +9940,7 @@
 
             var newMoney = C("money")
             var moneyLoss = oldMoney.sub(newMoney)
-            var newStats = moneyLoss === false ? 'Money gain: <span class="small green">$' + newMoney.sub(oldMoney).format(2) + "</span>/sec" : ("Money loss: $" + moneyLoss.format(2) + "/sec")
+            var newStats = moneyLoss === false ? 'Money gain: <span class="small green">$' + newMoney.sub(oldMoney).format(2) + "</span>/sec" : ('Money loss: <span class="small red">$' + moneyLoss.format(2) + "</span>/sec")
 
             if (familyIncome.isPositive()) {
                 newStats += '<br>Family member income: <span class="small green">$' + familyIncome.mul(60).format(2) + "</span>/sec"
