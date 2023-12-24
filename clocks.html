@@ -10046,7 +10046,7 @@
 
             var themeCSS = colorIsBright(mainHex) ? "" : "*{color:#fff}html{background-color:#000}#hover{background-color:#000}"
             if (sleekMode) {
-                themeCSS += "#navigation>span{background-color:#999}#navigation>span:hover{background-color:#888}#navigation>span:active{background-color:#555}button,.mini{border-color:white!important;color:white;background:none!important;background-color:black!important;text-shadow:none!important;filter:none!important}"
+                themeCSS += "#navigation>span{background-color:#999}#navigation>span:hover{background-color:#888}#navigation>span:active{background-color:#555}button,.mini{border-color:white!important;color:white;background:none!important;background-color:black!important;text-shadow:none!important;filter:none!important}#spells>button:before{background:conic-gradient(#fff6 var(--time-left),transparent var(--time-left))}"
             }
             updateInput("mainColor", mainHex)
             updateInput("backColor", backHex)
