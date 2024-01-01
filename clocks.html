@@ -8923,8 +8923,8 @@
                 for (var i = 0; i < len;) {
                     var fadeFrame = fadeTimes[i] + 1
                     var button = fadeButtons[i]
-                    button.style.opacity = Math.sqrt(fadeFrame * 0.04).toFixed(6)
-                    if (fadeFrame === 25) {
+                    button.style.opacity = fadeFrame > 60 ? (fadeFrame % 20 < 10 ? 1 : 0) : Math.sqrt(fadeFrame / 60).toFixed(6)
+                    if (fadeFrame === 120) {
                         // Don't increment i, as the current position is now at new elements in the arrays
                         fadeTimes.splice(i, 1)
                         fadeButtons.splice(i, 1)
@@ -9000,6 +9000,7 @@
 
 
                 autosellOn = false
+                sellPercent = 100
                 usingTheme = false
                 sleekMode = true
                 mainColor = "#333"
