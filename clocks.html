@@ -4675,7 +4675,7 @@
 
                     <br>
                     <button class="cherrybg" id="shardAscend"
-                        data-desc="Are you REALLY going to sacrifice all non-ascension items in exchange for golden shards?\n{This button will reset all of your items and progress, excluding golden shards themselves!}">
+                        data-desc="Do you REALLY want to sacrifice all non-ascension items in exchange for golden shards?\n{This button will reset all of your items and progress, excluding golden shards themselves!}">
                         Ascend for golden shards!
                         <span class="shard"></span><span class="shard"></span><span class="shard"></span>
                     </button>
@@ -4685,17 +4685,14 @@
                         data-sound="transaction">
                         -1 <span class="shard" aria-label="GOLDEN shard"></span> for new researches costing science!
                     </span>
-                    <br>
                     <span class="mini special" data-cost="shards-1" data-earn="$magic" data-hide="$magic"
                         data-sound="transaction">
                         -1 <span class="shard" aria-label="GOLDEN shard"></span> for MAGIC!
                     </span>
-                    <br>
                     <span class="mini special" data-cost="shards-2" data-earn="$cheapfire" data-hide="$cheapfire"
                         data-sound="transaction">
                         -2 <span class="shard" aria-label="GOLDEN shards"></span> for 10× cheaper fireplanters
                     </span>
-                    <br>
                     <span class="mini special" data-cost="shards-10" data-earn="$gfurnaces" data-hide="$gfurnaces"
                         data-sound="transaction">
                         -10 <span class="shard" aria-label="GOLDEN shards"></span> for GOLDEN FURNACES!
@@ -9992,6 +9989,8 @@
                 updateId("potential", " earning many clocks")
             } else if (cps.isMore("1e3")) {
                 updateId("potential", " earning some clocks")
+            } else if (cps.isMore("1")) {
+                updateId("potential", " a start")
             } else {
                 updateId("potential", " not much else")
             }
@@ -10058,7 +10057,6 @@
         const NONE = 0
         const HALLOWEEN = 1
         const CHRISTMAS = 2
-        const NEWYEAR = 3
         var season = -1, holiday = NONE, activeElement = document.activeElement
         draw = function () {
             if (document.hidden) {
@@ -10066,7 +10064,7 @@
                 return
             }
             var date = new Date()
-            holiday = seasonsEnabled ? isDate(date, 10, 31) ? HALLOWEEN : (isDate(date, 12, 25) ? CHRISTMAS : (isDate(date, 1, 1) ? NEWYEAR : NONE)) : NONE
+            holiday = seasonsEnabled ? isDate(date, 10, 31) ? HALLOWEEN : (isDate(date, 12, 25) ? CHRISTMAS : NONE) : NONE
             var newSeason = seasonsEnabled ? datesClose(date, 10, 31, 7) ? HALLOWEEN : (datesClose(date, 12, 25, 12) ? CHRISTMAS : NONE) : NONE
             if (newSeason !== season) {
                 season = newSeason
@@ -10140,8 +10138,6 @@
                 updateHTML(cssElement, themeCSS + ".clock{filter:drop-shadow(2px 2px 1px black)}.clock,.rc{background-position:-160px -48px}.rc{animation:radioactive2 1s linear infinite}.gc{background-position:-160px -80px}" + extraCSS)
             } else if (season === CHRISTMAS) {
                 updateHTML(cssElement, themeCSS + ".clock{filter:drop-shadow(2px 2px 1px black)}.clock,.rc{background-position:-160px -64px}.gc{background-position:-160px -96px}" + extraCSS)
-            } else if (holiday === NEWYEAR) {
-                updateHTML(cssElement, themeCSS + ".clock{filter:drop-shadow(2px 2px 1px black)}.clock{background-position:-32px -48px}" + extraCSS)
             } else {
                 updateHTML(cssElement, themeCSS + extraCSS)
             }
@@ -10504,6 +10500,9 @@
                         }
                     } else if (hovered.id === "autosell" || hovered.id === "addAutosell" || hovered.id === "minusAutosell") {
                         text += "<br>[Autosell is currently " + (autosellOn ? "ENABLED and sells " + sellPercent + "% of clocks you make" : "DISABLED") + "]"
+                    } else if (hovered.id === "shardAscend") {
+                        var newShards = C("gc").mul(1e-9).floor()
+                        text += newShards.isZero() ? "<br>[Ascending will NOT earn you ANY SHARDS!]" : "<br>[Ascending will earn you a total of " + format(newShards) + " shards.]"
                     }
 
                     if (parent !== null && hovered.tagName !== "BUTTON" && parent.tagName === "BUTTON") {
