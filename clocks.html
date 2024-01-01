@@ -846,8 +846,6 @@
 
         button,
         .mini {
-            display: none;
-            opacity: 0;
             text-align: center;
             font-size: 22px;
             cursor: pointer;
@@ -860,6 +858,14 @@
             transition: transform 500ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, filter 1s;
             border-radius: 5px;
             color: black;
+        }
+
+        button[data-show],
+        button[data-hide],
+        .mini[data-show],
+        .mini[data-hide] {
+            display: none;
+            opacity: 0;
         }
 
         .mini {
@@ -881,6 +887,7 @@
 
         button:active,
         .mini:active {
+            transition: transform 200ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, filter 500ms;
             transform: scale(1.08);
             background-color: #b1b1b1;
         }
@@ -3189,6 +3196,10 @@
                     <button class="special" id="autosell"
                         data-desc="Automatically sells any clocks you have made as soon as you obtain them.">
                         Toggle clock autoselling <span class="money"></span>
+                        <span class="mini special" id="minusAutosell"
+                            data-desc="Decrease the percent of clocks you are AUTO-selling.">-</span>
+                        <span class="mini special" id="addAutosell"
+                            data-desc="Increase the percent of clocks you are AUTO-selling.">+</span>
                     </button>
                     <button
                         data-desc="In need of money, and fast? Sell your precious silver watches for $200 each!$money$"
@@ -7253,32 +7264,50 @@
             updateId("wattText", wattUsage === 1 ? "watt" : "watts")
         })
 
-        ID("autosell").addEventListener("click", function (e) {
-            autosellOn = !autosellOn
-        })
-
-        ID("disableAudio").addEventListener("change", function (e) {
+        ID("disableAudio").addEventListener("change", function () {
             noAudio = ID("disableAudio").checked
         })
 
-        ID("useSleek").addEventListener("change", function (e) {
+        ID("useSleek").addEventListener("change", function () {
             sleekMode = ID("useSleek").checked
         })
 
-        ID("useSeasons").addEventListener("change", function (e) {
+        ID("useSeasons").addEventListener("change", function () {
             seasonsEnabled = ID("useSeasons").checked
         })
 
-        ID("useTheme").addEventListener("change", function (e) {
+        ID("useTheme").addEventListener("change", function () {
             usingTheme = ID("useTheme").checked
         })
 
-        ID("mainColor").addEventListener("input", function (e) {
+        ID("mainColor").addEventListener("input", function () {
             mainColor = ID("mainColor").value
         })
 
-        ID("backColor").addEventListener("input", function (e) {
+        ID("backColor").addEventListener("input", function () {
             backColor = ID("backColor").value
+        })
+
+        var sellPercent = 100
+        ID("autosell").addEventListener("click", function () {
+            autosellOn = !autosellOn
+        })
+
+        ID("addAutosell").addEventListener("click", function (e) {
+            if (autosellOn) {
+                sellPercent = sellPercent >= 90 ? (sellPercent >= 99 ? 100 : 99) : (sellPercent <= 1 ? (sellPercent === 0 ? 1 : 10) : (sellPercent + 10))
+                e.stopPropagation()
+            }
+        })
+
+        ID("minusAutosell").addEventListener("click", function (e) {
+            if (sellPercent === 1) {
+                autosellOn = false
+                e.stopPropagation()
+            } else if (autosellOn) {
+                sellPercent = sellPercent >= 99 ? (sellPercent === 100 ? 99 : 90) : (sellPercent <= 10 ? 1 : (sellPercent - 10))
+                e.stopPropagation()
+            }
         })
 
         ID("wattCount").addEventListener("change", function (e) {
@@ -7493,7 +7522,7 @@
                     button.setAttribute("data-options", text.trim())
                 }
 
-                if (unlock === null) {
+                if (unlock === null && button.hasAttribute("data-hide")) {
                     button.style.display = "inline-block"
                     button.style.opacity = 1
                 }
@@ -8182,6 +8211,7 @@
 
                         showTab(proceed("Wb"), true)
                         autosellOn = proceed("AX") === "t"
+                        sellPercent = Number(proceed("\n\n"))
                         noAudio = proceed("FX") === "true"
                         sleekMode = proceed("EX") !== "[v]"
                         seasonsEnabled = proceed("fX") === "true"
@@ -8558,7 +8588,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + (autosellOn ? "t" : "fa") + "AX" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + (autosellOn ? "t" : "fa") + "AX" + sellPercent + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -9710,8 +9740,9 @@
 
             add("clocks", cpt)
             if (autosellOn) {
-                rawAdd("money", C("clocks"))
-                stuff.clocks = new H()
+                var quantity = cpt.mul(sellPercent).mul(speed).mul(0.01)
+                rawAdd("money", quantity)
+                rawRemove("clocks", quantity)
             }
 
             multiExchange(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore"], [miningPower.mul(0.0145), miningPower.mul(0.065), miningPower.mul(0.04), miningPower.mul(0.01825), miningPower.mul(0.003), miningPower.mul(0.0025), miningPower.mul(0.0175), miningPower.mul(0.0075), miningPower.mul(0.00325), miningPower.mul(0.0025), miningPower.mul(0.0002), miningPower.mul(0.0000027725)], "money", miners.mul(0.1))
@@ -9843,7 +9874,7 @@
             // Update the CPS element and change the color by modifying the class
             var cps = cpt.mul(speed).mul(60)
             var cpsElem = ID("cps")
-            update(cpsElem, (cps.plural((cps.floor(true).isZero() ? "no " : ((cps.isLess(10) ? "only " : "") + format(cps))) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))) + " a second (CPS)"))
+            update(cpsElem, (cps.plural((cps.isLess(1) ? "no " : ((cps.isLess(10) ? "only " : "") + format(cps))) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))) + " a second (CPS)"))
             if (cps.isMoreOrEqual(1e11)) {
                 updateClass(cpsElem, "move3")
             } else if (cps.isMoreOrEqual(1e10)) {
@@ -10471,8 +10502,8 @@
                                 text += " to cast."
                             }
                         }
-                    } else if (hovered.id === "autosell") {
-                        text += "<br>[Autosell is currently " + (autosellOn ? "ENABLED" : "DISABLED") + "]"
+                    } else if (hovered.id === "autosell" || hovered.id === "addAutosell" || hovered.id === "minusAutosell") {
+                        text += "<br>[Autosell is currently " + (autosellOn ? "ENABLED and sells " + sellPercent + "% of clocks you make" : "DISABLED") + "]"
                     }
 
                     if (parent !== null && hovered.tagName !== "BUTTON" && parent.tagName === "BUTTON") {
