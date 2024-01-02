@@ -58,39 +58,8 @@
             background-color: white;
             border: solid 4px white;
             border-radius: 8px;
-            animation: size1 4s linear infinite;
-            line-height: 18px;
-        }
-
-        @keyframes size1 {
-            0% {
-                font-size: 14px;
-            }
-
-            50% {
-                font-size: 16px;
-            }
-
-            100% {
-                font-size: 14px;
-            }
-        }
-
-        @keyframes size2 {
-            0% {
-                font-size: 18px;
-                line-height: 22px;
-            }
-
-            50% {
-                font-size: 20px;
-                line-height: 27px;
-            }
-
-            100% {
-                font-size: 18px;
-                line-height: 22px;
-            }
+            font-size: 18px;
+            line-height: 22px;
         }
 
         #everything {
@@ -537,11 +506,6 @@
         }
 
         @media (min-width: 750px) and (min-height: 400px) {
-            #hover {
-                animation: size2 4s linear infinite;
-                line-height: 22px;
-            }
-
             #navigation {
                 padding: 8px 2px 2px 2px;
             }
@@ -3258,9 +3222,9 @@
                     <button class="ocean" data-earn="clockmakers+1" data-cost="money-50000|gc-50" data-show="family>0"
                         data-desc="Clockmakers make clocks for a living, albeit not very much.\nYou need to entice them with 50 golden clocks and $50,000 though, so save up!\n(Requires a pay of $3 a second)$clockmakers$">
                         Get a <span class="clock" role="img" aria-label="clock"></span>-maker
-                        <span class="mini retro" data-earn="clockmakers+1" data-cost="money-50000|gc-50"
+                        <span class="mini stripe4" data-earn="clockmakers+1" data-cost="money-50000|gc-50"
                             data-show="megamanagers>0"
-                            data-desc="OMEGA-managers allow you to acquire more clockmakers at once.\n(With all of the modern jobs out there, it's hard to convince people to work on clocks.)$clockmakers$"
+                            data-desc="OMEGA-managers allow you to acquire more clockmakers at once!\n(With all of the modern jobs out there, it's hard to convince people to work on clocks.)$clockmakers$"
                             data-omegabuy></span>
                     </button>
                     <button class="diamond" data-earn="watchmakers+1" data-cost="goldb-40|clockmakers-1"
@@ -4073,7 +4037,7 @@
                         data-desc="Mega-managers allow you to buy multiple managers at once, as well as jewelers and all steam turbines.\nHowever, these people cost twenty MILLION golden clocks and a MILLION gold bars each!\n(Well, managers are greedy, after all.)$megamanagers$"
                         data-cost="gc-2e7|goldb-1e6" data-earn="megamanagers+1" data-show="managers>0">
                         +1 MEGA-manager <span class="coin"></span> <span class="coin"></span>
-                        <span class="mini stripe3"
+                        <span class="mini stripe4"
                             data-desc="Get multiple MEGA-managers at once.\nFor every OMEGA-manager you get, you get +1 purchase power!$megamanagers$"
                             data-cost="gc-5e7|goldb-1e6" data-earn="megamanagers+1" data-show="omegamanagers>0"
                             data-omegabuy></span>
@@ -4101,6 +4065,32 @@
                     </span>
 
                     <div id="research">
+                        <div data-cost="1e19" data-research="speedv"
+                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            Time Bender V: <span class="purple">$10.000Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e16" data-research="speediv"
+                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            Time Bender IV: <span class="purple">$10,000,000,000,000,000</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e13" data-research="speediii"
+                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            Time Bender III: <span class="purple">$10,000,000,000,000</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e10" data-research="speedii"
+                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            Time Bender II: <span class="purple">$10,000,000,000</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e7" data-research="speedi"
+                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            Time Bender I: <span class="purple">$10,000,000</span>
+                            <span class="big money"></span>
+                        </div>
+                        <br><br>
                         <div data-show="$shardsci|$gfurnaces" data-cost="S1e20" data-research="goldensci"
                             data-desc="It's called...magic, wait, no, SCIENCE! Awfully weird science though.\n(Golden furnaces are 10× faster!)">
                             Golden science: <span class="bluey">100.00Q</span>
@@ -4139,7 +4129,7 @@
                         </div>
                         <div data-iq="160" data-cost="4e17" data-research="business"
                             data-desc="[You NEED 160 digital knowlege to purchase this research!]\nInstead of building basic circuits from scratch, just buy them from overseas!\nHowever, this isn't cheap: you first have to convince them with a hefty amount of money to do business with you.\n(Allows you to buy 100 basic circuits at once in exchange for $1,000 in the same place where you build basic circuits!)">
-                            Overseas purchasing: <span class="foam">$1.500Q</span>
+                            Overseas circuit: <span class="foam">$1.500Q</span>
                             <span class="ticket"></span>
                         </div>
                         <div data-iq="150" data-cost="4e17" data-research="apples"
@@ -4336,7 +4326,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="science>=4e6|$coke2" data-cost="5e11" data-research="coke3"
-                            data-desc="As it turns out, coal tar is an effective binder material, and increases the effectiveness of coke ovens.\n(whatever that means)\nBut it will cost a lot to make! You knew that already though, right?\n(3× efficiency of coke ovens)">
+                            data-desc="As it turns out, coal tar is an effective binder material, and increases the effectiveness of coke ovens.\n[(yeah, i don't really know that means either)]\nBut it will cost a lot to make! You knew that already though, right?\n(3× efficiency of coke ovens)">
                             Coal tar: <span class="green">$500,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -7223,9 +7213,9 @@
         })
 
         ID("noBoosts").addEventListener("click", function () {
-            rawAdd("crystal3", stuff.bonus3.div(600).floor(), false)
-            rawAdd("crystal2", stuff.bonus2.div(600).floor(), false)
-            rawAdd("crystal1", stuff.bonus1.div(600).floor(), false)
+            rawAdd("crystal3", stuff.bonus3.div(timeBonus.mul(600)).floor(), false)
+            rawAdd("crystal2", stuff.bonus2.div(timeBonus.mul(600)).floor(), false)
+            rawAdd("crystal1", stuff.bonus1.div(timeBonus.mul(600)).floor(), false)
             stuff.bonus1 = new H()
             stuff.bonus2 = new H()
             stuff.bonus3 = new H()
@@ -7366,9 +7356,9 @@
             var newShards = C("gc").mul(1e-9).floor()
             if (confirm(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You WILL NOT EARN ANY SHARDS OR BONUSES!!!\r\nYOU WILL ALSO ONLY HAVE 25% CRYSTAL POWER REMAINING! (Likely a bad idea!!!)" : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
                 var oldShards = C("shards")
-                rawAdd("crystal3", stuff.bonus3.div(600).floor(), false)
-                rawAdd("crystal2", stuff.bonus2.div(600).floor(), false)
-                rawAdd("crystal1", stuff.bonus1.div(600).floor(), false)
+                rawAdd("crystal3", stuff.bonus3.div(timeBonus.mul(600)).floor(), false)
+                rawAdd("crystal2", stuff.bonus2.div(timeBonus.mul(600)).floor(), false)
+                rawAdd("crystal1", stuff.bonus1.div(timeBonus.mul(600)).floor(), false)
                 var purpleCrystals = C("crystal1")
                 var greenCrystals = C("crystal2")
                 var blueCrystals = C("crystal3")
@@ -7752,6 +7742,9 @@
 
                             if (part1 === "money" && hasResearch("marketing")) {
                                 multiplier = multiplier.mul(H(true).add(useableData.computers.mul(0.04)))
+                            }
+                            if (part1 === "bonus1" || part1 === "bonus2" || part1 === "bonus3") {
+                                multiplier = timeBonus
                             }
 
                             if (part2.charCodeAt(0) === 42 && !isRemoving) {
@@ -9523,12 +9516,13 @@
             return (0.2126 * ((base16 >> 16) & 0xff) + 0.7152 * ((base16 >> 8) & 0xff) + 0.0722 * (base16 & 0xff)) > 65
         }
 
-        var wattStuff, useableData, shardPower
+        var wattStuff, useableData, shardPower, timeBonus
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
         function updateGame() {
             var issue = "This occured while trying to update properties."
 
+            timeBonus = H(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0)
             var oldMoney = new H(C("money", issue))
 
             var shards = C("shards", issue)
@@ -9554,7 +9548,7 @@
             }
 
             // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
-            speed = speed.mul(frame + 1).floor(true).sub(speed.mul(frame).floor(true))
+            speed = speed.mul(frame + 1).floor(true).sub(speed.mul(frame).floor(true)).mul(timeBonus)
             if (speed.isZero()) {
                 return
             }
@@ -9749,7 +9743,7 @@
             add("clocks", cpt)
             if (autosellOn) {
                 var quantity = cpt.mul(sellPercent).mul(speed).mul(0.01)
-                rawAdd("money", quantity)
+                rawAdd("money", quantity.mul(H(true).add(useableData.computers.mul(0.04))))
                 rawRemove("clocks", quantity)
             }
 
@@ -10044,7 +10038,7 @@
             }
 
             if (radiumMakerPower.isPositive()) {
-                newStats += '<br><span class="small dangerous">RADIOACTIVE</span> watch production from radium workers: <span class="small pink">about ' + radiumMakerPower.mul(valueMultiplier).format(2) + '</span> every second (worth <span class="small green">$' + radiumMakerPower.mul(valueMultiplier).mul(1e6).format(2) + "</span>)"
+                newStats += '<br><span class="small dangerous">RADIOACTIVE</span> watch production from radium workers: <span class="small pink">about ' + radiumMakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + radiumMakerPower.mul(valueMultiplier).mul(1e6).format(2) + "</span>)"
             }
 
             updateHTML(ID("stats"), newStats)
@@ -10302,7 +10296,7 @@
 
             if (!C("bonus3", issue).isZero()) {
                 updateClass(speedElements[1], "big crystal3")
-                if (remove("bonus3", H(speed))) {
+                if (rawRemove("bonus3", H(true))) {
                     speed = speed.mul(100)
                 } else {
                     clear("bonus3")
@@ -10313,7 +10307,7 @@
 
             if (!C("bonus2", issue).isZero()) {
                 updateClass(speedElements[2], "big crystal2")
-                if (remove("bonus2", H(speed))) {
+                if (rawRemove("bonus2", H(speed))) {
                     speed = speed.mul(25)
                 } else {
                     clear("bonus2")
@@ -10324,7 +10318,7 @@
 
             if (!C("bonus1", issue).isZero()) {
                 updateClass(speedElements[3], "big crystal1")
-                if (remove("bonus1", H(speed))) {
+                if (rawRemove("bonus1", H(speed))) {
                     speed = speed.mul(10)
                 } else {
                     clear("bonus1")
