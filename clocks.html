@@ -3507,13 +3507,25 @@
                     <br>
                     <button class="gold" data-earn="separators+1" data-cost="steel-5000|money-10000|furnaces-1"
                         data-show="gastanks>0"
-                        data-desc="Oil separators separate oil and water to produce naphtha.\nCosts 5,000 steel and $10,000 each, as well as a furnace to heat the natural gas up.\n(NOTE: you need glass bottles to store the naphtha!)$separators$">
+                        data-desc="Oil separators separate oil and water to produce naphtha.\nCosts 5,000 steel and $10,000 each, as well as a furnace to heat the natural gas up.\n[(IMPORTANT: GET GLASS BOTTLES TO STORE NAPHTHA!)]$separators$">
                         Get a natural gas separator
                     </button>
                     <button class="gold" data-earn="petroplants+1" data-cost="steel-40000|money-1e6|furnaces-10"
                         data-show="separators>0"
                         data-desc="Giant petrochemical plants use ten furnaces, cost $1,000,000, and 40,000 steel.\nFinally, produces plastic!$petroplants$">
                         Get a petrochemical plant
+                    </button>
+
+                    <br>
+                    <button class="bronze"
+                        data-desc="Glass bottles can be used to store chemicals like naphtha.\n(Costs $2 each)$bottles$"
+                        data-cost="money-2" data-earn="bottles+1" data-show="arms>0">
+                        Get a <span class="bottle" role="img" aria-label="glass bottle"></span>
+                    </button>
+                    <button class="bronze" data-earn="glassmakers+1" data-cost="bricks-1250|money-1000"
+                        data-show="bottles>0"
+                        data-desc="Get a glassmaker to help automate glass bottle production through extrusion blowing.\nCosts $4,000 and 500 steel to set up the equipment, and requires a payment of $30 a second.$glassmakers$">
+                        Get a glassmaker <span class="bottle"></span>
                     </button>
                 </div>
 
@@ -3960,22 +3972,9 @@
                     You can make bricks with a digger, molder, and kiln (kilns are powered with wood).
 
                     <br>
-                    <button class="bronze"
-                        data-desc="One dollar, one brick!\nYour hands must be tired from all that clicking...$bricks$"
+                    <button class="bronze" data-desc="One dollar, one brick!\nAt least they come cheap...$bricks$"
                         data-cost="money-1" data-earn="bricks+1">
                         Get a <span class="brick" role="img" aria-label="brick"></span>
-                    </button>
-                    <button class="bronze"
-                        data-desc="Glass bottles can be used to store chemicals like naphtha.\n(Costs $2 each)$bottles$"
-                        data-cost="money-2" data-earn="bottles+1" data-show="arms>0">
-                        Get a <span class="bottle" role="img" aria-label="glass bottle"></span>
-                    </button>
-
-                    <br>
-                    <button class="bronze" data-earn="glassmakers+1" data-cost="bricks-1250|money-1000"
-                        data-show="bottles>0"
-                        data-desc="Get a glassmaker to help automate glass bottle production through extrusion blowing.\nCosts $4,000 and 500 steel to set up the equipment, and requires a payment of $30 a second.$glassmakers$">
-                        Get a glassmaker <span class="bottle"></span>
                     </button>
 
                     <br>
@@ -4799,11 +4798,20 @@
                         Made by Leo Zhang. All rights reserved!
                     </strong>
 
-                    <br>
+                    <div class="small orange">
+                        January 1, 2024: Added time-bending!
+                        (Perfect update for the <b class="small pink">New Year</b> too.)
+                        <br>
+                    </div>
+                    <div class="small red">
+                        (Also, I forgot to mention in the devlog that clock autoselling is now a thing,
+                        and you can choose how much to sell automatically.)
+                    </div>
+
+                    <br><br>
                     <div class="large pink">Version <b>0.1.0</b>: <i>the main release!</i></div>
                     <div class="small purple">
-                        ^^^ If you're wondering why there's not more colors, it's because it's mostly bugfixes for
-                        saving!
+                        ^^^ It's mostly bugfixes for saving!
                     </div>
                     <div class="smaller red">
                         Added on December 22, 2023: Attempted to COMPLETELY REWORK the loading function!
@@ -4894,14 +4902,17 @@
                                 hopefully that won't take 200 forevers (thanks for your support!!!)
                             </b>
                         </li>
-                        <li><b>More computer technologies and fun stuff!!!</b></li>
+                        <li>
+                            <b><del>More computer technologies and fun stuff!!!</del></b>
+                            <ins>Finished!</ins>
+                        </li>
                         <li>Working on improving ascensions</li>
                         <li>Trying to simplify the game</li>
                     </ul>
 
                     <ul>
-                        <li>How about I add more when the game is better?</li>
-                        <li>oh wait programming doesn't work like that</li>
+                        <li><del>How about I add more when the game is better?</del></li>
+                        <li><del>oh wait programming doesn't work like that</del></li>
                     </ul>
 
                     Future plans for magic:
@@ -4944,6 +4955,7 @@
                     Version <b>0.0.3</b>: <span class="small rainbow">stuff</span>!
                     <span class="question"></span><span class="question"></span><span class="question"></span>
                     <br>
+                    uh not much to see here
 
                     <br>
                     <button id="secret" class="stripe4">access super secret menu</button>
@@ -9442,7 +9454,7 @@
             "Make sure to check your researches every once in a while: you never know if you've unlocked a new upgrade. Now's a good time to increase the amount of scientists and managers that you have!",
             "At this point, you will have unlocked lots of features! You may want to start getting turbines in the electricity menu to increase the amount of watts you get. You can even start unlocking phoenixes in the feathery phoenix menu, which is...interesting.",
             "Well done! I'm out of tips for now, so you'll have to go explore on your own from now on. Just try to hire lots of scientists to generate creativity and science, which will allow you to unlock new technologies! Hey, I wonder what LITERAL EXOTIC APPLES ARE...",
-            "this isn't a tip, but more like a thank you for playing so far and unlocking literal FIERY APPLES. (just don't cheat!) :>"
+            "this isn't a tip, but more like a thank you for playing so far and unlocking literal FIERY APPLES. This game will likely never be finished, but see how much further you can go! :>"
         ]
 
         function updateTip() {
