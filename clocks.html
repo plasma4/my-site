@@ -173,7 +173,7 @@
         }
 
         #research:hover>div {
-            background-color: #8ef28c22;
+            background-color: #fff2;
         }
 
         #research>div:hover {
@@ -186,7 +186,7 @@
         }
 
         #research>div.researched {
-            background-color: #000;
+            background-color: black;
             cursor: default;
             font-size: 15px;
             opacity: 0.3;
@@ -2849,7 +2849,7 @@
         </header>
 
         <div id="properties">
-            s5|s4|s3|s2|silverpower|silverwood|f5|f4|f3|f2|fierypower|coke|molds|wood|silverb|platinumb|sodaash|ironore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            s5|s4|s3|s2|silverpower|silverwood|f5|f4|f3|f2|fierypower|coke|molds|wood|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -3009,20 +3009,11 @@
         <span id="crystal" tabindex="0"></span>
 
         <nav id="navigation" aria-label="Navigation to switch tabs">
-            <span data-tab="main" title="Main menu"><span class="hammer"></span></span>
-            <span data-tab="normalc" title="Normal clock menu"><span class="clock"></span></span>
-            <span data-tab="goldc" title="Golden clock menu" data-show="money>0"><span class="gc"></span></span>
-            <span data-tab="radiumc" title="Radium clock menu" data-show="$radium"><span class="rc"></span></span>
-            <span data-tab="earth" title="Underground menu" data-show="money>=5000"><span class="rock"></span></span>
-            <span data-tab="machines" title="Machine menu" data-show="steelmills>0"><span class="chip"></span></span>
-            <span data-tab="metal" title="Aluminum menu" data-show="$aluminum"><span class="aluminum"></span></span>
-            <span data-tab="fierya" title="Fiery planting menu" data-show="$apples"><span class="fwood"></span></span>
-            <span data-tab="silvera" title="Silver planting menu" data-show="fierywood>0">
-                <span class="swood"></span>
-            </span>
+            <span data-tab="main" title="Build menu"><span class="hammer"></span></span>
+            <span data-tab="clock" title="Clock menu"><span class="clock"></span></span>
+            <span data-tab="fierya" title="Fiery planting menu" data-show="$apples"><span class="gapple"></span></span>
             <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span>
-            <span data-tab="phoenix" title="Phoenix menu" data-show="bricks>0"><span class="feather"></span></span>
-            <span data-tab="building" title="Building menu" data-show="miners>0"><span class="brick"></span></span>
+            <span data-tab="building" title="Building menu" data-show="money>=2500"><span class="brick"></span></span>
             <span data-tab="tech" title="Technology menu" data-show="furnaces>0"><span class="flask"></span></span>
             <span data-tab="zappy" title="Electricity menu" data-show="steelmills>0"><span class="bolt"></span></span>
             <span data-tab="rocket" title="Rocket menu" data-show="$rocketry"><span class="rocket"></span></span>
@@ -3127,247 +3118,7 @@
                         Get a steel mill constructor <span class="gears"></span>
                     </button>
 
-                    <br>
-                    <button data-earn="clocks+1" data-desc="+1\nplus 1\nand one$clocks$">
-                        Build a <span class="clock" role="img" aria-label="clock"></span>
-                    </button>
-                    <button data-earn="gc+1"
-                        data-desc="Create 1 large golden clock by merging 5 clocks and a golden nugget.$gc$"
-                        data-cost="clocks-5|gold-1" data-show="clocks>=15|money>0" class="gold">
-                        Build a <span class="gc" role="img" aria-label="golden clock"></span>
-                    </button>
-                </div>
-
-                <div id="normalc" style="display: none">
-                    <!-- stuff.clocks = Infinity -->
-                    <span class="big clock"></span>
-                    <tt>clocks++</tt>
-
-                    <br>
-                    <button data-desc="You're rich!$money$" data-earn="money+1" data-cost="clocks-1"
-                        data-sound="transaction">
-                        Sell 1 <span class="clock" role="img" aria-label="clock"></span>
-                        <span class="mini silver" data-earn="money+*1" data-cost="clocks-10%" data-sound="transaction"
-                            data-show="clocks>=10" data-desc="Sell 10% of all your clocks!">
-                            10% <span class="clock" role="img" aria-label="of clocks"></span>
-                        </span>
-                        <span data-earn="money+*1" data-cost="clocks-all" data-show="clocks>=10" class="mini night"
-                            data-sound="transaction"
-                            data-desc="Instantly sells ALL of your clocks!\nI guess they're gone now...unless you can rebuy them...">
-                            ALL <span class="clock" role="img" aria-label="clocks"></span>
-                        </span>
-                    </button>
-                    <button class="special" id="autosell"
-                        data-desc="Automatically sells any clocks you have made as soon as you obtain them.">
-                        Toggle clock autoselling <span class="money"></span>
-                        <span class="mini special" id="minusAutosell"
-                            data-desc="Decrease the percent of clocks you are AUTO-selling.">-</span>
-                        <span class="mini special" id="addAutosell"
-                            data-desc="Increase the percent of clocks you are AUTO-selling.">+</span>
-                    </button>
-                    <button
-                        data-desc="In need of money, and fast? Sell your precious silver watches for $200 each!$money$"
-                        data-show="watches>0" data-earn="money+200" data-cost="watches-1" data-sound="transaction">
-                        Sell 1 <span class="watch" role="img" aria-label="watch"></span>
-                        <span class="mini silver" data-earn="money+*200" data-cost="watches-10%"
-                            data-desc="Sell 10% of all your watches!" data-sound="transaction">
-                            10% <span class="watch" role="img" aria-label="of watches"></span>
-                        </span>
-                        <span data-earn="money+*200" data-cost="watches-all" class="mini night" data-sound="transaction"
-                            data-desc="Instantly sells ALL of your watches!\nI guess they're gone now :-P">
-                            ALL <span class="watch" role="img" aria-label="watches"></span>
-                        </span>
-                    </button>
-                    <button
-                        data-desc="A single radioactive watch is a MILLION DOLLARS because it's so rare!\nSurely the government won't care...$money$"
-                        data-show="rwatches>0" data-earn="money+1e6" data-cost="rwatches-1" data-sound="transaction">
-                        Sell 1 <span class="rwatch" role="img" aria-label="radioactive watch"></span>
-                        <span class="mini silver" data-earn="money+*1e6" data-cost="rwatches-10%"
-                            data-desc="Sell 10% of all your radioactive watches!" data-sound="transaction">
-                            10% <span class="rwatch" role="img" aria-label="of radioactive watches"></span>
-                        </span>
-                        <span data-earn="money+*1e6" data-cost="rwatches-all" class="mini night"
-                            data-sound="transaction"
-                            data-desc="Instantly sells ALL of your radioactive watches!\nI guess they're gone now :-P">
-                            ALL <span class="rwatch" role="img" aria-label="radioactive watches"></span>
-                        </span>
-                    </button>
-
-                    <br>
-                    <button data-earn="clocks+1"
-                        data-desc="A lonely clock: cheap but easy to make!\nClocks are the most basic item you can have!$clocks$">
-                        Build a <span class="clock" role="img" aria-label="clock"></span>
-                    </button>
-                    <button data-earn="gc+1"
-                        data-desc="Create 1 large golden clock by merging 5 clocks and a golden nugget.\nIt does indeed take a few tries to create!$gc$"
-                        data-cost="clocks-5|gold-1" data-show="clocks>=15|money>0" class="gold">
-                        Build a <span class="gc" role="img" aria-label="golden clock"></span>
-                    </button>
-                    <button data-earn="rc+1" data-cost="clocks-1|radium-2" data-show="$radium" class="stripe3"
-                        data-desc="[TIP: You can sacrifice radium clocks in the phoenix panel for 50,000 glue in ONE CLICK!]\n...dangerous...handle with care...\nCosts one clock and two radium rods to construct.$rc$">
-                        Build a <span class="rc" role="img" aria-label="radioactive clock"></span>
-                    </button>
-
-                    <br>
-                    <!-- One more, one more -->
-                    <button data-earn="family+1" data-cost="gc-5" data-show="gc>1"
-                        data-desc="Get a family member to help, who is enticed by a single payment of 5 hand-signed golden clocks.\nIt's better than nothing, I suppose, although the amount of clocks each one makes goes down gradually.$family$"
-                        class="bronze">
-                        family|Get a family member|Get another family member|Get a distant family member|Get another
-                        relative|
-                        Get YET ANOTHER relative|Get one more relative|One more...distant...relative...|just one more
-                    </button>
-
-                    <br>
-                    <button class="ocean" data-earn="clockmakers+1" data-cost="money-50000|gc-50" data-show="family>0"
-                        data-desc="Clockmakers make clocks for a living, albeit not very much.\nYou need to entice them with 50 golden clocks and $50,000 though, so save up!\n(Requires a pay of $3 a second)$clockmakers$">
-                        Get a <span class="clock" role="img" aria-label="clock"></span>-maker
-                        <span class="mini stripe4" data-earn="clockmakers+1" data-cost="money-50000|gc-50"
-                            data-show="megamanagers>0"
-                            data-desc="OMEGA-managers allow you to acquire more clockmakers at once!\n(With all of the modern jobs out there, it's hard to convince people to work on clocks.)$clockmakers$"
-                            data-omegabuy></span>
-                    </button>
-                    <button class="diamond" data-earn="watchmakers+1" data-cost="goldb-40|clockmakers-1"
-                        data-show="clockmakers>0"
-                        data-desc="Watchmakers are like clock makers, except they make, well, silver watches.\nIn order to get a watchmaker, you need one clock maker to do the job and an initial hoard of 40 gold blocks in exchange.\n(Requires a pay of $40 a second rather than $3.)$watchmakers$">
-                        Get a watchmaker
-                    </button>
-
                     <br><br>
-                    <!-- HUGE CLOCKS 4 HUGE GAINS -->
-                    <button data-earn="megaclocks+1" data-sound="building"
-                        data-desc="Build a MegaClock for selling by painstakingly combining 250,000 clocks. All rights reserved.$megaclocks$"
-                        data-cost="clocks-250000" data-show="watts>0" class="goldbg">Build a MegaClock</button>
-                    <button data-earn="eraclocks+1" data-sound="building"
-                        data-desc="Build an ERAClock Pro+ Limited Maximus-50 Goldius ExtraUltimate...\nSuperior Edition Final Superfinale Extreme Bigger EvenBigger BiggestHuge.\nThis thing sure takes up a lot of space, and costs a hefty 100M clocks and 4,000 bricks!$eraclocks$"
-                        data-cost="clocks-1e8|bricks-4000" data-show="clocks>=8e7|megaclocks>0|bricks>=4000"
-                        class="goldbg">
-                        Construct a limited ERAClock
-                    </button>
-                </div>
-
-                <div id="goldc" style="display: none">
-                    <span class="big goldbar"></span>
-                    Gold is valuable and can be used as an amazing decoration.
-
-                    <br>
-                    <button data-earn="goldore+10" data-cost="money-10"
-                        data-desc="Ten pieces of ore only cost $10 because the technology to extract the gold out is significantly more complex.\nDon't get too much at the start!$goldore$"
-                        class="silver">
-                        Buy 10 pieces of gold ore <span class="goldbar"></span>
-                    </button>
-                    <button data-earn="gold+1" data-cost="money-25" data-show="goldore>0"
-                        data-desc="You take a bite of the tiny piece of gold. It leaves teeth marks.\nCosts $25.$gold$"
-                        class="gold">
-                        Buy a nugget <span class="goldn"></span>
-                    </button>
-                    <button data-earn="goldb+1" data-cost="gold-25|clocks-50" data-show="family>0"
-                        data-desc="You look at the blocks (or, really, bars) on display.\nYou need 25 golden nuggets and 50 clocks as payment to exchange for one of these rare products.$goldb$"
-                        class="r1">
-                        Buy a <span class="glow">shiny GOLD</span> BLOCK! <span class="goldbar"></span>
-                    </button>
-
-                    <br>
-                    <!-- Veri Good... -->
-                    <button class="retro" data-earn="jewelers+1" data-cost="goldb-25" data-show="goldb>0"
-                        data-desc="The jeweler makers loves gold and will be on your side for 25 gold blocks.\nThat seems overpriced, but you need them on your side to help take some work off your hands.\nWith their skilled hands, it only costs 4 clocks and a single golden nugget to make one.$jewelers$">
-                        <span class="comical">
-                            Get a pro fesin al jewe=er verigood <span class="person"></span> :o
-                        </span>
-                        <span class="mini retro" data-earn="jewelers+1" data-cost="goldb-25"
-                            data-desc="much good to get mega-managers to buy more of us at once$jewelers$"
-                            data-show="managers>0" data-megabuy></span>
-                    </button>
-                    <button data-earn="barmolds+1" data-cost="steel-400|goldb-80|arms-1" data-show="goldb>60|arms>0"
-                        class="retro"
-                        data-desc="Bar molders make gold bars automatically by smelting them.\nCosts 400 steel and 80 gold bars, as well as a robot arm to automate the process.$barmolds$">
-                        Get a gold bar molder <span class="goldbar"></span>
-                        <span class="mini retro" data-earn="barmolds+1" data-cost="steel-400|goldb-80|arms-1"
-                            data-show="platinum>=1e7"
-                            data-desc="Get the costly construction managers to get more gold bar molders at once!$barmolds$"
-                            data-multibuild></span>
-                    </button>
-
-                    <br>
-                    <button data-earn="gc+1"
-                        data-desc="Create 1 large golden clock by merging 5 clocks and a golden nugget.$gc$"
-                        data-cost="clocks-5|gold-1" data-show="clocks>=15|money>0" class="gold">
-                        Build a <span class="gc" role="img" aria-label="golden clock"></span>
-                    </button>
-                </div>
-
-                <div id="radiumc" style="display: none">
-                    <span class="big rc"></span>
-                    Radioactive stuff is bright and dangerous.
-
-                    <br>
-                    <button class="caribbean" data-earn="radiummills+1" data-sound="building"
-                        data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="$radium"
-                        data-desc="Radium mills crush radium ore and make the radium enriched for use.\nCosts 50,000 steel and 40 clock makers to operate this, as well as $25,000,000.$radiummills$">
-                        Construct a RADIUM MILL <span class="radiumbar"></span>
-                        <span class="mini stripe3" data-earn="radiummills+1"
-                            data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="platinum>=1e7"
-                            data-desc="Get those costly construction managers to get radium mills faster!$radiummills$"
-                            data-multibuild></span>
-                    </button>
-                    <br>
-                    <button class="stripe3" data-earn="radiummakers+1" data-cost="money-1e6|goldb-5e6"
-                        data-show="$radium"
-                        data-desc="Radium workers make radium clocks out of a clock and two radium rods, and radium watches out of two silver nuggets and two radium rods each.\nThey don't have any wages, but cost $1,000,000 and 5 MILLION gold bars.$radiummakers$">
-                        Get a radium worker <span class="goldbar"></span>
-                        <span class="mini stripe4" data-earn="radiummakers+1" data-cost="money-1e6|goldb-5e6"
-                            data-desc="OMEGA-managers allow you to acquire more radium workers at once.$radiummakers$"
-                            data-omegabuy></span>
-                    </button>
-                    <br>
-                    <!-- Scary hairy, very scary -->
-                    <button data-earn="rc+1" data-cost="clocks-1|radium-2" data-show="radiumore>0" class="stripe3"
-                        data-desc="[TIP: You can sacrifice radium clocks in the phoenix panel for 50,000 glue in ONE CLICK!]\n...dangerous...handle with care...\nCosts one clock and two radium pieces to construct.$rc$">
-                        Build a <span class="rc" role="img" aria-label="radioactive clock"></span>
-                    </button>
-                </div>
-
-                <div id="earth" style="display: none">
-                    <span class="big limestone"></span>
-                    You can extract many items from under the earth, albeit with a price.
-
-                    <br>
-                    <button data-earn="miners+1" data-cost="money-20000"
-                        data-desc="The miner is happy to help mine ores from beneath the ground, with a substantial starting fee of 20,000 dollars.\nTo extract the contents out of these, build a blast furnace with bricks (a future technology).\n(Each miner is also paid $6 a second. Miners obtain ores, NOT NUGGETS!)$miners$"
-                        class="gold">
-                        Get a miner <span class="pickaxe"></span>
-                        <span class="mini stripe1" data-earn="miners+1" data-cost="money-20000"
-                            data-desc="Hold your clickers!\nFor every manager you get, you get +1 purchasing power.$miners$"
-                            data-show="miners>0" data-multibuy></span>
-                    </button>
-                    <button class="bronze" data-earn="diggers+1" data-cost="money-50000" data-show="miners>0"
-                        data-desc="You're going to need $50,000 for a single digger, and each digger will need to be paid $10 a second!\nYeah, THey're goING 2.0*2.0 need A HHEEFFTTYY PayMINT (c) 2^2 someTHING that ;boooooring;.$diggers$">
-                        Get a digger <span class="shovel"></span>
-                        <span class="mini stripe2" data-earn="diggers+1" data-cost="money-50000"
-                            data-desc="You can get more MEGA-managers to buy diggers faster.$diggers$"
-                            data-show="miners>0" data-megabuy></span>
-                    </button>
-
-                    <br>
-                    <button data-earn="coalminers+1" data-cost="steel-5e6|miners-5" data-show="$coal"
-                        data-desc="Get a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 100,000 watts.$coalminers$"
-                        class="gold">
-                        Get a coal miner machine <span class="coal"></span>
-                    </button>
-
-                    <br>
-                    <button class="bronze" data-earn="cokeovens+1" data-cost="bricks-5000" data-show="bricks>=4000"
-                        data-sound="building"
-                        data-desc="These tiny coke ovens are made using 5,000 bricks, and help convert coal into coke: a COOLER fuel.\n(Requires a pay of $15 a second)$cokeovens$">
-                        Get a coke oven
-                        <span class="mini stripe1" data-earn="cokeovens+1" data-cost="bricks-5000"
-                            data-show="platinum>=1e7" data-sound="building"
-                            data-desc="You can get more coke ovens at once by getting more construction managers!$cokeovens$"
-                            data-multibuild></span>
-                    </button>
-                </div>
-
-                <div id="machines" style="display: none">
                     <span class="big gears"></span>
                     You can get robot arms and factories to help with your never-ending quest for more
                     <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span
@@ -3482,6 +3233,8 @@
                         data-cost="money-1000" data-earn="circuits+100" data-show="$business">
                         Purchase 100 <span class="circuit" role="img" aria-label="basic circuit"></span>
                     </button>
+
+                    <br>
                     <button class="diamond" data-sound="building"
                         data-desc="Construct an circuit board out of 25 integrated circuits, 400 pieces of silicon, and 100 pieces of plastic.$boards$"
                         data-cost="circuits-25|silicon-400|plastic-100" data-earn="boards+1" data-show="$assembly">
@@ -3527,9 +3280,8 @@
                         data-desc="Get a glassmaker to help automate glass bottle production through extrusion blowing.\nCosts $4,000 and 500 steel to set up the equipment, and requires a payment of $30 a second.$glassmakers$">
                         Get a glassmaker <span class="bottle"></span>
                     </button>
-                </div>
 
-                <div id="metal" style="display: none">
+                    <br><br>
                     <span class="big aluminum"></span>
                     Aluminum is a crucial part of rockets and can make robot arms!
 
@@ -3551,32 +3303,185 @@
                         data-desc="Produces aluminum!\nCosts $500,000,000 as well as a coke oven.$aluminum4$">
                         Get an Aluminum Smelter
                     </button>
+                </div>
+
+                <div id="clock" style="display: none">
+                    <!-- stuff.clocks = Infinity -->
+                    <span class="big clock"></span>
+                    <tt>clocks++</tt>
+
+                    <br>
+                    <button data-desc="You're rich!$money$" data-earn="money+1" data-cost="clocks-1"
+                        data-sound="transaction">
+                        Sell 1 <span class="clock" role="img" aria-label="clock"></span>
+                        <span class="mini silver" data-earn="money+*1" data-cost="clocks-10%" data-sound="transaction"
+                            data-show="clocks>=10" data-desc="Sell 10% of all your clocks!">
+                            10% <span class="clock" role="img" aria-label="of clocks"></span>
+                        </span>
+                        <span data-earn="money+*1" data-cost="clocks-all" data-show="clocks>=10" class="mini night"
+                            data-sound="transaction"
+                            data-desc="Instantly sells ALL of your clocks!\nI guess they're gone now...unless you can rebuy them...">
+                            ALL <span class="clock" role="img" aria-label="clocks"></span>
+                        </span>
+                    </button>
+                    <button class="special" id="autosell"
+                        data-desc="Automatically sells any clocks you have made as soon as you obtain them.">
+                        Toggle clock autoselling <span class="money"></span>
+                        <span class="mini special" id="minusAutosell"
+                            data-desc="Decrease the percent of clocks you are AUTO-selling.">-</span>
+                        <span class="mini special" id="addAutosell"
+                            data-desc="Increase the percent of clocks you are AUTO-selling.">+</span>
+                    </button>
+                    <button class="special" id="easyClicking" data-show="family>0"
+                        data-desc="Easy clicking clicks 10 times a second on a button if you are pressing the Space/Enter key, or if you are pressing down on a button.">
+                        Toggle easy clicking
+                    </button>
 
                     <br><br>
-                    <button data-earn="aluminumarms+1" data-sound="building" data-show="aluminum1>0"
-                        data-desc="Well-made aluminum robot arms work four times faster than normal robot arms, yet still use the same amount of power!\nHowever, they cost 250 aluminum instead of 125.$aluminumarms$"
-                        data-cost="aluminum-250" class="goldbg">
-                        Build an aluminum robot arm
-                        <span class="mini stripe1" data-earn="aluminumarms+100" data-sound="building"
-                            data-desc="Build one hundred of these at once!$aluminumarms$" data-cost="aluminum-25000"
-                            data-show="constructors>0">
-                            100×
+                    <button
+                        data-desc="In need of money, and fast? Sell your precious silver watches for $200 each!$money$"
+                        data-show="watches>0" data-earn="money+200" data-cost="watches-1" data-sound="transaction">
+                        Sell 1 <span class="watch" role="img" aria-label="watch"></span>
+                        <span class="mini silver" data-earn="money+*200" data-cost="watches-10%"
+                            data-desc="Sell 10% of all your watches!" data-sound="transaction">
+                            10% <span class="watch" role="img" aria-label="of watches"></span>
                         </span>
-                        <span class="mini stripe2" data-earn="aluminumarms+10000" data-sound="building"
-                            data-desc="You don't need descriptions anymore, right?$aluminumarms$"
-                            data-cost="aluminum-2.5e6" data-show="constructors>1">
-                            10,000×
+                        <span data-earn="money+*200" data-cost="watches-all" class="mini night" data-sound="transaction"
+                            data-desc="Instantly sells ALL of your watches!\nI guess they're gone now :-P">
+                            ALL <span class="watch" role="img" aria-label="watches"></span>
                         </span>
-                        <span class="mini stripe3" data-earn="aluminumarms+1e6" data-sound="building"
-                            data-desc="(read: previous description)$aluminumarms$" data-cost="aluminum-2.5e8"
-                            data-show="constructors>2">
-                            1,000,000×
+                    </button>
+                    <button
+                        data-desc="A single radioactive watch is a MILLION DOLLARS because it's so rare!\nSurely the government won't care...$money$"
+                        data-show="rwatches>0" data-earn="money+1e6" data-cost="rwatches-1" data-sound="transaction">
+                        Sell 1 <span class="rwatch" role="img" aria-label="radioactive watch"></span>
+                        <span class="mini silver" data-earn="money+*1e6" data-cost="rwatches-10%"
+                            data-desc="Sell 10% of all your radioactive watches!" data-sound="transaction">
+                            10% <span class="rwatch" role="img" aria-label="of radioactive watches"></span>
                         </span>
-                        <span class="mini stripe4" data-earn="aluminumarms+1e8" data-sound="building"
-                            data-desc="Do you [really] need 100 MILLION aluminum robot arms?$aluminumarms$"
-                            data-cost="aluminum-2.5e10" data-show="$massarms|constructors>3">
-                            100,000,000×
+                        <span data-earn="money+*1e6" data-cost="rwatches-all" class="mini night"
+                            data-sound="transaction"
+                            data-desc="Instantly sells ALL of your radioactive watches!\nI guess they're gone now :-P">
+                            ALL <span class="rwatch" role="img" aria-label="radioactive watches"></span>
                         </span>
+                    </button>
+
+                    <br>
+                    <button data-earn="clocks+1"
+                        data-desc="A lonely clock: cheap but easy to make!\nClocks are the most basic item you can have!$clocks$">
+                        Build a <span class="clock" role="img" aria-label="clock"></span>
+                    </button>
+                    <button data-earn="gc+1"
+                        data-desc="Create 1 large golden clock by merging 5 clocks and a golden nugget.\nIt does indeed take a few tries to create!$gc$"
+                        data-cost="clocks-5|gold-1" data-show="clocks>=15|money>0" class="gold">
+                        Build a <span class="gc" role="img" aria-label="golden clock"></span>
+                    </button>
+                    <button data-earn="rc+1" data-cost="clocks-1|radium-2" data-show="$radium" class="stripe3"
+                        data-desc="[TIP: You can sacrifice radium clocks in the phoenix panel for 50,000 glue in ONE CLICK!]\n...dangerous...handle with care...\nCosts one clock and two radium rods to construct.$rc$">
+                        Build a <span class="rc" role="img" aria-label="radioactive clock"></span>
+                    </button>
+
+                    <br>
+                    <!-- One more, one more -->
+                    <button data-earn="family+1" data-cost="gc-5" data-show="gc>1"
+                        data-desc="Get a family member to help, who is enticed by a single payment of 5 hand-signed golden clocks.\nIt's better than nothing, I suppose, although the amount of clocks each one makes goes down gradually.$family$"
+                        class="bronze">
+                        family|Get a family member|Get another family member|Get a distant family member|Get another
+                        relative|
+                        Get YET ANOTHER relative|Get one more relative|One more...distant...relative...|just one more
+                    </button>
+
+                    <br>
+                    <button class="ocean" data-earn="clockmakers+1" data-cost="money-50000|gc-50" data-show="family>0"
+                        data-desc="Clockmakers make clocks for a living, albeit not very much.\nYou need to entice them with 50 golden clocks and $50,000 though, so save up!\n(Requires a pay of $3 a second)$clockmakers$">
+                        Get a <span class="clock" role="img" aria-label="clock"></span>-maker
+                        <span class="mini stripe4" data-earn="clockmakers+1" data-cost="money-50000|gc-50"
+                            data-show="megamanagers>0"
+                            data-desc="OMEGA-managers allow you to acquire more clockmakers at once!\n(With all of the modern jobs out there, it's hard to convince people to work on clocks.)$clockmakers$"
+                            data-omegabuy></span>
+                    </button>
+                    <button class="diamond" data-earn="watchmakers+1" data-cost="goldb-40|clockmakers-1"
+                        data-show="clockmakers>0"
+                        data-desc="Watchmakers are like clock makers, except they make, well, silver watches.\nIn order to get a watchmaker, you need one clock maker to do the job and an initial hoard of 40 gold blocks in exchange.\n(Requires a pay of $40 a second rather than $3.)$watchmakers$">
+                        Get a watchmaker
+                    </button>
+
+                    <br><br>
+                    <!-- HUGE CLOCKS 4 HUGE GAINS -->
+                    <button data-earn="megaclocks+1" data-sound="building"
+                        data-desc="Build a MegaClock for selling by painstakingly combining 250,000 clocks. All rights reserved.$megaclocks$"
+                        data-cost="clocks-250000" data-show="watts>0" class="goldbg">Build a MegaClock</button>
+                    <button data-earn="eraclocks+1" data-sound="building"
+                        data-desc="Build an ERAClock Pro+ Limited Maximus-50 Goldius ExtraUltimate...\nSuperior Edition Final Superfinale Extreme Bigger EvenBigger BiggestHuge.\nThis thing sure takes up a lot of space, and costs a hefty 100M clocks and 4,000 bricks!$eraclocks$"
+                        data-cost="clocks-1e8|bricks-4000" data-show="clocks>=8e7|megaclocks>0|bricks>=4000"
+                        class="goldbg">
+                        Construct a limited ERAClock
+                    </button>
+
+                    <hr>
+                    <span class="big goldbar"></span>
+                    Gold is valuable and can be used as an amazing decoration.
+
+                    <br>
+                    <button data-earn="goldore+10" data-cost="money-10"
+                        data-desc="Ten pieces of ore only cost $10 because the technology to extract the gold out is significantly more complex.\nDon't get too much at the start!$goldore$"
+                        class="silver">
+                        Buy 10 pieces of gold ore <span class="goldbar"></span>
+                    </button>
+                    <button data-earn="gold+1" data-cost="money-25" data-show="goldore>0"
+                        data-desc="You take a bite of the tiny piece of gold. It leaves teeth marks.\nCosts $25.$gold$"
+                        class="gold">
+                        Buy a nugget <span class="goldn"></span>
+                    </button>
+                    <button data-earn="goldb+1" data-cost="gold-25|clocks-50" data-show="family>0"
+                        data-desc="You look at the blocks (or, really, bars) on display.\nYou need 25 golden nuggets and 50 clocks as payment to exchange for one of these rare products.$goldb$"
+                        class="r1">
+                        Buy a <span class="glow">shiny GOLD</span> BLOCK! <span class="goldbar"></span>
+                    </button>
+
+                    <br>
+                    <!-- Veri Good... -->
+                    <button class="retro" data-earn="jewelers+1" data-cost="goldb-25" data-show="goldb>0"
+                        data-desc="The jeweler makers loves gold and will be on your side for 25 gold blocks.\nThat seems overpriced, but you need them on your side to help take some work off your hands.\nWith their skilled hands, it only costs 4 clocks and a single golden nugget to make one.$jewelers$">
+                        <span class="comical">
+                            Get a pro fesin al jewe=er verigood <span class="person"></span> :o
+                        </span>
+                        <span class="mini retro" data-earn="jewelers+1" data-cost="goldb-25"
+                            data-desc="much good to get mega-managers to buy more of us at once$jewelers$"
+                            data-show="managers>0" data-megabuy></span>
+                    </button>
+                    <button data-earn="barmolds+1" data-cost="steel-400|goldb-80|arms-1" data-show="goldb>60|arms>0"
+                        class="retro"
+                        data-desc="Bar molders make gold bars automatically by smelting them.\nCosts 400 steel and 80 gold bars, as well as a robot arm to automate the process.$barmolds$">
+                        Get a gold bar molder <span class="goldbar"></span>
+                        <span class="mini retro" data-earn="barmolds+1" data-cost="steel-400|goldb-80|arms-1"
+                            data-show="platinum>=1e7"
+                            data-desc="Get the costly construction managers to get more gold bar molders at once!$barmolds$"
+                            data-multibuild></span>
+                    </button>
+
+                    <hr>
+                    <span class="big rc"></span>
+                    Radioactive stuff is bright and dangerous.
+
+                    <br>
+                    <button class="caribbean" data-earn="radiummills+1" data-sound="building"
+                        data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="$radium"
+                        data-desc="Radium mills crush radium ore and make the radium enriched for use.\nCosts 50,000 steel and 40 clock makers to operate this, as well as $25,000,000.$radiummills$">
+                        Construct a RADIUM MILL <span class="radiumbar"></span>
+                        <span class="mini stripe3" data-earn="radiummills+1"
+                            data-cost="steel-50000|clockmakers-40|money-2.5e7" data-show="platinum>=1e7"
+                            data-desc="Get those costly construction managers to get radium mills faster!$radiummills$"
+                            data-multibuild></span>
+                    </button>
+                    <br>
+                    <button class="stripe3" data-earn="radiummakers+1" data-cost="money-1e6|goldb-5e6"
+                        data-show="$radium"
+                        data-desc="Radium workers make radium clocks out of a clock and two radium rods, and radium watches out of two silver nuggets and two radium rods each.\nThey don't have any wages, but cost $1,000,000 and 5 MILLION gold bars.$radiummakers$">
+                        Get a radium worker <span class="goldbar"></span>
+                        <span class="mini stripe4" data-earn="radiummakers+1" data-cost="money-1e6|goldb-5e6"
+                            data-desc="OMEGA-managers allow you to acquire more radium workers at once.$radiummakers$"
+                            data-omegabuy></span>
                     </button>
                 </div>
 
@@ -3744,13 +3649,8 @@
                         data-desc="Forge a small firebar from a thousand firecoins!$firebars$">
                         +1 firebar
                     </span>
-                </div>
 
-                <div id="silvera" style="display: none">
-                    <span class="big fapple"></span><span class="big sapple"></span><span class="big gapple"></span>
-                    Apples!
-
-                    <br><br>
+                    <hr>
                     <div class="grid">
                         <div id="silverfruit" class="burning2"
                             data-desc="Silverfruit can be used to plant special silvertrees." data-for="$big sapple">
@@ -3858,7 +3758,7 @@
                         <button data-id="zappy-energy" data-cooldown="7200" data-earn="wattseconds=max"
                             data-cost="energy-250" data-show="energy>100"
                             data-desc="Get the maximum amount of watt-seconds you can store from ALL your batteries!\nCosts 250 magic energy.$wattseconds$">
-                            <span class="bigger bolt"></span>
+                            <span class="bigger gbolt"></span>
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
                         <button data-id="two-times-coal" data-cooldown="360" data-earn="coal*2"
@@ -3877,7 +3777,7 @@
                         <button data-id="energetic" data-cooldown="3600" data-earn="energy+25"
                             data-cost="bottles-5|radium-100000" data-show="ponds>0"
                             data-desc="Get 25 MAGICAL energy by using five bottles and 100,000 radium rods as sacrifice.$energy$">
-                            <span class="bigger gbolt"></span>
+                            <span class="bigger bolt"></span>
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
                         <br>
@@ -3901,12 +3801,94 @@
                     </div>
                 </div>
 
-                <div id="phoenix" style="display: none">
+                <div id="building" style="display: none">
+                    <span class="big limestone"></span>
+                    You can extract many items from under the earth, albeit with a price.
+
+                    <br>
+                    <button data-earn="miners+1" data-cost="money-20000"
+                        data-desc="The miner is happy to help mine ores from beneath the ground, with a substantial starting fee of 20,000 dollars.\nTo extract the contents out of these, build a blast furnace with bricks (a future technology).\n(Each miner is also paid $6 a second. Miners obtain ores, NOT NUGGETS!)$miners$"
+                        class="gold">
+                        Get a miner <span class="pickaxe"></span>
+                        <span class="mini stripe1" data-earn="miners+1" data-cost="money-20000"
+                            data-desc="Hold your clickers!\nFor every manager you get, you get +1 purchasing power.$miners$"
+                            data-show="miners>0" data-multibuy></span>
+                    </button>
+                    <button class="bronze" data-earn="diggers+1" data-cost="money-50000" data-show="miners>0"
+                        data-desc="You're going to need $50,000 for a single digger, and each digger will need to be paid $10 a second!\nYeah, THey're goING 2.0*2.0 need A HHEEFFTTYY PayMINT (c) 2^2 someTHING that ;boooooring;.$diggers$">
+                        Get a digger <span class="shovel"></span>
+                        <span class="mini stripe2" data-earn="diggers+1" data-cost="money-50000"
+                            data-desc="You can get more MEGA-managers to buy diggers faster.$diggers$"
+                            data-show="miners>0" data-megabuy></span>
+                    </button>
+
+                    <br>
+                    <button data-earn="coalminers+1" data-cost="steel-5e6|miners-5" data-show="$coal"
+                        data-desc="Get a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 100,000 watts.$coalminers$"
+                        class="gold">
+                        Get a coal miner machine <span class="coal"></span>
+                    </button>
+
+                    <br>
+                    <button class="bronze" data-earn="cokeovens+1" data-cost="bricks-5000" data-show="bricks>=4000"
+                        data-sound="building"
+                        data-desc="These tiny coke ovens are made using 5,000 bricks, and help convert coal into coke: a COOLER fuel.\n(Requires a pay of $15 a second)$cokeovens$">
+                        Get a coke oven
+                        <span class="mini stripe1" data-earn="cokeovens+1" data-cost="bricks-5000"
+                            data-show="platinum>=1e7" data-sound="building"
+                            data-desc="You can get more coke ovens at once by getting more construction managers!$cokeovens$"
+                            data-multibuild></span>
+                    </button>
+
+                    <hr>
+                    <span class="big shovel"></span>
+                    You can make bricks with a digger, molder, and kiln (kilns are powered with wood).
+
+                    <br>
+                    <button class="bronze" data-desc="One dollar, one brick!\nAt least they come cheap...$bricks$"
+                        data-show="miners>0" data-cost="money-1" data-earn="bricks+1">
+                        Get a <span class="brick" role="img" aria-label="brick"></span>
+                    </button>
+
+                    <br>
+                    <button class="bronze"
+                        data-desc="Molders help create 1 hand-made brick from each piece of clay you dig.\nMolders require an initial cost of $10,000 and 4 golden clocks, plus a pay of $5 a second.$molders$"
+                        data-cost="money-10000|gc-4" data-earn="molders+1" data-show="diggers>0">
+                        Get a molder <span class="mold"></span>
+                        <span class="mini stripe2" data-cost="money-10000|gc-4" data-earn="molders+1"
+                            data-desc="You can get more MEGA-managers in order to get more molders quicker!$molders$"
+                            data-show="megamanagers>0" data-megabuy></span>
+                    </button>
+                    <button class="silver"
+                        data-desc="Get a solid kiln to start firing brick molds into hardened bricks, along with wood.\nCosts fifty bricks. Hmm...if only you could purchase bricks to make more bricks...$kilns$"
+                        data-cost="bricks-50" data-earn="kilns+1" data-show="molders>0" data-sound="building">
+                        Get a kiln <span class="brick"></span>
+                        <span class="mini stripe1" data-earn="kilns+1" data-cost="bricks-50" data-show="platinum>=1e7"
+                            data-sound="building"
+                            data-desc="You can get more kilns at once by getting more construction managers!$kilns$"
+                            data-multibuild></span>
+                    </button>
+
+                    <br>
+                    <button class="silver"
+                        data-desc="Woodcutters are free to get, but get paid $15 a second!\nNot blue wood just yet. You'll see the cost of that...\n(NOTE: To prevent yourself from losing money too quickly, don't get too many of these!)$woodcutters$"
+                        data-earn="woodcutters+1" data-show="kilns>0">
+                        Get a woodcutter <span class="wood"></span>
+                    </button>
+
+                    <br>
+                    <button class="caribbean"
+                        data-desc="Blue wood can be used as advanced fuel, and each of these workers need 1,000 flying clocks to start, as well as a flying clock every few seconds to keep going.\nThey sure take a weird payment...but it works!$bluecutters$"
+                        data-earn="bluecutters+1" data-cost="fc-1000" data-show="$bwood">
+                        Get a <span class="bluey">BLUE</span> woodcutter <span class="bwood"></span>
+                    </button>
+
+                    <hr>
                     <span class="big feather"></span>
                     Feathers are collected from phoenixes, elusive creatures indeed.
                     <div class="small">Be sure to collect these little creatures early for your ascensions!</div>
 
-                    <button class="bronze"
+                    <button class="bronze" data-show="molders>0"
                         data-desc="You can get a small portion of glue for just one dollar, which will be used to make flying clocks.$glue$"
                         data-cost="money-1" data-earn="glue+1">
                         Get <span class="glue" role="img" aria-label="glue"></span>
@@ -3964,50 +3946,6 @@
                         data-desc="Costs 100,000 flying clocks and a hundred nests, as well as 1,000 ERAClocks.\nI feel bad for the phoenixes in this game...\nPhoenix labs produce phoenix nests, which produces pens, which produces phoenixes.\nYou get it, don't you?$labs$"
                         data-cost="nests-100|fc-100000" data-show="nests>=50">
                         Get a phoenix lab
-                    </button>
-                </div>
-
-                <div id="building" style="display: none">
-                    <span class="big shovel"></span>
-                    You can make bricks with a digger, molder, and kiln (kilns are powered with wood).
-
-                    <br>
-                    <button class="bronze" data-desc="One dollar, one brick!\nAt least they come cheap...$bricks$"
-                        data-cost="money-1" data-earn="bricks+1">
-                        Get a <span class="brick" role="img" aria-label="brick"></span>
-                    </button>
-
-                    <br>
-                    <button class="bronze"
-                        data-desc="Molders help create 1 hand-made brick from each piece of clay you dig.\nMolders require an initial cost of $10,000 and 4 golden clocks, plus a pay of $5 a second.$molders$"
-                        data-cost="money-10000|gc-4" data-earn="molders+1" data-show="diggers>0">
-                        Get a molder <span class="mold"></span>
-                        <span class="mini stripe2" data-cost="money-10000|gc-4" data-earn="molders+1"
-                            data-desc="You can get more MEGA-managers in order to get more molders quicker!$molders$"
-                            data-show="megamanagers>0" data-megabuy></span>
-                    </button>
-                    <button class="silver"
-                        data-desc="Get a solid kiln to start firing brick molds into hardened bricks, along with wood.\nCosts fifty bricks. Hmm...if only you could purchase bricks to make more bricks...$kilns$"
-                        data-cost="bricks-50" data-earn="kilns+1" data-show="molders>0" data-sound="building">
-                        Get a kiln <span class="brick"></span>
-                        <span class="mini stripe1" data-earn="kilns+1" data-cost="bricks-50" data-show="platinum>=1e7"
-                            data-sound="building"
-                            data-desc="You can get more kilns at once by getting more construction managers!$kilns$"
-                            data-multibuild></span>
-                    </button>
-
-                    <br>
-                    <button class="silver"
-                        data-desc="Woodcutters are free to get, but get paid $15 a second!\nNot blue wood just yet. You'll see the cost of that...\n(NOTE: To prevent yourself from losing money too quickly, don't get too many of these!)$woodcutters$"
-                        data-earn="woodcutters+1" data-show="kilns>0">
-                        Get a woodcutter <span class="wood"></span>
-                    </button>
-
-                    <br>
-                    <button class="caribbean"
-                        data-desc="Blue wood can be used as advanced fuel, and each of these workers need 1,000 flying clocks to start, as well as a flying clock every few seconds to keep going.\nThey sure take a weird payment...but it works!$bluecutters$"
-                        data-earn="bluecutters+1" data-cost="fc-1000" data-show="$bwood">
-                        Get a <span class="bluey">BLUE</span> woodcutter <span class="bwood"></span>
                     </button>
                 </div>
 
@@ -4089,7 +4027,9 @@
                             Time Bender I: <span class="purple">$10,000,000</span>
                             <span class="big money"></span>
                         </div>
+
                         <br><br>
+
                         <div data-show="$shardsci|$gfurnaces" data-cost="S1e20" data-research="goldensci"
                             data-desc="It's called...magic, wait, no, SCIENCE! Awfully weird science though.\n(Golden furnaces are 10× faster!)">
                             Golden science: <span class="bluey">100.00Q</span>
@@ -4355,7 +4295,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="science>=1000|creativity>2500" data-cost="8e7" data-research="radium"
-                            data-desc="Radium ore looks quite scary, but with proper care, it can be turned into radium bars and clocks.\n(Unlocks radium mills and workers. Radium mills make radium rods, which be used to make RADIOACTIVE clocks. Oh, and you can sacrifice them in the phoenix menu for 50,000 glue!)">
+                            data-desc="Radium ore looks quite scary, but with proper care, it can be turned into radium bars and clocks.\n(Unlocks radium mills and workers. Radium mills make radium rods, which be used to make RADIOACTIVE clocks. Oh, and you can sacrifice them in the brick/building menu for 50,000 glue!)">
                             Research radium enrichment: <span class="green">$80,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -4385,7 +4325,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-research="aluminum" data-cost="2e10"
-                            data-desc="Aluminum is important in the construction of rockets!\nwait, it's aluminium in british english!!?\n(Allows you to create aluminum with significant effort, or aluminium if you're British.)">
+                            data-desc="Aluminum is important in the construction of rockets!\nwait, it's aluminium in british english!!?\n(Allows you to create aluminum with significant effort in the main build menu, or aluminium if you're British.)">
                             Aluminum 101: <span class="green">$20,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -4438,7 +4378,38 @@
                     <div class="small">(Each watt costs $0.10 a second, and you need enough money to receive power)
                     </div>
 
-                    <br>
+                    <button class="silver" data-desc="It'll cost $200 for a company-grade battery.$batteries$"
+                        data-cost="money-200" data-earn="batteries+1" data-show="watts>0">
+                        Buy a <span class="battery" role="img" aria-label="battery"></span>
+                    </button>
+                    <button class="gold"
+                        data-desc="MEGABatteries are absolutely HUGE, and cost $25,000. They store 100 times more than a normal battery though, so they're worth it.\n(probably)$megabatteries$"
+                        data-cost="money-25000" data-earn="megabatteries+1" data-show="batteries>0">
+                        Buy a MEGA-<span class="battery" role="img" aria-label="battery"></span>
+                    </button>
+                    <button class="diamond"
+                        data-desc="Instead of storing electricity the conventional way, use ANOTHER non-renewable source: blue wood.\nThese store WAY MORE than a normal battery, plus they look snazzy from what you're told!\nCosts a MILLION blue wood (plus $10,000 for the packaging).$bluebatteries$"
+                        data-cost="bwood-1e6|money-10000" data-earn="bluebatteries+1"
+                        data-show="megabatteries>0|megaturbines>0">
+                        Buy a <span class="battery" role="img" aria-label="battery"></span> made of blue wood
+                    </button>
+                    <button class="diamond" data-earn="turbines+1" data-cost="money-500000|steel-125000"
+                        data-show="bottles>0"
+                        data-desc="Each steam turbine needs 300 coal a second to power and produces 2,000 watts each (enough to power 20 machines).\nYou need $500,000 and 125,000 steel to build one of these!$turbines$">
+                        Get a steam turbine
+                        <span class="mini caribbean" data-earn="turbines+1" data-desc="*too lazy to add a description*"
+                            data-cost="money-500000|steel-125000" data-megabuy></span>
+                    </button>
+                    <button class="diamond" data-earn="megaturbines+1" data-cost="money-2e8|steel-1e7"
+                        data-show="turbines>1"
+                        data-desc="Each mega-turbine needs 36,000 coal a second to power and produces 100 times as much as a classical steam turbine!\nYou need $200,000,000 as well as 10 million steel to construct one, however.$megaturbines$">
+                        Get a GIANT steam turbine
+                        <span class="mini caribbean" data-earn="megaturbines+1"
+                            data-desc="It really does feel like clockwork sometimes..."
+                            data-cost="money-500000|steel-125000" data-megabuy></span>
+                    </button>
+
+                    <br><br>
                     <b>---Power Grid---</b>
                     <br>
 
@@ -4498,38 +4469,6 @@
                         <input type="checkbox" id="factoryOverclock">
                         Overclock Factories (3× wattage required for 1.5× wattage production)
                     </label>
-
-                    <br>
-                    <button class="silver" data-desc="It'll cost $200 for a company-grade battery.$batteries$"
-                        data-cost="money-200" data-earn="batteries+1" data-show="watts>0">
-                        Buy a <span class="battery" role="img" aria-label="battery"></span>
-                    </button>
-                    <button class="gold"
-                        data-desc="MEGABatteries are absolutely HUGE, and cost $25,000. They store 100 times more than a normal battery though, so they're worth it.\n(probably)$megabatteries$"
-                        data-cost="money-25000" data-earn="megabatteries+1" data-show="batteries>0">
-                        Buy a MEGA-<span class="battery" role="img" aria-label="battery"></span>
-                    </button>
-                    <button class="diamond"
-                        data-desc="Instead of storing electricity the conventional way, use ANOTHER non-renewable source: blue wood.\nThese store WAY MORE than a normal battery, plus they look snazzy from what you're told!\nCosts a MILLION blue wood (plus $10,000 for the packaging).$bluebatteries$"
-                        data-cost="bwood-1e6|money-10000" data-earn="bluebatteries+1"
-                        data-show="megabatteries>0|megaturbines>0">
-                        Buy a <span class="battery" role="img" aria-label="battery"></span> made of blue wood
-                    </button>
-                    <button class="diamond" data-earn="turbines+1" data-cost="money-500000|steel-125000"
-                        data-show="bottles>0"
-                        data-desc="Each steam turbine needs 300 coal a second to power and produces 2,000 watts each (enough to power 20 machines).\nYou need $500,000 and 125,000 steel to build one of these!$turbines$">
-                        Get a steam turbine
-                        <span class="mini caribbean" data-earn="turbines+1" data-desc="*too lazy to add a description*"
-                            data-cost="money-500000|steel-125000" data-megabuy></span>
-                    </button>
-                    <button class="diamond" data-earn="megaturbines+1" data-cost="money-2e8|steel-1e7"
-                        data-show="turbines>1"
-                        data-desc="Each mega-turbine needs 36,000 coal a second to power and produces 100 times as much as a classical steam turbine!\nYou need $200,000,000 as well as 10 million steel to construct one, however.$megaturbines$">
-                        Get a GIANT steam turbine
-                        <span class="mini caribbean" data-earn="megaturbines+1"
-                            data-desc="It really does feel like clockwork sometimes..."
-                            data-cost="money-500000|steel-125000" data-megabuy></span>
-                    </button>
                 </div>
 
                 <div id="rocket" style="display: none">
@@ -4798,10 +4737,14 @@
                         Made by Leo Zhang. All rights reserved!
                     </strong>
 
+                    <div class="smallish yellow">
+                        January 2, 2024: Menus are <b class="smallish orange">simpler</b>!
+                        <br>
+                        (Also added easy clicking for the slow clickers out there)
+                    </div>
                     <div class="small orange">
                         January 1, 2024: Added time-bending!
                         (Perfect update for the <b class="small pink">New Year</b> too.)
-                        <br>
                     </div>
                     <div class="small red">
                         (Also, I forgot to mention in the devlog that clock autoselling is now a thing,
@@ -5702,9 +5645,9 @@
                     if (digitDiff > 49) {
                         return a
                     }
+
                     var modified = aData - (digitDiff === 0 ? bData : bData / (10n ** BigInt(digitDiff)))
                     var length = modified.toString().length
-
                     if (length !== 50) {
                         var digitDiff = 50 - length
                         digits -= digitDiff
@@ -6381,6 +6324,10 @@
                 if (value.$[0] === 0) {
                     var digits = value.$[1]
                     if (digits < 50) {
+                        if (digits < 0) {
+                            value.$ = [0, 0, 0n]
+                            return value
+                        }
                         var diffPower = 10n ** BigInt(49 - digits)
                         value.$[2] = value.$[2] / diffPower * diffPower
                     }
@@ -6436,8 +6383,12 @@
                 if (value.$[0] === 0) {
                     var digits = value.$[1]
                     if (digits < 50) {
-                        var diffPower = 10n ** BigInt(49 - digits)
                         var data = value.$[2]
+                        if (digits < 0) {
+                            value.$ = data === 0n ? [0, 0, 0n] : [0, 0, 10000000000000000000000000000000000000000000000000n]
+                            return value
+                        }
+                        var diffPower = 10n ** BigInt(49 - digits)
                         var flooredData = (data / diffPower) * diffPower
                         value.$[2] = flooredData === data ? flooredData : (flooredData + diffPower)
                     }
@@ -6944,18 +6895,46 @@
         const cssElement = document.getElementsByTagName("style")[1]
         const main = ID("main")
 
-        var hovered = null, mouseX = -1, mouseY = -1, noTouching = true
-        document.addEventListener("mousemove", function (e) {
+        var hovered = null, mouseX = -1, mouseY = -1, noTouching = true, mouseDown = false
+        document.addEventListener("mousedown", function (e) {
             if (noTouching) {
+                mouseDown = true
                 mouseX = e.clientX
                 mouseY = e.clientY
                 var target = e.target
+                easyButton = target
+                easyTime = Date.now() + 500
 
                 if (target.getAttribute) {
                     hovered = target
                 } else {
                     hovered = null
                 }
+            }
+        })
+
+        document.addEventListener("mousemove", function (e) {
+            if (noTouching) {
+                mouseX = e.clientX
+                mouseY = e.clientY
+                var target = e.target
+                if (easyClick && easyButton !== null && easyButton !== target) {
+                    easyButton = target
+                    easyTime = Date.now() + 100
+                }
+
+                if (target.getAttribute) {
+                    hovered = target
+                } else {
+                    hovered = null
+                }
+            }
+        })
+
+        document.addEventListener("mouseup", function (e) {
+            mouseDown = false
+            if (noTouching) {
+                easyButton = null
             }
         })
 
@@ -6966,12 +6945,15 @@
         document.addEventListener("touchmove", updateTouch)
         document.addEventListener("touchend", function (e) {
             noTouching = e.touches.length === 0
+            easyButton = null
         })
 
         function updateTouch(e) {
             if (e.touches.length === 1) {
                 var touch = e.touches[0]
                 var target = document.elementFromPoint(touch.clientX, touch.clientY)
+                easyButton = target
+                easyTime = Date.now() + 500
 
                 if (target !== null && target.getAttribute) {
                     hovered = target
@@ -7037,7 +7019,19 @@
             updateId("removeButton", isRemoving ? "Disable Item Removal" : "Enable Item Removal (THIS BUTTON IS FOR REMOVING ITEMS ONLY!)")
         }
 
-        document.addEventListener("keyup", updateRemoveAmount)
+        var easyButton = null, easyTime = -1, spaceDown = false, enterDown = false
+        document.addEventListener("keyup", function (e) {
+            if (e.keyCode === 32) {
+                spaceDown = false
+            } else if (e.keyCode === 13) {
+                enterDown = false
+            }
+            if (!spaceDown && !enterDown) {
+                easyButton = null
+            }
+            updateRemoveAmount(e)
+        })
+
         document.addEventListener("keydown", function (e) {
             var target = e.target
             updateRemoveAmount(e)
@@ -7048,6 +7042,13 @@
                         e.preventDefault()
                     }
                 } else if (isSpaceOrEnter) {
+                    if (e.keyCode === 32) {
+                        spaceDown = true
+                    } else {
+                        enterDown = true
+                    }
+                    easyButton = target
+                    easyTime = Date.now() + 500
                     target.click()
                     e.preventDefault()
                 }
@@ -7300,6 +7301,21 @@
         var sellPercent = 100
         ID("autosell").addEventListener("click", function () {
             autosellOn = !autosellOn
+            if (!noAudio) {
+                var sound = sounds.press
+                sound.currentTime = 0
+                sound.play()
+            }
+        })
+
+        var easyClick = false
+        ID("easyClicking").addEventListener("click", function () {
+            easyClick = !easyClick
+            if (!noAudio) {
+                var sound = sounds.press
+                sound.currentTime = 0
+                sound.play()
+            }
         })
 
         ID("addAutosell").addEventListener("click", function (e) {
@@ -7585,8 +7601,14 @@
                         len = costs.length
                     }
                     let containsSpell = button.parentElement.id === "spells"
-                    // Add the onclick event
-                    button[containsSpell ? "onmousedown" : "onclick"] = function (e) {
+                    // Add the click event (or mouse/touchpad press for spells)
+                    if (containsSpell) {
+                        button.onmousedown = eventFunction
+                        button.ontouchstart = eventFunction
+                    } else {
+                        button.onclick = eventFunction
+                    }
+                    function eventFunction(e) {
                         // Prevent the button being clicked multiple times during the same frame
                         if (alreadyClicked) {
                             if (e !== true) {
@@ -8223,6 +8245,7 @@
 
                         showTab(proceed("Wb"), true)
                         autosellOn = proceed("AX") === "t"
+                        easyClick = proceed("\n") === "OK"
                         sellPercent = Number(proceed("\n\n"))
                         noAudio = proceed("FX") === "true"
                         sleekMode = proceed("EX") !== "[v]"
@@ -8600,7 +8623,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + (autosellOn ? "t" : "fa") + "AX" + sellPercent + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + (autosellOn ? "t" : "fa") + "AX" + (easyClick ? "OK" : "ISSUE") + "\n" + sellPercent + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -8928,16 +8951,18 @@
                 for (var i = 0; i < len;) {
                     var fadeFrame = fadeTimes[i] + 1
                     var button = fadeButtons[i]
-                    button.style.opacity = fadeFrame > 60 ? (fadeFrame % 20 < 10 ? 1 : 0) : Math.sqrt(fadeFrame / 60).toFixed(6)
-                    if (fadeFrame === 120) {
-                        // Don't increment i, as the current position is now at new elements in the arrays
-                        fadeTimes.splice(i, 1)
-                        fadeButtons.splice(i, 1)
-                        len--
-                    } else {
-                        // Update the time and increment the counter
-                        fadeTimes[i] = fadeFrame
-                        i++
+                    if (button.parentElement.style.display !== "none") {
+                        button.style.opacity = fadeFrame > 60 ? (fadeFrame % 20 < 10 ? 1 : 0) : Math.sqrt(fadeFrame / 60).toFixed(6)
+                        if (fadeFrame === 180) {
+                            // Don't increment i, as the current position is now at new elements in the arrays
+                            fadeTimes.splice(i, 1)
+                            fadeButtons.splice(i, 1)
+                            len--
+                        } else {
+                            // Update the time and increment the counter
+                            fadeTimes[i] = fadeFrame
+                            i++
+                        }
                     }
                 }
             }
@@ -9003,7 +9028,9 @@
                 aluminumArmsEnabled = true
                 coalMachinesEnabled = true
 
-
+                easyClick = false
+                easyButton = null
+                easyTime = -1
                 autosellOn = false
                 sellPercent = 100
                 usingTheme = false
@@ -9445,7 +9472,7 @@
             "Miners give you ore, but you'll need a furnace to use them. At this point, you can get bricks for $1 each. If you get 1,250 bricks, you can get a furnace (in the first build menu).",
             "It's a good idea to automate brick production by first getting a digger. Then, in the construction (brick) menu, get a molder and then a kiln. You'll also need a woodcutter to power the kiln! Once you automate it, you might want to spend some crystals to speed up brick production.",
             "Buy your first furnace for 1,250 bricks!",
-            "Congrats on getting a furnace and automating brick production! It's time to get your first manager in the new technology menu. You'll need to get 1,000 golden clocks for them though. (This is a perfect time to get some gold bars in the golden clock menu. Once you have 25 gold bars, get a jeweler. Jewelers will SLOWLY produce golden clocks. You might want to spend some crystals to speed up this process!)",
+            "Congrats on getting a furnace and automating brick production! It's time to get your first manager in the new technology menu. You'll need to get 1,000 golden clocks for them though. (This is a perfect time to get some gold bars. Once you have 25 gold bars, get a jeweler. Jewelers will SLOWLY produce golden clocks. You might want to spend some crystals to speed up this process!)",
             "Now that you have a manager, get a scientist! Scientists generate science and creativity. You'll want to have a lot of both to get new researches!",
             'With a scientist, you now have access to research upgrading! It\'s a good idea to first get the "Research steel working" upgrade, which will allow you to construct steel mills in the first menu.',
             "With steel mills comes, well, STEEL! Steel is essential for fast progression and allows you to construct robot arms. Collect 125 steel to get your first one.",
@@ -10165,6 +10192,11 @@
                 crystalImage.className = "crystal" + ((crystalTotal % 3) + 1)
             }
 
+            if (easyClick && easyButton !== null && easyButton.id !== "easyClicking" && easyTime <= newTime) {
+                easyButton.click()
+                easyTime += 100
+            }
+
             var diff = newTime - time
             if (diff >= 500) {
                 var newFrames = Math.floor(diff * 0.06) - 1
@@ -10516,6 +10548,8 @@
                         }
                     } else if (hovered.id === "autosell" || hovered.id === "addAutosell" || hovered.id === "minusAutosell") {
                         text += "<br>[Autosell is currently " + (autosellOn ? "ENABLED and sells " + sellPercent + "% of clocks you make" : "DISABLED") + "]"
+                    } else if (hovered.id === "easyClicking") {
+                        text += easyClick ? "<br>[Easy clicking is currently ENABLED]" : "<br>[Easy clicking is currently DISABLED]"
                     } else if (hovered.id === "shardAscend") {
                         var newShards = C("gc").mul(1e-9).floor()
                         text += newShards.isZero() ? "<br>[Ascending will NOT earn you ANY SHARDS!]" : "<br>[Ascending will earn you a total of " + format(newShards) + " shards.]"
