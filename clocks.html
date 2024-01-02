@@ -3230,7 +3230,7 @@
                     </button>
                     <button class="caribbean" data-sound="transaction"
                         data-desc="Buy 100 basic circuits with the press of a single button!\nPlus, they're only $1,000.$circuits$"
-                        data-cost="money-1000" data-earn="circuits+100" data-show="$business">
+                        data-cost="money-1000" data-earn="circuits+100" data-show="$overseas">
                         Purchase 100 <span class="circuit" role="img" aria-label="basic circuit"></span>
                     </button>
 
@@ -4068,9 +4068,9 @@
                             <span class="foam">$125.00Q</span>
                             <span class="ticket"></span>
                         </div>
-                        <div data-show="$apples" data-iq="160" data-cost="1.5e18" data-research="business"
-                            data-desc="[You NEED 160 digital knowlege to purchase this research!]\nInstead of building basic circuits from scratch, just buy them from overseas!\nHowever, this isn't cheap: you first have to convince them with a hefty amount of money to do business with you.\n(Allows you to buy 100 basic circuits at once in exchange for $1,000 in the same place where you build basic circuits!)">
-                            Overseas circuit: <span class="foam">$1.500Q</span>
+                        <div data-show="$apples" data-iq="175" data-cost="1.2e18" data-research="overseas"
+                            data-desc="[You NEED 175 digital knowlege to purchase this research!]\nInstead of building basic circuits from scratch, just buy them from overseas!\nHowever, this isn't cheap: you first have to convince them with a hefty amount of money to do business with you.\n(Allows you to buy 100 basic circuits at once in exchange for $1,000 in the same place where you build basic circuits!)">
+                            Overseas circuitry: <span class="foam">$1.200Q</span>
                             <span class="ticket"></span>
                         </div>
                         <div data-iq="150" data-cost="4e17" data-research="apples"
@@ -7131,14 +7131,14 @@
                             item = C("science", "This happened while checking for research cost.")
                             cost = H(costString.slice(1))
                             if (item.isMoreOrEqual(cost)) {
-                                remove("science", cost)
+                                rawRemove("science", cost)
                                 researches.push(research)
                             }
                         } else {
                             item = C("money", "This happened while checking for the research cost.")
                             cost = H(costString)
                             if (item.isMoreOrEqual(cost)) {
-                                remove("money", cost)
+                                rawRemove("money", cost)
                                 researches.push(research)
                             }
                         }
@@ -8965,6 +8965,8 @@
                             fadeTimes[i] = fadeFrame
                             i++
                         }
+                    } else {
+                        i++
                     }
                 }
             }
