@@ -10335,10 +10335,9 @@
 
             var noBoosts = ID("noBoosts")
             if (speed.equals(baseSpeed)) {
-                noBoosts.removeAttribute("style")
+                noBoosts.style.display = "none"
             } else {
-                noBoosts.style.display = "inline-block"
-                noBoosts.style.opacity = 1
+                noBoosts.removeAttribute("style")
             }
 
             if (speed.equals(1)) {
