@@ -104,6 +104,10 @@
         }
 
         .check2 {
+            accent-color: #4ef973;
+        }
+
+        .check3 {
             accent-color: #f8a920;
         }
 
@@ -721,6 +725,12 @@
         #devlog {
             font-size: 24px;
             color: #f6b7a2;
+        }
+
+        #tips {
+            font-size: 18px;
+            color: #c1e0ef;
+            line-height: 115%;
         }
 
         #wiki1,
@@ -4652,12 +4662,12 @@
 
                     <br>
                     <label for="disableAudio">
-                        <input type="checkbox" class="check2" id="disableAudio"></input>
+                        <input type="checkbox" class="check3" id="disableAudio"></input>
                         Disable audio
                     </label>
                     <br>
                     <label for="useSleek">
-                        <input type="checkbox" id="useSleek"></input>
+                        <input type="checkbox" class="check2" id="useSleek"></input>
                         Enable Sleek Mode
                     </label>
                     <br>
@@ -4915,6 +4925,8 @@
                     <button id="secret" class="stripe4">access super secret menu</button>
                 </div>
 
+                <div id="tips"></div>
+
                 <div id="wiki" style="display: none">
                     <button id="toWiki1" class="special" style="display: none">Sort by Alphabet</button>
                     <button id="toWiki2" class="special">Sort by Tier</button>
@@ -4934,6 +4946,8 @@
                     <u title="Open the devlog" id="viewDevlog" class="linky" role="link">View devlog</u>
                     &nbsp;
                     <u title="View the settings" id="viewSettings" class="linky" role="link">View settings</u>
+                    &nbsp;
+                    <u title="View the previous tips" id="viewTips" class="linky" role="link">View tips</u>
                     &nbsp;
                     <u title="Copy the save file to your clipboard" class="save" id="copy" role="link">
                         Copy save
@@ -7166,6 +7180,10 @@
             showTab("devlog")
         })
 
+        attachEvent("viewTips", function () {
+            showTab("tips")
+        })
+
         function showLogs() {
             if (logSectionHidden) {
                 ID("logSection").style.display = "block"
@@ -7506,7 +7524,7 @@
 
         // Setup the tab IDs to use from the "data-tab" attribute and set the visibility
         function setupTabs() {
-            tabs = ["setup", "devlog", "wiki", "cheats"]
+            tabs = ["setup", "devlog", "tips", "wiki", "cheats"]
             var tabChildren = ID("navigation").children
             for (var i = 0; i < tabChildren.length; i++) {
                 var element = tabChildren[i]
@@ -9542,9 +9560,11 @@
             } else {
                 progress = 20
             }
+
             update(tipElement, progressNotes[progress])
             updateClass(tipElement, "small " + ["red", "orange", "yellow", "green", "blue", "pink"][progress % 6])
             updateId("tipNumber", progress + 1)
+            updateHTML(ID("tips"), '<br><b class="large">Previous tips:</b><br>' + progressNotes.slice(0, progress).join("<br>"))
         }
 
         function updateOfflineTime() {
