@@ -727,19 +727,24 @@
             color: #f6b7a2;
         }
 
-        #tips {
+        #tips,
+        #resourceData {
             font-size: 18px;
             color: #c1e0ef;
             line-height: 115%;
+        }
+
+        #resourceData {
+            white-space: pre-wrap;
         }
 
         #wiki1,
         #wiki2 {
             font-size: 24px;
             color: #edd5cb;
+            white-space: pre-wrap;
             -webkit-user-select: text;
             user-select: text;
-            white-space: pre;
         }
 
         #wiki1>*,
@@ -2887,8 +2892,8 @@
             silverb: Silver Bar (2, Silver bar for construction)
             platinumb: Platinum Bar (2, Platinum bar for construction)
             ironore: Iron Ore (1, Iron which can be made into steel)
-            bauxite: Bauxite (1, Something that can be processed into aluminum)
-            cbauxite: Crushed Bauxite (2, Bauxite that is crushed)
+            bauxite: Bauxite$ (1, Something that can be processed into aluminum)
+            cbauxite: Crushed Bauxite$ (2, Bauxite that is crushed)
             aluminumc: Aluminum Crystal (2, Bauxite that is in crystal form)
             aluminumo: Aluminum Oxide$ (2, Aluminum oxide that is almost aluminum)
             aluminum: Aluminum$ (4, Rocket-grade aluminum!)
@@ -2904,7 +2909,7 @@
             science: Science$ (2, Can be used to unlock purchasable technologies when enough is collected)
             creativity: Creativity$ (2, Can be used to unlock new ideas, along with science)
             limestone: Limestone Rock (0, A rock that is only used for the smallest monuments)
-            slag: Slag Piece (0, Mostly a waste)
+            slag: Slag Piece (0, A waste unless you can reuse them to make more steel)
             bricks: Brick (1, A solid red brick)
             furnaces: Blast Furnace (2, A blast furnace used to extract out some ores to use)
             gfurnaces: *Golden* Furnace (2, A furnace that exclusively makes golden nuggets)
@@ -3347,7 +3352,7 @@
                             data-desc="Increase the percent of clocks you are AUTO-selling.">+</span>
                     </button>
                     <button class="special" id="easyClicking" data-show="family>0"
-                        data-desc="Easy clicking clicks 10 times a second on a button if you are pressing the Space/Enter key, or if you are pressing down on a button.">
+                        data-desc="Easy clicking clicks 20 times a second on a button if you are pressing the Space/Enter key, or if you are pressing down on a button.">
                         Toggle easy clicking
                     </button>
 
@@ -4925,7 +4930,15 @@
                     <button id="secret" class="stripe4">access super secret menu</button>
                 </div>
 
-                <div id="tips"></div>
+                <div id="tips" style="display: none"></div>
+
+                <div id="resources" style="display: none">
+                    <b>Here is an overview of the amount of every resource, worker, and building you have:</b>
+                    <div id="resourceData"></div>
+
+                    <u title="View the previous tips" id="viewTips" class="linky" role="link">View tips</u>
+                    <u title="View the wiki" id="viewWiki" class="linky" role="link">View wiki</u>
+                </div>
 
                 <div id="wiki" style="display: none">
                     <button id="toWiki1" class="special" style="display: none">Sort by Alphabet</button>
@@ -4947,7 +4960,9 @@
                     &nbsp;
                     <u title="View the settings" id="viewSettings" class="linky" role="link">View settings</u>
                     &nbsp;
-                    <u title="View the previous tips" id="viewTips" class="linky" role="link">View tips</u>
+                    <u title="View how much you have of all items" id="viewResources" class="linky" role="link">
+                        View resources
+                    </u>
                     &nbsp;
                     <u title="Copy the save file to your clipboard" class="save" id="copy" role="link">
                         Copy save
@@ -6945,7 +6960,7 @@
                 var target = e.target
                 if (easyClick && easyButton !== null && easyButton !== target) {
                     easyButton = target
-                    easyTime = Date.now() + 100
+                    easyTime = Date.now() + 50
                 }
 
                 if (target.getAttribute) {
@@ -7180,10 +7195,17 @@
             showTab("devlog")
         })
 
+        attachEvent("viewResources", function () {
+            showTab("resources")
+        })
+
         attachEvent("viewTips", function () {
             showTab("tips")
         })
 
+        attachEvent("viewWiki", function () {
+            showTab("wiki")
+        })
         function showLogs() {
             if (logSectionHidden) {
                 ID("logSection").style.display = "block"
@@ -7264,18 +7286,16 @@
         })
 
         ID("toWiki1").addEventListener("click", function () {
-            ID("toWiki1").style.display = "none"
-            ID("toWiki2").removeAttribute("style")
-
             ID("wiki1").removeAttribute("style")
-            ID("wiki2").style.display = "none"
+            if (ID("wiki2").style.display !== "none") {
+                ID("wiki2").style.display = "none"
+            }
         })
 
         ID("toWiki2").addEventListener("click", function () {
-            ID("toWiki1").removeAttribute("style")
-            ID("toWiki2").style.display = "none"
-
-            ID("wiki1").style.display = "none"
+            if (ID("wiki1").style.display !== "none") {
+                ID("wiki1").style.display = "none"
+            }
             ID("wiki2").removeAttribute("style")
         })
 
@@ -7524,7 +7544,7 @@
 
         // Setup the tab IDs to use from the "data-tab" attribute and set the visibility
         function setupTabs() {
-            tabs = ["setup", "devlog", "tips", "wiki", "cheats"]
+            tabs = ["setup", "devlog", "tips", "wiki", "resources", "cheats"]
             var tabChildren = ID("navigation").children
             for (var i = 0; i < tabChildren.length; i++) {
                 var element = tabChildren[i]
@@ -7875,7 +7895,7 @@
         var hiddenWikiItems = ID("wikiHidden").textContent.trim().split("|").concat(rocketIdentifiers)
         var rawWikiData = ID("wikiData").textContent.trim()
 
-        var tierData = { 999999: "[INVALID TIER]", 0: "the trashy tier", 1: "the basic tier", 2: "the okay tier", 3: "the cool tier", 4: "the pretty good tier", 5: "the rare tier", 6: "the epic tier", 7: "the exceptional tier", 8: "the legendary tier", 9: "the INSANE tier", 10: "THE ABSOLUTELY MYTHICAL TIER", 100: "the <i>*CRYSTAL*</i> tier" }
+        var tierData = { 999999: "[INVALID TIER]", 0: "the trashy tier", 1: "the basic tier", 2: "the okay tier", 3: "the cool tier", 4: "the pretty good tier", 5: "the rare tier", 6: "the epic tier", 7: "the exceptional tier", 8: "the legendary tier", 9: "the insane tier", 10: "the REALLY INSANE tier", 11: "THE MYTHICAL TIER", 12: "THE ABSOLUTELY MYTHICAL TIER", 100: "the <i>*CRYSTAL*</i> tier" }
         var wikiData, wikiKeys
 
         ID("properties").remove()
@@ -7922,7 +7942,7 @@
                     var tier = Number(info.slice(0, comma))
                     if (!isFinite(tier)) {
                         tier = 999999
-                        console.warn("The wiki entry with id '" + id.replace(/'/g, "\\'") + "' has an invalid tier. It has been set to -1 anyway.")
+                        console.warn("The wiki entry with id '" + id.replace(/'/g, "\\'") + "' has an invalid tier. It has been set to 999999.")
                     }
                     var description = info.slice(comma + 1).trim()
 
@@ -7970,7 +7990,7 @@
             wikiKeys = Object.keys(wikiData)
 
             wikiKeys.sort(function (a, b) {
-                return wikiData[a].name > wikiData[b].name
+                return wikiData[a].names[0] > wikiData[b].names[0]
             })
             wikiKeys.sort(function (a, b) {
                 return wikiData[a].tier - wikiData[b].tier
@@ -7979,19 +7999,19 @@
             for (i = 0; i < wikiKeys.length;) {
                 var item = wikiData[wikiKeys[i]]
                 var tierName = tierData[item.tier]
-                wikiHTML += "Item #" + (++i) + " in " + (tierName == null ? "a special tier" : tierName) + ": " + item.names[0] + " (" + item.description.replace(/, *ORE/, " <strong>*exists in ore form*</strong>") + ")\r\n"
+                wikiHTML += "Item #" + (++i) + ": " + item.names[0] + " (" + item.description.replace(/, *ORE/, " <strong>*exists in ore form*</strong>") + ")\r\n"
             }
             ID("wiki1").innerHTML = wikiHTML
 
             wikiHTML = ""
             wikiKeys.sort(function (a, b) {
-                return wikiData[a].name > wikiData[b].name
+                return wikiData[a].names[0] > wikiData[b].names[0]
             })
 
-            for (i = 0; i < wikiKeys.length;) {
+            for (i = 0; i < wikiKeys.length; i++) {
                 var item = wikiData[wikiKeys[i]]
                 var tierName = tierData[item.tier]
-                wikiHTML += item.names[0] + ": item #" + (++i) + " in " + (tierName == null ? "a special tier" : tierName) + " (" + item.description.replace(/, *ORE/, " <strong>*exists in ore form*</strong>") + ")\r\n"
+                wikiHTML += item.names[0] + ": " + item.description.replace(/, *ORE/, " <strong>*exists in ore form*</strong>") + "\r\n"
             }
             ID("wiki2").innerHTML = wikiHTML
         }
@@ -10117,6 +10137,17 @@
             }
 
             updateHTML(ID("stats"), newStats)
+            if (currentTab === "resources") {
+                var allData = []
+                for (var i = 0; i < wikiKeys.length; i++) {
+                    var key = wikiKeys[i]
+                    var amount = C(key)
+                    if (amount.isPositive()) {
+                        allData.push(getAmount(key))
+                    }
+                }
+                updateId("resourceData", allData.join("\r\n"))
+            }
 
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
         }
@@ -10230,7 +10261,7 @@
 
             if (easyClick && easyButton !== null && easyButton.id !== "easyClicking" && easyTime <= newTime) {
                 easyButton.click()
-                easyTime += 100
+                easyTime += 50
             }
 
             var diff = newTime - time
