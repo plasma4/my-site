@@ -1740,7 +1740,9 @@
             color: #ccc;
         }
 
-        .gray {
+        .gray,
+        .grey,
+        .graey {
             color: #aaa;
         }
 
@@ -3685,7 +3687,7 @@
                             data-desc="This is your Level 5 silver power, which produces level 4 silver power."
                             data-for="#SP #5">
                         </div>
-                        <div id="silverwood" class="brown"
+                        <div id="silverwood" class="gray"
                             data-desc="Silver wood is obtained when sacrificing ALL your silvery and shiny progress!"
                             data-for="$big swood">
                         </div>
@@ -3827,7 +3829,7 @@
 
                     <br>
                     <button data-earn="coalminers+1" data-cost="steel-5e6|miners-5" data-show="$coal"
-                        data-desc="Get a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 100,000 watts.$coalminers$"
+                        data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!]\nGet a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 100,000 watts.$coalminers$"
                         class="gold">
                         Get a coal miner machine <span class="coal"></span>
                     </button>
@@ -4264,7 +4266,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="$turbines" data-cost="1e12" data-research="coal"
-                            data-desc="Machines can make lots of clocks, so why not give them the ability to mine coal commercially?\n(Unlocks coal mining machines in the materials menu, which produce over 180,000 coal a second!)">
+                            data-desc="Machines can make lots of clocks, so why not give them the ability to mine coal commercially?\n(Unlocks coal mining machines in the materials menu, which produce over 100,000 coal a second!)\n[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!\nThey are powered by default, but you can disable them in the electricity menu.]">
                             Coal mining machines: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -4435,9 +4437,10 @@
                     <button class="night" id="resetPower">Reset power priority</button>
 
                     <br>
-                    <label for="coalMachinesOn" data-desc="Toggle the operation of coal mining machines.">
+                    <label for="coalMachinesOn"
+                        data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!]\nToggle the powering of coal mining machines.">
                         <input type="checkbox" id="coalMachinesOn" checked>
-                        Coal Mining Machines On
+                        Power Coal Mining Machines
                     </label>
                     <br>
                     <label for="computersOn" data-desc="Toggle the operation of computers.">
@@ -4741,6 +4744,10 @@
                         Made by Leo Zhang. All rights reserved!
                     </strong>
 
+                    <hr>
+                    <div class="small green">
+                        January 2, 2024 (again!): Coal mining machines now still operate when powered off
+                    </div>
                     <div class="smallish yellow">
                         January 2, 2024: Menus are <b class="smallish orange">simpler</b>!
                         <br>
@@ -4755,7 +4762,7 @@
                         and you can choose how much to sell automatically.)
                     </div>
 
-                    <br><br>
+                    <hr>
                     <div class="large pink">Version <b>0.1.0</b>: <i>the main release!</i></div>
                     <div class="small purple">
                         ^^^ It's mostly bugfixes for saving!
@@ -9767,7 +9774,10 @@
             }
 
             if (coalMachinesEnabled) {
-                add("coal", useableData.coalminers.mul(3210).mul(hasResearch("coal2") ? 2.5 : 1))
+                var useableCM = useableData.coalminers
+                add("coal", useableCM.mul(1750).add(C("coalminers").mul(1750)).mul(hasResearch("coal2") ? 2.5 : 1))
+            } else {
+                add("coal", C("coalminers").mul(1750).mul(hasResearch("coal2") ? 2.5 : 1))
             }
 
             if (computersEnabled && hasResearch("ai")) {
