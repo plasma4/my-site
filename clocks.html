@@ -301,7 +301,8 @@
         label.hidden,
         .category,
         #lossNote,
-        #research {
+        #research,
+        #modPanel {
             display: none;
         }
 
@@ -2012,7 +2013,7 @@
             font-weight: 700;
         }
 
-        .goldbg {
+        .yellowbg {
             background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAAAXNSR0IArs4c6QAAAP9JREFUSEu9lcENwjAMReMuUdEhuHQO1mAO1mAO1oALQwT1jkCAiFFiB7VR0yRuoRfLcqv/Yju/gEajsg9qF5S5UPQ5cm64Hub0tlJVQxFW4zlwveI65+AAhOL6fHJizboVQwC+j9SBwpN7cd8AKQQBCMWbmuR1R1ECAfg6DHcgNfOO2h596rJxEEDuwqXEPVUBBOBzzx1IbHuueCEEAcxte2weGZ0AfOz4FkTueenJQ5gEBAHETGaueMY4AO/b8R1YSjwBQQDhDiwtPgEBeNsMd+BX4hEIAuAdsPbq3W3abeRV65p9xwS8tq4D3x8L26tcYvrL0LYdwL/EPVof4gM4kdRNFSdhsgAAAABJRU5ErkJggg==");
         }
 
@@ -2024,7 +2025,7 @@
             background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAABf0lEQVRIS2N8PXHRfwYgYOLmAmJOEBOD/vf1O1gcnQYLIgFS9P/7+g2skxHdAeiG4LIcZMDvpyfAhrBKW4A9gM3xMPOQzQGxURyArBmkAZsm1BBAWA4LAGIdAbEcFqLfICGAHvwgBxDjc4aF+yD2xzsRFRKolkNCAcUByMGPrhgSAt8Y2KWYwZZ9yWlGiX+eKbVg/s9nf7FGB7qnYNEAdwCLmBBKHP559Q7MRw4uXJbDXILPETDzYeaBzEcJAZACWAiQYzmpjsDpAGyW/z25AhIae++hBDsuDpOzEliK2TwCIzpAHgWFAl4HIAc7qZbDHIXLERgOeDtnDbgggkXBr/tPoXH/jYFcy/E5gk1RGh4CIHWMIAfAEggi+HGndqLiAEkRtoSJbB/cAbSwHF/CBDkCZCfYATCF+PI5qT5HV48tJOBRAMnvkOKVx9Qao5Ch1HLkkPhy+ihK3QEOAeSKBV68UstWdHPQim2wA37egpbpsLKdVpbDzIU6gl3NiQEAW+RqkUNLSTsAAAAASUVORK5CYII=");
         }
 
-        .goldbg,
+        .yellowbg,
         .orangebg,
         .cherrybg {
             image-rendering: pixelated;
@@ -2034,8 +2035,8 @@
             background-size: auto 100%;
         }
 
-        .goldbg:hover,
-        .goldbg:focus,
+        .yellowbg:hover,
+        .yellowbg:focus,
         .cherrybg:hover,
         .cherrybg:focus,
         .orangebg:hover,
@@ -2043,7 +2044,7 @@
             filter: brightness(85%);
         }
 
-        .goldbg:active,
+        .yellowbg:active,
         .cherrybg:active,
         .orangebg:active {
             filter: brightness(65%) contrast(4);
@@ -3147,7 +3148,7 @@
                     <!-- Yay, the wonderful world of unicode ×ymbols -->
                     <button data-earn="arms+1" data-sound="building" data-show="steel>0"
                         data-desc="Costs 125 steel in order to construct. You'll have to painstakingly build one of metal and circuit boards, at least, until you build a constructor machine.\nMuch faster than hiring clock makers indeed!\nUses 100 watts. Robot arms will work ONLY if they have enough power.$arms$"
-                        data-cost="steel-125" class="goldbg">
+                        data-cost="steel-125" class="yellowbg">
                         Build a robot arm
                         <span class="mini stripe1" data-earn="arms+100" data-sound="building"
                             data-desc="Build one hundred arms out of lots of steel.\nMuch faster to create than buying from someone else!$arms$"
@@ -3171,7 +3172,7 @@
                     </button>
                     <button data-earn="aluminumarms+1" data-sound="building" data-show="aluminum1>0"
                         data-desc="Well-made aluminum robot arms work four times faster than normal robot arms, yet still use the same amount of power!\nHowever, they cost 250 aluminum instead of 125.$aluminumarms$"
-                        data-cost="aluminum-250" class="goldbg">
+                        data-cost="aluminum-250" class="yellowbg">
                         Build an aluminum robot arm
                         <span class="mini stripe1" data-earn="aluminumarms+100" data-sound="building"
                             data-desc="Build one hundred of these every time you press this button!$aluminumarms$"
@@ -3305,15 +3306,15 @@
                     Aluminum is a crucial part of rockets and can make robot arms!
 
                     <br>
-                    <button class="goldbg" data-earn="aluminum1+1" data-cost="money-2.5e11" data-show="$aluminum"
+                    <button class="yellowbg" data-earn="aluminum1+1" data-cost="money-2.5e11" data-show="$aluminum"
                         data-desc="These large sodium aluminate factories produce sodium aluminate from bauxite.\n(Yes, aluminum is quite complicated too!)\nCosts $250,000,000,000.$aluminum1$">
                         Get a SA Factory
                     </button>
-                    <button class="goldbg" data-earn="aluminum2+1" data-cost="money-2e11" data-show="aluminum1>0"
+                    <button class="yellowbg" data-earn="aluminum2+1" data-cost="money-2e11" data-show="aluminum1>0"
                         data-desc="These sodium aluminate precipitation factories produce aluminum crystals that can be processed further.\n(fun...)\nCosts $200,000,000,000.$aluminum2$">
                         Get a SA Precipitation Factory
                     </button>
-                    <button class="goldbg" data-earn="aluminum3+1" data-cost="money-5e11" data-show="aluminum2>0"
+                    <button class="yellowbg" data-earn="aluminum3+1" data-cost="money-5e11" data-show="aluminum2>0"
                         data-desc="Converts the aluminum crystals into aluminum oxide.\nYou're almost there!\nCosts $500,000,000,000.$aluminum3$">
                         Get a Sodium Oxide Factory
                     </button>
@@ -3429,11 +3430,11 @@
                     <!-- HUGE CLOCKS 4 HUGE GAINS -->
                     <button data-earn="megaclocks+1" data-sound="building"
                         data-desc="Build a MegaClock for selling by painstakingly combining 250,000 clocks. All rights reserved.$megaclocks$"
-                        data-cost="clocks-250000" data-show="watts>0" class="goldbg">Build a MegaClock</button>
+                        data-cost="clocks-250000" data-show="watts>0" class="yellowbg">Build a MegaClock</button>
                     <button data-earn="eraclocks+1" data-sound="building"
                         data-desc="Build an ERAClock Pro+ Limited Maximus-50 Goldius ExtraUltimate...\nSuperior Edition Final Superfinale Extreme Bigger EvenBigger BiggestHuge.\nThis thing sure takes up a lot of space, and costs a hefty 100M clocks and 4,000 bricks!$eraclocks$"
                         data-cost="clocks-1e8|bricks-4000" data-show="clocks>=8e7|megaclocks>0|bricks>=4000"
-                        class="goldbg">
+                        class="yellowbg">
                         Construct a limited ERAClock
                     </button>
 
@@ -3583,12 +3584,12 @@
                     </button>
 
                     <br>
-                    <button class="goldbg" data-show="firetrees>0" data-earn="firefields+1"
+                    <button class="yellowbg" data-show="firetrees>0" data-earn="firefields+1"
                         data-cost="firetrees-10000|firefruit-2e6"
                         data-desc="Convert 10,000 of your firetrees and 2,000,000 firefruit into a giant firefield, which allows firetrees to reproduce and spread their seeds.\nIt also produces [fiery power] that multiplies firefruit production.$firefields$">
                         +1 firefield
                     </button>
-                    <button class="goldbg" data-show="firefields>0" data-earn="firefarms+1" data-cost="firefields-25"
+                    <button class="yellowbg" data-show="firefields>0" data-earn="firefarms+1" data-cost="firefields-25"
                         data-desc="Get 25 firefields to create a huge and sprawling firefarm!\nFirefarms produce firefields and the highest tier of [fiery power] extremely quickly.$firefarms$">
                         +1 firefarm
                     </button>
@@ -3730,12 +3731,12 @@
                     </button>
 
                     <br>
-                    <button class="goldbg" data-show="silvertrees>0" data-earn="silverfields+1"
+                    <button class="yellowbg" data-show="silvertrees>0" data-earn="silverfields+1"
                         data-cost="silvertrees-10000|silverfruit-2e6"
                         data-desc="Convert 10,000 of your silvertrees and 2,000,000 silverfruit into a giant silverfield, which allows silvertrees to reproduce and spread their seeds.\nIt also produces [silver power] that multiplies silverfruit production.$silverfields$">
                         +1 silverfield
                     </button>
-                    <button class="goldbg" data-show="silverfields>0" data-earn="silverfarms+1"
+                    <button class="yellowbg" data-show="silverfields>0" data-earn="silverfarms+1"
                         data-cost="silverfields-10"
                         data-desc="Get 10 silverfields to create a silverfarm!\nSilverfarms produce silverfields and the highest tier of silver power extremely quickly.$silverfarms$">
                         +1 silverfarm
@@ -3845,7 +3846,7 @@
                     <br>
                     <button data-earn="coalminers+1" data-cost="steel-5e6|miners-5" data-show="$coal"
                         data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!]\nGet a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 100,000 watts.$coalminers$"
-                        class="gold">
+                        class="orangebg">
                         Get a coal miner machine <span class="coal"></span>
                     </button>
 
@@ -3955,7 +3956,7 @@
                     </button>
 
                     <br>
-                    <button class="goldbg" data-earn="nests+1"
+                    <button class="yellowbg" data-earn="nests+1"
                         data-desc="All you need are fifty pens, 100 phoenixes, and a 2,000 flying clocks for this one.\nYou can simply take the materials from all of those pens and use it to make a brand-new giant phoenix nest!$nests$"
                         data-cost="pens-50|phoenixes-100|fc-2000" data-show="pens>=25">
                         Get a phoenix nest
@@ -10750,6 +10751,7 @@
 
             function showModMenu() {
                 var panel = ID("modPanel")
+                panel.style.display = "block"
                 onload = function () {
                     panel.focus()
                 }
