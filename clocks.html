@@ -3013,8 +3013,10 @@
             <span data-tab="clock" title="Clock menu"><span class="clock"></span></span>
             <span data-tab="fierya" title="Fiery planting menu" data-show="$apples"><span class="gapple"></span></span>
             <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span>
-            <span data-tab="building" title="Building menu" data-show="money>=2500"><span class="brick"></span></span>
-            <span data-tab="tech" title="Technology menu" data-show="furnaces>0"><span class="flask"></span></span>
+            <span data-tab="materials" title="Materials menu" data-show="money>=2500"><span class="brick"></span></span>
+            <span data-tab="tech" title="Management/research menu" data-show="furnaces>0">
+                <span class="flask"></span>
+            </span>
             <span data-tab="zappy" title="Electricity menu" data-show="steelmills>0"><span class="bolt"></span></span>
             <span data-tab="rocket" title="Rocket menu" data-show="$rocketry"><span class="rocket"></span></span>
             <span data-tab="ascend" title="Ascension menu" data-show="omegamanagers>0/shards>0">
@@ -3802,7 +3804,7 @@
                     </div>
                 </div>
 
-                <div id="building" style="display: none">
+                <div id="materials" style="display: none">
                     <span class="big limestone"></span>
                     You can extract many items from under the earth, albeit with a price.
 
@@ -4104,7 +4106,7 @@
                             <span class="ticket"></span>
                         </div>
                         <div data-show="$digital" data-iq="10" data-cost="5e10" data-research="bwood"
-                            data-desc="[You need just 10 digital knowlege to purchase this research!]\nOh the thinks you can th...you know what? That might actually be a copyright strike, so I'm not going to risk it.\nOn the bright side, you can think up more illogical things, if only you try!\n(Unlocks BLUE woodcutters, which cut blue wood and are found in the building menu)">
+                            data-desc="[You need just 10 digital knowlege to purchase this research!]\nOh the thinks you can th...you know what? That might actually be a copyright strike, so I'm not going to risk it.\nOn the bright side, you can think up more illogical things, if only you try!\n(Unlocks BLUE woodcutters, which cut blue wood and are found in the materials menu)">
                             <span class="move3">Blue wood:</span> <span class="foam">$50,000,000,000</span>
                             <span class="ticket"></span>
                         </div>
@@ -4114,12 +4116,12 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="$plastic" data-cost="5e9" data-research="assembly"
-                            data-desc="In computer programming, an assembly language is one that...oh wait, sorry, wrong one.\nASSEMBLE YOUR CIRCUITS INTO CIRCUIT BOARDS AND COMPUTERRRRRRS!\n(Allows you to assemble circit boards and computers in the technology menu)">
+                            data-desc="In computer programming, an assembly language is one that...oh wait, sorry, wrong one.\nASSEMBLE YOUR CIRCUITS INTO CIRCUIT BOARDS AND COMPUTERRRRRRS!\n(Allows you to assemble circit boards and computers in the first menu)">
                             ASSEMBLYYYYYY!!!!!!!!!!!!!! <span class="foam">$5,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$steelwork" data-cost="1e9" data-research="plastic"
-                            data-desc="P-p-p-plastic? Isn't that, like, BAD for animals or something?\n(Unlocks plastic production in the technology menu, below the circuits and robot arms.)">
+                            data-desc="P-p-p-plastic? Isn't that, like, BAD for animals or something?\n(Unlocks plastic production in the first menu, below the circuits and robot arms.)">
                             PLASTICSTUFFS!!!!!!!!!!!!!! <span class="foam">$1,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -4262,7 +4264,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="$turbines" data-cost="1e12" data-research="coal"
-                            data-desc="Machines can make lots of clocks, so why not give them the ability to mine coal commercially?\n(Unlocks coal mining machines in the mining menu)">
+                            data-desc="Machines can make lots of clocks, so why not give them the ability to mine coal commercially?\n(Unlocks coal mining machines in the materials menu, which produce over 180,000 coal a second!)">
                             Coal mining machines: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -4297,7 +4299,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="science>=1000|creativity>2500" data-cost="8e7" data-research="radium"
-                            data-desc="Radium ore looks quite scary, but with proper care, it can be turned into radium bars and clocks.\n(Unlocks radium mills and workers. Radium mills make radium rods, which be used to make RADIOACTIVE clocks. Oh, and you can sacrifice them in the brick/building menu for 50,000 glue!)">
+                            data-desc="Radium ore looks quite scary, but with proper care, it can be turned into radium bars and clocks.\n(Unlocks radium mills and workers. Radium mills make radium rods, which be used to make RADIOACTIVE clocks. Oh, and you can sacrifice them in the materials menu for 50,000 glue!)">
                             Research radium enrichment: <span class="green">$80,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -4317,7 +4319,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="furnaces>0" data-cost="250000" data-research="mills"
-                            data-desc="Learn how to create steel mills and how to use them.\n(Unlocks steel mills in the build menu, allowing you to construct robot arms, which increases clock production tremendously!)">
+                            data-desc="Learn how to create steel mills and how to use them.\n(Unlocks steel mills in the first menu, allowing you to construct robot arms, which increases clock production tremendously!)">
                             Research steel working: <span class="green">$250,000</span>
                             <span class="money"></span>
                         </div>
@@ -4327,7 +4329,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-research="aluminum" data-cost="2e10"
-                            data-desc="Aluminum is important in the construction of rockets!\nwait, it's aluminium in british english!!?\n(Allows you to create aluminum with significant effort in the main build menu, or aluminium if you're British.)">
+                            data-desc="Aluminum is important in the construction of rockets!\nwait, it's aluminium in british english!!?\n(Allows you to create aluminum with significant effort in the first menu, or aluminium if you're British.)">
                             Aluminum 101: <span class="green">$20,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -9476,7 +9478,7 @@
             "Miners give you ore, but you'll need a furnace to use them. At this point, you can get bricks for $1 each. If you get 1,250 bricks, you can get a furnace (in the first build menu).",
             "It's a good idea to automate brick production by first getting a digger. Then, in the construction (brick) menu, get a molder and then a kiln. You'll also need a woodcutter to power the kiln! Once you automate it, you might want to spend some crystals to speed up brick production.",
             "Buy your first furnace for 1,250 bricks!",
-            "Congrats on getting a furnace and automating brick production! It's time to get your first manager in the new technology menu. You'll need to get 1,000 golden clocks for them though. (This is a perfect time to get some gold bars. Once you have 25 gold bars, get a jeweler. Jewelers will SLOWLY produce golden clocks. You might want to spend some crystals to speed up this process!)",
+            "Congrats on getting a furnace and automating brick production! It's time to get your first manager in the new research/management menu. You'll need to get 1,000 golden clocks for them though. (This is a perfect time to get some gold bars. Once you have 25 gold bars, get a jeweler. Jewelers will SLOWLY produce golden clocks. You might want to spend some crystals to speed up this process!)",
             "Now that you have a manager, get a scientist! Scientists generate science and creativity. You'll want to have a lot of both to get new researches!",
             'With a scientist, you now have access to research upgrading! It\'s a good idea to first get the "Research steel working" upgrade, which will allow you to construct steel mills in the first menu.',
             "With steel mills comes, well, STEEL! Steel is essential for fast progression and allows you to construct robot arms. Collect 125 steel to get your first one.",
