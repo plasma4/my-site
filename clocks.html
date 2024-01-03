@@ -7246,7 +7246,7 @@
             var clipboard = navigator.clipboard
             if (clipboard && clipboard.readText) {
                 clipboard.readText().then(function (text) {
-                    if (Date.now() - oldTime > 200 || stuffTotals.clocks === 0 || confirm("Attempt to load the save? Your current save will be lost!")) {
+                    if (Date.now() - oldTime > 200 || getTotals("clocks") === 0 || confirm("Attempt to load the save? Your current save will be lost!")) {
                         load(text)
                     }
                 }, function (e) {
@@ -7768,7 +7768,7 @@
                             if (action === "wattseconds=max") {
                                 var issue = "This happened while finding the maximum amount allowed for a value."
                                 var limit = C("batteries", issue).mul(600000).add(C("megabatteries", issue).mul(60000000)).add(C("bluebatteries", issue).mul(150000000000))
-                                stuffTotals.wattseconds = stuffTotals.wattseconds.add(limit).sub(stuff.wattseconds)
+                                stuffTotals.wattseconds = getTotals("wattseconds").add(limit).sub(stuff.wattseconds)
                                 stuff.wattseconds = limit
                                 continue
                             } else if (action.charCodeAt(0) === 36) {
@@ -8771,7 +8771,7 @@
 
         function pasteEvent(e) {
             var pasted = e.clipboardData.getData("text/plain")
-            if (!(["INPUT", "SELECT", "TEXTAREA"]).includes(document.activeElement.tagName) && pasted.length !== 0 && (stuffTotals.clocks === 0 || confirm("Attempt to load the save? Your current save will be lost!"))) {
+            if (!(["INPUT", "SELECT", "TEXTAREA"]).includes(document.activeElement.tagName) && pasted.length !== 0 && (getTotals("clocks") === 0 || confirm("Attempt to load the save? Your current save will be lost!"))) {
                 load(pasted)
                 e.preventDefault()
             }
@@ -9511,6 +9511,36 @@
             return amount
         }
 
+        // Determines the total amount of a property earned (the issue variable allows you to specify when an issue may occur, but if it's false, then warnings are suppressed)
+        function getTotals(property, issue) {
+            if (typeof property !== "string") {
+                console.error("Property names to check must be strings, not " + (property == null ? property + "." : ((typeof property) + "s.")))
+                return new H()
+            }
+            var amount = stuffTotals[property]
+            if (issue === false) {
+                amount = Number(amount)
+                return amount !== amount ? new H() : amount
+            }
+            if (!(amount instanceof HyperNumber)) {
+                if (!alreadyInvalid.includes(property)) {
+                    var problem = issue == null ? "" : (" (" + issue + ")")
+                    if (stuff.hasOwnProperty(property)) {
+                        console.warn("Property '" + property.replace(/'/g, "\\'") + "' is not a HyperNumber." + problem)
+                    } else {
+                        console.warn("Property '" + property.replace(/'/g, "\\'") + "' does not exist." + problem)
+                    }
+                    alreadyInvalid.push(property)
+                }
+                return new H()
+            } else if (!properties.includes(property)) {
+                console.warn("Property '" + property.replace(/'/g, "\\'") + "' does exist, but the value is not defined in the 'properties' variable.")
+            } else if (!stuff.hasOwnProperty(property)) {
+                console.warn("Property '" + property.replace(/'/g, "\\'") + "' exists in the 'stuffTotals' and 'properties' variable, but isn't in the 'stuff' object.")
+            }
+            return amount
+        }
+
         var progress = -1, progressNotes = [
             'Start by clicking the "Build a clock" button. Come on, click it already!',
             "Keep clicking! Note that hovering your finger or mouse over a button allows you to see a description.",
@@ -9537,43 +9567,43 @@
 
         function updateTip() {
             var tipElement = ID("tip")
-            if (stuffTotals.clocks.isZero()) {
+            if (getTotals("clocks").isZero()) {
                 progress = 0
-            } else if (stuffTotals.clocks.isLess(10)) {
+            } else if (getTotals("clocks").isLess(10)) {
                 progress = 1
-            } else if (stuffTotals.money.isZero()) {
+            } else if (getTotals("money").isZero()) {
                 progress = 2
-            } else if (stuffTotals.goldore.isLess(10)) {
+            } else if (getTotals("goldore").isLess(10)) {
                 progress = 3
-            } else if (stuffTotals.gold.isZero()) {
+            } else if (getTotals("gold").isZero()) {
                 progress = 4
-            } else if (stuffTotals.gold.isLess(5)) {
+            } else if (getTotals("gold").isLess(5)) {
                 progress = 5
-            } else if (stuffTotals.family.isZero()) {
+            } else if (getTotals("family").isZero()) {
                 progress = 6
-            } else if (stuffTotals.miners.isZero()) {
+            } else if (getTotals("miners").isZero()) {
                 progress = 7
-            } else if (stuffTotals.bricks.isZero()) {
+            } else if (getTotals("bricks").isZero()) {
                 progress = 8
-            } else if (stuffTotals.woodcutters.isZero()) {
+            } else if (getTotals("woodcutters").isZero()) {
                 progress = 9
-            } else if (stuffTotals.furnaces.isZero()) {
+            } else if (getTotals("furnaces").isZero()) {
                 progress = 10
-            } else if (stuffTotals.managers.isZero()) {
+            } else if (getTotals("managers").isZero()) {
                 progress = 11
-            } else if (stuffTotals.scientists.isZero()) {
+            } else if (getTotals("scientists").isZero()) {
                 progress = 12
             } else if (!hasResearch("mills")) {
                 progress = 13
-            } else if (stuffTotals.arms.isZero()) {
+            } else if (getTotals("arms").isZero()) {
                 progress = 14
-            } else if (stuffTotals.watts.isZero()) {
+            } else if (getTotals("watts").isZero()) {
                 progress = 15
-            } else if (stuffTotals.factories.isZero()) {
+            } else if (getTotals("factories").isZero()) {
                 progress = 16
-            } else if (stuffTotals.arms.isLess(240)) {
+            } else if (getTotals("arms").isLess(240)) {
                 progress = 17
-            } else if (stuffTotals.turbines.isZero()) {
+            } else if (getTotals("turbines").isZero()) {
                 progress = 18
             } else if (!hasResearch("apples")) {
                 progress = 19
@@ -9787,7 +9817,7 @@
             stuff.watts = watts
             cpt = new H()
 
-            stuffTotals.watts = stuffTotals.watts.add(watts)
+            stuffTotals.watts = getTotals("watts").add(watts)
 
             // Calculate clocks-per-tick and update clock amount
             wattStuff = {}
@@ -10141,9 +10171,10 @@
                 var allData = []
                 for (var i = 0; i < wikiKeys.length; i++) {
                     var key = wikiKeys[i]
-                    var amount = C(key)
-                    if (amount.isPositive()) {
-                        allData.push(getAmount(key))
+                    if (getTotals(key).isPositive()) {
+                        if ((key !== "fierypower" && key !== "silverpower") || !C(key).equals(1)) {
+                            allData.push(getAmount(key))
+                        }
                     }
                 }
                 updateId("resourceData", allData.join("\r\n"))
@@ -10308,7 +10339,7 @@
                         var name = elem.getAttribute("data-for")
                         if (name === null) {
                             console.warn("An element with ID '" + key.replace(/'/g, "\\'") + "' should have the 'data-for' attribute.")
-                        } else if (shownProperties.includes(key) || stuffTotals[key].isPositive()) {
+                        } else if (shownProperties.includes(key) || getTotals(key).isPositive()) {
                             var firstChar = name.charCodeAt(0)
                             var isSpecial = firstChar >= 35 && firstChar <= 37
                             if (firstChar !== 36) {
