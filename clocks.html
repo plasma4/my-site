@@ -3126,7 +3126,7 @@
 
                     <br>
                     <!-- Yay, the wonderful world of unicode ×ymbols -->
-                    <button data-earn="arms+1" data-sound="building"
+                    <button data-earn="arms+1" data-sound="building" data-show="steel>0"
                         data-desc="Costs 125 steel in order to construct. You'll have to painstakingly build one of metal and circuit boards, at least, until you build a constructor machine.\nMuch faster than hiring clock makers indeed!\nUses 100 watts. Robot arms will work ONLY if they have enough power.$arms$"
                         data-cost="steel-125" class="goldbg">
                         Build a robot arm
@@ -3286,7 +3286,7 @@
                     Aluminum is a crucial part of rockets and can make robot arms!
 
                     <br>
-                    <button class="goldbg" data-earn="aluminum1+1" data-cost="money-2.5e11"
+                    <button class="goldbg" data-earn="aluminum1+1" data-cost="money-2.5e11" data-show="$aluminum"
                         data-desc="These large sodium aluminate factories produce sodium aluminate from bauxite.\n(Yes, aluminum is quite complicated too!)\nCosts $250,000,000,000.$aluminum1$">
                         Get a SA Factory
                     </button>
@@ -3423,7 +3423,7 @@
                     Gold is valuable and can be used as an amazing decoration.
 
                     <br>
-                    <button data-earn="goldore+10" data-cost="money-10"
+                    <button data-earn="goldore+10" data-cost="money-10" data-show="money>=10"
                         data-desc="Ten pieces of ore only cost $10 because the technology to extract the gold out is significantly more complex.\nDon't get too much at the start!$goldore$"
                         class="silver">
                         Buy 10 pieces of gold ore <span class="goldbar"></span>
@@ -3757,7 +3757,7 @@
 
                     <div id="spells">
                         <button data-id="zappy-energy" data-cooldown="7200" data-earn="wattseconds=max"
-                            data-cost="energy-250" data-show="energy>100"
+                            data-cost="energy-250" data-show="energy>=100"
                             data-desc="Get the maximum amount of watt-seconds you can store from ALL your batteries!\nCosts 250 magic energy.$wattseconds$">
                             <span class="bigger gbolt"></span>
                             <span class="cooldown" aria-hidden="true"></span>
