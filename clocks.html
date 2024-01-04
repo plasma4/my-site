@@ -2865,13 +2865,13 @@
         </header>
 
         <div id="properties">
-            s5|s4|s3|s2|silverpower|silverwood|f5|f4|f3|f2|fierypower|coke|molds|wood|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            s5|s4|s3|s2|silverpower|silverwood|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
         </div>
         <div id="rocketParts">
-            rocketbody
+            rocketbody|rocketfins|rocketcone
         </div>
         <div id="wikiHidden">
             bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium|wandA1|wandA2|wandA3|wandA4|wandB1|wandB2|wandB3|wandB4|wandC1|wandC2|wandC3|wandC4|w1|w2
@@ -3016,7 +3016,9 @@
             bottles: Glass Bottle (2, A glass bottle that can store chemicals inside)
             glassmakers: Glassmaker (3, A person with the proper equipment to make glass bottles)
             silicon: Silicon Piece (3, A small piece of silicon used for circuitry)
-            rocketbody: Rocket Bod$y/ies (8, The rocket body)
+            rocketbody: Rocket Bod$y/ies (8, A rocket body)
+            rocketfins: Rocket Fin (7, A rocket fin)
+            rocketcone: Rocket Cone (7, A rocket cone)
             crystal3: Purple Crystal (100, Provides a 100× speed boost for ten seconds)
             crystal2: Green Crystal (100, Provides a 25× speed boost for ten seconds)
             crystal1: Blue Crystal (100, Provides a 10× speed boost for ten seconds)
@@ -3035,7 +3037,8 @@
             </span>
             <span data-tab="zappy" title="Electricity menu" data-show="steelmills>0"><span class="bolt"></span></span>
             <span data-tab="rocket" title="Rocket menu" data-show="$rocketry"><span class="rocket"></span></span>
-            <span data-tab="ascend" title="Ascension menu" data-show="omegamanagers>0/shards>0">
+            <span data-tab="ascend" title="Ascension menu"
+                data-show="rocketbody>=100|rocketfins>=100|rocketcone>=100/shards>0">
                 <span class="ticket"></span>
             </span>
             <span data-tab="boosting" title="Crystal menu"><span class="crystal3"></span></span>
@@ -3842,10 +3845,14 @@
                     </button>
 
                     <br>
-                    <button data-earn="coalminers+1" data-cost="steel-5e6|miners-5" data-show="$coal"
+                    <button data-earn="coalminers+1" data-cost="steel-5e6|miners-5" data-show="$coal" data-sound="build"
                         data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!]\nGet a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 100,000 watts.$coalminers$"
                         class="orangebg">
                         Get a coal miner machine <span class="coal"></span>
+                        <span class="mini stripe1" data-earn="coalminers+1" data-cost="steel-5e6|miners-5"
+                            data-show="platinum>=1e7" data-sound="building"
+                            data-desc="You can get more coal miner machines at once by increasing the amount of construction managers you have!$coalminers$"
+                            data-multibuild></span>
                     </button>
 
                     <br>
@@ -3982,7 +3989,7 @@
                         +1 construction manager <span class="platinumn"></span>
                     </button>
                     <button class="special"
-                        data-desc="OMEGA-managers...now the possibilities are INFINITE!\nThey cost 25 MILLION gold blocks though!\n(HINT: [new game mechanics!!!])$omegamanagers$"
+                        data-desc="OMEGA-managers...now the possibilities are INFINITE!\nThey cost 25 MILLION gold blocks though!$omegamanagers$"
                         data-cost="goldb-2.5e7" data-earn="omegamanagers+1" data-show="megamanagers>0">
                         +1 <b class="red">O</b>MEGA-manager
                         <span class="coin"></span> <span class="coin"></span> <span class="coin"></span>
@@ -4142,17 +4149,17 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="$rocketry2" data-cost="2.5e14" data-research="rocketry3"
-                            data-desc="More rocket science? All right...\n(Unlocks all rocket parts)">
+                            data-desc="More rocket science? All right...\n(Unlocks all rocket parts. Building all the rocket parts allows you to reset for golden shards!)">
                             Rocket science 2.0: <span class="green">$250,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$rocketry" data-cost="5e13" data-research="rocketry2"
-                            data-desc="Well, it's not rocket science anymore!\n(Unlocks a few rocket parts that you can build)">
+                            data-desc="Well, it's not rocket science anymore!\n(Unlocks a few rocket parts that you can start to build)">
                             Rocket science: <span class="green">$50,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$smart|naphtha>0|science>=1e13" data-cost="1e12" data-research="rocketry"
-                            data-desc="Learn the basic components of rockets.\n(Unlocks the rocket panel, although you'll need further research to do anything at all)">
+                            data-desc="Learn the basic components of rockets.\n(Unlocks the rocket panel, although you'll need further research to do anything at all...)">
                             Basic rocketry: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -4494,9 +4501,7 @@
 
                 <div id="rocket" style="display: none">
                     <span class="big rocket"></span>
-                    <del>Rockets allow you to go to other planets, such as Mars.</del>
-                    <br>
-                    <ins>CURRENTLY ROCKETS ARE PRETTY MUCH USELESS: GOLDEN SHARDS SHOULD BE USED INSTEAD FOR NOW.</ins>
+                    <b>Once you finish building the rocket, you can reset in exchange for valuable golden shards!</b>
                     <div class="small">
                         Building rockets is a bit different than just buying stuff instantly.
                         <br>
@@ -4520,8 +4525,14 @@
                     </button>
 
                     <br>
-                    <button class="fiery bland" data-show="$rocketry2"
-                        data-desc="Manage how many construction managers are helping to construct the rocket body (at no cost).\nUse the buttons inside this to change the number of managers working on this project.\nThere are 100 steps to finish the rocket, and each step takes 10 hours divided by the amount of construction managers working on it.\nComplete all the parts of a rocket to use it!$rocketbody$">
+                    <span class="mini orangebg"
+                        data-desc="Building a rocket body isn't easy: you'll need {[2.5 billion] aluminum} just for the body!"
+                        data-cost="aluminum-2.5e9" data-show="$rocketry2" data-earn="$rocketbody"
+                        data-hide="$rocketbody">
+                        Start building the rocket body (costs 2,500,000,000 aluminum!)
+                    </span>
+                    <button class="fiery bland" data-show="$rocketbody"
+                        data-desc="Manage how many construction managers are helping to construct the rocket body (at no cost).\nUse the buttons inside this to change the number of managers working on this project.\nThere are 100 steps to finish this part of the rocket, and each step takes 10 hours divided by the amount of construction managers working on it.\nComplete all the parts of a rocket to use it!$rocketbody$">
                         Manage Rocket Body...
                         <br>
                         <span class="mini flashy" data-earn="Rocketbody-10"
@@ -4546,6 +4557,80 @@
                         </span>
                         <span class="mini flashy" data-earn="Rocketbody+100"
                             data-desc="Increases the amount of construction managers working on the rocket body by 100.$rocketbody$">
+                            +100
+                        </span>
+                    </button>
+
+                    <br><br>
+                    <span class="mini orangebg"
+                        data-desc="Just building the rocket fins requires {[2.5 million] plastic and [2.5 million] wood} just for the body!"
+                        data-cost="plastic-2.5e6|wood-2.5e6" data-show="$rocketry" data-earn="$rocketfins"
+                        data-hide="$rocketfins">
+                        Start building the rocket fins (costs 2,500,000 plastic and 2,500,000 wood)
+                    </span>
+                    <button class="fiery bland" data-show="$rocketfins"
+                        data-desc="Manage how many construction managers are helping to construct the rocket fins (at no cost).\nUse the buttons inside this to change the number of managers working on this project.\nThere are 100 steps to finish this part of the rocket {(the 100 steps includes ALL 4 fins)}, and each step takes 1 hour divided by the amount of construction managers working on it.\nComplete all the parts of a rocket to use it!$rocketfins$">
+                        Manage Rocket Fins...
+                        <br>
+                        <span class="mini flashy" data-earn="Rocketfins-10"
+                            data-desc="Decreases the amount of construction managers working on the rocket fins by 10.$rocketfins$">
+                            -10
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketfins-1"
+                            data-desc="Decreases the amount of construction managers working on the rocket fins by 1.$rocketfins$">
+                            -1
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketfins+1"
+                            data-desc="Increases the amount of construction managers working on the rocket fins by 1.$rocketfins$">
+                            +1
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketfins+10"
+                            data-desc="Increases the amount of construction managers working on the rocket fins by 10.$rocketfins$">
+                            +10
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketfins-100"
+                            data-desc="Decreases the amount of construction managers working on the rocket fins by 100.$rocketfins$">
+                            -100
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketfins+100"
+                            data-desc="Increases the amount of construction managers working on the rocket fins by 100.$rocketfins$">
+                            +100
+                        </span>
+                    </button>
+
+                    <br><br>
+                    <span class="mini orangebg"
+                        data-desc="Just building the rocket cone requires {[5 million] plastic and [8 million] wood} just for the body!"
+                        data-cost="plastic-5e6|wood-8e6" data-show="$rocketry" data-earn="$rocketcone"
+                        data-hide="$rocketcone">
+                        Start building the rocket cone (costs 5,000,000 plastic and 8,000,000 wood)
+                    </span>
+                    <button class="fiery bland" data-show="$rocketcone"
+                        data-desc="Manage how many construction managers are helping to construct the rocket body (at no cost).\nUse the buttons inside this to change the number of managers working on this project.\nThere are 100 steps to finish this part of the rocket, and each step takes 1 hour divided by the amount of construction managers working on it.\nComplete all the parts of a rocket to use it!$rocketcone$">
+                        Manage Rocket Cone...
+                        <br>
+                        <span class="mini flashy" data-earn="Rocketcone-10"
+                            data-desc="Decreases the amount of construction managers working on the rocket cone by 10.$rocketcone$">
+                            -10
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketcone-1"
+                            data-desc="Decreases the amount of construction managers working on the rocket cone by 1.$rocketcone$">
+                            -1
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketcone+1"
+                            data-desc="Increases the amount of construction managers working on the rocket cone by 1.$rocketcone$">
+                            +1
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketcone+10"
+                            data-desc="Increases the amount of construction managers working on the rocket cone by 10.$rocketcone$">
+                            +10
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketcone-100"
+                            data-desc="Decreases the amount of construction managers working on the rocket cone by 100.$rocketcone$">
+                            -100
+                        </span>
+                        <span class="mini flashy" data-earn="Rocketcone+100"
+                            data-desc="Increases the amount of construction managers working on the rocket cone by 100.$rocketcone$">
                             +100
                         </span>
                     </button>
@@ -4625,6 +4710,7 @@
                         Shards work because, uh, they're shiny?
                     </div>
 
+                    <b>IMPORTANT: You need ALL rocket parts in order to be able to ascend!</b>
                     <div class="purple smallish" id="shardInfo">
                         Your current normal clock earning multiplier is <b id="shardStat"></b>
                         because you have <b id="shardCount"></b> shards.
@@ -4633,7 +4719,7 @@
                     </div>
 
                     <br>
-                    <button class="cherrybg" id="shardAscend"
+                    <button class="cherrybg" id="shardAscend" data-show="$rocketbody"
                         data-desc="Do you REALLY want to sacrifice all non-ascension items in exchange for golden shards?\n{This button will reset all of your items and progress, excluding golden shards themselves!}">
                         Ascend for golden shards!
                         <span class="shard"></span><span class="shard"></span><span class="shard"></span>
@@ -4759,6 +4845,9 @@
                     </strong>
 
                     <hr>
+                    <div class="blue">
+                        January 4, 2024: You can now get multiple coal mining machines at once, and... <b>ROCKETRY!</b>
+                    </div>
                     <div class="small green">
                         January 2, 2024 (again!): Coal mining machines now still operate when powered off
                     </div>
@@ -7829,10 +7918,10 @@
                             }
 
                             if (part1 === "money") {
-                                if (hasResearch("marketing")){
-                                multiplier = multiplier.mul(H(true).add(useableData.computers.mul(0.04)))
+                                if (hasResearch("marketing")) {
+                                    multiplier = multiplier.mul(H(true).add(useableData.computers.mul(0.04)))
                                 }
-                            }  else  if (part1 === "bonus1" || part1 === "bonus2" || part1 === "bonus3") {
+                            } else if (part1 === "bonus1" || part1 === "bonus2" || part1 === "bonus3") {
                                 multiplier = timeBonus
                             }
 
@@ -8440,7 +8529,7 @@
                         }
                         var compactedData = parseCompact($)
                         stuff = Object.assign(stuff2, compactedData)
-                        cManagersUsed = stuff.Rocketbody
+                        cManagersUsed = stuff.Rocketbody.add(stuff.Rocketfins)
                         cManagersUsed = cManagersUsed ? cManagersUsed : H(0)
                         var stuffKeys = Object.keys(stuff)
                         for (k = 0; k < compactedData.length; k++) {
@@ -9000,27 +9089,24 @@
         }
 
         function updateFade() {
-            // Wait a bit before fading in all the buttons
-            if (frame > 5) {
-                var len = fadeTimes.length
-                for (var i = 0; i < len;) {
-                    var fadeFrame = fadeTimes[i] + 1
-                    var button = fadeButtons[i]
-                    if (button.parentElement.style.display !== "none") {
-                        button.style.opacity = fadeFrame > 60 ? (fadeFrame % 20 < 10 ? 1 : 0) : Math.sqrt(fadeFrame / 60).toFixed(6)
-                        if (fadeFrame === 180) {
-                            // Don't increment i, as the current position is now at new elements in the arrays
-                            fadeTimes.splice(i, 1)
-                            fadeButtons.splice(i, 1)
-                            len--
-                        } else {
-                            // Update the time and increment the counter
-                            fadeTimes[i] = fadeFrame
-                            i++
-                        }
+            var len = fadeTimes.length
+            for (var i = 0; i < len;) {
+                var fadeFrame = fadeTimes[i] + 1
+                var button = fadeButtons[i]
+                if (button.parentElement.style.display !== "none") {
+                    button.style.opacity = fadeFrame > 60 ? (fadeFrame % 20 < 10 ? 1 : 0) : Math.sqrt(fadeFrame / 60).toFixed(6)
+                    if (fadeFrame === 180) {
+                        // Don't increment i, as the current position is now at new elements in the arrays
+                        fadeTimes.splice(i, 1)
+                        fadeButtons.splice(i, 1)
+                        len--
                     } else {
+                        // Update the time and increment the counter
+                        fadeTimes[i] = fadeFrame
                         i++
                     }
+                } else {
+                    i++
                 }
             }
         }
@@ -9681,7 +9767,9 @@
                 return
             }
 
-            addUpTo("rocketbody", H("4.62962962962962962962962962962962962962963e-9").mul(C("Rocketbody", issue)), 100)
+            addUpTo("rocketbody", H(1).div(216000000).mul(C("Rocketbody", issue)), 100)
+            addUpTo("rocketfins", H(1).div(21600000).mul(C("Rocketfins", issue)), 100)
+            addUpTo("rocketcone", H(1).div(10800000).mul(C("Rocketcone", issue)), 100)
 
             var trees = C("trees", issue)
 
@@ -10658,7 +10746,7 @@
                         text += easyClick ? "<br>[Easy clicking is currently ENABLED]" : "<br>[Easy clicking is currently DISABLED]"
                     } else if (hovered.id === "shardAscend") {
                         var newShards = C("gc").mul(1e-9).floor()
-                        text += newShards.isZero() ? "<br>[Ascending will NOT earn you ANY SHARDS!]" : "<br>[Ascending will earn you a total of " + format(newShards) + " shards.]"
+                        text += newShards.isZero() ? "<br>[Ascending will NOT earn you ANY SHARDS!]" : "<br>[Ascending will earn you a total of " + format(newShards) + " shards but reset significant progress.]"
                     }
 
                     if (parent !== null && hovered.tagName !== "BUTTON" && parent.tagName === "BUTTON") {
