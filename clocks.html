@@ -3044,7 +3044,7 @@
         <div id="content">
             <div id="left">
                 <div id="speedData">
-                    <span data-desc="The speed multiplier for your entire game"></span>
+                    <span data-desc="The speed multiplier for your entire game" class="smallish"></span>
                     <span role="presentation"></span><span role="presentation"></span><span role="presentation"></span>
                 </div>
 
@@ -7828,10 +7828,11 @@
                                 continue
                             }
 
-                            if (part1 === "money" && hasResearch("marketing")) {
+                            if (part1 === "money") {
+                                if (hasResearch("marketing")){
                                 multiplier = multiplier.mul(H(true).add(useableData.computers.mul(0.04)))
-                            }
-                            if (part1 === "bonus1" || part1 === "bonus2" || part1 === "bonus3") {
+                                }
+                            }  else  if (part1 === "bonus1" || part1 === "bonus2" || part1 === "bonus3") {
                                 multiplier = timeBonus
                             }
 
@@ -9675,7 +9676,7 @@
             }
 
             // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
-            speed = speed.mul(frame + 1).floor(true).sub(speed.mul(frame).floor(true)).mul(timeBonus)
+            speed = speed.mul(frame + 1).floor(true).sub(speed.mul(frame).floor(true))
             if (speed.isZero()) {
                 return
             }
@@ -10090,7 +10091,7 @@
                 updateId("potential", " EXTREMELY INSANE potential")
             } else if (cps.isMore("1e20")) {
                 updateId("potential", " LOTS OF INSANE potential")
-            } else if (1 || cps.isMore("1e19")) {
+            } else if (cps.isMore("1e19")) {
                 updateHTML(ID("potential"), " INSANE<sub>10</sub> potential")
             } else if (cps.isMore("1e18")) {
                 updateHTML(ID("potential"), " INSANE<sub>9</sub> potential")
@@ -10444,7 +10445,7 @@
             if (!C("bonus3", issue).isZero()) {
                 updateClass(speedElements[1], "big crystal3")
                 if (rawRemove("bonus3", H(true))) {
-                    speed = speed.mul(100)
+                    speed = H(100)
                 } else {
                     clear("bonus3")
                 }
@@ -10474,6 +10475,8 @@
                 updateClass(speedElements[3], "big graystal")
             }
 
+            speed = speed.max(timeBonus).mul(baseSpeed)
+
             var noBoosts = ID("noBoosts")
             if (speed.equals(baseSpeed)) {
                 noBoosts.style.display = "none"
@@ -10484,7 +10487,7 @@
             if (speed.equals(1)) {
                 updateHTML(speedElements[0], "")
             } else {
-                update(speedElements[0], "Speed multiplier: " + speed.format(speed.isLess(1) ? 2 : 0) + "×")
+                update(speedElements[0], "Speed multiplier: " + speed.format(speed.isLess(100) ? 2 : 0) + "×")
             }
 
             // Update everything within the game (like wood)
@@ -10719,7 +10722,7 @@
             }
 
             // Reset the speed
-            speed = baseSpeed
+            speed = H(baseSpeed)
 
             // Reset the button click variable
             alreadyClicked = false
