@@ -10182,7 +10182,7 @@
                         }
                     }
                 }
-                updateId("resourceData", allData.join("\r\n"))
+                updateId("resourceData", allData.length === 0 ? "Nothing!" : allData.join(",\r\n"))
             }
 
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
