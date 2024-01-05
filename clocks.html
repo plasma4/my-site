@@ -201,11 +201,12 @@
             font-size: 15px;
         }
 
-        #wattCount {
+        #wattCount,
+        #wageInput {
             background-color: black;
             color: #ef1936;
             text-align: center;
-            width: 100px;
+            width: 120px;
             border-radius: 15px;
             margin-right: 4px;
             padding: 2px;
@@ -3029,6 +3030,7 @@
         <nav id="navigation" aria-label="Navigation to switch tabs">
             <span data-tab="main" title="Build menu"><span class="hammer"></span></span>
             <span data-tab="clock" title="Clock menu"><span class="clock"></span></span>
+            <span data-tab="wages" title="Wages menu"><span class="money"></span></span>
             <span data-tab="fierya" title="Fiery planting menu" data-show="$apples"><span class="gapple"></span></span>
             <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span>
             <span data-tab="materials" title="Materials menu" data-show="money>=2500"><span class="brick"></span></span>
@@ -3504,6 +3506,24 @@
                             data-desc="OMEGA-managers allow you to acquire more radium workers at once.$radiummakers$"
                             data-omegabuy></span>
                     </button>
+                </div>
+
+                <div id="wages" style="display: none">
+                    <!-- stuff.clocks = Infinity -->
+                    <span class="big money"></span><span class="big money"></span><span class="big money"></span>
+                    Pay your workers extra for a <i>SWEET</i> production boost!
+                    <div class="smallish">(This does not include wattage requesting and clockmakers.)</div>
+
+                    <br>
+                    <input type="range" min="100" max="10000" value="0" tabindex="-1" id="wageSlider"
+                        aria-hidden="true">
+                    <input id="wageInput" value="1.00×" aria-label="Wage multiplier">
+                    <span class="orange"> wage multiplier</span>.
+                    <div class="small">
+                        Increased wages = increased work speed! You currently have a
+                        <b class="small lime" id="wageAmount"></b>
+                        times boost.
+                    </div>
                 </div>
 
                 <div id="fierya" style="display: none">
@@ -4149,26 +4169,31 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="$rocketry2" data-cost="2.5e14" data-research="rocketry3"
-                            data-desc="More rocket science? All right...\n(Unlocks all rocket parts. Building all the rocket parts allows you to reset for golden shards!)">
+                            data-desc="More rocket science? All right...\n(Unlocks all rocket parts. {Building all the rocket parts allows you to reset for golden shards!})">
                             Rocket science 2.0: <span class="green">$250,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-show="$rocketry" data-cost="5e13" data-research="rocketry2"
-                            data-desc="Well, it's not rocket science anymore!\n(Unlocks a few rocket parts that you can start to build)">
+                            data-desc="Well, it's not rocket science anymore!\n(Unlocks a few rocket parts that you can start to build. {Rockets allow you to reset for valuable golden shards!})">
                             Rocket science: <span class="green">$50,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
-                        <div data-show="$smart|naphtha>0|science>=1e13" data-cost="1e12" data-research="rocketry"
+                        <div data-show="$smart" data-cost="2e12" data-research="rocketry"
                             data-desc="Learn the basic components of rockets.\n(Unlocks the rocket panel, although you'll need further research to do anything at all...)">
-                            Basic rocketry: <span class="green">$1,000,000,000,000</span>
+                            Basic rocketry: <span class="green">$2,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
-                        <div data-show="$creative|science>=1e12" data-cost="1e12" data-research="smart"
-                            data-desc="That's smart...\n(Scientists generate 2× more science)">
+                        <div data-show="$creative|science>=1e11" data-cost="1e12" data-research="smart"
+                            data-desc="That's smart...\n(Scientists generate 2× more science. You also unlock a special research that can bring you out of this world!)">
                             Smarter scientists: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
-                        <div data-show="creativity>5e10|scientists>=25" data-cost="1" data-research="creative"
+                        <div data-show="$creative" data-cost="100" data-research="wages"
+                            data-desc="Wages? What are those?\nGet this upgrade to increase the wages of your workers!\n(Increased wages equals {INCREASED PRODUCTION!})">
+                            Increased wages: <span class="green">$100</span>
+                            <span class="money"></span>
+                        </div>
+                        <div data-show="creativity>5e9|scientists>=25" data-cost="1" data-research="creative"
                             data-desc="Creativity isn't cheap...unless you already have lots of creative scientists, of course.\n(Scientists generate 3× more creativity)">
                             Creative scientists: <span class="green">$1</span>
                             <span class="money"></span>
@@ -4402,7 +4427,8 @@
                     <input id="wattCount" value="0" aria-label="Amount of watts requested (up to 25,000)">
                     <span id="wattText" class="orange">watts</span><span class="yellow">/</span><span
                         class="lime">25,000</span>.
-                    <div class="small">(Each watt costs $0.10 a second, and you need enough money to receive power)
+                    <div class="small">
+                        (Each watt costs $0.10 a second, and you need enough money to receive power)
                     </div>
 
                     <button class="silver" data-desc="It'll cost $200 for a company-grade battery.$batteries$"
@@ -7397,11 +7423,11 @@
         ID("wattSlider").addEventListener("input", function (e) {
             wattUsage = Number(e.target.value)
             updateInput("wattCount", formatValue(wattUsage))
-            updateId("wattText", "watts")
+            updateId("wattText", wattUsage === 1 ? "watt" : "watts")
         })
 
         ID("wattCount").addEventListener("input", function (e) {
-            var value = ID("wattCount").value.trim()
+            var value = e.target.value.trim()
             if (value.length === 0) {
                 wattUsage = 0
             } else {
@@ -7414,7 +7440,34 @@
                     updateInput("wattCount", formatted)
                 }
             }
+
             updateId("wattText", wattUsage === 1 ? "watt" : "watts")
+        })
+
+
+        var wageMultiplier = H(true), wageBoost = H(true)
+        ID("wageSlider").addEventListener("input", function (e) {
+            wageMultiplier = new H(e.target.value).mul(0.01)
+            wageBoost = wageMultiplier.sqrt().sqrt(true).mul(3).add(wageMultiplier.sqrt().mul(0.2).min(15)).sub(2.2)
+            updateInput("wageInput", wageMultiplier.format(2) + "×")
+            updateId("wageAmount", wageBoost.format(4) + "×")
+        })
+
+        ID("wageInput").addEventListener("input", function (e) {
+            var value = ID("wageInput").value.trim()
+            if (value.length === 0) {
+                wageMultiplier = new H()
+                wageBoost = new H(true)
+            } else {
+                wageMultiplier = new H(value.replace(/,|×/g, ""), true).min(100)
+                wageBoost = wageMultiplier.sqrt().sqrt(true).mul(3).add(wageMultiplier.sqrt().mul(0.2).min(15)).sub(2.2)
+                var formatted = wageMultiplier.format(2) + "×"
+                if (formatted !== value) {
+                    updateInput("wageInput", formatted)
+                }
+            }
+
+            updateId("wageAmount", wageBoost.format(4) + "×")
         })
 
         ID("disableAudio").addEventListener("change", function () {
@@ -8391,6 +8444,12 @@
                         }
 
                         showTab(proceed("Wb"), true)
+                        var wageData = proceed("Qb")
+                        wageMultiplier = new H(wageData === false ? true : wageData)
+                        wageBoost = wageMultiplier.sqrt().sqrt(true).mul(3).add(wageMultiplier.sqrt().mul(0.2).min(15)).sub(2.2)
+                        updateInput("wageInput", wageMultiplier.format(2) + "×")
+                        updateId("wageAmount", wageBoost.format(4) + "×")
+
                         autosellOn = proceed("AX") === "t"
                         easyClick = proceed("\n") === "OK"
                         sellPercent = Number(proceed("\n\n"))
@@ -8770,7 +8829,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + (autosellOn ? "t" : "fa") + "AX" + (easyClick ? "OK" : "ISSUE") + "\n" + sellPercent + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (easyClick ? "OK" : "ISSUE") + "\n" + sellPercent + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -9174,6 +9233,8 @@
                 aluminumArmsEnabled = true
                 coalMachinesEnabled = true
 
+                wageMultiplier = H(true)
+                wageBoost = H(true)
                 easyClick = false
                 easyButton = null
                 easyTime = -1
@@ -9347,6 +9408,10 @@
                     if (subtracted === false) {
                         return false
                     }
+
+                    if (name === "money") {
+                        subtracted = subtracted
+                    }
                     stuff[name] = subtracted
                 }
                 return true
@@ -9460,7 +9525,12 @@
                 removeAmount = new H(true)
             }
 
-            if (remove(propertyToRemove, removeAmount)) {
+            if (propertyToRemove === "money") {
+                if (remove(propertyToRemove, removeAmount.mul(wageMultiplier))) {
+                    add(propertyToAdd, addAmount.mul(wageBoost))
+                    return true
+                }
+            } else if (remove(propertyToRemove, removeAmount)) {
                 add(propertyToAdd, addAmount)
                 return true
             }
@@ -9479,7 +9549,13 @@
                 removeAmount = new H(true)
             }
 
-            if (remove(propertyToRemove, removeAmount)) {
+            if (propertyToRemove === "money") {
+                if (remove(propertyToRemove, removeAmount.mul(wageMultiplier))) {
+                    add(propertyToAdd, addAmount.mul(wageBoost))
+                    stuff[propertyToAdd] = stuff[propertyToAdd].min(limit)
+                    return true
+                }
+            } else if (remove(propertyToRemove, removeAmount)) {
                 add(propertyToAdd, addAmount)
                 stuff[propertyToAdd] = stuff[propertyToAdd].min(limit)
                 return true
@@ -9499,10 +9575,11 @@
                 removeAmounts = [removeAmounts]
             }
 
+            var speedBoost = removeAmounts.includes("money")
             for (var i = 0; i < itemsToRemove.length; i++) {
                 var property = itemsToRemove[i]
                 var amountToRemove = removeAmounts[i].mul(speed)
-                removeAmounts[i] = amountToRemove
+                removeAmounts[i] = amountToRemove.mul(property === "money" ? wageMultiplier : wageBoost)
                 if (C(property).isLess(amountToRemove)) {
                     return false
                 }
@@ -9512,8 +9589,15 @@
                 rawRemove(itemsToRemove[i], removeAmounts[i])
             }
 
-            for (i = 0; i < itemsToAdd.length; i++) {
-                add(itemsToAdd[i], addAmounts[i])
+            if (speedBoost) {
+                var speedMultiplier = wageBoost.mul(speed)
+                for (i = 0; i < itemsToAdd.length; i++) {
+                    rawAdd(itemsToAdd[i], addAmounts[i].mul(speedMultiplier))
+                }
+            } else {
+                for (i = 0; i < itemsToAdd.length; i++) {
+                    add(itemsToAdd[i], addAmounts[i])
+                }
             }
             return true
         }
@@ -10518,6 +10602,7 @@
             }
 
             updateInput("wattSlider", wattUsage)
+            updateInput("wageSlider", wageMultiplier.mul(100))
 
             var boostElem = ID("turbineBoost")
             if (hasResearch("turbineOverclock")) {
