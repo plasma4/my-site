@@ -3027,7 +3027,7 @@
 
         <span id="crystal" tabindex="0"></span>
 
-        <nav id="navigation" aria-label="Navigation to switch tabs">
+        <nav id="navigation" aria-label="The navigation to switch tabs">
             <span data-tab="main" title="Build menu"><span class="hammer"></span></span>
             <span data-tab="clock" title="Clock menu"><span class="clock"></span></span>
             <span data-tab="wages" title="Wages menu" data-show="$wages"><span class="money"></span></span>
@@ -5070,7 +5070,7 @@
                     <button class="diamond" id="cheat">actually cheat</button>
                 </div>
 
-                <div class="small">
+                <nav class="small" aria-label="The navigation to view additional tabs">
                     <u title="Open the devlog" id="viewDevlog" class="linky" role="link">View devlog</u>
                     &nbsp;
                     <u title="View the settings" id="viewSettings" class="linky" role="link">View settings</u>
@@ -5086,189 +5086,189 @@
                     <u title="Download the save to your computer" class="save" id="export" role="link">Export</u>
                     &nbsp;
                     <u title="Import a save" class="save" id="import" role="link">Import</u>
-                </div>
-                <div id="logSection">
-                    Debug logs (<span id="count">0</span>):
-                    <tt id="logs"></tt>
-                </div>
             </div>
-
-            <div id="items">
-                <!-- ??? -->
-                <div class="rainbow2" data-desc="???">
-                    <span class="wonder"></span> MYSTERY <span class="wonder2"></span>
-                </div>
-                <!-- ??? -->
-
-                <div id="shards" class="valuable2" data-desc="Golden shards allow you to acquire MASSIVE boosts!"
-                    data-for="$shard"></div>
-                <div id="clocks" class="gray" data-desc="Your average clock. Can be sold or merged." data-for="$clock">
-                </div>
-                <div id="gc" class="shiny"
-                    data-desc="Golden, shiny, and bright, this clock is a good measure of wealth, with a flashy gilded outside.\nAlso makes for an amazing decoration in your home!"
-                    data-for="$gc"></div>
-                <div id="rc" class="dangerous" data-desc="A radioactive clock.\nScary!" data-for="$rc"></div>
-                <br>
-
-                <div id="watches" class="gray" data-desc="I'm watching you!\nWell, the silver watches are, anyway."
-                    data-for="$watch"></div>
-                <div id="rwatches" class="dangerous"
-                    data-desc="A distinctly green watch that is glowing and worryingly radioactive.\nSmall yet dangerous!"
-                    data-for="$rwatch"></div>
-
-                <br>
-
-                <div id="wood" class="brown" data-desc="Wood of all kinds!" data-for="$wood">
-                </div>
-                <div id="bwood" class="bluey" data-desc="Blue wood isn't easy to get...oh well." data-for="$bwood">
-                </div>
-
-                <br>
-
-                <div id="cbauxite" class="gray" data-desc="Crushed bauxite can be processed further into aluminum."
-                    data-for="crushed bauxite$"></div>
-                <div id="aluminumc" class="pale" data-desc="Aluminum crystals can be processed further into aluminum."
-                    data-for="aluminum crystal"></div>
-                <div id="aluminumo" class="paler"
-                    data-desc="Aluminum oxide can be smelted with aluminum smelters into aluminum!"
-                    data-for="aluminum oxide$"></div>
-                <div id="aluminum" class="beige" data-desc="Aluminum is able to make rockets!" data-for="$aluminum">
-                </div>
-
-                <br>
-
-                <div id="steel" class="paler"
-                    data-desc="Steel can be made from steel mills and can be used to start building machines.\nAlso, in real life, steel isn't really that valuable...oh, what am I doing...this is a GAME!!!"
-                    data-for="$steel"></div>
-                <div id="silverb" class="valuable"
-                    data-desc="A silver ingot, but the color's bright gold so you see it.\nStrangely dark, as it quickly tarnishes."
-                    data-for="$silverbar"></div>
-                <div id="goldb" class="valuable" data-desc="Quite valuable...a soild golden block." data-for="$goldbar">
-                </div>
-
-                <br>
-
-                <div id="limestone" class="beige"
-                    data-desc="Look, a rock! Limestone is located by miners. Did you know limestone is used in a steel mill?"
-                    data-for="$limestone"></div>
-                <div id="sand" class="beige"
-                    data-desc="Sand is dug out by diggers and is exclusively used to make bottles, which are used to store chemicals."
-                    data-for="sand pile"></div>
-                <div id="coal" class="gray"
-                    data-desc="Coal is an absolutely essential fuel source, and can be turned into coke: a more efficient fuel."
-                    data-for="$coal"></div>
-                <div id="coke" class="yellow" data-desc="Math 101:\nCOKE=COOL COAL" data-for="$rock"></div>
-                <div id="ngas" class="red"
-                    data-desc="Each gallon of natural gas can be used to make tons of plastic, which is used for many tasks.\nTo store natural gas, get a natural gas tank!"
-                    data-for="$barrel"></div>
-
-                <br>
-
-                <div id="naphtha" class="orange"
-                    data-desc="Naphtha is a orangy-yellow liquid that is an intermediate step in plastic production, and is stored in a bottle."
-                    data-for="naphtha bottle">
-                </div>
-                <div id="plastic" class="gray" data-desc="Plastic is required for computers!" data-for="plastic$">
-                </div>
-
-                <br>
-
-                <div id="circuits" class="green"
-                    data-desc="Circuits can be used to make circuit boards, which are required for better technology."
-                    data-for="circuit">
-                </div>
-                <div id="boards" class="lime"
-                    data-desc="Circuit boards can be used to build advanced robots and computers!" data-for="$chip">
-                </div>
-
-                <br>
-
-                <div id="watts" class="yellow"
-                    data-desc="Electricity is important to power machines and can be stored as well.\n(You don't lose these watts as these are active. Unused watts will go into batteries, which increase your watt-seconds.)"
-                    data-for="$bolt"></div>
-                <div id="wattseconds" class="lime"
-                    data-desc="Watt-seconds are automatically used when your production is below the amount of electricity is needed."
-                    data-for="$gbolt"></div>
-
-                <br>
-
-                <div id="megaclocks" class="graydient"
-                    data-desc="A huge circular platform filled entirely with clocks, with a giant clock and a square walkway in the center.\nRequires at least eight people to move around!"
-                    data-for="MEGAClock"></div>
-                <div id="eraclocks" class="repeat1"
-                    data-desc="An even bigger platform filled with a compendium of information all about clocks, and of course, your trade secrets.\nDon't share this with anyone!"
-                    data-for="ERAClock"></div>
-                <div id="feathers" class="repeat1"
-                    data-desc="Feathers can be used to build flying clocks, a first step towards time travel."
-                    data-for="$feather">
-                </div>
-                <div id="fc" class="repeat2" data-desc="Flying clocks are a first step towards future timelimes."
-                    data-for="$fc"></div>
-            </div>
-
-            <div id="more">
-                <!-- Properties that are considered ore will automatically determine if there needs to be a slash between the ore and useable form -->
-                <div id="ironore" class="pale" data-desc="Iron ore is heavy and is used to build machinery."
-                    data-for="%iron ore"></div>
-                <div id="bauxite" class="gray"
-                    data-desc="Bauxite is used to make aluminum (OR ALUMINIUM IN BRITISH ENGLISH), which is used to build rockets.."
-                    data-for="%bauxite">
-                </div>
-                <div id="graphite" class="dark"
-                    data-desc="Graphite is used to construct resistors, a component of circuit boards."
-                    data-for="graphite piece"></div>
-                <div id="silicon" class="pink" data-desc="Silicon is an important semiconductor."
-                    data-for="silicon piece"></div>
-                <div id="copperore" class="copper"
-                    data-desc="Copper is needed to create circuits, which is used to build circuit boards."
-                    data-for="$coppern"></div>
-                <div id="silverore" class="gray"
-                    data-desc="Silver tarnishes quickly, but can exclusively used to make watches." data-for="$silvern">
-                </div>
-                <div id="goldore" class="orange" data-desc="Shiny!" data-for="$goldn"></div>
-                <div id="platinumore" class="dark"
-                    data-desc="Your miners have a hard time telling silver and platinum apart, although a magnet and a keen eye can separate the two easily."
-                    data-for="$platinumn"></div>
-                <div id="radiumore" class="dangerous"
-                    data-desc="Radium rods have an eerie, green glow. It's best to stay away, or lock these up somewhere safe."
-                    data-for="$radiumbar"></div>
-
-                <br>
-
-                <div id="slag" class="gray" data-desc="Slag is mostly waste and is a by-product of making steel."
-                    data-for="slag piece"></div>
-                <div id="rubber" class="lime" data-desc="Rubber that can be made into glue." data-for="%rubber">
-                </div>
-                <div id="glue" class="white"
-                    data-desc="Glue can be used to glue feathers onto golden clocks, to turn them into flying ones!"
-                    data-for="$glue">
-                </div>
-                <div id="clay" class="orange" data-desc="Clay can be used to make bricks." data-for="$clay">
-                </div>
-                <div id="molds" class="mandarin"
-                    data-desc="This hand-sculpted block of clay is ready to be fired and made into bricks."
-                    data-for="$mold"></div>
-                <div id="bricks" class="yellow" data-desc="A hard and sturdy brick, ready to use." data-for="$brick">
-                </div>
-
-                <br>
-
-                <div id="science" class="blue" data-desc="Science helps you unlock new and exciting researches."
-                    data-for="$flask"></div>
-                <div id="creativity" class="orange" data-desc="Creativity helps unlock new and exciting researches."
-                    data-for="$star"></div>
-                <div id="iq" class="pink" data-desc="1+1=thwee!" data-for="digital knowlege">
-                </div>
+            <div id="logSection">
+                Debug logs (<span id="count">0</span>):
+                <tt id="logs"></tt>
             </div>
         </div>
 
-        <div id="edge"><span id="hover"></span></div>
+        <div id="items">
+            <!-- ??? -->
+            <div class="rainbow2" data-desc="???">
+                <span class="wonder"></span> MYSTERY <span class="wonder2"></span>
+            </div>
+            <!-- ??? -->
 
-        <div id="itemInfo">
-            <span data-for="crystal3">0×</span> <span class="crystal3" role="presentation"></span>
-            <span data-for="crystal2">0×</span> <span class="crystal2" role="presentation"></span>
-            <span data-for="crystal1">0×</span> <span class="crystal1" role="presentation"></span>
+            <div id="shards" class="valuable2" data-desc="Golden shards allow you to acquire MASSIVE boosts!"
+                data-for="$shard"></div>
+            <div id="clocks" class="gray" data-desc="Your average clock. Can be sold or merged." data-for="$clock">
+            </div>
+            <div id="gc" class="shiny"
+                data-desc="Golden, shiny, and bright, this clock is a good measure of wealth, with a flashy gilded outside.\nAlso makes for an amazing decoration in your home!"
+                data-for="$gc"></div>
+            <div id="rc" class="dangerous" data-desc="A radioactive clock.\nScary!" data-for="$rc"></div>
+            <br>
+
+            <div id="watches" class="gray" data-desc="I'm watching you!\nWell, the silver watches are, anyway."
+                data-for="$watch"></div>
+            <div id="rwatches" class="dangerous"
+                data-desc="A distinctly green watch that is glowing and worryingly radioactive.\nSmall yet dangerous!"
+                data-for="$rwatch"></div>
+
+            <br>
+
+            <div id="wood" class="brown" data-desc="Wood of all kinds!" data-for="$wood">
+            </div>
+            <div id="bwood" class="bluey" data-desc="Blue wood isn't easy to get...oh well." data-for="$bwood">
+            </div>
+
+            <br>
+
+            <div id="cbauxite" class="gray" data-desc="Crushed bauxite can be processed further into aluminum."
+                data-for="crushed bauxite$"></div>
+            <div id="aluminumc" class="pale" data-desc="Aluminum crystals can be processed further into aluminum."
+                data-for="aluminum crystal"></div>
+            <div id="aluminumo" class="paler"
+                data-desc="Aluminum oxide can be smelted with aluminum smelters into aluminum!"
+                data-for="aluminum oxide$"></div>
+            <div id="aluminum" class="beige" data-desc="Aluminum is able to make rockets!" data-for="$aluminum">
+            </div>
+
+            <br>
+
+            <div id="steel" class="paler"
+                data-desc="Steel can be made from steel mills and can be used to start building machines.\nAlso, in real life, steel isn't really that valuable...oh, what am I doing...this is a GAME!!!"
+                data-for="$steel"></div>
+            <div id="silverb" class="valuable"
+                data-desc="A silver ingot, but the color's bright gold so you see it.\nStrangely dark, as it quickly tarnishes."
+                data-for="$silverbar"></div>
+            <div id="goldb" class="valuable" data-desc="Quite valuable...a soild golden block." data-for="$goldbar">
+            </div>
+
+            <br>
+
+            <div id="limestone" class="beige"
+                data-desc="Look, a rock! Limestone is located by miners. Did you know limestone is used in a steel mill?"
+                data-for="$limestone"></div>
+            <div id="sand" class="beige"
+                data-desc="Sand is dug out by diggers and is exclusively used to make bottles, which are used to store chemicals."
+                data-for="sand pile"></div>
+            <div id="coal" class="gray"
+                data-desc="Coal is an absolutely essential fuel source, and can be turned into coke: a more efficient fuel."
+                data-for="$coal"></div>
+            <div id="coke" class="yellow" data-desc="Math 101:\nCOKE=COOL COAL" data-for="$rock"></div>
+            <div id="ngas" class="red"
+                data-desc="Each gallon of natural gas can be used to make tons of plastic, which is used for many tasks.\nTo store natural gas, get a natural gas tank!"
+                data-for="$barrel"></div>
+
+            <br>
+
+            <div id="naphtha" class="orange"
+                data-desc="Naphtha is a orangy-yellow liquid that is an intermediate step in plastic production, and is stored in a bottle."
+                data-for="naphtha bottle">
+            </div>
+            <div id="plastic" class="gray" data-desc="Plastic is required for computers!" data-for="plastic$">
+            </div>
+
+            <br>
+
+            <div id="circuits" class="green"
+                data-desc="Circuits can be used to make circuit boards, which are required for better technology."
+                data-for="circuit">
+            </div>
+            <div id="boards" class="lime" data-desc="Circuit boards can be used to build advanced robots and computers!"
+                data-for="$chip">
+            </div>
+
+            <br>
+
+            <div id="watts" class="yellow"
+                data-desc="Electricity is important to power machines and can be stored as well.\n(You don't lose these watts as these are active. Unused watts will go into batteries, which increase your watt-seconds.)"
+                data-for="$bolt"></div>
+            <div id="wattseconds" class="lime"
+                data-desc="Watt-seconds are automatically used when your production is below the amount of electricity is needed."
+                data-for="$gbolt"></div>
+
+            <br>
+
+            <div id="megaclocks" class="graydient"
+                data-desc="A huge circular platform filled entirely with clocks, with a giant clock and a square walkway in the center.\nRequires at least eight people to move around!"
+                data-for="MEGAClock"></div>
+            <div id="eraclocks" class="repeat1"
+                data-desc="An even bigger platform filled with a compendium of information all about clocks, and of course, your trade secrets.\nDon't share this with anyone!"
+                data-for="ERAClock"></div>
+            <div id="feathers" class="repeat1"
+                data-desc="Feathers can be used to build flying clocks, a first step towards time travel."
+                data-for="$feather">
+            </div>
+            <div id="fc" class="repeat2" data-desc="Flying clocks are a first step towards future timelimes."
+                data-for="$fc"></div>
         </div>
+
+        <div id="more">
+            <!-- Properties that are considered ore will automatically determine if there needs to be a slash between the ore and useable form -->
+            <div id="ironore" class="pale" data-desc="Iron ore is heavy and is used to build machinery."
+                data-for="%iron ore"></div>
+            <div id="bauxite" class="gray"
+                data-desc="Bauxite is used to make aluminum (OR ALUMINIUM IN BRITISH ENGLISH), which is used to build rockets.."
+                data-for="%bauxite">
+            </div>
+            <div id="graphite" class="dark"
+                data-desc="Graphite is used to construct resistors, a component of circuit boards."
+                data-for="graphite piece"></div>
+            <div id="silicon" class="pink" data-desc="Silicon is an important semiconductor." data-for="silicon piece">
+            </div>
+            <div id="copperore" class="copper"
+                data-desc="Copper is needed to create circuits, which is used to build circuit boards."
+                data-for="$coppern"></div>
+            <div id="silverore" class="gray"
+                data-desc="Silver tarnishes quickly, but can exclusively used to make watches." data-for="$silvern">
+            </div>
+            <div id="goldore" class="orange" data-desc="Shiny!" data-for="$goldn"></div>
+            <div id="platinumore" class="dark"
+                data-desc="Your miners have a hard time telling silver and platinum apart, although a magnet and a keen eye can separate the two easily."
+                data-for="$platinumn"></div>
+            <div id="radiumore" class="dangerous"
+                data-desc="Radium rods have an eerie, green glow. It's best to stay away, or lock these up somewhere safe."
+                data-for="$radiumbar"></div>
+
+            <br>
+
+            <div id="slag" class="gray" data-desc="Slag is mostly waste and is a by-product of making steel."
+                data-for="slag piece"></div>
+            <div id="rubber" class="lime" data-desc="Rubber that can be made into glue." data-for="%rubber">
+            </div>
+            <div id="glue" class="white"
+                data-desc="Glue can be used to glue feathers onto golden clocks, to turn them into flying ones!"
+                data-for="$glue">
+            </div>
+            <div id="clay" class="orange" data-desc="Clay can be used to make bricks." data-for="$clay">
+            </div>
+            <div id="molds" class="mandarin"
+                data-desc="This hand-sculpted block of clay is ready to be fired and made into bricks."
+                data-for="$mold"></div>
+            <div id="bricks" class="yellow" data-desc="A hard and sturdy brick, ready to use." data-for="$brick">
+            </div>
+
+            <br>
+
+            <div id="science" class="blue" data-desc="Science helps you unlock new and exciting researches."
+                data-for="$flask"></div>
+            <div id="creativity" class="orange" data-desc="Creativity helps unlock new and exciting researches."
+                data-for="$star"></div>
+            <div id="iq" class="pink" data-desc="1+1=thwee!" data-for="digital knowlege">
+            </div>
+        </div>
+    </div>
+
+    <div id="edge"><span id="hover"></span></div>
+
+    <div id="itemInfo">
+        <span data-for="crystal3">0×</span> <span class="crystal3" role="presentation"></span>
+        <span data-for="crystal2">0×</span> <span class="crystal2" role="presentation"></span>
+        <span data-for="crystal1">0×</span> <span class="crystal1" role="presentation"></span>
+    </div>
     </div>
 
     <div id="modPanel" tabindex="0">
