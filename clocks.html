@@ -10273,7 +10273,9 @@
                         }
                     }
                 }
-                updateId("resourceData", allData.length === 0 ? "Nothing, actually!" : allData.join(",\r\n"))
+
+                var length = allData.length
+                updateId("resourceData", length === 0 ? "Nothing, actually!" : (length <= 2 ? (length === 2 ? allData[0] + "\r\nand " + allData[1] : allData[0]) : (allData.slice(0, length - 1).join(",\r\n") + ",\r\nand " + allData[length - 1])))
             }
 
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
