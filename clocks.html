@@ -7074,7 +7074,7 @@
                 mouseX = e.clientX
                 mouseY = e.clientY
                 var target = e.target
-                if (easyClick && easyButton !== null && easyButton !== target) {
+                if (mouseDown && easyClick && easyButton !== null && easyButton !== target) {
                     easyButton = target
                     easyTime = Date.now() + 50
                 }
