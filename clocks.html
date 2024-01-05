@@ -9769,9 +9769,9 @@
                 return
             }
 
-            addUpTo("rocketbody", H(1).div(216000000).mul(C("Rocketbody", issue)), 100)
-            addUpTo("rocketfins", H(1).div(21600000).mul(C("Rocketfins", issue)), 100)
-            addUpTo("rocketcone", H(1).div(10800000).mul(C("Rocketcone", issue)), 100)
+            addUpTo("rocketbody", H(C("Rocketbody", issue)).div(216000000), 100)
+            addUpTo("rocketfins", H(C("Rocketfins", issue)).div(21600000), 100)
+            addUpTo("rocketcone", H(C("Rocketcone", issue)).div(10800000), 100)
 
             var trees = C("trees", issue)
 
