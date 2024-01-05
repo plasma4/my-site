@@ -7753,18 +7753,19 @@
                     }
 
                     function eventFunction(e) {
-                        // Prevent the button being clicked multiple times during the same frame
-                        if (alreadyClicked) {
-                            if (e !== true) {
-                                e.stopPropagation()
-                            }
-                            return
-                        }
-
-                        alreadyClicked = true
                         var multiplier = multiplierAttribute === null ? H(true) : C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
 
                         if (e !== true) {
+                            // Prevent the button being clicked multiple times during the same frame
+                            if (alreadyClicked) {
+                                if (e !== true) {
+                                    e.stopPropagation()
+                                }
+                                return
+                            }
+
+                            alreadyClicked = true
+
                             var types = Array(len)
                             var amounts = Array(len)
 
@@ -8530,7 +8531,7 @@
                         }
                         var compactedData = parseCompact($)
                         stuff = Object.assign(stuff2, compactedData)
-                        cManagersUsed = stuff.Rocketbody.add(stuff.Rocketfins)
+                        cManagersUsed = stuff.Rocketbody.add(stuff.Rocketfins).add(stuff.Rocketcone)
                         cManagersUsed = cManagersUsed ? cManagersUsed : H(0)
                         var stuffKeys = Object.keys(stuff)
                         for (k = 0; k < compactedData.length; k++) {
@@ -10278,7 +10279,7 @@
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
         }
 
-        var noItemWarning = true, alreadyClicked = false
+        var noItemWarning = true, alreadyClicked = true
 
         function datesClose(date, month, day, maxDaysBefore) {
             return (date.getMonth() + 1) === month && (date.getDate() + maxDaysBefore) > day && date.getDate() <= day
