@@ -7120,7 +7120,7 @@
             var amount = prompt('How much do you want to remove? To remove ALL of an item, you can also type "all".\r\n(You can use values like 123.456M and 4e100.)', 1)
             if (amount !== null) {
                 if (amount === "all") {
-                    clear(property)
+                    clearAmount(property)
                 }
                 var amountToRemove = new H(amount.replace(/,/, ""), true).floor(true)
                 if (property === "cmanagers" && cManagersUsed.isMore(C(property).sub(amountToRemove))) {
@@ -7546,7 +7546,7 @@
         ID("fireReset").addEventListener("click", function () {
             if (confirm("Are you sure? You will LOSE all of your fiery progress!")) {
                 add("fierywood", C("firefruit").digits().sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3).floor(true))
-                clear(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
+                clearAmount(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
                 setup(true)
             }
         })
@@ -7554,7 +7554,7 @@
         ID("silverReset").addEventListener("click", function () {
             if (confirm("Are you sure? You will LOSE all of your precious silvery progress!")) {
                 add("silverwood", C("silverfruit").digits().sub(10).mul(0.5).floor(true))
-                clear(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
+                clearAmount(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
                 setup(true)
             }
         })
@@ -7886,7 +7886,8 @@
                                     if (remove(part1, num)) {
                                         cManagersUsed = cManagersUsed.sub(num)
                                     } else {
-                                        cManagersUsed = stuff[part1] = new H()
+                                        cManagersUsed = cManagersUsed.sub(C(part1))
+                                        clearAmount(part1)
                                     }
                                 } else {
                                     var sign = action.indexOf("*")
@@ -9247,7 +9248,7 @@
             }
         }
 
-        function clear(data, clearTotals) {
+        function clearAmount(data, clearTotals) {
             if (clearTotals) {
                 if (data instanceof Array) {
                     for (var i = 0; i < data.length; i++) {
@@ -10539,7 +10540,7 @@
                 if (rawRemove("bonus3", H(true))) {
                     speed = H(100)
                 } else {
-                    clear("bonus3")
+                    clearAmount("bonus3")
                 }
             } else {
                 updateClass(speedElements[1], "big graystal")
@@ -10550,7 +10551,7 @@
                 if (rawRemove("bonus2", H(speed))) {
                     speed = speed.mul(25)
                 } else {
-                    clear("bonus2")
+                    clearAmount("bonus2")
                 }
             } else {
                 updateClass(speedElements[2], "big graystal")
@@ -10561,7 +10562,7 @@
                 if (rawRemove("bonus1", H(speed))) {
                     speed = speed.mul(10)
                 } else {
-                    clear("bonus1")
+                    clearAmount("bonus1")
                 }
             } else {
                 updateClass(speedElements[3], "big graystal")
