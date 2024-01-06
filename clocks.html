@@ -3866,7 +3866,7 @@
 
                     <br>
                     <button data-earn="coalminers+1" data-cost="steel-5e6|miners-5" data-show="$coal" data-sound="build"
-                        data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!]\nGet a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 100,000 watts.$coalminers$"
+                        data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!]\nGet a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 200,000 watts.$coalminers$"
                         class="orangebg">
                         Get a coal miner machine <span class="coal"></span>
                         <span class="mini stripe1" data-earn="coalminers+1" data-cost="steel-5e6|miners-5"
@@ -8293,8 +8293,9 @@
         }
 
         var wattageOrder = defaultWattagePriority.slice(0)
+        var optionalConsumption = ["coalminers"]
         var machineConsumption = {
-            coalminers: 100000,
+            coalminers: 200000,
             computers: 100,
             aluminumarms: [100, 20],
             factories: [8000, 600],
@@ -10803,7 +10804,7 @@
                         text = text.slice(0, matches.index) + "<br>(You have " + getAmount(type)
                         if (defaultWattagePriority.includes(type)) {
                             var consumption = machineConsumption[type]
-                            text += " that [require " + formatValue(typeof consumption === "number" ? consumption : consumption[0]) + " watts to operate]"
+                            text += (optionalConsumption.includes(type) ? " that [may be powered but DO NOT HAVE TO with " : " that [require ") + formatValue(typeof consumption === "number" ? consumption : consumption[0]) + " watts]"
                         }
                         text += ")"
                     }
