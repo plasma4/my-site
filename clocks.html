@@ -472,7 +472,7 @@
         }
 
         .smaller {
-            padding-top: 4px;
+            padding-top: 3px;
             font-size: 14px;
         }
 
@@ -928,7 +928,9 @@
         }
 
         .special:active {
+            border-color: #f0f2a9;
             background-color: #b08108;
+            box-shadow: 0 0 2px #f3b20e, 0 0 5px #f58925;
         }
 
         .bronze {
@@ -2866,7 +2868,7 @@
         </header>
 
         <div id="properties">
-            s5|s4|s3|s2|silverpower|silverwood|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -2891,7 +2893,7 @@
             bwood: Blue Log (3, Rare form of wood used for advanced electricity)
             silverb: Silver Bar (2, Silver bar for construction)
             platinumb: Platinum Bar (2, Platinum bar for construction)
-            ironore: Iron Ore (1, Iron which can be made into steel)
+            ironore: Iron Piece (1, Iron which can be made into steel)
             bauxite: Bauxite$ (1, Something that can be processed into aluminum)
             cbauxite: Crushed Bauxite$ (2, Bauxite that is crushed)
             aluminumc: Aluminum Crystal (2, Bauxite that is in crystal form)
@@ -3640,18 +3642,23 @@
                     </span>
                     <span class="mini special" data-show="$moreftrees" data-cost="fierywood-250000"
                         data-earn="$silverfwood" data-hide="$silverfwood" data-sound="transaction">
-                        -250,000 <span class="fwood" aria-label="fiery wood"></span> for silver wood to increase fiery
-                        wood gain
+                        -1,000,000 <span class="fwood" aria-label="fiery wood"></span> for silver wood to increase ALL
+                        categories of fiery wood gain
                     </span>
                     <span class="mini special" data-show="$silverfwood" data-cost="fierywood-5e6"
                         data-earn="$morefwood2" data-hide="$morefwood2" data-sound="transaction">
                         -5,000,000 <span class="fwood" aria-label="fiery wood"></span> for ANOTHER 3× fiery wood gain
                         boost
                     </span>
+                    <span class="mini special" data-show="$morefwood2" data-cost="fierywood-1e50" data-earn="$firebars"
+                        data-hide="$firebars" data-sound="transaction">
+                        -1.000e50 <span class="fwood" aria-label="fiery wood"></span> for each firebar to DOUBLE
+                        fiery wood gain from fiery wood wizards
+                    </span>
 
                     <br><br>
-                    <button class="orangebg" data-show="fierywood>0" data-earn="firewizards+1" data-cost="fierywood-50"
-                        data-desc="Fire wizards might cost 50 fiery wood, but they are quite powerful and each produce a firefarm a second.$firewizards$">
+                    <button class="orangebg" data-show="fierywood>0" data-earn="firewizards+1" data-cost="fierywood-125"
+                        data-desc="Fire wizards might cost 125 fiery wood, but they are quite powerful and each produce a firefarm a second.$firewizards$">
                         +1 fire wizard
                     </button>
                     <button class="orangebg" data-show="firewizards>0" data-earn="fwoodwizards+1"
@@ -3667,7 +3674,7 @@
                     </span>
                     <span class="mini cherrybg" data-show="firewizards>0" data-earn="firecoins+10"
                         data-cost="fierywood-1e13"
-                        data-desc="Forge 10 firecoin from a TRILLION fiery wood each!$firecoins$">
+                        data-desc="Forge 10 firecoins from a TRILLION fiery wood each!$firecoins$">
                         +10 firecoins
                     </span>
                     <span class="mini cherrybg" data-show="firewizards>0" data-earn="firecoins+100"
@@ -3685,7 +3692,7 @@
                         data-desc="Forge 10,000 firecoins from a TRILLION fiery wood each!$firecoins$">
                         +10,000 firecoins
                     </span>
-                    <span class="mini cherrybg" data-show="firewizards>0" data-earn="firebars+1"
+                    <span class="mini special" data-show="firewizards>0" data-earn="firebars+1"
                         data-cost="firecoins-1000"
                         data-desc="Forge a small firebar from a thousand firecoins!$firebars$">
                         +1 firebar
@@ -3731,9 +3738,9 @@
                     </div>
 
                     <br>
-                    <button class="flashy2" data-earn="silverfruit+1" data-cost="fierywood-1e6|silver-1e11"
+                    <button class="flashy2" data-earn="silverfruit+1" data-cost="fierywood-1e6|silver-1.5e12"
                         data-show="fierywood>0"
-                        data-desc="Step right up! Get your very own silverfruit for 1,000,000 fiery wood and 100 BILLION silver!$silverfruit$">
+                        data-desc="[NOTE: Each silverfruit increases fiery wood production by +100%!]\nStep right up! Get your very own silverfruit for 1,000,000 fiery wood and 1.5 TRILLION silver!$silverfruit$">
                         +1 <span class="sapple" role="img" aria-label="silverfruit"></span>
                     </button>
                     <button class="flashy2" data-show="silverfruit>0" data-earn="silvertrees+1"
@@ -3746,8 +3753,12 @@
                     </button>
 
                     <button class="flashy3" data-show="silvertrees>0" data-earn="silverplanters+1"
-                        data-cost="money-5e19|silverfruit-1000"
+                        data-hide="$freeplanters" data-cost="money-5e19|silverfruit-1000"
                         data-desc="Get a silverplanter on your side to increase the amount of silvertrees you can plant at once.\nYou'll have to get one of them them by paying up with a hefty $50.000Q and 1,000 silverfruit.\n(Gosh, these planters are so costly...but at least they'll be with you for a while!)$silverplanters$">
+                        +1 silverplanter
+                    </button>
+                    <button class="flashy3" data-show="$freeplanters" data-earn="silverplanters+1"
+                        data-desc="You own a silver wood upgrade that makes silverplanters FREE!$silverplanters$">
                         +1 silverplanter
                     </button>
 
@@ -3770,9 +3781,34 @@
                         +1 silvertown
                     </button>
 
-                    <button class="cherrybg" data-show="silverfruit>=1e50" id="silverReset"
+                    <button class="cherrybg" data-show="silverfruit>=1e20" id="silverReset"
                         data-desc="Reset for silver wood here!">
                     </button>
+
+                    <br>
+                    <span class="mini special" data-show="silverwood>0" data-cost="silverwood-1"
+                        data-earn="$silvertrees" data-hide="$silvertrees" data-sound="transaction">
+                        -5 <span class="swood" aria-label="silver wood"></span> for a 100× silvertree production boost
+                    </span>
+                    <span class="mini special" data-show="$silvertrees" data-cost="silverwood-2" data-earn="$silverwood"
+                        data-hide="$silverwood" data-sound="transaction">
+                        -10 <span class="swood" aria-label="silver wood"></span> for each silver wood to DOUBLE fiery
+                        wood wizard production!
+                    </span>
+                    <span class="mini special" data-show="$silverwood" data-cost="silverwood-10"
+                        data-earn="$freeplanters" data-hide="$freeplanters" data-sound="transaction">
+                        -25 <span class="swood" aria-label="silver wood"></span> for silverplanters to be FREE!
+                    </span>
+                    <span class="mini special" data-show="$freeplanters" data-cost="silverwood-111"
+                        data-earn="$silvergain" data-hide="$silvergain" data-sound="transaction">
+                        -111 <span class="swood" aria-label="silver wood"></span> for fiery wood to increase ALL
+                        categories of silver wood gain
+                    </span>
+                    <span class="mini special" data-show="$freeplanters" data-cost="silverwood-111"
+                        data-earn="$silvergain" data-hide="$silvergain" data-sound="transaction">
+                        -100,000 <span class="swood" aria-label="silver wood"></span> for fiery wood to increase ALL
+                        categories of silver wood gain
+                    </span>
                 </div>
 
                 <div id="magic" style="display: none">
@@ -4050,27 +4086,27 @@
 
                     <div id="research">
                         <div data-cost="1e19" data-research="speedv"
-                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            data-desc="Want to bend time?\n[Each time bender upgrade increases the game's speed by +100%.\nUsing crystals still keeps the multiplier at the same amount, but the amount of time the crystal lasts is multiplied instead.]\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!\n{After purchasing this upgrade, your crystal boosts will automatically clear and have to be reapplied.})">
                             Time Bender V: <span class="purple">$10.000Q</span>
                             <span class="big money"></span>
                         </div>
                         <div data-cost="1e16" data-research="speediv"
-                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            data-desc="Want to bend time?\n[Each time bender upgrade increases the game's speed by +100%.\nUsing crystals still keeps the multiplier at the same amount, but the amount of time the crystal lasts is multiplied instead.]\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!\n{After purchasing this upgrade, your crystal boosts will automatically clear and have to be reapplied.})">
                             Time Bender IV: <span class="purple">$10,000,000,000,000,000</span>
                             <span class="big money"></span>
                         </div>
                         <div data-cost="1e13" data-research="speediii"
-                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            data-desc="Want to bend time?\n[Each time bender upgrade increases the game's speed by +100%.\nUsing crystals still keeps the multiplier at the same amount, but the amount of time the crystal lasts is multiplied instead.]\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!\n{After purchasing this upgrade, your crystal boosts will automatically clear and have to be reapplied.})">
                             Time Bender III: <span class="purple">$10,000,000,000,000</span>
                             <span class="big money"></span>
                         </div>
                         <div data-cost="1e10" data-research="speedii"
-                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            data-desc="Want to bend time?\n[Each time bender upgrade increases the game's speed by +100%.\nUsing crystals still keeps the multiplier at the same amount, but the amount of time the crystal lasts is multiplied instead.]\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!\n{After purchasing this upgrade, your crystal boosts will automatically clear and have to be reapplied.})">
                             Time Bender II: <span class="purple">$10,000,000,000</span>
                             <span class="big money"></span>
                         </div>
                         <div data-cost="1e7" data-research="speedi"
-                            data-desc="Want to bend time?\nEach time bender upgrade increases the game's speed by +100%.\nUsing crystals still changes the multiplier to the same amount, but the amount of time the crystal lasts is multiplied instead.\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!)">
+                            data-desc="Want to bend time?\n[Each time bender upgrade increases the game's speed by +100%.\nUsing crystals still keeps the multiplier at the same amount, but the amount of time the crystal lasts is multiplied instead.]\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!\n{After purchasing this upgrade, your crystal boosts will automatically clear and have to be reapplied.})">
                             Time Bender I: <span class="purple">$10,000,000</span>
                             <span class="big money"></span>
                         </div>
@@ -4589,7 +4625,7 @@
 
                     <br><br>
                     <span class="mini orangebg"
-                        data-desc="Just building the rocket fins requires {[2.5 million] plastic and [2.5 million] wood} just for the body!"
+                        data-desc="Just building the rocket fins requires {[2.5 million] plastic and [2.5 million] wood}!"
                         data-cost="plastic-2.5e6|wood-2.5e6" data-show="$rocketry" data-earn="$rocketfins"
                         data-hide="$rocketfins">
                         Start building the rocket fins (costs 2,500,000 plastic and 2,500,000 wood)
@@ -4626,7 +4662,7 @@
 
                     <br><br>
                     <span class="mini orangebg"
-                        data-desc="Just building the rocket cone requires {[5 million] plastic and [8 million] wood} just for the body!"
+                        data-desc="Just building the rocket cone requires {[5 million] plastic and [8 million] wood}!"
                         data-cost="plastic-5e6|wood-8e6" data-show="$rocketry" data-earn="$rocketcone"
                         data-hide="$rocketcone">
                         Start building the rocket cone (costs 5,000,000 plastic and 8,000,000 wood)
@@ -5208,7 +5244,7 @@
 
             <div id="more">
                 <!-- Properties that are considered ore will automatically determine if there needs to be a slash between the ore and useable form -->
-                <div id="ironore" class="pale" data-desc="Iron ore is heavy and is used to build machinery."
+                <div id="ironore" class="tiny pale" data-desc="Iron ore is heavy and is used to build machinery."
                     data-for="%iron ore"></div>
                 <div id="bauxite" class="gray"
                     data-desc="Bauxite is used to make aluminum (OR ALUMINIUM IN BRITISH ENGLISH), which is used to build rockets.."
@@ -5220,17 +5256,17 @@
                 <div id="silicon" class="pink" data-desc="Silicon is an important semiconductor."
                     data-for="silicon piece">
                 </div>
-                <div id="copperore" class="copper"
+                <div id="copperore" class="tiny copper"
                     data-desc="Copper is needed to create circuits, which is used to build circuit boards."
                     data-for="$coppern"></div>
-                <div id="silverore" class="gray"
+                <div id="silverore" class="tiny gray"
                     data-desc="Silver tarnishes quickly, but can exclusively used to make watches." data-for="$silvern">
                 </div>
-                <div id="goldore" class="orange" data-desc="Shiny!" data-for="$goldn"></div>
-                <div id="platinumore" class="dark"
+                <div id="goldore" class="tiny orange" data-desc="Shiny!" data-for="$goldn"></div>
+                <div id="platinumore" class="tiny dark"
                     data-desc="Your miners have a hard time telling silver and platinum apart, although a magnet and a keen eye can separate the two easily."
                     data-for="$platinumn"></div>
-                <div id="radiumore" class="dangerous"
+                <div id="radiumore" class="tiny dangerous"
                     data-desc="Radium rods have an eerie, green glow. It's best to stay away, or lock these up somewhere safe."
                     data-for="$radiumbar"></div>
 
@@ -5308,72 +5344,189 @@
                     this.$ = [0, 0, 10000000000000000000000000000000000000000000000000n]
                 } else if (value instanceof HyperNumber) {
                     this.$ = value.$.slice(0)
-                } else {
-                    if (typeof value === "bigint") {
-                        if (value < 0n) {
-                            if (!noWarnings) {
-                                console.error("HyperNumbers must be non-negative.")
-                            }
-                            this.$ = [0, 0, 0n]
-                            return
-                        }
-
-                        var digits = value.toString().length - 1
-                        this.$ = [0, digits, (digits > 49 ? value / (10n ** BigInt(digits - 49)) : (value * (10n ** BigInt(49 - digits))))]
-                    } else if (typeof value === "number" && !isFinite(value)) {
+                } else if (typeof value === "bigint") {
+                    if (value < 0n) {
                         if (!noWarnings) {
-                            console.error("Values given must be positive and finite.")
+                            console.error("HyperNumbers must be non-negative.")
                         }
                         this.$ = [0, 0, 0n]
                         return
+                    }
+
+                    var digits = value.toString().length - 1
+                    this.$ = [0, digits, (digits > 49 ? value / (10n ** BigInt(digits - 49)) : (value * (10n ** BigInt(49 - digits))))]
+                } else if (typeof value === "number" && !isFinite(value)) {
+                    if (!noWarnings) {
+                        console.error("Values given must be positive and finite.")
+                    }
+                    this.$ = [0, 0, 0n]
+                    return
+                } else {
+                    var string
+                    if (typeof value === "string") {
+                        string = value.trim()
+                        if (string === "e") {
+                            this.$ = [0, 0, 27182818284590452353602874713526624977572470936999n]
+                            return
+                        } else if (string.toLowerCase() === "pi") {
+                            this.$ = [0, 0, 31415926535897932384626433832795028841971693993751n]
+                            return
+                        }
                     } else {
-                        var string
-                        if (typeof value === "string") {
-                            string = value.trim()
-                            if (string === "e") {
-                                this.$ = [0, 0, 27182818284590452353602874713526624977572470936999n]
+                        string = value.toString().trim()
+                    }
+
+                    string = string.replace(/,/g, "")
+                    var firstCode = string.charCodeAt(0)
+                    if (firstCode === 45) {
+                        if (!noWarnings) {
+                            console.error("HyperNumbers must be non-negative.")
+                        }
+                        this.$ = [0, 0, 0n]
+                        return
+                    }
+
+                    var len = string.length
+                    if (len === 0) {
+                        this.$ = [0, 0, 0n]
+                        return
+                    }
+
+                    var abbreviationTotal = getAbbreviation(string)
+                    var eIndex = string.indexOf("e")
+                    if (eIndex === -1) {
+                        var dot = string.indexOf(".")
+                        if (dot !== -1) {
+                            len = dot
+                            string = string.slice(0, dot) + string.slice(dot + 1)
+                        }
+
+                        var match = string.match(/[^0]/)
+                        if (match !== null) {
+                            var firstNonZero = match.index
+                            string = string.slice(firstNonZero)
+                            len -= firstNonZero
+                        } else {
+                            this.$ = [0, 0, 0n]
+                            return
+                        }
+
+                        if (/[^0-9]/.test(string)) {
+                            if (!noWarnings) {
+                                console.error("The value given could not be converted to a HyperNumber.")
+                            }
+                            this.$ = [0, 0, 0n]
+                            return
+                        }
+
+                        this.$ = [0, len + abbreviationTotal - 1, BigInt((string + "0000000000000000000000000000000000000000000000000").slice(0, 50))]
+                        return
+                    }
+
+                    var digits = 0, eTotal = 0, isBig = false
+                    if (eIndex === 0) {
+                        if (string.slice(0, 2) === "e^") {
+                            var spaceIndex = string.indexOf(" ")
+                            eTotal = string.slice(2, spaceIndex) - 1
+                            if (eTotal <= -1) {
+                                if (!noWarnings) {
+                                    console.error("You cannot have a negative amount of 'e' exponentiated.")
+                                }
+                                this.$ = [0, 0, 0n]
                                 return
-                            } else if (string.toLowerCase() === "pi") {
-                                this.$ = [0, 0, 31415926535897932384626433832795028841971693993751n]
-                                return
+                            } else {
+                                string = string.slice(spaceIndex + 1).trim()
+                                if (!isFinite(eTotal)) {
+                                    if (!noWarnings) {
+                                        console.error("The amount of 'e' letters is invalid.")
+                                    }
+                                    this.$ = [0, 0, 0n]
+                                    return
+                                }
                             }
                         } else {
-                            string = value.toString().trim()
-                        }
-                        string = string.replace(/,/g, "")
-                        var firstCode = string.charCodeAt(0)
-                        if (firstCode === 45) {
-                            if (!noWarnings) {
-                                console.error("HyperNumbers must be non-negative.")
-                            }
-                            this.$ = [0, 0, 0n]
-                            return
-                        }
-
-                        var len = string.length
-                        if (len === 0) {
-                            this.$ = [0, 0, 0n]
-                            return
-                        }
-
-                        var eIndex = string.indexOf("e")
-                        if (eIndex === -1) {
-                            var dot = string.indexOf(".")
-                            var abbreviationTotal = getAbbreviation()
-                            if (dot !== -1) {
-                                len = dot
-                                string = string.slice(0, dot) + string.slice(dot + 1)
-                                var firstNonZero = string.match(/[^0]/).index
-                                if (firstNonZero !== -1) {
-                                    string = string.slice(firstNonZero)
-                                    len -= firstNonZero
+                            var match = string.match(/[^e/]/)
+                            if (match === null) {
+                                if (!noWarnings) {
+                                    console.error("The value given could not be converted to a HyperNumber.")
                                 }
-                                len += abbreviationTotal
-                            } else if (abbreviationTotal !== 0) {
-                                len += abbreviationTotal - 1
+                                this.$ = [0, 0, 0n]
+                                return
+                            }
+                            eTotal = match.index
+                            string = string.slice(eTotal)
+                        }
+                    }
+
+                    eIndex = string.indexOf("e")
+                    var firstBeforeE = string.slice(0, eIndex)
+                    string = string.slice(eIndex + 1)
+                    var firstCode = string.charCodeAt(0)
+                    if (firstCode === 43) {
+                        string = string.slice(1)
+                    }
+
+                    if (firstCode !== 45) {
+                        if (/[^0-9]/.test(string)) {
+                            if (!noWarnings) {
+                                console.error("The value given could not be converted to a HyperNumber.")
+                            }
+                            this.$ = [0, 0, 0n]
+                            return
+                        }
+
+
+                        var match = string.match(/[^0]/)
+                        if (match !== null) {
+                            var firstNonZero = match.index
+                            string = string.slice(firstNonZero)
+                        }
+
+                        if (string.length >= 50) {
+                            eTotal++
+                            var big50 = BigInt((string + "0000000000000000000000000000000000000000000000000").slice(0, 50))
+                        }
+                    }
+
+                    var dot = firstBeforeE.indexOf("."), digits = 0
+                    if (dot === -1) {
+                        digits = firstBeforeE.length - 1
+                    } else {
+                        firstBeforeE = firstBeforeE.slice(0, dot) + firstBeforeE.slice(dot + 1)
+                        digits = dot - 1
+                    }
+
+                    if (/[^0-9]/.test(firstBeforeE)) {
+                        if (!noWarnings) {
+                            console.error("The value given could not be converted to a HyperNumber.")
+                        }
+                        this.$ = [0, 0, 0n]
+                        return
+                    }
+
+                    var big50 = BigInt((firstBeforeE + "0000000000000000000000000000000000000000000000000").slice(0, 50))
+
+                    var originalDigits = digits
+                    digits += parseInt(string)
+                    if (digits >= 9007199254740992) {
+                        var digitEIndex = string.indexOf("e")
+                        if (digitEIndex === -1) {
+                            digits = BigInt(originalDigits) + BigInt(string)
+                        } else {
+                            var firstPart = string.slice(0, digitEIndex)
+                            var digitDot = firstPart.indexOf(".")
+                            if (digitDot === -1) {
+                                digitDot = digitEIndex
                             }
 
-                            if (/[^0-9]/.test(string)) {
+                            beforeE = firstPart
+                            var beforeValue = string.slice(0, digitEIndex)
+                            var beforeDot = beforeValue.indexOf(".")
+                            if (beforeDot !== -1) {
+                                beforeValue = beforeValue.slice(0, beforeDot) + beforeValue.slice(beforeDot + 1)
+                            }
+
+                            if (/[^0-9]/.test(beforeValue)) {
                                 if (!noWarnings) {
                                     console.error("The value given could not be converted to a HyperNumber.")
                                 }
@@ -5381,211 +5534,51 @@
                                 return
                             }
 
-                            this.$ = [0, len - 1, BigInt((string + "0000000000000000000000000000000000000000000000000").slice(0, 50))]
-                        } else if (eIndex === len - 1) {
-                            if (!noWarnings) {
-                                console.error("You cannot have 'e' as the last character of a HyperNumber value.")
-                            }
+                            digits = BigInt(beforeValue)
+                        }
+
+                        if (digits >= 100000000000000000000000000000000000000000000000000n) {
+                            eTotal++
+                            big50 = BigInt((digits + "0000000000000000000000000000000000000000000000000").slice(0, 50))
+                            digits = digits.toString().length - 1
+                            isBig = false
+                        } else {
+                            isBig = true
+                        }
+                    } else if (eTotal !== 0 && digits <= 50) {
+                        if (digits === 0) {
                             this.$ = [0, 0, 0n]
                             return
+                        } else if (digits === 1) {
+                            if (eTotal === 1) {
+                                this.$ = [0, 0, 0n]
+                                return [0, 1, 10000000000000000000000000000000000000000000000000n]
+                            }
+                            this.$ = [eTotal - 2, 10000000000n, 10000000000000000000000000000000000000000000000000n]
                         } else {
-                            var eTotal = 0, beforeE = "1"
-                            if (eIndex === 0) {
-                                if (string.slice(0, 2) === "e^") {
-                                    var spaceIndex = string.indexOf(" ")
-                                    eTotal = string.slice(2, spaceIndex) - 1
-                                    if (eTotal <= -1) {
-                                        if (eTotal === -1) {
-                                            eTotal = 0
-                                            string = string.slice(spaceIndex + 1)
-                                        } else {
-                                            if (!noWarnings) {
-                                                console.error("You cannot have a negative amount of 'e' exponentiated.")
-                                            }
-                                            this.$ = [0, 0, 0n]
-                                            return
-                                        }
-                                    } else {
-                                        string = "e" + string.slice(spaceIndex + 1)
-                                        if (!isFinite(eTotal)) {
-                                            if (!noWarnings) {
-                                                console.error("The amount of 'e' letters is invalid.")
-                                            }
-                                            this.$ = [0, 0, 0n]
-                                            return
-                                        }
-                                    }
-                                } else {
-                                    var match = string.match(/[^e/]/)
-                                    if (match === null) {
-                                        if (!noWarnings) {
-                                            console.error("The value given could not be converted to a HyperNumber.")
-                                        }
-                                        this.$ = [0, 0, 0n]
-                                        return
-                                    }
-                                    eTotal = match.index
-                                    string = string.slice(--eTotal)
-                                }
-                                if (eTotal !== 0) {
-                                    eTotal++
-                                }
-                            } else {
-                                beforeE = string.slice(firstCode === 43, eIndex)
-                            }
-                            string = string.slice(eIndex + 1)
-                            if (beforeE.charCodeAt(0) === 48) {
-                                var match = string.match(/[^0]/)
-                                if (match === null) {
-                                    if (!noWarnings) {
-                                        console.error("The value given could not be converted to a HyperNumber.")
-                                    }
-                                    this.$ = [0, 0, 0n]
-                                    return
-                                }
-                                beforeE = beforeE.slice(match.index)
-                            }
+                            this.$ = [eTotal - 1, 10n ** BigInt(digits), 10000000000000000000000000000000000000000000000000n]
+                        }
+                        return
+                    }
 
-                            var isBig = false, abbreviationLength = getAbbreviation(), tempString = string.charCodeAt(0) === 101 ? "1" + string : string, originalDigits = Number(tempString)
-
-                            if (originalDigits !== originalDigits) {
-                                if (!noWarnings) {
-                                    console.error("The number after the digit amount is invalid.")
-                                }
-                                this.$ = [0, 0, 0n]
-                                return
-                            }
-
-                            var abbreviationPower = Math.pow(10, abbreviationLength)
-                            var digits = originalDigits * abbreviationPower
-                            if (digits >= 9007199254740992 || eTotal !== 0) {
-                                isBig = true
-                                var digitEIndex = string.indexOf("e")
-                                if (digitEIndex === -1) {
-                                    if (isNaN(digits)) {
-                                        if (!noWarnings) {
-                                            console.error("The final number of digits is invalid.")
-                                        }
-                                        this.$ = [0, 0, 0n]
-                                        return
-                                    }
-                                    digits = BigInt(digits)
-                                    if (digits >= 100000000000000000000000000000000000000000000000000n) {
-                                        eTotal = Math.max(2, eTotal + 1)
-                                        digits = digits.toString().length - 1
-                                        isBig = false
-                                    } else if (digits >= 9007199254740992n) {
-                                        digits = BigInt(tempString) * BigInt(abbreviationPower)
-                                    }
-                                } else {
-                                    var firstPart = string.slice(0, digitEIndex)
-                                    var digitDot = firstPart.indexOf(".")
-                                    if (digitDot === -1) {
-                                        digitDot = digitEIndex
-                                    }
-                                    beforeE = firstPart
-                                    var beforeValue = string.slice(0, digitEIndex)
-                                    var beforeDot = beforeValue.indexOf(".")
-                                    var beforeTemp = string.slice(digitEIndex + 1) - digitDot + 1
-                                    var beforeLength = beforeValue.length
-                                    if (beforeDot !== -1) {
-                                        beforeValue = beforeValue.slice(0, beforeDot) + beforeValue.slice(beforeDot + 1)
-                                        beforeTemp += digitDot - beforeLength + 1
-                                    }
-                                    var beforeDigits = BigInt(beforeTemp)
-
-                                    if (/[^0-9]/.test(beforeValue)) {
-                                        if (!noWarnings) {
-                                            console.error("The value given could not be converted to a HyperNumber.")
-                                        }
-                                        this.$ = [0, 0, 0n]
-                                        return
-                                    }
-
-                                    digits = BigInt(beforeValue)
-                                    if (beforeDigits >= 50n) {
-                                        eTotal = Math.max(2, eTotal + 1)
-                                        digits = digits.toString().length - 1 + Number(beforeDigits)
-                                        isBig = false
-                                    } else {
-                                        if (digits >= 100000000000000000000000000000000000000000000000000n) {
-                                            eTotal = Math.max(2, eTotal + 1)
-                                            digits = digits.toString().length - 1
-                                            isBig = false
-                                        } else {
-                                            beforeE = "1"
-                                        }
-                                    }
-                                }
-
-                                if (digits < 50) {
-                                    if (digits == 0) {
-                                        this.$ = [0, 0, 0n]
-                                        return
-                                    } else if (digits == 1) {
-                                        if (eTotal === 2) {
-                                            this.$ = [0, 10, 10000000000000000000000000000000000000000000000000n]
-                                            return
-                                        } else {
-                                            eTotal = eTotal === 3 ? 0 : (eTotal - 2)
-                                            digits = 10000000000n
-                                        }
-                                    } else {
-                                        eTotal = eTotal === 2 ? 0 : (eTotal - 1)
-                                        digits = 10n ** digits
-                                    }
-                                }
-                            }
-
-                            if (eTotal >= 9007199254740992) {
-                                if (/[^0-9]/.test(beforeValue)) {
-                                    if (!noWarnings) {
-                                        console.error("The value given is too big for a HyperNumber to store.")
-                                    }
-                                    this.$ = [0, 0, 0n]
-                                    return
-                                }
-                            }
-
-                            var dot = beforeE.indexOf("."), extraDigits = 0
-                            if (dot === -1) {
-                                extraDigits = beforeE.length - 1
-                            } else {
-                                beforeE = beforeE.slice(0, dot) + beforeE.slice(dot + 1)
-                                extraDigits = dot - 1
-                            }
-
-                            if (/[^0-9]/.test(beforeE)) {
-                                if (!noWarnings) {
-                                    console.error("The value given could not be converted to a HyperNumber.")
-                                }
-                                this.$ = [0, 0, 0n]
-                                return
-                            }
-
-                            digits += isBig ? BigInt(extraDigits) : extraDigits
-                            var big50 = BigInt((beforeE.slice(0, 50) + "0000000000000000000000000000000000000000000000000").slice(0, 50))
-
-                            if (digits <= -9007199254740992) {
-                                this.$ = [0, 0, 0n]
-                            } else if (isBig) {
-                                if (digits >= 9007199254740992n) {
-                                    this.$ = [eTotal + 1, digits, big50]
-                                } else {
-                                    this.$ = [eTotal, eTotal === 0 ? Number(digits) : digits, big50]
-                                }
-                            } else {
-                                if (digits >= 9007199254740992) {
-                                    this.$ = [eTotal, BigInt(string) * (10n ** BigInt(abbreviationLength)) + BigInt(extraDigits), big50]
-                                } else {
-                                    this.$ = [eTotal, eTotal === 0 ? digits : BigInt(digits), big50]
-                                }
-                            }
+                    if (digits <= -9007199254740992) {
+                        this.$ = [0, 0, 0n]
+                    } else if (isBig) {
+                        if (digits >= 9007199254740992n) {
+                            this.$ = [eTotal + 1, digits, big50]
+                        } else {
+                            this.$ = [eTotal, eTotal === 0 ? Number(digits) : digits, big50]
+                        }
+                    } else {
+                        if (digits >= 9007199254740992) {
+                            this.$ = [eTotal, BigInt(preDigits) + BigInt(extraDigits), big50]
+                        } else {
+                            this.$ = [eTotal, eTotal === 0 ? digits : BigInt(digits), big50]
                         }
                     }
                 }
 
-                function getAbbreviation() {
+                function getAbbreviation(string) {
                     var len = string.length
                     var abbreviationIndex = -1
                     var last = string[len - 1]
@@ -5703,12 +5696,7 @@
                     var diff = d1 - d2
                     if (d1 === d2) {
                         sum = this.$[2] + bData
-                    } else if (d1 > d2) {
-                        if (d1 - d2 > 49n) {
-                            return new HyperNumber(this)
-                        }
-                        sum = this.$[2] + bData / (10n ** diff)
-                    } else {
+                    } else if (d1 < d2) {
                         if (d2 - d1 > 49n) {
                             return num
                         }
@@ -5731,11 +5719,6 @@
                             return new HyperNumber(this)
                         }
                         sum = this.$[2] + bData / (10n ** diff)
-                    } else {
-                        if (d2 - d1 > 49n) {
-                            return num
-                        }
-                        sum = this.$[2] / (10n ** -diff) + bData
                     }
                     if (sum >= 100000000000000000000000000000000000000000000000000n) {
                         num.$ = [1, max + 1n, sum / 10n]
@@ -5754,6 +5737,14 @@
             HyperNumber.prototype.sub = function (value) {
                 var wasHyper = value instanceof HyperNumber
                 var b = wasHyper ? value : new HyperNumber(value)
+                var aData = this.$[2]
+                var bData = b.$[2]
+                if (aData === 0n) {
+                    return wasHyper ? new HyperNumber(b) : b
+                } else if (bData === 0n) {
+                    return new HyperNumber(this)
+                }
+
                 var c1 = this.$[0]
                 var c2 = b.$[0]
                 if (c1 >= 2 || c2 >= 2) {
@@ -5784,14 +5775,6 @@
                     }
                 } else if (c1 < c2) {
                     return false
-                }
-
-                var aData = this.$[2]
-                var bData = b.$[2]
-                if (aData === 0n) {
-                    return wasHyper ? new HyperNumber(b) : b
-                } else if (bData === 0n) {
-                    return new HyperNumber(this)
                 }
 
                 var a = new HyperNumber(this)
@@ -5856,11 +5839,12 @@
                 var digits = b.$[1]
                 if (c1 === 0 && c2 === 0) {
                     var multiplied = this.$[2] * b.$[2]
-                    var d = this.$[1] + digits
+                    var d1 = this.$[1]
+                    var d = d1 + digits
                     if (multiplied >= 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n) {
                         if (d >= 9007199254740992) {
                             b.$[0] = 1
-                            d = BigInt(digits + 1) + BigInt(this.$[1])
+                            d = BigInt(digits + 1) + BigInt(d1)
                         } else {
                             if (d <= -9007199254740991) {
                                 b.$ = [0, 0, 0n]
@@ -5872,26 +5856,27 @@
                     } else {
                         if (d >= 9007199254740992) {
                             b.$[0] = 1
-                            d = BigInt(digits) + BigInt(this.$[1])
+                            d = BigInt(digits) + BigInt(d1)
                         } else if (d <= -9007199254740992) {
                             b.$ = [0, 0, 0n]
                             return b
                         }
                         b.$[2] = multiplied / 10000000000000000000000000000000000000000000000000n
                     }
+
                     b.$[1] = d
                     return b
                 } else if (c1 === 1 && c2 === 1) {
                     var multiplied = this.$[2] * b.$[2]
+                    digits += this.$[1]
                     if (multiplied >= 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n) {
-                        digits += this.$[1] + 1n
+                        digits++
                         if (digits >= 100000000000000000000000000000000000000000000000000n) {
                             b.$ = [2, 50n, digits / 10n]
                             return b
                         }
                         b.$[2] = multiplied / 100000000000000000000000000000000000000000000000000n
                     } else {
-                        digits += this.$[1]
                         if (digits >= 100000000000000000000000000000000000000000000000000n) {
                             b.$ = [2, 50n, digits / 10n]
                             return b
@@ -5955,6 +5940,8 @@
                         if (digits >= 100000000000000000000000000000000000000000000000000n) {
                             b.$ = [2, 50n, digits / 10n]
                             return b
+                        } else {
+                            b.$[0] = 1
                         }
                         b.$[2] = multiplied / 100000000000000000000000000000000000000000000000000n
                     } else {
@@ -5962,6 +5949,8 @@
                         if (digits >= 100000000000000000000000000000000000000000000000000n) {
                             b.$ = [2, 50n, digits / 10n]
                             return b
+                        } else {
+                            b.$[0] = 1
                         }
                         b.$[2] = multiplied / 10000000000000000000000000000000000000000000000000n
                     }
@@ -6294,6 +6283,7 @@
                     }
                 } else if (category === 1) {
                     digits = value.$[1]
+                    var data = value.$[2]
                     digitsEven = !(digits & 1n)
                     if (digitsEven) {
                         data *= 10n
@@ -6351,60 +6341,106 @@
             /**
              * HyperNumber value for log10(x)/log2(x)
              */
-            const LOG10_2 = new HyperNumber("3.3219280948873623478703194294893901758648313930245")
+            const LOG10_2 = new HyperNumber(".3010299956639811952137388947244930267681898814621")
 
             /**
              * HyperNumber value for log10(x)/ln(x)
              */
-            const LOG10_E = new HyperNumber("2.3025850929940456840179914546843642076011014886287")
+            const LOG10_E = new HyperNumber(".43429448190325182765112891891660508229439700580366")
 
-            function HPow10(value, noClone) {
+            /**
+             * HyperNumber value for log2(x)/ln(x)
+             */
+            const LOG2_E = new HyperNumber("1.4426950408889634073599246810018921374266459541529")
+
+            /**
+             * HyperNumber value for ln(x)/log2(x)
+             */
+            const LOGE_2 = new HyperNumber(".69314718055994530941723212145817656807550013436025")
+
+            /**
+             * HyperNumber value for ln(x)/log10(x)
+             */
+            const LOGE_10 = new HyperNumber("2.3025850929940456840179914546843642076011014886287")
+
+            /**
+             * Zero in HyperNumber form
+             */
+            const ZERO = new HyperNumber()
+
+            /**
+             * One half in HyperNumber form
+             */
+            const HALF = new HyperNumber("0.5")
+
+            /**
+             * One in HyperNumber form
+             */
+            const ONE = new HyperNumber(true)
+
+            /**
+             * Two in HyperNumber form
+             */
+            const TWO = new HyperNumber("2")
+
+            function fastLog(value, noClone) {
                 if (!noClone) {
                     value = new HyperNumber(value)
                 }
 
-                if (value.$[0] !== 0) {
-                    value.$[0]++
+                if (value.$[1] < 0) {
+                    return false
                 }
-                return value
+
+                value = value.sub(1)
+                var result = 0
+                for (var i = 50; i > 0; i--) {
+                    result = value.sqr().mul(i * i).div(value.add(TWO).mul(2 * i + 1).sub(result))
+                }
+
+                return value.mul(2).div(value.add(TWO).sub(result))
             }
 
-            function HLog10(value, noClone) {
-                if (!noClone) {
-                    value = new HyperNumber(value)
+            function fastExp(base, power) {
+                var y = new H(true)
+                var exponent = power.$[2] / (10n ** (49n - BigInt(power.$[1])))
+                if (exponent === 0n) {
+                    return y
                 }
 
-                if (value.$[0] >= 2) {
-                    value.$[0]--
+                while (exponent > 1n) {
+                    if (exponent % 2n === 1n) {
+                        y = y.mul(base)
+                        exponent--
+                    }
+
+                    base = base.mul(base)
+                    exponent >>= 1n
                 }
-                return value
+
+                return base.mul(y)
             }
 
             /**
-             * Finds the value of a base taken to a power.
-             * @param {boolean} noClone If set to true, then the number is not cloned (recommended when possible).
+             * Finds the value of the current value taken to an INTEGER.
+             * @param {string | number | bigint | HyperNumber} exponent
              * @returns {HyperNumber}
              */
-            HyperNumber.prototype.pow10 = function (noClone) {
-                return HPow10(this, noClone)
-            }
+            HyperNumber.prototype.pow = function (exponent) {
+                var power = new H(exponent)
+                if (power.$[1] >= 50) {
+                    power = power.mul(this.log10())
+                    var category = power.$[0]
+                    if (category < 2) {
+                        power.$[0] = 2
+                        power.$[1] = BigInt(power.$[1])
+                    } else {
+                        power.$[0]++
+                    }
+                    return power
+                }
 
-            /**
-             * Finds the value of a base taken to a power.
-             * @param {boolean} noClone If set to true, then the number is not cloned (recommended when possible).
-             * @returns {HyperNumber}
-             */
-            HyperNumber.prototype.pow = function (noClone) {
-                return HPow10(this.mul(LOG10_E), noClone)
-            }
-
-            /**
-             * Finds the value of a base taken to a power.
-             * @param {boolean} noClone If set to true, then the number is not cloned (recommended when possible).
-             * @returns {HyperNumber}
-             */
-            HyperNumber.prototype.pow2 = function (noClone) {
-                return HPow10(this.mul(LOG10_2), noClone)
+                return fastExp(this, power)
             }
 
             /**
@@ -6413,7 +6449,24 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.log10 = function (noClone) {
-                return HLog10(this, noClone)
+                var category = this.$[0]
+                if (category >= 2) {
+                    var value = noClone ? this : new HyperNumber(this)
+                    if (category === 2) {
+                        value.$[0] = 0
+                        value.$[1] = Number(value.$[1])
+                    } else {
+                        value.$[0]--
+                    }
+                    return value
+                }
+
+                var result = fastLog(this, true).mul(LOG10_E)
+                if (noClone) {
+                    this.$ = result.$
+                    return this
+                }
+                return result
             }
 
             /**
@@ -6421,8 +6474,19 @@
              * @param {boolean} noClone If set to true, then the number is not cloned (recommended when possible).
              * @returns {HyperNumber}
              */
-            HyperNumber.prototype.log = function (noClone) {
-                return HLog10(this, noClone).mul(LOG10_E)
+            HyperNumber.prototype.ln = function (noClone) {
+                var category = this.$[0]
+                if (category >= 2) {
+                    var value = this.mul(LOG10_E)
+                    value.$[0] = category === 2 ? 0 : (category - 2)
+                    if (noClone) {
+                        this.$ = value.$
+                        return this
+                    }
+                    return value
+                }
+
+                return fastLog(this, noClone)
             }
 
             /**
@@ -6431,7 +6495,18 @@
              * @returns {HyperNumber}
              */
             HyperNumber.prototype.log2 = function (noClone) {
-                return HLog10(this, noClone).mul(LOG10_2)
+                var category = this.$[0]
+                if (category >= 2) {
+                    var value = this.mul(LOG10_2)
+                    value.$[0] = category === 2 ? 0 : (category - 2)
+                    if (noClone) {
+                        this.$ = value.$
+                        return this
+                    }
+                    return value
+                }
+
+                return fastLog(this, true).mul(LOG2_E)
             }
 
             /**
@@ -7074,12 +7149,12 @@
                 mouseX = e.clientX
                 mouseY = e.clientY
                 var target = e.target
-                if (mouseDown && easyClick && easyButton !== null && easyButton !== target) {
-                    easyButton = target
-                    easyTime = Date.now() + 50
-                }
-
                 if (target.getAttribute) {
+                    if (mouseDown && easyClick && easyButton !== null && easyButton !== target) {
+                        easyButton = target
+                        easyTime = Date.now() + 50
+                    }
+
                     hovered = target
                 } else {
                     hovered = null
@@ -7108,11 +7183,11 @@
             if (e.touches.length === 1) {
                 var touch = e.touches[0]
                 var target = document.elementFromPoint(touch.clientX, touch.clientY)
-                easyButton = target
-                easyTime = Date.now() + 500
 
                 if (target !== null && target.getAttribute) {
                     hovered = target
+                    easyButton = target
+                    easyTime = Date.now() + 500
                 } else {
                     hovered = null
                 }
@@ -7276,6 +7351,11 @@
         var researches = []
         attachEvent("research", function (elem) {
             if (elem !== this) {
+                if (alreadyClicked) {
+                    return
+                }
+
+                alreadyClicked = true
                 var parent = elem.parentElement
                 if (parent !== ID("research")) {
                     elem = parent
@@ -7297,6 +7377,14 @@
                             item = C("money", "This happened while checking for the research cost.")
                             cost = H(costString)
                             if (item.isMoreOrEqual(cost)) {
+                                if (research === "speedi" || research === "speedii" || research === "speediii" || research === "speediv" || research === "speedv") {
+                                    rawAdd("crystal3", stuff.bonus3.div(timeBonus.mul(600)).floor(), false)
+                                    rawAdd("crystal2", stuff.bonus2.div(timeBonus.mul(600)).floor(), false)
+                                    rawAdd("crystal1", stuff.bonus1.div(timeBonus.mul(600)).floor(), false)
+                                    stuff.bonus1 = new H()
+                                    stuff.bonus2 = new H()
+                                    stuff.bonus3 = new H()
+                                }
                                 rawRemove("money", cost)
                                 researches.push(research)
                             }
@@ -7599,7 +7687,7 @@
 
         ID("fireReset").addEventListener("click", function () {
             if (confirm("Are you sure? You will LOSE all of your fiery progress!")) {
-                add("fierywood", C("firefruit").digits().sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3).floor(true))
+                add("fierywood", C("firefruit").log10().mul(0.9).sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3).floor(true))
                 clearAmount(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
                 setup(true)
             }
@@ -7607,7 +7695,7 @@
 
         ID("silverReset").addEventListener("click", function () {
             if (confirm("Are you sure? You will LOSE all of your precious silvery progress!")) {
-                add("silverwood", C("silverfruit").digits().sub(10).mul(0.5).floor(true))
+                add("silverwood", C("silverfruit").log10().sub(10).mul(hasResearch("silvergain") ? C("fierywood").log10() : 0.5).floor(true))
                 clearAmount(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
                 setup(true)
             }
@@ -8194,7 +8282,7 @@
             }
 
             if (rocketParts.includes(id)) {
-                return (amount.equals(100) ? "a completed " + item.names[3] : "built " + format(amount, "step") + " of the " + item.names[3] + " with " + (100 * (Number(amount) % 1)).toFixed(4) + "% of that step completed") + ", as well as " + format(C(id[0].toUpperCase() + id.slice(1), "This happened while formatting name and quantity information for the amount of workers working on a rocket part."), "worker") + " helping to build it"
+                return (amount.equals(100) ? "a completed " + item.names[3] : "built " + format(amount, "step") + " of the " + item.names[3] + " with " + amount.sub(amount.floor()).mul(100).format(5) + "% of that step completed") + ", as well as " + format(C(id[0].toUpperCase() + id.slice(1), "This happened while formatting name and quantity information for the amount of workers working on a rocket part."), "worker") + " helping to build it"
             } else if (id === "money") {
                 return "$" + formatted
             } else if (id === "iq") {
@@ -9819,7 +9907,8 @@
             return (0.2126 * ((base16 >> 16) & 0xff) + 0.7152 * ((base16 >> 8) & 0xff) + 0.0722 * (base16 & 0xff)) > 65
         }
 
-        var wattStuff, useableData, shardPower, timeBonus
+        var wattStuff, useableData, shardPower
+        var timeBonus = H(true)
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
         function updateGame() {
@@ -9865,6 +9954,13 @@
             var silverfruitMultiplier = C("silverfruit", issue).add(1)
             var fWoodWizardCost = C("fwoodwizards", issue).mul(0.01)
             var fWoodWizardPower = fWoodWizardCost.mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 3 : 1)
+            if (hasResearch("firebars")) {
+                fWoodWizardPower = fWoodWizardPower.mul(H(2).pow(C("firebars")))
+            }
+
+            if (hasResearch("silverwood")) {
+                fWoodWizardPower = fWoodWizardPower.mul(H(2).pow(C("silverwood")))
+            }
             var firewizardPower = C("firewizards", issue).div(60)
             var firetowns = C("firetowns", issue)
             var firetownPower = firetowns.isLess(1) ? H(true) : firetowns.sqr().add(firetowns.mul(25)).sub(25).mul(777).add(1)
@@ -10082,12 +10178,12 @@
             exchange("bwood", bluePower, "fc", bluecutters.mul(0.006), true)
             add("rubber", trees.mul(0.0004))
 
-            multiExchange("fierywood", fWoodWizardPower, ["bwood", "firetrees"], [fWoodWizardCost.mul(500), fWoodWizardCost.mul(1e9)], true)
+            multiExchange("fierywood", fWoodWizardPower, ["bwood", "firetrees"], [fWoodWizardCost.mul(500), fWoodWizardCost.mul(1e9)])
             add("firefarms", firewizardPower)
 
             var firefarms = C("firefarms", issue)
             add("firefields", firefarms.mul(0.1))
-            add("f5", firefarms.mul(1).mul(firetownPower))
+            add("f5", firefarms.mul(firetownPower))
             add("f4", C("f5").mul(firetownPower))
             add("f3", C("f4").mul(firetownPower))
             add("f2", C("f3").mul(firetownPower))
@@ -10100,16 +10196,16 @@
 
             add("silverfields", silverfarms.mul(0.1))
 
-            add("f5", silverfarms.mul(1).mul(silvertownPower))
-            add("f4", C("f5").mul(silvertownPower))
-            add("f3", C("f4").mul(silvertownPower))
-            add("f2", C("f3").mul(silvertownPower))
-            add("fierypower", C("f2").mul(silvertownPower))
+            add("s5", silverfarms.mul(silvertownPower))
+            add("s4", C("s5").mul(silvertownPower))
+            add("s3", C("s4").mul(silvertownPower))
+            add("s2", C("s3").mul(silvertownPower))
+            add("silverpower", C("s2").mul(silvertownPower))
 
             var silverfields = C("silverfields")
             add("silverpower", silverfields.mul(0.005))
             add("silvertrees", silverfields.mul(0.00123456789))
-            add("silverfruit", C("silvertrees").mul(C("silverpower")).mul(hasResearch("fertilizer2") ? 2 : 1).mul(hasResearch("fertilizer") ? 0.000325 : 0.0001625))
+            add("silverfruit", C("silvertrees").mul(C("silverpower")).mul(hasResearch("silvertrees") ? 100 : 1).mul(hasResearch("fertilizer2") ? 2 : 1).mul(hasResearch("fertilizer") ? 0.000325 : 0.0001625))
 
             add("creativity", managerPower)
 
@@ -10176,10 +10272,10 @@
 
             updateId("constructorPlural", C("cmanagers", issue).isPlural() ? "s" : "")
 
-            var firefruitDigits = C("firefruit").digits()
-            var silverfruitDigits = C("silverfruit").digits()
-            updateId("fireReset", firefruitDigits.isMoreOrEqual(50) ? "Gain " + format(firefruitDigits.sub(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood" : "")
-            updateId("silverReset", silverfruitDigits.isMoreOrEqual(50) ? "Gain " + format(silverfruitDigits.sub(10).mul(0.5)) + " silver wood" : "")
+            var firefruitDigits = C("firefruit").log10()
+            var silverfruitDigits = C("silverfruit").log10()
+            updateId("fireReset", firefruitDigits.isMoreOrEqual(50) ? "Gain " + format(firefruitDigits.mul(0.9).sub(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood" : "")
+            updateId("silverReset", silverfruitDigits.isMoreOrEqual(20) ? "Gain " + format(silverfruitDigits.sub(10).mul(hasResearch("silvergain") ? C("fierywood").log10() : 0.5)) + " silver wood" : "")
 
             // Update the CPS element and change the color by modifying the class
             var cps = cpt.mul(speed).mul(60)
@@ -10658,7 +10754,7 @@
             speed = speed.max(timeBonus).mul(baseSpeed)
 
             var noBoosts = ID("noBoosts")
-            if (speed.equals(baseSpeed)) {
+            if (speed.equals(timeBonus.mul(baseSpeed))) {
                 noBoosts.style.display = "none"
             } else {
                 noBoosts.removeAttribute("style")
