@@ -3535,7 +3535,7 @@
                     <b class="smallish">
                         IMPORTANT: Due to the lack of infinite storage in your universe,
                         minerals, nuggets, and wood are capped at 10<sup class="small orange">80</sup>
-                        until you find additional space!
+                        until you find additional space! (Currently capped at 10<sup class="small red" id="cap"></sup>)
                     </b>
 
                     <br><br>
@@ -3792,9 +3792,9 @@
                     </button>
 
                     <br>
-                    <span class="mini special" data-show="silverwood>0" data-cost="silverwood-5"
+                    <span class="mini special" data-show="silverwood>0" data-cost="silverwood-2"
                         data-earn="$silvertrees" data-hide="$silvertrees" data-sound="transaction">
-                        -5 <span class="swood" aria-label="silver wood"></span> for a 100× silvertree production boost
+                        -2 <span class="swood" aria-label="silver wood"></span> for a 100× silvertree production boost
                     </span>
                     <span class="mini special" data-show="$silvertrees" data-cost="silverwood-10"
                         data-earn="$silverwood" data-hide="$silverwood" data-sound="transaction">
@@ -3810,10 +3810,52 @@
                         -25 <span class="swood" aria-label="silver wood"></span> for fiery wood to increase ALL
                         categories of silver wood gain
                     </span>
-                    <span class="mini special" data-show="$freeplanters" data-cost="silverwood-100000"
-                        data-earn="$silvergain" data-hide="$silvergain" data-sound="transaction">
-                        -100,000 <span class="swood" aria-label="silver wood"></span> for fiery wood to increase ALL
-                        categories of silver wood gain
+                    <span class="mini special" data-show="$silvergain" data-cost="silverwood-2000"
+                        data-earn="$multiverse" data-hide="$multiverse" data-sound="transaction">
+                        -2,000 <span class="swood" aria-label="silver wood"></span> to gain the ability to open up parts
+                        of the multiverse
+                    </span>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e6"
+                        data-earn="$silverfield" data-hide="$silverfield" data-sound="transaction">
+                        -1,000,000 <span class="swood" aria-label="silver wood"></span> to gain silverfields for FREE
+                        every single second
+                    </span>
+
+                    <br>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-5000"
+                        data-earn="$multiverse1" data-hide="$multiverse1" data-sound="transaction">
+                        -5,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
+                        (increase the matter limit)
+                    </span>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-25000"
+                        data-earn="$multiverse2" data-hide="$multiverse2" data-sound="transaction">
+                        -25,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
+                        (increase the matter limit)
+                    </span>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-100000"
+                        data-earn="$multiverse3" data-hide="$multiverse3" data-sound="transaction">
+                        -100,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
+                        (increase the matter limit)
+                    </span>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-500000"
+                        data-earn="$multiverse4" data-hide="$multiverse4" data-sound="transaction">
+                        -500,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
+                        (increase the matter limit)
+                    </span>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e6"
+                        data-earn="$multiverse5" data-hide="$multiverse5" data-sound="transaction">
+                        -2,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
+                        (increase the matter limit)
+                    </span>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-5e7"
+                        data-earn="$multiverse6" data-hide="$multiverse6" data-sound="transaction">
+                        -50,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
+                        multiverse (increase the matter limit)
+                    </span>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e9"
+                        data-earn="$multiverse7" data-hide="$multiverse7" data-sound="transaction">
+                        -1,000,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
+                        multiverse (increase the matter limit)
                     </span>
                 </div>
 
@@ -9959,7 +10001,31 @@
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
         function updateGame() {
             var issue = "This occured while trying to update properties."
-            var matterLimit = new H("1e80")
+
+            var digitCap = 80
+            if (hasResearch("multiverse10")) {
+                digitCap = 100000000000000000000
+            } else if (hasResearch("multiverse9")) {
+                digitCap = 100000000000000
+            } else if (hasResearch("multiverse8")) {
+                digitCap = 100000000000
+            } else if (hasResearch("multiverse7")) {
+                digitCap = 1000000000
+            } else if (hasResearch("multiverse6")) {
+                digitCap = 10000000
+            } else if (hasResearch("multiverse5")) {
+                digitCap = 1000000
+            } else if (hasResearch("multiverse4")) {
+                digitCap = 100000
+            } else if (hasResearch("multiverse3")) {
+                digitCap = 10000
+            } else if (hasResearch("multiverse2")) {
+                digitCap = 5000
+            } else if (hasResearch("multiverse1")) {
+                digitCap = 1000
+            }
+            var matterLimit = new H("1e" + digitCap)
+            updateId("cap", formatValue(digitCap))
 
             timeBonus = H(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0)
             var oldMoney = new H(C("money", issue))
@@ -10243,7 +10309,7 @@
             add("firetrees", firefields.mul(0.00123456789).mul(hasResearch("moreftrees") ? 2 : 1))
             add("firefruit", C("firetrees").mul(C("fierypower")).mul(hasResearch("fertilizer2") ? 2 : 1).mul(hasResearch("fertilizer") ? 0.000325 : 0.0001625))
 
-            add("silverfields", silverfarms.mul(0.1))
+            add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? 1 : 0))
 
             add("s5", silverfarms.mul(silvertownPower))
             add("s4", C("s5").mul(silvertownPower))
