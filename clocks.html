@@ -2868,7 +2868,7 @@
         </header>
 
         <div id="properties">
-            s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -2885,7 +2885,9 @@
             goo: Purple Goo$ (3, A piece of magical purple goo)
             wells: Goo Well (4, A well filled with goo that can slowly make more)
             ponds: Goo Pond (5, A huge pond filled with goo and gold bars)
-            energy: Energy$ (4, Energy that can be collected for spells)
+            energy: %Magic Energy$ (4, Energy that can be collected for spells)
+            fire: %Magical Fire$ (7, Magical fire that can burn a hole in the multiverse)
+            coppertowers: Copper Tower (8, A multiversal copper tower generating magical fire)
             bags: %Infinity Bag (4, A one-time bag able to store an infinite amount of one item)
             coal: Coal$ (1, Fuel that is converted into coke)
             coke: Coke Piece (1, Fuel source)
@@ -3820,9 +3822,14 @@
                         -1,000,000 <span class="swood" aria-label="silver wood"></span> to gain 100 silverfields for
                         FREE every single second
                     </span>
-                    <span class="mini special" data-show="$silverfield" data-cost="silverwood-1e15"
+                    <span class="mini special" data-show="$silverfield" data-cost="silverwood-2e9"
+                        data-earn="$triplesilver" data-hide="$triplesilver" data-sound="transaction">
+                        -2,000,000,000 <span class="swood" aria-label="silver wood"></span> to TRIPLE silver wood gain
+                    </span>
+                    <span class="mini special" data-show="$triplesilver" data-cost="silverwood-1e15"
                         data-earn="$silversquare" data-hide="$silversquare" data-sound="transaction">
-                        -1.000Q <span class="swood" aria-label="silver wood"></span> to SQUARE silver wood gain
+                        -1,000,000,000,000,000 <span class="swood" aria-label="silver wood"></span> to SQUARE silver
+                        wood gain
                     </span>
 
                     <br>
@@ -3876,6 +3883,12 @@
                         -500.00Ud <span class="swood" aria-label="silver wood"></span> to open up the FINAL 10% of the
                         multiverse! (increase the matter limit)
                     </span>
+
+                    <button class="orangebg" data-show="silverfarms>0" data-earn="coppertowers+1"
+                        data-cost="energy-50|copper-EXPcoppertowers,1e24"
+                        data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger than the last one.$coppertowers$">
+                        +1 copper tower
+                    </button>
                 </div>
 
                 <div id="magic" style="display: none">
@@ -5311,7 +5324,10 @@
 
             <div id="more">
                 <!-- Properties that are considered ore will automatically determine if there needs to be a slash between the ore and useable form -->
-                <div id="ironore" class="tiny pale" data-desc="Iron ore is heavy and is used to build machinery."
+                <div id="fire" class="burning"
+                    data-desc="Magical fire is bright, lasts forever, and can burn a hole in the multiverse."
+                    data-for="%magical fire"></div>
+                <div id="ironore" class="pale" data-desc="Iron ore is heavy and is used to build machinery."
                     data-for="%iron ore"></div>
                 <div id="bauxite" class="gray"
                     data-desc="Bauxite is used to make aluminum (OR ALUMINIUM IN BRITISH ENGLISH), which is used to build rockets.."
@@ -5323,17 +5339,17 @@
                 <div id="silicon" class="pink" data-desc="Silicon is an important semiconductor."
                     data-for="silicon piece">
                 </div>
-                <div id="copperore" class="tiny copper"
+                <div id="copperore" class="copper"
                     data-desc="Copper is needed to create circuits, which is used to build circuit boards."
                     data-for="$coppern"></div>
-                <div id="silverore" class="tiny gray"
+                <div id="silverore" class="gray"
                     data-desc="Silver tarnishes quickly, but can exclusively used to make watches." data-for="$silvern">
                 </div>
-                <div id="goldore" class="tiny orange" data-desc="Shiny!" data-for="$goldn"></div>
-                <div id="platinumore" class="tiny dark"
+                <div id="goldore" class="orange" data-desc="Shiny!" data-for="$goldn"></div>
+                <div id="platinumore" class="dark"
                     data-desc="Your miners have a hard time telling silver and platinum apart, although a magnet and a keen eye can separate the two easily."
                     data-for="$platinumn"></div>
-                <div id="radiumore" class="tiny dangerous"
+                <div id="radiumore" class="dangerous"
                     data-desc="Radium rods have an eerie, green glow. It's best to stay away, or lock these up somewhere safe."
                     data-for="$radiumbar"></div>
 
@@ -7791,7 +7807,7 @@
 
         ID("silverReset").addEventListener("click", function () {
             if (confirm("Are you sure? You will LOSE all of your precious silvery progress!")) {
-                var gain = C("silverfruit").log10().sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5)
+                var gain = C("silverfruit").log10().sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
                 add("silverwood", (hasResearch("silversquare") ? gain.sqr() : gain).floor(true))
                 clearAmount(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
                 setup(true)
@@ -8055,7 +8071,14 @@
                                             amount = multipliedAmount
                                         } else {
                                             // The multiplier is used if the "data-multibuy" attribute exists: it multiplies costs and earnings by the amount of managers plus one. However, it is ignored by "%" or "all" costs.
-                                            amount = new H(str)
+                                            if (str.slice(0, 3) === "EXP") {
+                                                var comma = str.indexOf(",")
+                                                var property = str.slice(3, comma)
+                                                amount = H(10).pow(H(str.slice(comma + 1)).mul(C(property, "This happened while calculating button costs.").add(1).floor(true)))
+                                            } else {
+                                                amount = new H(str)
+                                            }
+
                                             if (multiplier !== null) {
                                                 amount = amount.mul(multiplier)
                                             }
@@ -8133,10 +8156,10 @@
                                     if (sign === -1) {
                                         sign = action.indexOf("^")
                                         if (sign === -1) {
-                                            console.warn("A normal item should use a '+' or '*' or '^' sign. Note that only '^2' is supported for exponents currently. A rocket part ID should start with a '$' and can use either the '-' or '+' sign.")
+                                            console.warn("A normal item should use a '+' or '*' or '^' sign. Note that only '^' is supported for exponents currently. A rocket part ID should start with a '$' and can use either the '-' or '+' sign.")
                                             continue
                                         }
-                                        sqr(action.slice(0, sign))
+                                        pow(action.slice(0, sign), H(action.slice(sign + 1)))
                                     }
                                     mul(action.slice(0, sign), H(action.slice(sign + 1)))
                                 }
@@ -8357,13 +8380,20 @@
 
         // Returns the amount and property name as a string and automatically considers plural and singular forms
         function getAmount(id, overrideAmount) {
-            var actualAmount = C(id, "This happened while formatting name and quantity information.")
+            var issue = "This happened while formatting name and quantity information."
+            var actualAmount = C(id, issue)
+            var amount = actualAmount
+            if (overrideAmount != null && overrideAmount.slice(0, 3) === "EXP") {
+                var comma = overrideAmount.indexOf(",")
+                var property = overrideAmount.slice(3, comma)
+                overrideAmount = H(10).pow(H(overrideAmount.slice(comma + 1)).mul(C(property, issue).add(1).floor(true)))
+            }
             var amount = overrideAmount == null ? actualAmount : new H(overrideAmount)
             if (id === "wattseconds") {
                 amount = amount.mul(".01666666666666666666666666666666666666666666666667")
             }
             var item = wikiData[id]
-            var formatted = format(amount, null, id === "money" ? 2 : null)
+            var formatted = format(amount, null, id === "money" || id === "fire" ? 2 : null)
             if (overrideAmount != null && actualAmount.isLess(overrideAmount)) {
                 formatted = "[" + formatted + "]"
             }
@@ -9675,6 +9705,31 @@
             }
         }
 
+        // Exponentiates the amount of a property by a certain number
+        function pow(name, value) {
+            if (!properties.includes(name)) {
+                if (stuff.hasOwnProperty(name)) {
+                    console.warn("The property '" + name.replace(/'/g, "\\'") + "' exists (maybe from an older version), but was not properly configured.")
+                } else {
+                    console.error("The property '" + name.replace(/'/g, "\\'") + "' doesn't exist.")
+                }
+            } else if (!stuff.hasOwnProperty(name)) {
+                console.error("The property you are trying to add should be a valid property, but it doesn't exist.")
+            } else {
+                if (!(value instanceof HyperNumber)) {
+                    console.warn("Values to add should be HyperNumbers.")
+                    value = new H(value)
+                }
+
+                if (value.isPositive()) {
+                    var amount = stuff[name]
+                    var power = amount.pow(value)
+                    stuffTotals[name] = stuffTotals[name].add(power.sub(amount))
+                    stuff[name] = power
+                }
+            }
+        }
+
         // Squares the amount of a property (if it's more than one). The boolean returned determines if it was successful or not.
         function sqr(name) {
             if (!properties.includes(name)) {
@@ -10109,6 +10164,7 @@
             }
 
             var silverfarms = C("silverfarms", issue)
+            var copperTowers = C("coppertowers", issue)
             var silvertownPower = C("silvertowns", issue).mul(777).add(1)
             if (C("silverpower").isLess(1)) {
                 stuff.silverpower = H(true)
@@ -10333,7 +10389,9 @@
             add("firetrees", firefields.mul(0.00123456789).mul(hasResearch("moreftrees") ? 2 : 1))
             add("firefruit", C("firetrees").mul(C("fierypower")).mul(hasResearch("fertilizer2") ? 2 : 1).mul(hasResearch("fertilizer") ? 0.000325 : 0.0001625))
 
-            add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? H(10).div(6) : 0))
+            add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? H(100).div(60) : 0))
+
+            add("fire", copperTowers.mul(H(0.01).div(60)))
 
             add("s5", silverfarms.mul(silvertownPower))
             add("s4", C("s5").mul(silvertownPower))
@@ -10422,7 +10480,7 @@
             updateId("fireReset", firefruitDigits.isMoreOrEqual(40) ? "Gain " + format(firefruitDigits.mul(0.9).sub(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood" : "")
 
             if (silverfruitDigits.isMoreOrEqual(20)) {
-                var silverGain = silverfruitDigits.sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5)
+                var silverGain = silverfruitDigits.sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
                 updateId("silverReset", silverfruitDigits.isMoreOrEqual(20) ? "Gain " + format(hasResearch("silversquare") ? silverGain.sqr() : silverGain) + " silver wood" : "")
             } else {
                 updateHTML(ID("silverReset"), "")
