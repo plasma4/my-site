@@ -2868,7 +2868,7 @@
         </header>
 
         <div id="properties">
-            fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            fire|burnt|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -2877,7 +2877,7 @@
             rocketbody|rocketfins|rocketcone
         </div>
         <div id="wikiHidden">
-            bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium|wandA1|wandA2|wandA3|wandA4|wandB1|wandB2|wandB3|wandB4|wandC1|wandC2|wandC3|wandC4|w1|w2
+            burnt|bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium|wandA1|wandA2|wandA3|wandA4|wandB1|wandB2|wandB3|wandB4|wandC1|wandC2|wandC3|wandC4|w1|w2
         </div>
         <div id="wikiData">
             shards: Golden Shard (7, An EXTREMELY rare and valuable shard found by breaking golden clocks)
@@ -3577,13 +3577,6 @@
                             data-desc="Fiery wood is obtained when sacrificing fire progress and gives a furnace production boost!"
                             data-for="$big fwood">
                         </div>
-                        <div id="firecoins" class="burning3"
-                            data-desc="Firecoins are heavy coins forged from fiery wood!" data-for="firecoin">
-                        </div>
-                        <div id="firebars" class="burning3"
-                            data-desc="Firebars are valuable small bars made from a thousand firecoins each!"
-                            data-for="firebar">
-                        </div>
                     </div>
 
                     <br>
@@ -3889,6 +3882,11 @@
                         data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger than the last one.$coppertowers$">
                         +1 copper tower
                     </button>
+
+                    <div class="small red">
+                        You have burnt <span class="small orange" id="burntAmount"></span>
+                        worth of <span class="small move4">dark matter</span>.
+                    </div>
                 </div>
 
                 <div id="magic" style="display: none">
@@ -3915,7 +3913,7 @@
                     <div id="spells">
                         <button data-id="zappy-energy" data-cooldown="7200" data-earn="wattseconds=max"
                             data-cost="energy-250" data-show="energy>=100"
-                            data-desc="Get the maximum amount of watt-seconds you can store from ALL your batteries!\nCosts 250 magic energy.$wattseconds$">
+                            data-desc="Get the maximum amount of watt-seconds you can store from ALL your batteries!\nCosts 250 Magic Energy.$wattseconds$">
                             <span class="bigger gbolt"></span>
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
@@ -8805,7 +8803,7 @@
                         }
                         var compactedData = parseCompact($)
                         stuff = Object.assign(stuff2, compactedData)
-                        if (!hasResearch("rocketbody")){
+                        if (!hasResearch("rocketbody")) {
                             stuff.Rocketbody = stuffTotals.Rocketbody = H()
                         }
                         cManagersUsed = stuff.Rocketbody.add(stuff.Rocketfins).add(stuff.Rocketcone)
@@ -10388,6 +10386,7 @@
             add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? H(100).div(60) : 0))
 
             add("fire", copperTowers.mul(H(0.01).div(60)))
+            add("burnt", C("fire").mul(H(1).div(60)))
 
             add("s5", silverfarms.mul(silvertownPower))
             add("s4", C("s5").mul(silvertownPower))
@@ -10482,11 +10481,23 @@
                 updateHTML(ID("silverReset"), "")
             }
 
+            updateId("burntAmount", C("burnt").format(2) + " grams")
+
             // Update the CPS element and change the color by modifying the class
             var cps = cpt.mul(speed).mul(60)
             var cpsElem = ID("cps")
             update(cpsElem, (cps.plural((cps.isLess(1) ? "no " : ((cps.isLess(10) ? "only " : "") + format(cps))) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))) + " a second (CPS)"))
-            if (cps.isMoreOrEqual(1e11)) {
+            if (cps.isMoreOrEqual(1e24)) {
+                updateClass(cpsElem, "move4")
+            } else if (cps.isMoreOrEqual(1e21)) {
+                updateClass(cpsElem, "repeat4")
+            } else if (cps.isMoreOrEqual(1e18)) {
+                updateClass(cpsElem, "burning3")
+            } else if (cps.isMoreOrEqual(1e15)) {
+                updateClass(cpsElem, "burning2")
+            } else if (cps.isMoreOrEqual(1e12)) {
+                updateClass(cpsElem, "burning")
+            } else if (cps.isMoreOrEqual(1e11)) {
                 updateClass(cpsElem, "move3")
             } else if (cps.isMoreOrEqual(1e10)) {
                 updateClass(cpsElem, "move2")
@@ -11316,6 +11327,7 @@
         })
 
         loaded = true
+        mul("shards", H(10))
     </script>
 </body>
 
