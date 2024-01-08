@@ -3536,7 +3536,7 @@
                     <br>
                     <b class="smallish">
                         IMPORTANT: Due to the lack of infinite storage in your universe,
-                        minerals, nuggets, and wood are capped at 10<sup class="small orange">80</sup>
+                        ALL materials, workers, and buildings are capped at 10<sup class="small orange">80</sup>
                         until you find additional space! (Currently capped at 10<sup class="small red" id="cap"></sup>)
                     </b>
 
@@ -5833,12 +5833,11 @@
              * @returns {HyperNumber | false}
              */
             HyperNumber.prototype.sub = function (value) {
-                var wasHyper = value instanceof HyperNumber
-                var b = wasHyper ? value : new HyperNumber(value)
+                var b = new HyperNumber(value)
                 var aData = this.$[2]
                 var bData = b.$[2]
                 if (aData === 0n) {
-                    return wasHyper ? new HyperNumber(b) : b
+                    return b.$[2] === 0n ? b : false
                 } else if (bData === 0n) {
                     return new HyperNumber(this)
                 }
@@ -5860,9 +5859,6 @@
                     if (this.$[1] === b.$[1]) {
                         if (this.$[2] <= b.$[2]) {
                             if (this.$[2] === b.$[2]) {
-                                if (wasHyper) {
-                                    b = new HyperNumber(value)
-                                }
                                 b.$ = [0, 0, 0n]
                                 return b
                             }
@@ -8148,7 +8144,8 @@
                                     if (remove(part1, num)) {
                                         cManagersUsed = cManagersUsed.sub(num)
                                     } else {
-                                        cManagersUsed = cManagersUsed.sub(C(part1))
+                                        var amount = C(part1)
+                                        cManagersUsed = cManagersUsed.sub(amount)
                                         clearAmount(part1)
                                     }
                                 } else {
@@ -8808,6 +8805,9 @@
                         }
                         var compactedData = parseCompact($)
                         stuff = Object.assign(stuff2, compactedData)
+                        if (!hasResearch("rocketbody")){
+                            stuff.Rocketbody = stuffTotals.Rocketbody = H()
+                        }
                         cManagersUsed = stuff.Rocketbody.add(stuff.Rocketfins).add(stuff.Rocketcone)
                         cManagersUsed = cManagersUsed ? cManagersUsed : H(0)
                         var stuffKeys = Object.keys(stuff)
@@ -9641,10 +9641,6 @@
                     var subtracted = stuff[name].sub(value.mul(speed))
                     if (subtracted === false) {
                         return false
-                    }
-
-                    if (name === "money") {
-                        subtracted = subtracted
                     }
                     stuff[name] = subtracted
                 }
