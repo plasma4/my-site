@@ -10659,7 +10659,7 @@
                 var allData = []
                 for (var i = 0; i < properties.length; i++) {
                     var key = properties[i]
-                    if (getTotals(key).isPositive()) {
+                    if (getTotals(key).isPositive() && !hiddenWikiItems.includes(key)) {
                         if ((key !== "fierypower" && key !== "silverpower") || !C(key).equals(1)) {
                             allData.push(getAmount(key))
                         }
