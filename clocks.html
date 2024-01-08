@@ -3648,7 +3648,7 @@
                     </span>
                     <span class="mini special" data-show="$moreftrees" data-cost="fierywood-250000"
                         data-earn="$silverfwood" data-hide="$silverfwood" data-sound="transaction">
-                        -1,000,000 <span class="fwood" aria-label="fiery wood"></span> for silver wood to increase ALL
+                        -250,000 <span class="fwood" aria-label="fiery wood"></span> for silver wood to increase ALL
                         categories of fiery wood gain
                     </span>
                     <span class="mini special" data-show="$silverfwood" data-cost="fierywood-5e6"
@@ -3669,7 +3669,7 @@
                     </button>
                     <button class="orangebg" data-show="firewizards>0" data-earn="fwoodwizards+1"
                         data-cost="money-5e20|fierywood-250"
-                        data-desc="Get a fiery wood wizard, which will happily convert 500 blue wood and a billion firetrees into 1 fiery wood each!\nFor the low low price of just $500.00Q and 250 fiery wood!$fwoodwizards$">
+                        data-desc="Get a fiery wood wizard, which will happily convert 500 blue wood and a billion firetrees into 1 fiery wood each!\n[If you aren't making fiery wood automatically, make sure you have enough blue wood and firetrees!]\nFor the low low price of just $500.00Q and 250 fiery wood!$fwoodwizards$">
                         +1 fiery wood wizard
                     </button>
 
@@ -3807,8 +3807,8 @@
                     </span>
                     <span class="mini special" data-show="$freeplanters" data-cost="silverwood-25"
                         data-earn="$silvergain" data-hide="$silvergain" data-sound="transaction">
-                        -25 <span class="swood" aria-label="silver wood"></span> for fiery wood to increase ALL
-                        categories of silver wood gain
+                        -25 <span class="swood" aria-label="silver wood"></span> for fiery wood to increase total silver
+                        wood gain
                     </span>
                     <span class="mini special" data-show="$silvergain" data-cost="silverwood-2000"
                         data-earn="$multiverse" data-hide="$multiverse" data-sound="transaction">
@@ -3817,8 +3817,12 @@
                     </span>
                     <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e6"
                         data-earn="$silverfield" data-hide="$silverfield" data-sound="transaction">
-                        -1,000,000 <span class="swood" aria-label="silver wood"></span> to gain silverfields for FREE
-                        every single second
+                        -1,000,000 <span class="swood" aria-label="silver wood"></span> to gain 100 silverfields for
+                        FREE every single second
+                    </span>
+                    <span class="mini special" data-show="$silverfield" data-cost="silverwood-1e15"
+                        data-earn="$silversquare" data-hide="$silversquare" data-sound="transaction">
+                        -1.000Q <span class="swood" aria-label="silver wood"></span> to SQUARE silver wood gain
                     </span>
 
                     <br>
@@ -3847,15 +3851,30 @@
                         -2,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
                         (increase the matter limit)
                     </span>
-                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-5e7"
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e8"
                         data-earn="$multiverse6" data-hide="$multiverse6" data-sound="transaction">
-                        -50,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
+                        -100,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
                         multiverse (increase the matter limit)
                     </span>
-                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e9"
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e10"
                         data-earn="$multiverse7" data-hide="$multiverse7" data-sound="transaction">
-                        -1,000,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
+                        -10,000,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
                         multiverse (increase the matter limit)
+                    </span>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-2.5e12"
+                        data-earn="$multiverse8" data-hide="$multiverse8" data-sound="transaction">
+                        -2,500,000,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
+                        multiverse (increase the matter limit)
+                    </span>
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-5e14"
+                        data-earn="$multiverse9" data-hide="$multiverse9" data-sound="transaction">
+                        -500,000,000,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
+                        multiverse (increase the matter limit)
+                    </span>
+                    <span class="mini special" data-show="$multiverse9" data-cost="silverwood-5e38"
+                        data-earn="$multiverse10" data-hide="$multiverse10" data-sound="transaction">
+                        -500.00Ud <span class="swood" aria-label="silver wood"></span> to open up the FINAL 10% of the
+                        multiverse! (increase the matter limit)
                     </span>
                 </div>
 
@@ -5623,7 +5642,7 @@
                             return
                         } else {
                             if (eTotal === 1 && digits < 16) {
-                                this.$ = [0, big50 / (10n ** BigInt(49 - digits)), 10000000000000000000000000000000000000000000000000n]
+                                this.$ = [0, Number(big50 / (10n ** BigInt(49 - digits))), 10000000000000000000000000000000000000000000000000n]
                             } else {
                                 this.$ = [eTotal, big50 / (10n ** BigInt(49 - digits)), 10000000000000000000000000000000000000000000000000n]
                             }
@@ -6926,6 +6945,7 @@
                     string = "0"
                 }
             }
+
             if (number < 1e7) {
                 string = string.replace(/\B(?=(.{3})+(?!.))/g, ",")
                 if (additionalDigits != null && additionalDigits != 0) {
@@ -6943,7 +6963,7 @@
                 length = Number(string.slice(eIndex + 2))
                 string = string.slice(0, eIndex)
             }
-            if (length >= 50) {
+            if (length > 50) {
                 if (isBig) {
                     return string[0] + "." + string[1] + string[2] + string[3] + "e" + length
                 }
@@ -7771,7 +7791,8 @@
 
         ID("silverReset").addEventListener("click", function () {
             if (confirm("Are you sure? You will LOSE all of your precious silvery progress!")) {
-                add("silverwood", C("silverfruit").log10().sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).floor(true))
+                var gain = C("silverfruit").log10().sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5)
+                add("silverwood", (hasResearch("silversquare") ? gain.sqr() : gain).floor(true))
                 clearAmount(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
                 setup(true)
             }
@@ -9134,6 +9155,11 @@
         function setupSpells() {
             var spellElem = ID("spells")
             spellElem.onmousedown = function (e) {
+                if (alreadyClicked) {
+                    return
+                }
+
+                alreadyCliked = true
                 var element = e.target
                 if (element === spellElem || element.className.includes("disabled")) {
                     e.stopPropagation()
@@ -10002,30 +10028,30 @@
         function updateGame() {
             var issue = "This occured while trying to update properties."
 
-            var digitCap = 80
+            var digitCap = "80"
             if (hasResearch("multiverse10")) {
-                digitCap = 100000000000000000000
+                digitCap = "1e25"
             } else if (hasResearch("multiverse9")) {
-                digitCap = 100000000000000
+                digitCap = "1e18"
             } else if (hasResearch("multiverse8")) {
-                digitCap = 100000000000
+                digitCap = "1e13"
             } else if (hasResearch("multiverse7")) {
-                digitCap = 1000000000
+                digitCap = "1e10"
             } else if (hasResearch("multiverse6")) {
-                digitCap = 10000000
+                digitCap = "1e7"
             } else if (hasResearch("multiverse5")) {
-                digitCap = 1000000
+                digitCap = "1e6"
             } else if (hasResearch("multiverse4")) {
-                digitCap = 100000
+                digitCap = "100000"
             } else if (hasResearch("multiverse3")) {
-                digitCap = 10000
+                digitCap = "10000"
             } else if (hasResearch("multiverse2")) {
-                digitCap = 5000
+                digitCap = "5000"
             } else if (hasResearch("multiverse1")) {
-                digitCap = 1000
+                digitCap = "1000"
             }
-            var matterLimit = new H("1e" + digitCap)
-            updateId("cap", formatValue(digitCap))
+            var matterLimit = new H("e" + digitCap)
+            updateId("cap", H(digitCap).format(2))
 
             timeBonus = H(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0)
             var oldMoney = new H(C("money", issue))
@@ -10074,7 +10100,7 @@
             if (hasResearch("silverwood")) {
                 fWoodWizardPower = fWoodWizardPower.mul(H(2).pow(C("silverwood")))
             }
-            var firewizardPower = C("firewizards", issue).div(60)
+            var firewizardPower = C("firewizards", issue).div(300)
             var firetowns = C("firetowns", issue)
             var firetownPower = firetowns.isLess(1) ? H(true) : firetowns.sqr().add(firetowns.mul(25)).sub(25).mul(777).add(1)
             if (C("fierypower").isLess(1)) {
@@ -10267,14 +10293,12 @@
             multiExchange(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore"], [miningPower.mul(0.0145), miningPower.mul(0.065), miningPower.mul(0.04), miningPower.mul(0.01825), miningPower.mul(0.003), miningPower.mul(0.0025), miningPower.mul(0.0175), miningPower.mul(0.0075), miningPower.mul(0.00325), miningPower.mul(0.0025), miningPower.mul(0.0002), miningPower.mul(0.0000027725)], "money", miners.mul(0.1))
 
             var furnacePower = furnaceCost.mul(H(1).add(C("fierywood").mul(0.25)))
-            exchangeLimit(matterLimit, "radium", radiumMills.mul(0.001), "radiumore")
-            exchangeLimit(matterLimit, "copper", furnacePower, "copperore", furnaceCost, 1)
-            exchangeLimit(matterLimit, "silver", furnacePower, "silverore", furnaceCost, 1)
-            exchangeLimit(matterLimit, "gold", furnacePower, "goldore", furnaceCost, 1)
-            exchangeLimit(matterLimit, "gold", goldFurnacePower, "goldore", furnaceCost, 1)
-            exchangeLimit(matterLimit, "platinum", furnacePower, "platinumore", furnaceCost, 1)
-
-            limit(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore", "wood", "fierywood", "silverwood"], matterLimit)
+            exchange("radium", radiumMills.mul(0.001), "radiumore")
+            exchange("copper", furnacePower, "copperore", furnaceCost, 1)
+            exchange("silver", furnacePower, "silverore", furnaceCost, 1)
+            exchange("gold", furnacePower, "goldore", furnaceCost, 1)
+            exchange("gold", goldFurnacePower, "goldore", furnaceCost, 1)
+            exchange("platinum", furnacePower, "platinumore", furnaceCost, 1)
 
             exchange("cbauxite", aluminum1Power, "bauxite")
             exchange("aluminumc", aluminum2Power, "cbauxite")
@@ -10309,7 +10333,7 @@
             add("firetrees", firefields.mul(0.00123456789).mul(hasResearch("moreftrees") ? 2 : 1))
             add("firefruit", C("firetrees").mul(C("fierypower")).mul(hasResearch("fertilizer2") ? 2 : 1).mul(hasResearch("fertilizer") ? 0.000325 : 0.0001625))
 
-            add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? 1 : 0))
+            add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? H(10).div(6) : 0))
 
             add("s5", silverfarms.mul(silvertownPower))
             add("s4", C("s5").mul(silvertownPower))
@@ -10365,6 +10389,11 @@
             updateId("constructorTotal", format(C("cmanagers", issue)))
             updateId("constructorsUsed", format(cManagersUsed))
 
+            var limitedProperties = properties.slice(0)
+            limitedProperties.splice(limitedProperties.indexOf("science"), 1)
+            limitedProperties.splice(limitedProperties.indexOf("creativity"), 1)
+            limit(limitedProperties, matterLimit)
+
             var negativeElement = ID("wattsNegative")
             var subtracted = startingWatts.sub(wattUse)
             var sign = 1
@@ -10389,8 +10418,15 @@
 
             var firefruitDigits = H(1).max(C("firefruit").log10())
             var silverfruitDigits = H(1).max(C("silverfruit").log10())
+
             updateId("fireReset", firefruitDigits.isMoreOrEqual(40) ? "Gain " + format(firefruitDigits.mul(0.9).sub(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood" : "")
-            updateId("silverReset", silverfruitDigits.isMoreOrEqual(20) ? "Gain " + format(silverfruitDigits.sub(10).mul(hasResearch("silvergain") ? C("fierywood").log10() : 0.5)) + " silver wood" : "")
+
+            if (silverfruitDigits.isMoreOrEqual(20)) {
+                var silverGain = silverfruitDigits.sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5)
+                updateId("silverReset", silverfruitDigits.isMoreOrEqual(20) ? "Gain " + format(hasResearch("silversquare") ? silverGain.sqr() : silverGain) + " silver wood" : "")
+            } else {
+                updateHTML(ID("silverReset"), "")
+            }
 
             // Update the CPS element and change the color by modifying the class
             var cps = cpt.mul(speed).mul(60)
@@ -10563,8 +10599,8 @@
             updateHTML(ID("stats"), newStats)
             if (currentTab === "resources") {
                 var allData = []
-                for (var i = 0; i < wikiKeys.length; i++) {
-                    var key = wikiKeys[i]
+                for (var i = 0; i < properties.length; i++) {
+                    var key = properties[i]
                     if (getTotals(key).isPositive()) {
                         if ((key !== "fierypower" && key !== "silverpower") || !C(key).equals(1)) {
                             allData.push(getAmount(key))
