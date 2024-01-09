@@ -2022,6 +2022,7 @@
         }
 
         .cherrybg {
+            box-shadow: 0 0 6px #ec2b4e;
             background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAABf0lEQVRIS2N8PXHRfwYgYOLmAmJOEBOD/vf1O1gcnQYLIgFS9P/7+g2skxHdAeiG4LIcZMDvpyfAhrBKW4A9gM3xMPOQzQGxURyArBmkAZsm1BBAWA4LAGIdAbEcFqLfICGAHvwgBxDjc4aF+yD2xzsRFRKolkNCAcUByMGPrhgSAt8Y2KWYwZZ9yWlGiX+eKbVg/s9nf7FGB7qnYNEAdwCLmBBKHP559Q7MRw4uXJbDXILPETDzYeaBzEcJAZACWAiQYzmpjsDpAGyW/z25AhIae++hBDsuDpOzEliK2TwCIzpAHgWFAl4HIAc7qZbDHIXLERgOeDtnDbgggkXBr/tPoXH/jYFcy/E5gk1RGh4CIHWMIAfAEggi+HGndqLiAEkRtoSJbB/cAbSwHF/CBDkCZCfYATCF+PI5qT5HV48tJOBRAMnvkOKVx9Qao5Ch1HLkkPhy+ihK3QEOAeSKBV68UstWdHPQim2wA37egpbpsLKdVpbDzIU6gl3NiQEAW+RqkUNLSTsAAAAASUVORK5CYII=");
         }
 
@@ -10238,7 +10239,7 @@
                 stuffTotals.silverpower = H(true)
             }
 
-            var copperTowerPower = C("coppertowers", issue).mul(H(0.01).div(60)).mul(H(1.1).pow(C("firebars", issue))).mul(hasResearch("fireboost" ? 100 : 1))
+            var copperTowerPower = C("coppertowers", issue).mul(hasResearch("fireboost") ? 10 : 0.01).div(60).mul(H(1.1).pow(C("firebars", issue)))
 
             var fcMakers = C("fcmakers", issue)
             var labs = C("labs", issue)
