@@ -3905,12 +3905,13 @@
                         -500.00Ud <span class="swood" aria-label="silver wood"></span> to open up the FINAL 10% of the
                         multiverse! (increase the matter limit)
                     </span>
+                    <span class="mini special" data-show="$multiverse10" data-cost="silverwood-1e50"
+                        data-earn="$fireboost" data-hide="$fireboost" data-sound="transaction">
+                        -1.000e50 <span class="swood" aria-label="silver wood"></span> for a 1,000× MAGICAL fire
+                        production boost
+                    </span>
 
-                    <button class="orangebg" data-show="$multiverse9" data-earn="coppertowers+1"
-                        data-cost="energy-50|copper-EXPcoppertowers,1e24"
-                        data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!$coppertowers$">
-                        +1 copper tower
-                    </button>
+                    <br>
                     <button class="orangebg" data-show="$multiverse9" data-earn="coppertowers+1"
                         data-cost="energy-50|copper-EXPcoppertowers,1e24"
                         data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!$coppertowers$">
@@ -3918,11 +3919,15 @@
                     </button>
 
                     <div class="small red">
-                        You have burnt <span class="small orange" id="burntAmount"></span>
-                        worth of <span class="small move4">dark matter</span>.
-                        <br>
+                        You have burnt <span class="small yellow" id="burntAmount"></span>
+                        worth of <span class="small move4">dark matter</span>!
+                    </div>
+
+                    <div class="small orange">
                         You can also increase fire production by obtaining firebars.
-                        Each firebar increases production by +10% (multiplicatively)!
+                        Each firebar increases production by +10% (multiplicatively).
+                        <br>
+                        <b class="small">This means exponential growth!</b>
                     </div>
                 </div>
 
@@ -10227,12 +10232,13 @@
             }
 
             var silverfarms = C("silverfarms", issue)
-            var copperTowers = C("coppertowers", issue)
             var silvertownPower = C("silvertowns", issue).mul(777).add(1)
             if (C("silverpower", issue).isLess(1)) {
                 stuff.silverpower = H(true)
                 stuffTotals.silverpower = H(true)
             }
+
+            var copperTowerPower = C("coppertowers", issue).mul(H(0.01).div(60)).mul(H(1.1).pow(C("firebars", issue))).mul(hasResearch("fireboost" ? 100 : 1))
 
             var fcMakers = C("fcmakers", issue)
             var labs = C("labs", issue)
@@ -10454,7 +10460,7 @@
 
             add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? H(100).div(60) : 0))
 
-            add("fire", copperTowers.mul(H(0.01).div(60)).mul(H(1.1).pow(C("firebars", issue))))
+            add("fire", copperTowerPower)
             add("burnt", C("fire", issue).mul(H(1).div(60)))
 
             add("s5", silverfarms.mul(silvertownPower))
