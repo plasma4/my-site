@@ -818,7 +818,8 @@
         }
 
         button {
-            width: 313.333px;
+            padding: 4px 2px 4px 2px;
+            width: 329.333px;
             max-width: 75vw;
             min-height: 60px;
         }
@@ -829,7 +830,6 @@
             font-size: 22px;
             cursor: pointer;
             margin: 1px;
-            padding: 4px 10px 4px 10px;
             border: solid 2px #616161;
             background-color: #e1e1e1;
             transition: transform 500ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, filter 1s;
@@ -846,7 +846,8 @@
         }
 
         .mini {
-            min-width: 40px;
+            padding: 4px 8px 4px 8px;
+            min-width: 44px;
             font-size: 16px;
         }
 
@@ -2997,6 +2998,7 @@
             megamanagers: MEGA-Manager (5, A MEGA-manager increases purchase power of some workers)
             omegamanagers: OMEGA-Manager (5, That's omega for you...)
             cmanagers: Construction Manager (6, Someone who manages construction and allows you to build faster)
+            alummanagers: Aluminum Manager (6, Someone who manages aluminum factory construction exclusively)
             scientists: Scientist (3, A scientist who dedicates their entire life into producing science and creativity)
             watches: Silver Watch$es (3, An IriSH WristWatch made with Silver ShowOff)
             watts: Permanent Watt (2, Voltage that can be used to actively power machines)
@@ -3315,25 +3317,47 @@
 
                     <hr>
                     <span class="big aluminum"></span>
-                    Aluminum is a crucial part of rockets and can make robot arms!
+                    Aluminum is a crucial part of rockets, which help you obtain special bonuses!
 
                     <br>
                     <button class="yellowbg" data-earn="aluminum1+1" data-cost="money-2.5e11" data-show="$aluminum"
                         data-desc="These large sodium aluminate factories produce sodium aluminate from bauxite.\n(Yes, aluminum is quite complicated too!)\nCosts $250,000,000,000.$aluminum1$">
                         Get a SA Factory
+                        <span class="mini stripe3" data-earn="aluminum1+1" data-cost="money-2.5e11"
+                            data-sound="building" data-show="alummanagers>0"
+                            data-desc="Get more aluminum managers in order to get more Sodium Oxide Factories!$aluminum1$"
+                            data-multialum></span>
                     </button>
                     <button class="yellowbg" data-earn="aluminum2+1" data-cost="money-2e11" data-show="aluminum1>0"
                         data-desc="These sodium aluminate precipitation factories produce aluminum crystals that can be processed further.\n(fun...)\nCosts $200,000,000,000.$aluminum2$">
                         Get a SA Precipitation Factory
+                        <span class="mini stripe3" data-earn="aluminum2+1" data-cost="money-2e11" data-sound="building"
+                            data-show="alummanagers>0"
+                            data-desc="Get more aluminum managers in order to get more Sodium Oxide Factories!$aluminum2$"
+                            data-multialum></span>
                     </button>
                     <button class="yellowbg" data-earn="aluminum3+1" data-cost="money-5e11" data-show="aluminum2>0"
                         data-desc="Converts the aluminum crystals into aluminum oxide.\nYou're almost there!\nCosts $500,000,000,000.$aluminum3$">
                         Get a Sodium Oxide Factory
+                        <span class="mini stripe3" data-earn="aluminum3+1" data-cost="money-5e11" data-sound="building"
+                            data-show="alummanagers>0"
+                            data-desc="Get more aluminum managers in order to get more Sodium Oxide Factories!$aluminum3$"
+                            data-multialum></span>
                     </button>
                     <button class="orangebg" data-earn="aluminum4+1" data-cost="money-5e8|cokeovens-1"
                         data-show="aluminum3>0"
                         data-desc="Produces aluminum!\nCosts $500,000,000 as well as a coke oven.$aluminum4$">
                         Get an Aluminum Smelter
+                        <span class="mini stripe3" data-earn="aluminum4+1" data-cost="money-5e8|cokeovens-1"
+                            data-sound="building" data-show="platinum>=1e7"
+                            data-desc="You can get more aluminum smelters at once by hiring more construction managers.\n{You need aluminum managers to increase the amount of aluminum-related factories you can obtain at once.}$aluminum4$"
+                            data-multibuild></span>
+                    </button>
+
+                    <br>
+                    <button class="diamond" data-earn="alummanagers+1" data-cost="money-1e16" data-show="aluminum4>0"
+                        data-desc="Get an aluminum manager, which works specifically on aluminum building construction and increases the amount of aluminum-related factories you can buy at once.\nHowever, you'll have to get $10,000,000,000,000,000 to get a single one!$alummanagers$">
+                        Get an aluminum MANAGER
                     </button>
                 </div>
 
@@ -7959,25 +7983,21 @@
 
                 var clickData = button.getAttribute("data-earn")
                 if (clickData != null) {
-                    let hasMultiSilver = button.hasAttribute("data-silverbuy")
-                    let hasMultiFire = button.hasAttribute("data-firebuy")
-                    let hasOmegaMulti = button.hasAttribute("data-omegabuy")
-                    let hasMegaMulti = button.hasAttribute("data-megabuy")
-                    let hasMulti = button.hasAttribute("data-multibuy")
-                    let hasMultiBuild = button.hasAttribute("data-multibuild")
                     let multiplierAttribute = null
-                    if (hasMultiSilver) {
+                    if (button.hasAttribute("data-silverbuy")) {
                         multiplierAttribute = "silverplanters"
-                    } else if (hasMultiFire) {
+                    } else if (button.hasAttribute("data-firebuy")) {
                         multiplierAttribute = "fireplanters"
-                    } else if (hasOmegaMulti) {
+                    } else if (button.hasAttribute("data-omegabuy")) {
                         multiplierAttribute = "omegamanagers"
-                    } else if (hasMegaMulti) {
+                    } else if (button.hasAttribute("data-megabuy")) {
                         multiplierAttribute = "megamanagers"
-                    } else if (hasMulti) {
+                    } else if (button.hasAttribute("data-multibuy")) {
                         multiplierAttribute = "managers"
-                    } else if (hasMultiBuild) {
+                    } else if (button.hasAttribute("data-multibuild")) {
                         multiplierAttribute = "cmanagers"
+                    } else if (button.hasAttribute("data-multialum")) {
+                        multiplierAttribute = "alummanagers"
                     }
 
                     var soundName = button.getAttribute("data-sound")
@@ -11059,6 +11079,8 @@
                         multiplierAttribute = "managers"
                     } else if (button.hasAttribute("data-multibuild")) {
                         multiplierAttribute = "cmanagers"
+                    } else if (button.hasAttribute("data-multialum")) {
+                        multiplierAttribute = "alummanagers"
                     }
 
                     if (multiplierAttribute !== null) {
