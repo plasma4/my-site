@@ -3837,7 +3837,7 @@
                     <span class="mini special" data-show="$silvergain" data-cost="silverwood-2000"
                         data-earn="$multiverse" data-hide="$multiverse" data-sound="transaction">
                         -2,000 <span class="swood" aria-label="silver wood"></span> to gain the ability to open up parts
-                        of the multiverse
+                        of the multiverse (this stays through ascensions!)
                     </span>
                     <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e6"
                         data-earn="$silverfield" data-hide="$silverfield" data-sound="transaction">
@@ -7811,6 +7811,41 @@
         ID("shardAscend").addEventListener("click", function () {
             var newShards = C("gc").mul(1e-9).floor()
             if (confirm(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You WILL NOT EARN ANY SHARDS OR BONUSES!!!\r\nYOU WILL ALSO ONLY HAVE 25% CRYSTAL POWER REMAINING! (Likely a bad idea!!!)" : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
+                var newResearches = []
+                if (hasResearch("multiverse")) {
+                    newResearches.push("multiverse")
+                }
+                if (hasResearch("multiverse1")) {
+                    newResearches.push("multiverse1")
+                }
+                if (hasResearch("multiverse2")) {
+                    newResearches.push("multiverse2")
+                }
+                if (hasResearch("multiverse3")) {
+                    newResearches.push("multiverse3")
+                }
+                if (hasResearch("multiverse4")) {
+                    newResearches.push("multiverse4")
+                }
+                if (hasResearch("multiverse5")) {
+                    newResearches.push("multiverse5")
+                }
+                if (hasResearch("multiverse6")) {
+                    newResearches.push("multiverse6")
+                }
+                if (hasResearch("multiverse7")) {
+                    newResearches.push("multiverse7")
+                }
+                if (hasResearch("multiverse8")) {
+                    newResearches.push("multiverse8")
+                }
+                if (hasResearch("multiverse9")) {
+                    newResearches.push("multiverse9")
+                }
+                if (hasResearch("multiverse10")) {
+                    newResearches.push("multiverse10")
+                }
+
                 var oldShards = C("shards")
                 rawAdd("crystal3", stuff.bonus3.div(timeBonus.mul(600)).floor(), false)
                 rawAdd("crystal2", stuff.bonus2.div(timeBonus.mul(600)).floor(), false)
@@ -7824,6 +7859,7 @@
                 add("crystal1", purpleCrystals.mul(0.25).ceil(true))
                 add("crystal2", greenCrystals.mul(0.25).ceil(true))
                 add("crystal3", blueCrystals.mul(0.25).ceil(true))
+                researches = newResearches
                 console.log("A shard reset was done for " + format(newShards) + " new shards.")
             }
         })
