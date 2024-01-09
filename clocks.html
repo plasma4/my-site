@@ -2658,6 +2658,7 @@
         }
 
         .firecoin {
+            transform: scale(2);
             background-position: -176px -32px;
             filter: drop-shadow(0 0 2.5px #7a3c06);
         }
@@ -3885,13 +3886,21 @@
 
                     <button class="orangebg" data-show="$multiverse9" data-earn="coppertowers+1"
                         data-cost="energy-50|copper-EXPcoppertowers,1e24"
-                        data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!\n[You can also increase fire production by obtaining firebars. Each firebar increases production by +10%!]$coppertowers$">
+                        data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!$coppertowers$">
+                        +1 copper tower
+                    </button>
+                    <button class="orangebg" data-show="$multiverse9" data-earn="coppertowers+1"
+                        data-cost="energy-50|copper-EXPcoppertowers,1e24"
+                        data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!$coppertowers$">
                         +1 copper tower
                     </button>
 
                     <div class="small red">
                         You have burnt <span class="small orange" id="burntAmount"></span>
                         worth of <span class="small move4">dark matter</span>.
+                        <br>
+                        You can also increase fire production by obtaining firebars.
+                        Each firebar increases production by +10% (multiplicatively)!
                     </div>
                 </div>
 
@@ -6486,7 +6495,7 @@
                     value = new HyperNumber(value)
                 }
 
-                if (value.$[1] < 0) {
+                if (value.$[1] < 0 || value.$[2] === 0n) {
                     return false
                 }
 
@@ -10391,7 +10400,7 @@
 
             add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? H(100).div(60) : 0))
 
-            add("fire", copperTowers.mul(H(0.01).div(60)).mul(H(1).add(C("firebars", issue).mul(0.1))))
+            add("fire", copperTowers.mul(H(0.01).div(60)).mul(H(1.1).pow(C("firebars", issue))))
             add("burnt", C("fire", issue).mul(H(1).div(60)))
 
             add("s5", silverfarms.mul(silvertownPower))
