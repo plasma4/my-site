@@ -4278,7 +4278,7 @@
                             <span class="ticket"></span>
                         </div>
                         <div data-iq="150" data-cost="4e17" data-research="apples"
-                            data-desc="[You NEED 150 digital knowlege to purchase this research!]\nLots of new content here with exotic apples and trees!\nAll you need is imported phoenix fertilizer!\n(Allows you to buy fire apples, which can be planted and allow you to unlock additional wood and apple types!)">
+                            data-desc="[You NEED 150 digital knowlege to purchase this research!\nHowever, this research STAYS after a reset. :D]\nLots of new content here with exotic apples and trees!\nAll you need is imported phoenix fertilizer!\n(Allows you to buy fire apples, which can be planted and allow you to unlock additional wood and apple types!)">
                             Exotic apples: <span class="foam">$400,000,000,000,000,000</span>
                             <span class="ticket"></span>
                         </div>
@@ -4552,7 +4552,7 @@
                         </div>
                         <div data-show="science>1e6|$axes" data-research="saws" data-cost="1e9"
                             data-desc="Axes are slow. Use something better!\n(Okay, I have to make hundreds of descriptions, okay? Give me a break...)\n(3× efficiency of woodcutters)">
-                            Get chainsaws: <span class="green">$1,000,000,000</span>
+                            CHAINSAW TIME: <span class="green">$1,000,000,000</span>
                             <span class="money"></span>
                         </div>
                         <div data-research="axes" data-cost="5e6"
@@ -8699,6 +8699,9 @@
             var newShards = C("gc").mul(1e-9).floor()
             if (confirm(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You WILL NOT EARN ANY SHARDS OR BONUSES!!!\r\nYOU WILL ALSO ONLY HAVE 25% CRYSTAL POWER REMAINING! (Likely a bad idea!!!)" : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
                 var newResearches = []
+                if (hasResearch("apples")) {
+                    newResearches.push("apples")
+                }
                 if (hasResearch("multiverse")) {
                     newResearches.push("multiverse")
                 }
@@ -10950,7 +10953,8 @@
             "Make sure to check your researches every once in a while: you never know if you've unlocked a new upgrade. Now's a good time to increase the amount of scientists and managers that you have!",
             "At this point, you will have unlocked lots of features! You may want to start getting turbines in the electricity menu to increase the amount of watts you get. You can even start unlocking phoenixes in the feathery phoenix menu, which is...interesting.",
             "Well done! I'm out of tips for now, so you'll have to go explore on your own from now on. Just try to hire lots of scientists to generate creativity and science, which will allow you to unlock new technologies! Hey, I wonder what LITERAL EXOTIC APPLES ARE...",
-            "this isn't a tip, but more like a thank you for playing so far and unlocking literal FIERY APPLES. This game will likely never be finished, but see how much further you can go! :>"
+            "Fiery apples, eh? Note that you'll need to spend $10.000Q in order to get your first firetree. If you haven't obtained GOLDEN shards yet, all you need to do is build a completed rocket and get at least a BILLION golden clocks.",
+            'Impressive! You\'ve managed to get so much fiery wood that the game is forced to switch formats. You currently have a total of over 10^10^50 fiery wood, which is e1.000e50. (The little "e" means that the number of DIGITS of fiery wood you have is over 10^50!)'
         ]
 
         function updateTip() {
@@ -10995,8 +10999,10 @@
                 progress = 18
             } else if (!hasResearch("apples")) {
                 progress = 19
-            } else {
+            } else if (getTotals("fierywood").isLess("ee50")) {
                 progress = 20
+            } else {
+                progress = 21
             }
 
             update(tipElement, progressNotes[progress])
