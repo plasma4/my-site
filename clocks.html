@@ -1989,7 +1989,7 @@
 
         .failed,
         #logs {
-            white-space: pre;
+            white-space: pre-wrap;
         }
 
         #wiki {
@@ -5456,7 +5456,7 @@
 
         var Hyper, H
         (function () {
-            var REPEATSTR = "0000000000000000000000000000000000000000000000000", BIGONE = 10000000000000000000000000000000000000000000000000n, BIGLIMIT = 100000000000000000000000000000000000000000000000000n, TWOLIMIT = 20000000000000000000000000000000000000000000000000n, LIMITMINUSONE = 99999999999999999999999999999999999999999999999999n, DOUBLELIMITDIVTEN = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DOUBLELIMIT = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, SQRTMAX = 1000000000000000000000000n, TENSQRTMAX = 10000000000000000000000000n, SQRTSTART = 40000000000000000000000000n, DIGITSODD = false
+            var REPEATSTR = "0000000000000000000000000000000000000000000000000", BIGONE = 10000000000000000000000000000000000000000000000000n, BIGLIMIT = 100000000000000000000000000000000000000000000000000n, TWOLIMIT = 20000000000000000000000000000000000000000000000000n, LIMITMINUSONE = 99999999999999999999999999999999999999999999999999n, DOUBLELIMITDIVTEN = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DOUBLELIMIT = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, SQRTMAX = 1000000000000000000000000n, TENSQRTMAX = 10000000000000000000000000n, SQRTSTART = 40000000000000000000000000n, DIGITSODD = false, RANDOMSIZE = 8, RANDOMMODULO = 0, RANDOMREPEAT = 1
 
             /**
              * Creates an Hyper (also called a "hyper-number") instance that represents a POSITIVE finite integer, which can handle high-quality values anywhere from above 10^(-9007199254740992) to beyond 10^^9.007e15 by using BigInt.
@@ -5474,15 +5474,14 @@
                 } else if (value instanceof Hyper) {
                     this.$ = value.$.slice(0)
                 } else if (typeof value === "bigint") {
+                    var sign = 1
                     if (value < 0n) {
                         value = -value
-                        var digits = value.toString().length - 1
-                        this.$ = [-1, 0, digits, (digits > 49 ? value / (10n ** BigInt(digits - 49)) : (value * (10n ** BigInt(49 - digits))))]
-                        return
+                        sign = -1
                     }
 
                     var digits = value.toString().length - 1
-                    this.$ = [1, 0, digits, (digits > 49 ? value / (10n ** BigInt(digits - 49)) : (value * (10n ** BigInt(49 - digits))))]
+                    this.$ = [sign, 0, digits, (digits > 49 ? value / (10n ** BigInt(digits - 49)) : (value * (10n ** BigInt(49 - digits))))]
                 } else if (typeof value === "number" && !isFinite(value)) {
                     if (!noWarnings) {
                         console.error("Values given must be positive and finite.")
@@ -5674,7 +5673,13 @@
                             big50 = BigInt(digits.toString().slice(0, 50))
                             digits = digits.toString().length - 1
                         }
-                    } else if (eTotal !== 0 && digits <= 50) {
+                    } else if (eTotal !== 0 && digits < 0) {
+                        if (!noWarnings) {
+                            console.error("The value given could not be converted to a Hyper, as it contains negative numbers too far down.")
+                        }
+                        this.$ = [sign, 0, 0, 0n]
+                        return
+                    } else if (eTotal !== 0 && digits < 50) {
                         if (digits === 0) {
                             if (eTotal === 1) {
                                 this.$ = [sign, 0, Number(big50 / BIGONE), BIGONE]
@@ -5694,7 +5699,7 @@
                             }
                         } else if (digits < 0) {
                             if (!noWarnings) {
-                                console.error("The value given could not be converted to a Hyper.")
+                                console.error("The value given could not be converted to a Hyper, as it contains negative numbers too far.")
                             }
                             this.$ = [sign, 0, 0, 0n]
                             return
@@ -5748,24 +5753,31 @@
             }
 
             /**
-             * Sets the precision of ALL Hyper values. Note that changing this will BREAK previous instances! If you need to change precision, store your Hyper values as strings and then convert them after setting the digit amount.
+             * Sets the precision of ALL Hyper values. IMPORTANT: changing the number of digits will BREAK previous instances! If you need to change precision, store your Hyper values as strings and then convert them after setting the digit amount. It is advised to use this function BEFORE any Hyper instances are created.
              * @param {string | number | bigint | Hyper} newDigits
              */
             Hyper.setDigits = function (newDigits) {
                 var digits = parseInt(newDigits)
+                if (digits >= 10000000) {
+                    throw RangeError("Maximum Hyper precision exceeded")
+                }
                 var digitsMinusOne = digits - 1
                 REPEATSTR = "0".repeat(digitsMinusOne)
                 BIGONE = 10n ** BigInt(digitsMinusOne)
                 BIGLIMIT = 10n * BIGONE
                 TWOLIMIT = BIGONE << 1n
                 LIMITMINUSONE = BIGLIMIT - 1n
-                DOUBLELIMITDIVTEN = BIGONE * BIGLIMIT
+                DOUBLELIMITDIVTEN = BIGONE * BIGONE
                 DOUBLELIMIT = DOUBLELIMITDIVTEN * 10n
                 SQRTMAX = 10n ** BigInt(Math.floor(digits * 0.5))
                 TENSQRTMAX = SQRTMAX << 10n
                 SQRTSTART = SQRTMAX << 2n
                 DIGITSODD = (digits & 1) === 1
+                RANDOMSIZE = Math.ceil(newDigits * 0.103810252966) + 2
+                RANDOMMODULO = BIGLIMIT * 10000000000n
+                RANDOMREPEAT = REPEATSTR + "000000000"
             }
+            Hyper.setDigits(50)
 
             function HyperAddBase(start, num) {
                 var aData = start.$[3]
@@ -6907,7 +6919,24 @@
              * @returns {boolean}
              */
             Hyper.isZero = function (value) {
-                return value === 0 || new Hyper(value).$[3] === 0n
+                return new Hyper(value).$[3] === 0n
+            }
+
+            /**
+             * Determines if the current number is NOT zero.
+             * @returns {boolean}
+             */
+            Hyper.prototype.isNotZero = function () {
+                return this.$[3] !== 0n
+            }
+
+            /**
+             * Determines if the number given is NOT zero.
+             * @param {string | number | bigint | Hyper} value The number to test.
+             * @returns {boolean}
+             */
+            Hyper.isNotZero = function (value) {
+                return new Hyper(value).$[3] !== 0n
             }
 
             /**
@@ -7356,6 +7385,30 @@
                 }
             }
 
+            function HyperSubtractAbs(a, b) {
+                b = new Hyper(b)
+                var signA = a.$[0]
+                var signB = b.$[0]
+                if (signA === 1 && signB === -1) {
+                    return HyperAddBase(a, b)
+                } else if (signA === -1 && signB === 1) {
+                    var result = HyperAddBase(a, b)
+                    return result
+                } else if (signA === 1 && signB === 1) {
+                    var result = HyperSubtractBase(a, b)
+                    if (result === false) {
+                        result = HyperSubtractBase(b, a)
+                    }
+                    return result
+                } else {
+                    var result = HyperSubtractBase(a, b)
+                    if (result === false) {
+                        result = HyperSubtractBase(b, a)
+                    }
+                    return result
+                }
+            }
+
             function HyperSubtractOrFalse(a, b) {
                 b = new Hyper(b)
                 var signA = a.$[0]
@@ -7366,17 +7419,9 @@
                     return false
                 } else if (signA === 1 && signB === 1) {
                     var result = HyperSubtractBase(a, b)
-                    if (result === false) {
-                        return false
-                    }
                     return result
                 } else {
                     var result = HyperSubtractBase(a, b)
-                    if (result === false) {
-                        result = HyperSubtractBase(b, a)
-                    } else {
-                        return false
-                    }
                     return result
                 }
             }
@@ -7483,11 +7528,11 @@
              * @returns {Hyper | false}
              */
             Hyper.subOrFalse = function (a, b) {
-                return HyperSubtract(new Hyper(a), b)
+                return HyperSubtractOrFalse(new Hyper(a), b)
             }
 
             /**
-             * Subtracts the first number from the second one. HOWEVER, if the result is negative, false is returned instead.
+             * Subtracts the current number from the one given. HOWEVER, if the result is negative, false is returned instead.
              * @param {string | number | bigint | Hyper} value The number that is subtracted from the current one.
              * @returns {Hyper | false}
              */
@@ -7506,7 +7551,7 @@
             }
 
             /**
-             * Subtracts the first number from the second one. HOWEVER, if the result is negative, false is returned instead.
+             * Subtracts the current number from the one given. HOWEVER, if the result is negative, false is returned instead.
              * @param {string | number | bigint | Hyper} value The number that is subtracted from the current one.
              * @returns {Hyper | false}
              */
@@ -7530,7 +7575,7 @@
              * @returns {Hyper}
              */
             Hyper.prototype.absDiff = function (value) {
-                return HyperSubtract(this, value)
+                return HyperSubtractAbs(this, value)
             }
 
             /**
@@ -7540,7 +7585,7 @@
              * @returns {Hyper}
              */
             Hyper.mul = function (a, b) {
-                return HyperMultiply(new Hyper(a), b)
+                return HyperMultiplyAbs(new Hyper(a), b)
             }
 
             /**
@@ -7858,6 +7903,42 @@
                 var num = noClone ? this : new Hyper(this)
                 num.$[0] = -1
                 return num
+            }
+
+            /**
+             * Generates a random, cryptographically secure random number at least 0 that is less than 1, which is in the range [0, 1).
+             * @returns {Hyper}
+             */
+            Hyper.random = function () {
+                var number = 0n
+                var array
+                if (RANDOMSIZE > 16384) {
+                    array = new Uint32Array(16384)
+                    var sections = Math.floor(RANDOMSIZE / 16384)
+                    for (var i = 0; i < sections; i++) {
+                        crypto.getRandomValues(array)
+                        for (var t = 0; t < 16384; t++) {
+                            number = (number << 32n) + BigInt(array[t])
+                        }
+                    }
+                    var lastSize = RANDOMSIZE - sections * 16384
+                    if (lastSize !== 0) {
+                        array = new Uint32Array(lastSize)
+                        crypto.getRandomValues(array)
+                        for (i = 0; i < lastSize; i++) {
+                            number = (number << 32n) + BigInt(array[i])
+                        }
+                    }
+                } else {
+                    array = new Uint32Array(RANDOMSIZE)
+                    crypto.getRandomValues(array)
+                    for (var i = 0; i < RANDOMSIZE; i++) {
+                        number = (number << 32n) + BigInt(array[i])
+                    }
+                }
+
+                var string = RANDOMREPEAT + (number % RANDOMMODULO)
+                return new Hyper("0." + string.slice(string.length - 50))
             }
         })()
 
@@ -9427,7 +9508,7 @@
                 for (var i = 0; i < len;) {
                     var key = keys[i++]
                     var item = obj[key]
-                    if (item.isPositive()) {
+                    if (item.isNotZero()) {
                         result += ((i % 5) + (i % 7) < 3) || (i % 37 > 34) ? "]" : "["
                         result += key + ":" + item.toString()
                     }
@@ -9436,7 +9517,7 @@
                 for (var i = 0; i < len;) {
                     var key = keys[i++]
                     var item = obj[key]
-                    if (item.isPositive()) {
+                    if (item.isNotZero()) {
                         result += ((i % 5) + (i % 7) < 3) || (i % 37 > 34) ? "]" : "["
                         result += key + ":" + (obj[key].isEqual(obj2[key]) ? "!" : item.toString())
                     }
