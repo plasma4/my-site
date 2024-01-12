@@ -5456,7 +5456,7 @@
 
         var Hyper, H
         (function () {
-            var REPEATSTR = "0000000000000000000000000000000000000000000000000", BIGONE = 10000000000000000000000000000000000000000000000000n, BIGLIMIT = 100000000000000000000000000000000000000000000000000n, TWOLIMIT = 20000000000000000000000000000000000000000000000000n, LIMITMINUSONE = 99999999999999999999999999999999999999999999999999n, DOUBLELIMITDIVTEN = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DOUBLELIMIT = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, SQRTMAX = 1000000000000000000000000n, TENSQRTMAX = 10000000000000000000000000n, SQRTSTART = 40000000000000000000000000n, DIGITSODD = false, RANDOMSIZE = 8, RANDOMMODULO = 0, RANDOMREPEAT = 1
+            var REPEATSTR = "0000000000000000000000000000000000000000000000000", BIGONE = 10000000000000000000000000000000000000000000000000n, BIGLIMIT = 100000000000000000000000000000000000000000000000000n, FOURLIMIT = 400000000000000000000000000000000000000000000000000n, TWOBIG = 20000000000000000000000000000000000000000000000000n, LIMITMINUSONE = 99999999999999999999999999999999999999999999999999n, DOUBLELIMITDIVTEN = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DOUBLELIMIT = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DIGITSODD = false, RANDOMSIZE = 8, RANDOMMODULO = 0, RANDOMREPEAT = 1
 
             /**
              * Creates an Hyper (also called a "hyper-number") instance that represents a POSITIVE finite integer, which can handle high-quality values anywhere from above 10^(-9007199254740992) to beyond 10^^9.007e15 by using BigInt.
@@ -5765,13 +5765,11 @@
                 REPEATSTR = "0".repeat(digitsMinusOne)
                 BIGONE = 10n ** BigInt(digitsMinusOne)
                 BIGLIMIT = 10n * BIGONE
-                TWOLIMIT = BIGONE << 1n
+                FOURLIMIT = BIGLIMIT << 2n
+                TWOBIG = BIGONE << 1n
                 LIMITMINUSONE = BIGLIMIT - 1n
                 DOUBLELIMITDIVTEN = BIGONE * BIGONE
                 DOUBLELIMIT = DOUBLELIMITDIVTEN * 10n
-                SQRTMAX = 10n ** BigInt(Math.floor(digits * 0.5))
-                TENSQRTMAX = SQRTMAX << 10n
-                SQRTSTART = SQRTMAX << 2n
                 DIGITSODD = (digits & 1) === 1
                 RANDOMSIZE = Math.ceil(newDigits * 0.103810252966) + 2
                 RANDOMMODULO = BIGLIMIT * 10000000000n
@@ -6411,11 +6409,11 @@
                     throw RangeError("Hyper square root of a negative number")
                 }
                 var digitsEven = false
-                var digits
+                var data = value.$[3] * BIGLIMIT
                 var category = value.$[1]
+                var digits
                 if (category === 0) {
                     digits = value.$[2] * 0.5
-                    var data = value.$[3]
                     if (data === 0n) {
                         value.$ = [1, 0, 0, 0n]
                         return value
@@ -6428,7 +6426,6 @@
                     }
                 } else if (category === 1) {
                     digits = value.$[2]
-                    var data = value.$[3]
                     digitsEven = !(digits & 1n)
                     if (digitsEven) {
                         data *= 10n
@@ -6446,18 +6443,18 @@
                     return value
                 }
 
+                var temp = FOURLIMIT
                 var result
-                var temp = SQRTSTART
                 do {
                     result = temp
                     temp = ((data / result) + result) >> 1n
                 } while ((result !== temp && result !== (temp - 1n)))
-                if (!digitsEven && result >= SQRTMAX) {
-                    value.$[3] = result * TENSQRTMAX
+                if (!digitsEven && result >= BIGONE) {
+                    value.$[3] = DIGITSODD ? result / 10n : result
                 } else {
-                    value.$[3] = result * SQRTMAX
+                    value.$[3] = result / 10n
                 }
-                value.$[2] = DIGITSODD ? digits / 10n : digits
+                value.$[2] = digits
                 return value
             }
 
@@ -6514,11 +6511,6 @@
             const HALF = new Hyper("0.5")
 
             /**
-             * One in Hyper form
-             */
-            const ONE = new Hyper(true)
-
-            /**
              * Two in Hyper form
              */
             const TWO = new Hyper("2")
@@ -6528,18 +6520,22 @@
                     value = new Hyper(value)
                 }
 
-                if (value.$[2] < 0 || value.$[3] === 0n) {
+                if (value.$[0] !== 1 || value.$[3] === 0n) {
                     return false
+                } else if (value.$[0] < 0)  {
+                    var result = fastLog(HyperReciprocal(value))
+                    result.$[0] = -1
+                    return result
                 }
 
-                var a = value.add(ONE).mul(HALF)
-                var b = value.sqrt()
-                for (var i = 0; i < 100; i++) {
-                    a = a.add(b).mul(HALF)
-                    b = a.mul(b).sqrt()
+                var a = HyperMultiply(HyperAdd(value, 1), HALF)
+                var b = HyperSquareRoot(value)
+                for (var i = 0; i < 250; i++) {
+                    a = HyperAdd(a, b).mul(HALF)
+                    b = HyperSquareRoot(HyperMultiply(a, b))
                 }
 
-                return value.subOrFalse(ONE).mul(TWO).div(a.add(b))
+                return HyperDivide(HyperMultiply(HyperSubtract(value, 1), TWO), HyperAdd(a, b))
             }
 
             function fastExp(base, exponent) {
@@ -6892,7 +6888,7 @@
              * @returns {boolean}
              */
             Hyper.prototype.isPlural = function () {
-                return this.$[2] !== 0 || this.$[3] === 0n || this.$[3] >= TWOLIMIT
+                return this.$[2] !== 0 || this.$[3] === 0n || this.$[3] >= TWOBIG
             }
 
             /**
@@ -6902,7 +6898,7 @@
              */
             Hyper.isPlural = function (value) {
                 var num = new Hyper(value)
-                return num.$[2] !== 0 || num.$[3] === 0n || num.$[3] >= TWOLIMIT
+                return num.$[2] !== 0 || num.$[3] === 0n || num.$[3] >= TWOBIG
             }
 
             /**
@@ -7164,7 +7160,6 @@
             Hyper.isMoreOrEqual = function (a, b) {
                 return !HyperIsLess(new Hyper(a), new Hyper(b))
             }
-
 
             Hyper.prototype.toString = function () {
                 var category = this.$[1]
@@ -7964,7 +7959,7 @@
                 string = string.replace(/\B(?=(.{3})+(?!.))/g, ",")
                 if (additionalDigits != null && additionalDigits != 0) {
                     additionalDigits = parseInt(additionalDigits)
-                    if (!isFinite(additionalDigits) || additionalDigits > 100) {
+                    if (!isFinite(additionalDigits) || additionalDigits > 1000000) {
                         throw RangeError("Precision " + additionalDigits + " is out of range.")
                     }
                     var diff = additionalDigits - afterDots.length + 1
