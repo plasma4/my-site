@@ -101,6 +101,19 @@
 
         input {
             accent-color: #3ac3fa;
+            transition: opacity 500ms;
+            opacity: 0.75;
+        }
+
+        input[type="checkbox"] {
+            opacity: 1;
+        }
+
+        input:hover,
+        input:focus,
+        input:active {
+            transition: opacity 150ms;
+            opacity: 1;
         }
 
         .check2 {
@@ -108,7 +121,7 @@
         }
 
         .check3 {
-            accent-color: #f8a920;
+            accent-color: #f8c00a;
         }
 
         input[type="range"] {
@@ -4936,9 +4949,9 @@
                     </button>
 
                     <br>
-                    <label for="disableAudio">
-                        <input type="checkbox" class="check3" id="disableAudio"></input>
-                        Disable audio
+                    <label for="enableAudio">
+                        <input type="checkbox" class="check3" id="enableAudio"></input>
+                        Enable audio
                     </label>
                     <br>
                     <label for="useSleek">
@@ -8677,8 +8690,8 @@
             updateId("wageAmount", wageBoost.format(4) + "×")
         })
 
-        ID("disableAudio").addEventListener("change", function () {
-            noAudio = ID("disableAudio").checked
+        ID("enableAudio").addEventListener("change", function () {
+            noAudio = !ID("enableAudio").checked
         })
 
         ID("useSleek").addEventListener("change", function () {
@@ -11799,8 +11812,8 @@
                 }
             }
 
-            if (ID("disableAudio").checked !== noAudio) {
-                ID("disableAudio").checked = noAudio
+            if (ID("enableAudio").checked === noAudio) {
+                ID("enableAudio").checked = !noAudio
             }
 
             if (ID("useSleek").checked !== sleekMode) {
