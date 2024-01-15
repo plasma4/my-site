@@ -2818,19 +2818,19 @@
 
         .wormhole:before,
         .wormhole:after {
-            content: "WORMHOLE";
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
         }
 
         .wormhole:before {
+            content: "WORMHOLe";
             color: #6a45ff;
             animation: wormhole2 3.5s infinite;
         }
 
         .wormhole:after {
-            content: "WORMHOLE";
+            content: "wORMHOLE";
             color: #f73649;
             animation: wormhole3 2s infinite;
         }
@@ -3059,6 +3059,7 @@
             0% {
                 transform: none;
                 opacity: 0.5;
+                letter-spacing: 2px;
             }
 
             7% {
@@ -3074,6 +3075,7 @@
             27% {
                 transform: none;
                 opacity: 0.25;
+                letter-spacing: 4px;
             }
 
             55% {
@@ -3104,6 +3106,7 @@
             100% {
                 transform: none;
                 opacity: 0.25;
+                letter-spacing: 2px;
             }
         }
     </style>
