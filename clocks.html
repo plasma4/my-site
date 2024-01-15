@@ -172,12 +172,12 @@
             border: 1px solid black;
         }
 
-        #research {
+        .study {
             text-align: center;
             max-width: 750px;
         }
 
-        #research>div {
+        .study>div {
             border-radius: 5px;
             border: solid 4px #8cc4f2;
             transition: background-color 200ms;
@@ -189,27 +189,27 @@
             line-height: 110%;
         }
 
-        #research:hover>div {
+        .study:hover>div {
             background-color: #fff2;
         }
 
-        #research>div:hover {
+        .study>div:hover {
             background-color: #8cc4f244;
         }
 
-        #research>div:active {
+        .study>div:active {
             transition: background-color 350ms;
             background-color: #8cc4f277;
         }
 
-        #research>div.researched {
+        .study>div.researched {
             background-color: black;
             cursor: default;
             font-size: 15px;
             opacity: 0.3;
         }
 
-        #research>div.researched span {
+        .study>div.researched span {
             text-decoration: line-through;
             font-size: 15px;
         }
@@ -315,7 +315,7 @@
         label.hidden,
         .category,
         #lossNote,
-        #research,
+        .study,
         #modPanel {
             display: none;
         }
@@ -1134,6 +1134,14 @@
             color: black !important;
         }
 
+        .insane {
+            text-shadow: 0 0 5px white, 0 0 5px white, 0 0 5px white, 0 0 5px white, 0 0 5px white;
+            box-shadow: 0 0 5px white, 0 0 2px black;
+            background: repeating-radial-gradient(circle, black, black 5%, white 5%, white 10%);
+            background-color: white !important;
+            color: black !important;
+        }
+
         .flashy {
             border-color: #5b0b07;
             animation: flashy 1s linear infinite;
@@ -1617,6 +1625,11 @@
             100% {
                 color: #e41a1a;
             }
+        }
+
+        .glow2 {
+            color: black;
+            text-shadow: 0 0 3px white;
         }
 
         .r1 {
@@ -3201,7 +3214,7 @@
         </header>
 
         <div id="properties">
-            fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -3210,10 +3223,11 @@
             rocketbody|rocketfins|rocketcone
         </div>
         <div id="wikiHidden">
-            bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium|wandA1|wandA2|wandA3|wandA4|wandB1|wandB2|wandB3|wandB4|wandC1|wandC2|wandC3|wandC4|w1|w2
+            wscience|bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium|wandA1|wandA2|wandA3|wandA4|wandB1|wandB2|wandB3|wandB4|wandC1|wandC2|wandC3|wandC4|w1|w2
         </div>
         <div id="wikiData">
             wormholes: Wormhole (12, A...wormhole to another dimension)
+            wormholeteams: Wormhole Research Team (12, A dediated team that researches the ins and outs of wormholes)
             burnt: Burnt Dark Matter Gram (8, A gram of burnt dark matter)
             shards: Golden Shard (7, An EXTREMELY rare and valuable shard found by breaking golden clocks)
             iq: Digital Knowlege$ (4, Knowlege that can be used for amazing upgrades)
@@ -3895,7 +3909,9 @@
                     <b class="smallish">
                         IMPORTANT: Due to the lack of infinite storage in your universe,
                         ALL materials, workers, and buildings are capped at 10<sup class="small orange">80</sup>
-                        until you find additional space! (Currently capped at 10<sup class="small red" id="cap"></sup>)
+                        until you find additional space!
+                        <br>
+                        (Currently capped at 10<sup class="small red" id="cap"></sup>)
                     </b>
 
                     <br><br>
@@ -4021,8 +4037,8 @@
                         +1 fire wizard
                     </button>
                     <button class="orangebg" data-show="firewizards>0" data-earn="fwoodwizards+1"
-                        data-cost="money-5e20|fierywood-250"
-                        data-desc="Get a fiery wood wizard, which will happily convert 500 blue wood and a billion firetrees into 1 fiery wood each!\n[If you aren't making fiery wood automatically, make sure you have enough blue wood and firetrees!]\nFor the low low price of just $500.00Q and 250 fiery wood!$fwoodwizards$">
+                        data-cost="money-1e20|fierywood-250"
+                        data-desc="Get a fiery wood wizard, which will happily convert 500 blue wood and a billion firetrees into 1 fiery wood each!\n[If you aren't making fiery wood automatically, make sure you have enough blue wood and firetrees!]\nFor the low low price of just $100.00Q and 250 fiery wood!$fwoodwizards$">
                         +1 fiery wood wizard
                     </button>
 
@@ -4055,6 +4071,11 @@
                         data-cost="firecoins-1000"
                         data-desc="Forge a small firebar from a thousand firecoins!$firebars$">
                         +1 <span class="firebar" aria-label="firebar"></span>
+                    </span>
+                    <span class="mini special" data-show="firebars>=50" data-earn="firebars+10"
+                        data-cost="firecoins-10000"
+                        data-desc="Forge a ten small firebars from a thousand firecoins each!$firebars$">
+                        +10 <span class="firebar" aria-label="firebar"></span>
                     </span>
 
                     <hr>
@@ -4236,24 +4257,52 @@
                     </span>
                     <span class="mini special" data-show="$multiverse10" data-cost="silverwood-1e50"
                         data-earn="$fireboost" data-fade="$fireboost" data-sound="transaction">
-                        -1.000e50 <span class="swood" aria-label="silver wood"></span> for a 1,000× MAGICAL fire
-                        production boost
+                        -1.000e50 <span class="swood" aria-label="silver wood"></span> for a 1,000×
+                        <b class="smaller burning">MAGICAL FIRE</b> production boost
                     </span>
 
-                    <br>
+                    <br><br>
                     <button class="orangebg" data-show="$multiverse9" data-earn="coppertowers+1"
                         data-cost="energy-50|copper-EXPcoppertowers,1e24"
                         data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!$coppertowers$">
                         +1 copper tower
                     </button>
                     <button class="pure" data-show="coppertowers>0" data-earn="wormholes+1" data-cost="burnt-1e100"
-                        data-desc="[UNFINISHED!]\nOooh, a wormhole to another dimension!\nCosts 1e100 grams of dark matter though.\nEach wormhole is larger than the biggest superclusters of the multiverse.$wormholes$">
+                        data-desc="Oooh, a wormhole to another dimension!\nCosts 1e100 grams of burnt dark matter though.\nEach wormhole is larger than the biggest superclusters of the multiverse.$wormholes$">
                         Construct a <span class="wormhole">WORMHOLE</span>
                     </button>
 
+                    <br><br>
+                    <b>Wormhole Research:</b>
+                    <br>
+                    <button class="ocean"
+                        data-desc="How convenient! A button right below wormhole research that helps you get scientists easier!$scientists$"
+                        data-cost="money-500000" data-earn="scientists+1" data-show="managers>0">
+                        Get a scientist <span class="flask"></span>
+                        <span class="mini stripe1"
+                            data-desc="Get multiple scientists at once.\nFor every manager you get, you get +1 purchase power!$scientists$"
+                            data-cost="money-1e6" data-earn="scientists+1" data-show="managers>0" data-multibuy></span>
+                    </button>
+                    <button class="insane" data-show="wormholes>0" data-earn="wormholeteams+1"
+                        data-cost="scientists-5000"
+                        data-desc="Wormhole research teams consist of 5,000 scientists each as they try to research the wormhole and desperately hope it doesn't end the world.\nOn the bright side, they're so excited about their work you don't have to give them a single paycheck!$wormholeteams$">
+                        Make a <span class="wormhole">WORMHOLE</span> team
+                    </button>
+
+                    <div id="wormsearch" class="study">
+                        <div data-cost="5e20" data-research="wormy"
+                            data-desc="Along with each large wormhole research team, get a few thousand volunteers to help with teh cause.\n(DOUBLES research team point production)">
+                            Volunteers: <span class="glow">$500.00Q</span>
+                            <span class="big money"></span>
+                        </div>
+                    </div>
+
+                    <br>
                     <div class="small red">
                         You have burnt <span class="small yellow" id="burntAmount"></span>
-                        worth of <span class="small move4">dark matter</span>!
+                        worth of <span class="small move4">dark matter</span>
+                        and <span class="small green" id="researchPoints"></span>
+                        <span class="small glow2">WORMHOLE research points</span>!
                     </div>
 
                     <div class="small orange">
@@ -4454,7 +4503,8 @@
                     <button class="flashy" data-earn="phoenixes+1"
                         data-desc="Sacrifice for time and death: 4,000 golden clocks and 100 MegaClocks for one phoenix.\nPhoenixes slowly drop feathers, which you can use to construct flying clocks.\nalso, they look cute$phoenixes$"
                         data-cost="gc-4000|megaclocks-100" data-show="gc>=2000">
-                        phoenixes|Get your first phoenix|Get your second phoenix|Get your third phoenix|Get a phoenix
+                        phoenixes|Get your first phoenix|Get your second phoenix|Get your third phoenix|Get a
+                        phoenix
                     </button>
                     <button class="diamond" data-earn="megaclocks+500"
                         data-desc="Phoenixes can be sacrificed for 500 MegaClocks, which, in a rather gruesome way, can then be used to make more phoenixes!$megaclocks$"
@@ -4537,7 +4587,7 @@
                         Time to SCIENCE!
                     </span>
 
-                    <div id="research">
+                    <div id="research" class="study">
                         <div data-cost="1e19" data-research="speedv"
                             data-desc="Want to bend time?\n[Each time bender upgrade increases the game's speed by +100%.\nUsing crystals still keeps the multiplier at the same amount, but the amount of time the crystal lasts is multiplied instead.]\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10. This effect multiplies ALL crystals!\n{After purchasing this upgrade, your crystal boosts will automatically clear and have to be reapplied.})">
                             Time Bender V: <span class="purple">$10.000Q</span>
@@ -4961,7 +5011,8 @@
                     left over from that, as well as <span id="backup" class="lime min1"></span>
                     <span class="gbolt"></span> watt-second<span id="backupPlural">s</span>.
                     <div class="small" id="wattsNegative">
-                        (The amount of watts left is negative because you need more steam turbines or coal production!)
+                        (The amount of watts left is negative because you need more steam turbines or coal
+                        production!)
                     </div>
 
                     <div id="dragParent"></div>
@@ -5016,7 +5067,8 @@
 
                 <div id="rocket" style="display: none">
                     <span class="big rocket"></span>
-                    <b>Once you finish building the rocket, you can reset in exchange for valuable golden shards!</b>
+                    <b>Once you finish building the rocket, you can reset in exchange for valuable golden
+                        shards!</b>
                     <div class="small">
                         Building rockets is a bit different than just buying stuff instantly.
                         <br>
@@ -5309,23 +5361,27 @@
                         <button data-desc="Load the mod" id="addMod" class="night">Load script</button>
 
                         <b>
-                            Note that mods <i class="red">may compromise your privacy</i> and are not validated by me.
+                            Note that mods <i class="red">may compromise your privacy</i> and are not validated by
+                            me.
                             Please be aware of this when trying to add a mod!
                         </b>
 
                         <br><br>
                         Mods allow you to customize the game. Scripts should be in JavaScript.
                         <br>
-                        You can use <i>the comments in the source code</i> to guide you. Mods will automatically save.
+                        You can use <i>the comments in the source code</i> to guide you. Mods will automatically
+                        save.
                         <br>
                         To modify add CSS, change the <tt>extraCSS</tt> variable.
                         (Note that the CSS code added is added AFTER the game's own style sheet.)
                         <br>
-                        To detect whenever the game updates everything, call <tt>Game.addEventListener("save", f)</tt>.
+                        To detect whenever the game updates everything, call <tt>Game.addEventListener("save",
+                            f)</tt>.
                         Replace the variable <tt>f</tt> with a function.
                         <br>
                         Make sure that the <tt>"save"</tt> event function returns an array with two strings:
-                        <tt>[string, string]</tt>. The first string should be the ID of your save data (make it unique).
+                        <tt>[string, string]</tt>. The first string should be the ID of your save data (make it
+                        unique).
                         The second string should be the save to add.
                         This save data is automatically converted to Base64.
                         Although you can have multiple save data identifiers,
@@ -5348,7 +5404,8 @@
                         You can set the <tt>data</tt> variable to an object, which will get passed to all events
                         added through <tt>addEventListener()</tt>.
                         <br>
-                        You can also set <tt>window.hideModWarning</tt> to <tt>true</tt> <i>before the game loads</i>
+                        You can also set <tt>window.hideModWarning</tt> to <tt>true</tt> <i>before the game
+                            loads</i>
                         through an extension to skip the mod warning whenever the game loads up.
                     </div>
                 </div>
@@ -5361,7 +5418,8 @@
 
                     <hr>
                     <div class="blue">
-                        January 4, 2024: You can now get multiple coal mining machines at once, and... <b>ROCKETRY!</b>
+                        January 4, 2024: You can now get multiple coal mining machines at once, and...
+                        <b>ROCKETRY!</b>
                     </div>
                     <div class="small green">
                         January 2, 2024 (again!): Coal mining machines now still operate when powered off
@@ -5492,7 +5550,8 @@
                     <ul>
                         <li><del>Add magical stuff back in</del> <ins>DONE!</ins> <span class="check"></span></li>
                         <li>
-                            More magical spells and special <span class="serif smaller pink">MAGICAL</span> researches
+                            More magical spells and special <span class="serif smaller pink">MAGICAL</span>
+                            researches
                             <span class="cross"></span>
                         </li>
                         <li>A weird magical marketplace <span class="cross"></span></li>
@@ -8798,7 +8857,10 @@
         })
 
         var researches = []
-        attachEvent("research", function (elem) {
+        attachEvent("research", researchClick)
+        attachEvent("wormsearch", researchClick)
+
+        function researchClick(elem) {
             if (elem !== this) {
                 if (alreadyClicked) {
                     return
@@ -8806,7 +8868,7 @@
 
                 alreadyClicked = true
                 var parent = elem.parentElement
-                if (parent !== ID("research")) {
+                if (parent.className !== "study") {
                     elem = parent
                 }
                 var costString = elem.getAttribute("data-cost")
@@ -8843,7 +8905,7 @@
                     console.error("A child of the element with the ID of 'research' should have both a 'data-cost' and a 'data-research' attribute.")
                 }
             }
-        })
+        }
 
         attachEvent("viewSettings", function () {
             showTab("setup")
@@ -10170,6 +10232,15 @@
                             }
                         }
 
+                        researchElements = ID("wormsearch").children
+                        for (k = 0; k < researchElements.length; k++) {
+                            var element = researchElements[k]
+                            if (researches.includes(element.getAttribute("data-research"))) {
+                                element.className = "researched"
+                                element.removeAttribute("tabindex")
+                            }
+                        }
+
                         offlineFrames = Number(lotsOfStuff[2])
                         updateOfflineTime()
                         time = Number(lotsOfStuff[3])
@@ -10635,7 +10706,16 @@
                     hovered = button
                 }
             }
+
             var scienceButtons = ID("research").children
+            for (var i = 0; i < scienceButtons.length; i++) {
+                let button = scienceButtons[i]
+                button.onfocus = function () {
+                    hovered = button
+                }
+            }
+
+            scienceButtons = ID("wormsearch").children
             for (var i = 0; i < scienceButtons.length; i++) {
                 let button = scienceButtons[i]
                 button.onfocus = function () {
@@ -10875,6 +10955,15 @@
                 // Re-show all the researches you can unlock
                 researches.length = 0
                 var children = ID("research").children
+                for (i = 0; i < children.length; i++) {
+                    var child = children[i]
+                    if (!child.hasAttribute("tabindex")) {
+                        child.setAttribute("tabindex", 0)
+                    }
+                    child.removeAttribute("class")
+                }
+
+                children = ID("wormsearch").children
                 for (i = 0; i < children.length; i++) {
                     var child = children[i]
                     if (!child.hasAttribute("tabindex")) {
@@ -11773,6 +11862,7 @@
 
             add("fire", copperTowerPower)
             add("burnt", C("fire", issue).mul(Hyper(1).div(60)))
+            add("wscience", C("wormholeteams", issue).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60)))
 
             add("s5", silverfarms.mul(silvertownPower))
             add("s4", C("s5", issue).mul(silvertownPower))
@@ -11868,6 +11958,7 @@
             }
 
             updateId("burntAmount", C("burnt", issue).format(2) + " grams")
+            updateId("researchPoints", C("wscience", issue).format(2))
 
             // Update the CPS element and change the color by modifying the class
             var cps = cpt.mul(speed).mul(60)
@@ -12402,6 +12493,35 @@
                 researchElem.removeAttribute("style")
             }
 
+            researchElem = ID("wormsearch")
+            if (C("scientists", issue).isPositive()) {
+                if (!researchElem.hasAttribute("style")) {
+                    researchElem.style.display = "block"
+                }
+
+                var options = researchElem.children
+                for (var i = 0; i < options.length; i++) {
+                    var option = options[i]
+                    if (hasResearch(option.getAttribute("data-research"))) {
+                        if (!option.hasAttribute("style")) {
+                            option.className = "researched"
+                            option.removeAttribute("tabindex")
+                        }
+                    } else {
+                        var conditions = option.getAttribute("data-show")
+                        if (conditions === null || meetsRequirements(conditions)) {
+                            option.removeAttribute("style")
+                        } else {
+                            if (!option.hasAttribute("style")) {
+                                option.style.display = "none"
+                            }
+                        }
+                    }
+                }
+            } else {
+                researchElem.removeAttribute("style")
+            }
+
             // Update button text and appearance
             for (i = 0; i < buttons.length; i++) {
                 var button = buttons[i]
@@ -12592,7 +12712,11 @@
 
                     text = text.replace(/clock/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "tree" : "clock"))
                     var formattedText = text.replace(/\{/g, "<i>").replace(/\}|\]/g, "</i>").replace(/\[/g, '<i class="orange inherit">')
+                    if (!sleekMode) {
+                        formattedText = formattedText.replace(/wormholes/ig, '<span class="small wormhole">WORMHOLES</span>').replace(/wormhole(?!"|<)/ig, '<span class="small wormhole">WORMHOLE</span>')
+                    }
                     text = formattedText.replace(/<br>/g, "; ").replace(/<.+?>/g, "")
+
                     if (hoverElem.innerHTML !== formattedText) {
                         hoverElem.innerHTML = formattedText
                         var children = hovered.children
