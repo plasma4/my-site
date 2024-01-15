@@ -1127,6 +1127,13 @@
             background-color: #0cf2c0;
         }
 
+        .pure {
+            box-shadow: 0 0 3px white;
+            border-color: black !important;
+            background-color: white !important;
+            color: black !important;
+        }
+
         .flashy {
             border-color: #5b0b07;
             animation: flashy 1s linear infinite;
@@ -2798,6 +2805,307 @@
                 transform: scale(2);
             }
         }
+
+        .wormhole {
+            text-align: center;
+            display: inline-block;
+            color: #fff;
+            font-weight: 400;
+            margin: 0;
+            line-height: 0;
+            animation: wormhole1 2.5s infinite, wormhole 30s;
+        }
+
+        .wormhole:before,
+        .wormhole:after {
+            content: "WORMHOLE";
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .wormhole:before {
+            color: #6a45ff;
+            animation: wormhole2 3.5s infinite;
+        }
+
+        .wormhole:after {
+            content: "WORMHOLE";
+            color: #f73649;
+            animation: wormhole3 2s infinite;
+        }
+
+        @keyframes wormhole {
+            0% {
+                color: #ed3345;
+            }
+
+            1% {
+                color: black;
+            }
+
+            15% {
+                color: #ed3345;
+            }
+
+            15.0001% {
+                color: #ef9722;
+            }
+
+            16% {
+                color: black;
+            }
+
+            30% {
+                color: #ef9722;
+            }
+
+            30.0001% {
+                color: #f4fe37;
+            }
+
+            31% {
+                color: black;
+            }
+
+            45% {
+                color: #f4fe37;
+            }
+
+            45.0001% {
+                color: #1ee94d;
+            }
+
+            46% {
+                color: black;
+            }
+
+            60% {
+                color: #1ee94d;
+            }
+
+            60.0001% {
+                color: #30ebee;
+            }
+
+            61% {
+                color: black;
+            }
+
+            75% {
+                color: #30ebee;
+            }
+
+            75.0001% {
+                color: #ee30b2;
+            }
+
+            76% {
+                color: black;
+            }
+
+            90% {
+                color: #ee30b2;
+            }
+
+            95% {
+                color: white;
+            }
+        }
+
+        @keyframes wormhole1 {
+            0% {
+                transform: none;
+                letter-spacing: 1px;
+                opacity: 1;
+            }
+
+            3% {
+                color: white;
+                transform: skew(-0.5deg, -0.9deg) scale(0.3);
+                opacity: 0.75;
+            }
+
+            10% {
+                transform: none;
+                opacity: 1;
+            }
+
+            15% {
+                letter-spacing: 0;
+            }
+
+            27% {
+                transform: translate(3px, 2px);
+                opacity: 0;
+            }
+
+            30% {
+                transform: skew(3deg, -0.1deg) rotate(8deg);
+                opacity: 0.75;
+            }
+
+            35% {
+                transform: rotate(-3deg);
+                opacity: 1;
+                letter-spacing: 3px;
+            }
+
+            45% {
+                transform: none;
+                opacity: 1;
+                letter-spacing: 6px;
+            }
+
+            55% {
+                transform: skew(-1deg, 0.2deg);
+                opacity: 0.75;
+            }
+
+            50% {
+                transform: none;
+                opacity: 1;
+            }
+
+            54% {
+                transform: none;
+                opacity: 1;
+            }
+
+            60% {
+                transform: skew(0.4deg, 1deg);
+                opacity: 0.75;
+            }
+
+            75% {
+                transform: skew(4deg, -1deg);
+                opacity: 0.75;
+            }
+
+            80% {
+                transform: none;
+                opacity: 1;
+            }
+
+            99.9999% {
+                letter-spacing: 6px;
+            }
+
+            100% {
+                transform: none;
+                opacity: 1;
+                letter-spacing: 1px;
+            }
+        }
+
+        @keyframes wormhole2 {
+            0% {
+                transform: none;
+                opacity: 0.25;
+            }
+
+            5% {
+                transform: translate(-2px, -6px);
+                opacity: 0.5;
+            }
+
+            10% {
+                transform: none;
+                opacity: 0.25;
+            }
+
+            13% {
+                transform: skew(7deg, 7deg);
+                opacity: 0.5;
+            }
+
+            35% {
+                transform: none;
+                opacity: 0.5;
+            }
+
+            40% {
+                transform: none;
+                opacity: 0.25;
+            }
+
+            55% {
+                transform: translate(-4px, -7px);
+                opacity: 1;
+            }
+
+            60% {
+                transform: none;
+                opacity: 0;
+            }
+
+            75% {
+                transform: translate(3px, -2px);
+                opacity: 0.5;
+            }
+
+            80% {
+                transform: none;
+                opacity: 0.25;
+            }
+
+            100% {
+                transform: none;
+                opacity: 0.25;
+            }
+        }
+
+        @keyframes wormhole3 {
+            0% {
+                transform: none;
+                opacity: 0.5;
+            }
+
+            7% {
+                transform: translate(2px, 3px);
+                opacity: 0.25;
+            }
+
+            10% {
+                transform: none;
+                opacity: 1;
+            }
+
+            27% {
+                transform: none;
+                opacity: 0.25;
+            }
+
+            55% {
+                transform: translate(5px, 1px) rotate(5deg);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: none;
+                opacity: 0.25;
+            }
+
+            72% {
+                transform: none;
+                opacity: 0.25;
+            }
+
+            75% {
+                transform: translate(2px, 6px);
+                opacity: 0.5;
+            }
+
+            80% {
+                transform: none;
+                opacity: 0;
+            }
+
+            100% {
+                transform: none;
+                opacity: 0.25;
+            }
+        }
     </style>
 
     <script id="errorScript">
@@ -2890,7 +3198,7 @@
         </header>
 
         <div id="properties">
-            fire|burnt|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -2899,9 +3207,11 @@
             rocketbody|rocketfins|rocketcone
         </div>
         <div id="wikiHidden">
-            burnt|bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium|wandA1|wandA2|wandA3|wandA4|wandB1|wandB2|wandB3|wandB4|wandC1|wandC2|wandC3|wandC4|w1|w2
+            bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium|wandA1|wandA2|wandA3|wandA4|wandB1|wandB2|wandB3|wandB4|wandC1|wandC2|wandC3|wandC4|w1|w2
         </div>
         <div id="wikiData">
+            wormholes: Wormhole (12, A...wormhole to another dimension)
+            burnt: Burnt Dark Matter Gram (8, A gram of burnt dark matter)
             shards: Golden Shard (7, An EXTREMELY rare and valuable shard found by breaking golden clocks)
             iq: Digital Knowlege$ (4, Knowlege that can be used for amazing upgrades)
             goo: Purple Goo$ (3, A piece of magical purple goo)
@@ -3871,9 +4181,9 @@
                     </span>
 
                     <br>
-                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-5000"
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-2500"
                         data-earn="$multiverse1" data-fade="$multiverse1" data-sound="transaction">
-                        -5,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
+                        -2,500 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
                         (increase the matter limit)
                     </span>
                     <span class="mini special" data-show="$multiverse" data-cost="silverwood-25000"
@@ -3891,7 +4201,7 @@
                         -500,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
                         (increase the matter limit)
                     </span>
-                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e6"
+                    <span class="mini special" data-show="$multiverse" data-cost="silverwood-2e6"
                         data-earn="$multiverse5" data-fade="$multiverse5" data-sound="transaction">
                         -2,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
                         (increase the matter limit)
@@ -3932,6 +4242,10 @@
                         data-cost="energy-50|copper-EXPcoppertowers,1e24"
                         data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!$coppertowers$">
                         +1 copper tower
+                    </button>
+                    <button class="pure" data-show="coppertowers>0" data-earn="wormholes+1" data-cost="burnt-1e100"
+                        data-desc="Oooh, a wormhole to another dimension!\nCosts 1e100 grams of dark matter though.$wormholes$">
+                        Construct a <span class="wormhole">WORMHOLE</span>
                     </button>
 
                     <div class="small red">
@@ -12097,6 +12411,7 @@
                 } else if (fadeRequirements !== null && meetsRequirements(fadeRequirements)) {
                     if (!button.disabled) {
                         button.setAttribute("disabled", true)
+                        button.style.display = "inline-block"
                         button.style.opacity = 0.5
                     }
                 } else if (button.style.display === "inline-block") {
