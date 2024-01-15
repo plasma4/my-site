@@ -4290,6 +4290,31 @@
                     </button>
 
                     <div id="wormsearch" class="study">
+                        <div data-cost="2.25e19" data-show="$wormy7" data-research="wormy8"
+                            data-desc="Make custom suits so that, for the first time, your wormhole teams can ENTER the wormhole!\n(With this new technology, SQUARE the base research point gain!)">
+                            Special suits: <span class="glow">$22.500Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e9" data-rp="1e30" data-show="$wormy6" data-research="wormy7"
+                            data-desc="[You need 1.000N research points to purchase this research!]\nShardy indeed! Having shards around appears to make the researches more excited, so gift the shards to the team or teams that do best.\n(Each GOLDEN shard you currently have increases research point gain by +10,000%!)">
+                            Golden teams: <span class="glow">$1,000,000,000</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e21" data-show="$wormy5" data-research="wormy6"
+                            data-desc="Encouragement seems to work pretty well...so celebrate each of your teams for their accomplishments!\n(The amount of wormhole research points you have increases its own gain, AGAIN)">
+                            Encouragement 2.0: <span class="glow">$1.000s</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e6" data-show="$wormy4" data-research="wormy5"
+                            data-desc="Encourage your wormhole teams even more by having a big PDF of their accomplishments emailed to them...every time they accomplish something.\n(The amount of wormhole research points you have increases its own gain)">
+                            Infinite encouragement: <span class="glow">$1,000,000</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e19" data-show="wormholeteams>1000/$wormy" data-research="wormy4"
+                            data-desc="Find out how extreme time dilation is near those intergalactic wormholes.\n(The amount of clocks that you have increases research team point production)">
+                            Time testing: <span class="glow">$10.000Q</span>
+                            <span class="big money"></span>
+                        </div>
                         <div data-cost="5e20" data-show="wormholeteams>100/$wormy" data-research="wormy3"
                             data-desc="Start chucking random objects in your wormholes and see what happens!\n(Increases research team point production by 25% for each wormhole that you have)">
                             Testing: <span class="glow">$500.00Q</span>
@@ -8885,7 +8910,8 @@
                 var research = elem.getAttribute("data-research")
                 if (costString !== null && research !== null) {
                     var iqAmount = elem.getAttribute("data-iq")
-                    if ((iqAmount === null || C("iq").mul(0.2).sqrt(true).sqrt(true).isMoreOrEqual(iqAmount)) && !hasResearch(research)) {
+                    var rpAmount = elem.getAttribute("data-rp")
+                    if ((rpAmount === null || C("wscience").isMoreOrEqual(rpAmount)) && !hasResearch(research) && (iqAmount === null || C("iq").mul(0.2).sqrt(true).sqrt(true).isMoreOrEqual(iqAmount)) && !hasResearch(research)) {
                         var item, cost
                         if (costString.charCodeAt(0) === 83) {
                             item = C("science", "This happened while checking for research cost.")
@@ -10645,7 +10671,7 @@
                     return
                 }
 
-                alreadyCliked = true
+                alreadyClicked = true
                 var element = e.target
                 if (element === spellElem || element.className.includes("disabled")) {
                     e.stopPropagation()
@@ -11649,7 +11675,7 @@
             }
 
             var copperTowerPower = C("coppertowers", issue).mul(hasResearch("fireboost") ? 10 : 0.01).div(60).mul(Hyper(1.1).pow(C("firebars", issue)))
-            var wormholeBoost = hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : 1
+            var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(C("shards").mul(100)) : 1)
 
             var fcMakers = C("fcmakers", issue)
             var labs = C("labs", issue)
@@ -11873,7 +11899,10 @@
 
             add("fire", copperTowerPower)
             add("burnt", C("fire", issue).mul(Hyper(1).div(60)))
-            add("wscience", C("wormholeteams", issue).mul(wormholeBoost).mul(hasResearch("wormy2") ? 2 : 1).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60)))
+
+            var researchPoints = C("wscience")
+            var basePointGain = C("wormholeteams", issue)
+            add("wscience", (hasResearch("wormy8") ? basePointGain.sqr() : basePointGain).mul(wormholeBoost).mul(hasResearch("wormy6") ? Hyper(true).add(researchPoints.sqrt()) : 1).mul(hasResearch("wormy5") ? Hyper(true).add(researchPoints.sqrt().sqrt()) : 1).mul(hasResearch("wormy4") ? Hyper(true).add(C("clocks").mul("1e-15")) : 1).mul(hasResearch("wormy2") ? 2 : 1).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60)))
 
             add("s5", silverfarms.mul(silvertownPower))
             add("s4", C("s5", issue).mul(silvertownPower))
