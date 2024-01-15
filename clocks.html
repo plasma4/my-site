@@ -4290,8 +4290,13 @@
                     </button>
 
                     <div id="wormsearch" class="study">
-                        <div data-cost="2.25e19" data-show="$wormy7" data-research="wormy8"
-                            data-desc="Make custom suits so that, for the first time, your wormhole teams can ENTER the wormhole!\n(With this new technology, SQUARE the base research point gain!)">
+                        <div data-cost="5.3535e20" data-rp="5.353e53" data-show="$wormy8" data-research="time"
+                            data-desc="[THIS UPGRADE DOES NOT DO ANYTHING YET!!! You need 5.353e53 research points to purchase this research!]\nUnlock the ability to use time machines, allowing you to MASSIVELY increase clock production!">
+                            Time travel: <span class="glow">$535.35Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="2.25e19" data-rp="1e33" data-show="$wormy7" data-research="wormy8"
+                            data-desc="[You need 1.000D research points to purchase this research!]\nMake custom suits so that, for the first time, your wormhole teams can ENTER the wormhole!\n(With this new technology, SQUARE the base research point gain!)">
                             Special suits: <span class="glow">$22.500Q</span>
                             <span class="big money"></span>
                         </div>
@@ -8938,6 +8943,7 @@
                         }
                     }
                 } else {
+                    console.log(elem)
                     console.error("A child of the element with the ID of 'research' should have both a 'data-cost' and a 'data-research' attribute.")
                 }
             }
@@ -10264,7 +10270,6 @@
                             var element = researchElements[k]
                             if (researches.includes(element.getAttribute("data-research"))) {
                                 element.className = "researched"
-                                element.removeAttribute("tabindex")
                             }
                         }
 
@@ -10273,7 +10278,6 @@
                             var element = researchElements[k]
                             if (researches.includes(element.getAttribute("data-research"))) {
                                 element.className = "researched"
-                                element.removeAttribute("tabindex")
                             }
                         }
 
@@ -10993,7 +10997,7 @@
                 var children = ID("research").children
                 for (i = 0; i < children.length; i++) {
                     var child = children[i]
-                    if (!child.hasAttribute("tabindex")) {
+                    if (child.tagName === "DIV" && !child.hasAttribute("tabindex")) {
                         child.setAttribute("tabindex", 0)
                     }
                     child.removeAttribute("class")
@@ -11002,7 +11006,7 @@
                 children = ID("wormsearch").children
                 for (i = 0; i < children.length; i++) {
                     var child = children[i]
-                    if (!child.hasAttribute("tabindex")) {
+                    if (child.tagName === "DIV" && !child.hasAttribute("tabindex")) {
                         child.setAttribute("tabindex", 0)
                     }
                     child.removeAttribute("class")
