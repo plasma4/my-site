@@ -4290,9 +4290,19 @@
                     </button>
 
                     <div id="wormsearch" class="study">
-                        <div data-cost="5e20" data-research="wormy"
-                            data-desc="Along with each large wormhole research team, get a few thousand volunteers to help with teh cause.\n(DOUBLES research team point production)">
-                            Volunteers: <span class="glow">$500.00Q</span>
+                        <div data-cost="5e20" data-show="wormholeteams>100/$wormy" data-research="wormy3"
+                            data-desc="Start chucking random objects in your wormholes and see what happens!\n(Increases research team point production by 25% for each wormhole that you have)">
+                            Testing: <span class="glow">$500.00Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="2.5e20" data-show="wormholeteams>10/$wormy" data-research="wormy2"
+                            data-desc="Along with each large wormhole research team, get a few thousand volunteers to help with the cause.\n(DOUBLES research team point production again)">
+                            Volunteers: <span class="glow">$250.00Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e18" data-show="wormholeteams>0" data-research="wormy"
+                            data-desc="Host a grand old party for your wormhole teams every so often, increasing their effectiveness.\n(DOUBLES research team point production)">
+                            Wormhole parties: <span class="glow">$1.000Q</span>
                             <span class="big money"></span>
                         </div>
                     </div>
@@ -11639,6 +11649,7 @@
             }
 
             var copperTowerPower = C("coppertowers", issue).mul(hasResearch("fireboost") ? 10 : 0.01).div(60).mul(Hyper(1.1).pow(C("firebars", issue)))
+            var wormholeBoost = hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : 1
 
             var fcMakers = C("fcmakers", issue)
             var labs = C("labs", issue)
@@ -11862,7 +11873,7 @@
 
             add("fire", copperTowerPower)
             add("burnt", C("fire", issue).mul(Hyper(1).div(60)))
-            add("wscience", C("wormholeteams", issue).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60)))
+            add("wscience", C("wormholeteams", issue).mul(wormholeBoost).mul(hasResearch("wormy2") ? 2 : 1).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60)))
 
             add("s5", silverfarms.mul(silvertownPower))
             add("s4", C("s5", issue).mul(silvertownPower))
