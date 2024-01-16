@@ -5440,6 +5440,7 @@
                             aria-label="Paste in a script here that mods the game."></textarea>
                         <button data-desc="Load the mod" id="addMod" class="night">Load script</button>
 
+                        <br>
                         <b>
                             Note that mods <i class="red">may compromise your privacy</i> and are not validated by
                             me.
@@ -12011,6 +12012,7 @@
 
             var limitedProperties = properties.slice(0)
             limitedProperties.splice(limitedProperties.indexOf("science"), 1)
+            limitedProperties.splice(limitedProperties.indexOf("wscience"), 1)
             limitedProperties.splice(limitedProperties.indexOf("creativity"), 1)
             limit(limitedProperties, matterLimit)
 
