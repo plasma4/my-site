@@ -9535,8 +9535,6 @@
                                 return
                             }
 
-                            alreadyClicked = true
-
                             var types = Array(len)
                             var amounts = Array(len)
 
@@ -10712,11 +10710,6 @@
         function setupSpells() {
             var spellElem = ID("spells")
             spellElem.onmousedown = function (e) {
-                if (alreadyClicked) {
-                    return
-                }
-
-                alreadyClicked = true
                 var element = e.target
                 if (element === spellElem || element.className.includes("disabled")) {
                     e.stopPropagation()
