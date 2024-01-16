@@ -180,7 +180,7 @@
         .study>div {
             border-radius: 5px;
             border: solid 4px #8cc4f2;
-            transition: background-color 200ms;
+            transition: background-color 200ms, font-size 250ms, opacity 1s;
             color: #e499e4;
             cursor: pointer;
             padding: 4px;
@@ -198,7 +198,6 @@
         }
 
         .study>div:active {
-            transition: background-color 350ms;
             background-color: #8cc4f277;
         }
 
@@ -1137,9 +1136,19 @@
         .insane {
             text-shadow: 0 0 5px white, 0 0 5px white, 0 0 5px white, 0 0 5px white, 0 0 5px white;
             box-shadow: 0 0 5px white, 0 0 2px black;
-            background: repeating-radial-gradient(circle, black, black 5%, white 5%, white 10%);
+            animation: insane 1s linear infinite;
             background-color: white !important;
             color: black !important;
+        }
+
+        @keyframes insane {
+            0% {
+                background: repeating-radial-gradient(circle, black, black 5%, white 5%, white 10%);
+            }
+
+            100% {
+                background: repeating-radial-gradient(circle, white, white 5%, black 5%, black 10%);
+            }
         }
 
         .flashy {
@@ -2120,8 +2129,13 @@
         }
 
         .bland {
+            border-radius: 10px;
             cursor: default;
             transform: none !important;
+        }
+
+        .bland:hover {
+            border-radius: 5px;
         }
 
         .clock,
@@ -4187,7 +4201,7 @@
                     <span class="mini special" data-show="$silvergain" data-cost="silverwood-2000"
                         data-earn="$multiverse" data-fade="$multiverse" data-sound="transaction">
                         -2,000 <span class="swood" aria-label="silver wood"></span> to gain the ability to open up parts
-                        of the multiverse (this stays through ascensions!)
+                        of the multiverse (THIS STAYS THROUGH SHARD RESETTING!)
                     </span>
                     <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e6"
                         data-earn="$silverfield" data-fade="$silverfield" data-sound="transaction">
@@ -4215,6 +4229,7 @@
                         -25,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
                         (increase the matter limit)
                     </span>
+                    <br>
                     <span class="mini special" data-show="$multiverse" data-cost="silverwood-100000"
                         data-earn="$multiverse3" data-fade="$multiverse3" data-sound="transaction">
                         -100,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
@@ -4225,6 +4240,7 @@
                         -500,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
                         (increase the matter limit)
                     </span>
+                    <br>
                     <span class="mini special" data-show="$multiverse" data-cost="silverwood-2e6"
                         data-earn="$multiverse5" data-fade="$multiverse5" data-sound="transaction">
                         -2,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the multiverse
@@ -4235,6 +4251,7 @@
                         -100,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
                         multiverse (increase the matter limit)
                     </span>
+                    <br>
                     <span class="mini special" data-show="$multiverse" data-cost="silverwood-1e10"
                         data-earn="$multiverse7" data-fade="$multiverse7" data-sound="transaction">
                         -10,000,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
@@ -4245,6 +4262,7 @@
                         -2,500,000,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
                         multiverse (increase the matter limit)
                     </span>
+                    <br>
                     <span class="mini special" data-show="$multiverse" data-cost="silverwood-5e14"
                         data-earn="$multiverse9" data-fade="$multiverse9" data-sound="transaction">
                         -500,000,000,000,000 <span class="swood" aria-label="silver wood"></span> to open up 10% of the
@@ -4255,16 +4273,22 @@
                         -500.00Ud <span class="swood" aria-label="silver wood"></span> to open up the FINAL 10% of the
                         multiverse! (increase the matter limit)
                     </span>
+                    <br>
                     <span class="mini special" data-show="$multiverse10" data-cost="silverwood-1e50"
                         data-earn="$fireboost" data-fade="$fireboost" data-sound="transaction">
                         -1.000e50 <span class="swood" aria-label="silver wood"></span> for a 1,000×
                         <b class="smaller burning">MAGICAL FIRE</b> production boost
                     </span>
+                    <span class="mini special" data-show="$fireboost" data-cost="silverwood-1e500000"
+                        data-earn="$wormboost" data-fade="$wormboost" data-sound="transaction">
+                        -1.000e500,000 <span class="swood" aria-label="silver wood"></span> to increase wormhole
+                        research point production based on silver wood amount
+                    </span>
 
                     <br><br>
                     <button class="orangebg" data-show="$multiverse9" data-earn="coppertowers+1"
                         data-cost="energy-50|copper-EXPcoppertowers,1e24"
-                        data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and reset.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!$coppertowers$">
+                        data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and purchase the MAGIC upgrade for 1 golden shard.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!$coppertowers$">
                         +1 copper tower
                     </button>
                     <button class="pure" data-show="coppertowers>0" data-earn="wormholes+1" data-cost="burnt-1e100"
@@ -4287,6 +4311,22 @@
                         data-cost="scientists-5000"
                         data-desc="Wormhole research teams consist of 5,000 scientists each as they try to research the wormhole and desperately hope it doesn't end the world.\nOn the bright side, they're so excited about their work you don't have to give them a single paycheck!$wormholeteams$">
                         Make a <span class="wormhole">WORMHOLE</span> team
+                    </button>
+
+                    <br><br>
+                    <button class="special" data-show="$wormy7" data-earn="$cosmos" data-hide="$cosmos"
+                        data-desc="UNLOCK THE COSMOS!!!\nIt's FREEEEEE!!!">
+                        <span class="glow2">UNLOCK THE COSMOS!!!</span>
+                    </button>
+                    <button class="special bland" data-show="$cosmos" data-fade="$cosmos">
+                        <span class="glow2">
+                            You've unlocked the COSMOS!!!
+                            <br>
+                            <span class="smaller glow2">
+                                (congrats: maximum matter increased to an astonishing
+                                10<sup class="smaller red">ee1.000e50</sup>, or 10^10^10^10^50)
+                            </span>
+                        </span>
                     </button>
 
                     <div id="wormsearch" class="study">
@@ -5332,7 +5372,7 @@
                         <span class="shard"></span><span class="shard"></span><span class="shard"></span>
                     </button>
 
-                    <div class="small">The researches below WILL NOT STAY after ascending again!</div>
+                    <div class="small glow2">The researches below WILL BE GONE after ascending once again!</div>
                     <span class="mini special" data-cost="shards-1" data-earn="$shardsci" data-fade="$shardsci"
                         data-sound="transaction">
                         -1 <span class="shard" aria-label="GOLDEN shard"></span> for new researches costing science!
@@ -6930,13 +6970,9 @@
                     value = new Hyper(value)
                 }
 
-                if (value.$[0] !== 1 || value.$[3] === 0n) {
-                    return false
-                }
-
                 var a = HyperMultiply(HyperAdd(value, 1), HALF)
                 var b = HyperSquareRoot(value)
-                for (var i = 0; i < 250; i++) {
+                for (var i = 0; i < 80; i++) {
                     a = HyperAdd(a, b).mul(HALF)
                     b = HyperSquareRoot(HyperMultiply(a, b))
                 }
@@ -6991,9 +7027,11 @@
                 return fastExp(start, power.$[3] / (10n ** (BIGDIGITSMINUSONE - BigInt(power.$[2]))))
             }
 
-            function HyperLog10(start, noClone) {
+            function HyperLog10(start, noClone, divAmount) {
                 var category = start.$[1]
-                if (category >= 2) {
+                if (start.$[0] !== 1 || start.$[3] === 0n) {
+                    return false
+                } else if (category >= 2) {
                     var value = noClone ? start : new Hyper(start)
                     if (category === 2) {
                         value.$[1] = 0
@@ -7004,12 +7042,17 @@
                     return value
                 }
 
-                var result = fastLog(start, noClone)
-                if (result === false) {
-                    return false
+                if (!noClone) {
+                    start = new Hyper(start)
+                }
+                var digits = start.$[2]
+                start.$[1] = 0
+                start.$[2] = 0
+                var result = HyperAdd(HyperMultiply(fastLog(start, noClone), LOG10_E), digits)
+                if (divAmount != null) {
+                    result = result.div(divAmount)
                 }
 
-                result = result.mul(LOG10_E)
                 if (noClone) {
                     start.$ = result.$
                     return start
@@ -7017,43 +7060,14 @@
                 return result
             }
 
-            function HyperLogE(start, noClone) {
-                var category = start.$[1]
-                if (category >= 2) {
-                    var value = start.mul(LOG10_E)
-                    value.$[1] = category === 2 ? 0 : (category - 2)
-                    if (noClone) {
-                        start.$ = value.$
-                        return start
-                    }
-                    return value
-                }
-
-                return fastLog(start, noClone)
+            function HyperNaturalLog(start, noClone) {
+                var result = HyperLog10(start, noClone, LOG10_E)
+                return result === false ? false : result
             }
 
             function HyperLog2(start, noClone) {
-                var category = start.$[1]
-                if (category >= 2) {
-                    var value = start.mul(LOG10_2)
-                    value.$[1] = category === 2 ? 0 : (category - 2)
-                    if (noClone) {
-                        start.$ = value.$
-                        return start
-                    }
-                    return value
-                }
-
-                var result = fastLog(start, noClone)
-                if (result === false) {
-                    return false
-                }
-                result = result.mul(LOG2_E)
-                if (noClone) {
-                    start.$ = result.$
-                    return start
-                }
-                return result
+                var result = HyperLog10(start, noClone, LOG10_2)
+                return result === false ? false : result
             }
 
             /**
@@ -8902,7 +8916,7 @@
 
         function researchClick(elem) {
             if (elem !== this) {
-                if (alreadyClicked) {
+                if (alreadyClicked || elem.className === "study") {
                     return
                 }
 
@@ -9256,6 +9270,33 @@
                 if (hasResearch("multiverse10")) {
                     newResearches.push("multiverse10")
                 }
+                if (hasResearch("cosmos")) {
+                    newResearches.push("cosmos")
+                }
+                if (hasResearch("wormy8")) {
+                    newResearches.push("wormy8")
+                }
+                if (hasResearch("wormy7")) {
+                    newResearches.push("wormy7")
+                }
+                if (hasResearch("wormy6")) {
+                    newResearches.push("wormy6")
+                }
+                if (hasResearch("wormy5")) {
+                    newResearches.push("wormy5")
+                }
+                if (hasResearch("wormy4")) {
+                    newResearches.push("wormy4")
+                }
+                if (hasResearch("wormy3")) {
+                    newResearches.push("wormy3")
+                }
+                if (hasResearch("wormy2")) {
+                    newResearches.push("wormy2")
+                }
+                if (hasResearch("wormy")) {
+                    newResearches.push("wormy")
+                }
 
                 var oldShards = C("shards")
                 rawAdd("crystal3", stuff.bonus3.div(timeBonus.mul(600)).floor(), false)
@@ -9276,17 +9317,18 @@
         })
 
         ID("fireReset").addEventListener("click", function () {
-            if (confirm("Are you sure? You will LOSE all of your fiery progress!")) {
-                add("fierywood", C("firefruit").log10().mul(0.9).subOrFalse(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3).floor(true))
+            var earnings = C("firefruit").log10().mul(0.9).sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3).floor(true)
+            if (earnings.isPositive() && confirm("Are you sure? You will LOSE all of your fiery progress!")) {
+                add("fierywood", earnings)
                 clearAmount(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
                 setup(true)
             }
         })
 
         ID("silverReset").addEventListener("click", function () {
-            if (confirm("Are you sure? You will LOSE all of your precious silvery progress!")) {
-                var gain = C("silverfruit").log10().subOrFalse(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
-                add("silverwood", (hasResearch("silversquare") ? gain.sqr() : gain).floor(true))
+            var earnings = C("silverfruit").log10().sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
+            if (earnings.isPositive() && confirm("Are you sure? You will LOSE all of your precious silvery progress!")) {
+                add("silverwood", (hasResearch("silversquare") ? earnings.sqr() : earnings).floor(true))
                 clearAmount(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
                 setup(true)
             }
@@ -10814,6 +10856,7 @@
 
         // Functions to help with fade animations (it seems that CSS "display: none" completely prevents using transitions)
         function addFade(button) {
+            button.setAttribute("disabled", true)
             if (loaded) {
                 fadeButtons.push(button)
                 fadeTimes.push(0)
@@ -10879,12 +10922,16 @@
                 if (button.parentElement.style.display !== "none") {
                     button.style.opacity = fadeFrame > 60 ? (fadeFrame % 20 < 10 ? 1 : 0) : Math.sqrt(fadeFrame / 60).toFixed(6)
                     if (fadeFrame === 180) {
+                        button.removeAttribute("disabled")
                         // Don't increment i, as the current position is now at new elements in the arrays
                         fadeTimes.splice(i, 1)
                         fadeButtons.splice(i, 1)
                         len--
                     } else {
                         // Update the time and increment the counter
+                        if (fadeFrame <= 60) {
+                            button.setAttribute("disabled", true)
+                        }
                         fadeTimes[i] = fadeFrame
                         i++
                     }
@@ -11591,7 +11638,9 @@
             var issue = "This occured while trying to update properties."
 
             var digitCap = "80"
-            if (hasResearch("multiverse10")) {
+            if (hasResearch("cosmos")) {
+                digitCap = "eee50"
+            } else if (hasResearch("multiverse10")) {
                 digitCap = "1e25"
             } else if (hasResearch("multiverse9")) {
                 digitCap = "1e18"
@@ -11678,7 +11727,7 @@
             }
 
             var copperTowerPower = C("coppertowers", issue).mul(hasResearch("fireboost") ? 10 : 0.01).div(60).mul(Hyper(1.1).pow(C("firebars", issue)))
-            var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(C("shards").mul(100)) : 1)
+            var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(C("shards").mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
 
             var fcMakers = C("fcmakers", issue)
             var labs = C("labs", issue)
@@ -11988,14 +12037,18 @@
 
             updateId("constructorPlural", C("cmanagers", issue).isPlural() ? "s" : "")
 
-            var firefruitDigits = Hyper(1).max(C("firefruit", issue).log10())
-            var silverfruitDigits = Hyper(1).max(C("silverfruit", issue).log10())
+            var firefruitDigits = C("firefruit", issue).log10()
+            var silverfruitDigits = C("silverfruit", issue).log10()
 
-            updateId("fireReset", firefruitDigits.isMoreOrEqual(40) ? "Gain " + format(firefruitDigits.mul(0.9).subOrFalse(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood" : "")
+            if (firefruitDigits !== false && firefruitDigits.isMoreOrEqual(40)) {
+                updateId("fireReset", "Gain " + format(firefruitDigits.mul(0.9).subOrFalse(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood")
+            } else {
+                updateHTML(ID("fireReset"), "")
+            }
 
-            if (silverfruitDigits.isMoreOrEqual(20)) {
+            if (firefruitDigits !== false && silverfruitDigits.isMoreOrEqual(20)) {
                 var silverGain = silverfruitDigits.subOrFalse(10).mul(hasResearch("silvergain") ? C("fierywood", issue).add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
-                updateId("silverReset", silverfruitDigits.isMoreOrEqual(20) ? "Gain " + format(hasResearch("silversquare") ? silverGain.sqr() : silverGain) + " silver wood" : "")
+                updateId("silverReset", "Gain " + format(hasResearch("silversquare") ? silverGain.sqr() : silverGain) + " silver wood")
             } else {
                 updateHTML(ID("silverReset"), "")
             }
