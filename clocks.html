@@ -4330,6 +4330,11 @@
                     </button>
 
                     <div id="wormsearch" class="study">
+                        <div data-cost="1e20" data-rp="1e160" data-show="$time" data-research="copper"
+                            data-desc="[You need 1.000e160 research points to purchase this research!]\nAllow each copper tower to start producing 1 firebar a second.\n(I don't have a better description!)">
+                            Copper machines: <span class="glow">$100.00Q</span>
+                            <span class="big money"></span>
+                        </div>
                         <div data-cost="5.3535e20" data-rp="5.353e53" data-show="$wormy8" data-research="time"
                             data-desc="[THIS UPGRADE DOES NOT DO ANYTHING YET!!! You need 5.353e53 research points to purchase this research!]\nUnlock the ability to use time machines, allowing you to MASSIVELY increase clock production!">
                             Time travel: <span class="glow">$535.35Q</span>
@@ -11726,7 +11731,9 @@
                 stuffTotals.silverpower = Hyper(true)
             }
 
-            var copperTowerPower = C("coppertowers", issue).mul(hasResearch("fireboost") ? 10 : 0.01).div(60).mul(Hyper(1.1).pow(C("firebars", issue)))
+            var copperTowers = C("coppertowers", issue)
+            var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
+            var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
             var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(C("shards").mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
 
             var fcMakers = C("fcmakers", issue)
@@ -11949,7 +11956,8 @@
 
             add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? Hyper(100).div(60) : 0))
 
-            add("fire", copperTowerPower)
+            add("firebars", fireBarPower)
+            add("fire", copperTowerPower.mul(Hyper(1.1).pow(C("firebars", issue))))
             add("burnt", C("fire", issue).mul(Hyper(1).div(60)))
 
             var researchPoints = C("wscience")
