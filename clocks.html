@@ -4314,7 +4314,7 @@
                     </button>
 
                     <br><br>
-                    <button class="special" data-show="$wormy7" data-earn="$cosmos" data-hide="$cosmos"
+                    <button class="special" data-show="$wormy8" data-earn="$cosmos" data-hide="$cosmos"
                         data-desc="UNLOCK THE COSMOS!!!\nIt's FREEEEEE!!!">
                         <span class="glow2">UNLOCK THE COSMOS!!!</span>
                     </button>
@@ -12616,62 +12616,66 @@
                 var button = buttons[i]
                 var hideRequirements = button.getAttribute("data-hide")
                 var fadeRequirements = button.getAttribute("data-fade")
-                if (hideRequirements !== null && meetsRequirements(hideRequirements)) {
-                    if (button.style.display !== "none") {
-                        button.style.display = "none"
-                    }
-                } else if (fadeRequirements !== null && meetsRequirements(fadeRequirements)) {
+                if (fadeRequirements !== null && meetsRequirements(fadeRequirements)) {
                     if (!button.disabled) {
                         button.setAttribute("disabled", true)
                         button.style.display = "inline-block"
                         button.style.transform = "none"
                         button.style.opacity = 0.5
                     }
-                } else if (button.style.display === "inline-block") {
-                    button.removeAttribute("disabled")
-                    var options = button.getAttribute("data-options")
-                    if (options !== null) {
-                        var choices = options.trim().split("|")
-                        var text = choices[Math.min(Math.floor(C(choices[0])) + 1, choices.length - 1)].trim()
-                        if (button.textContent !== text) {
-                            button.textContent = text
-                        }
-                    }
-
-                    var multiplierAttribute = null
-                    if (button.hasAttribute("data-silverbuy")) {
-                        multiplierAttribute = "silverplanters"
-                    } else if (button.hasAttribute("data-firebuy")) {
-                        multiplierAttribute = "fireplanters"
-                    } else if (button.hasAttribute("data-omegabuy")) {
-                        multiplierAttribute = "omegamanagers"
-                    } else if (button.hasAttribute("data-megabuy")) {
-                        multiplierAttribute = "megamanagers"
-                    } else if (button.hasAttribute("data-multibuy")) {
-                        multiplierAttribute = "managers"
-                    } else if (button.hasAttribute("data-multibuild")) {
-                        multiplierAttribute = "cmanagers"
-                    } else if (button.hasAttribute("data-multialum")) {
-                        multiplierAttribute = "alummanagers"
-                    }
-
-                    if (multiplierAttribute !== null) {
-                        update(button, format(C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)) + "×")
-                    }
                 } else {
-                    var requirements = button.getAttribute("data-show")
-                    if (requirements !== null) {
-                        if (meetsRequirements(requirements)) {
-                            // All the requirements were met!
-                            button.style.display = "inline-block"
-                            if (firstFrame) {
-                                button.style.opacity = 1
-                            } else {
-                                addFade(button)
+                    button.removeAttribute("disabled")
+                    button.style.removeProperty("transform")
+
+                    if (hideRequirements !== null && meetsRequirements(hideRequirements)) {
+                        if (button.style.display !== "none") {
+                            button.style.display = "none"
+                        }
+                    } else if (button.style.display === "inline-block") {
+                        var options = button.getAttribute("data-options")
+                        if (options !== null) {
+                            var choices = options.trim().split("|")
+                            var text = choices[Math.min(Math.floor(C(choices[0])) + 1, choices.length - 1)].trim()
+                            if (button.textContent !== text) {
+                                button.textContent = text
                             }
                         }
-                    } else if (button.style.display === "none") {
-                        button.style.display = "inline-block"
+
+                        var multiplierAttribute = null
+                        if (button.hasAttribute("data-silverbuy")) {
+                            multiplierAttribute = "silverplanters"
+                        } else if (button.hasAttribute("data-firebuy")) {
+                            multiplierAttribute = "fireplanters"
+                        } else if (button.hasAttribute("data-omegabuy")) {
+                            multiplierAttribute = "omegamanagers"
+                        } else if (button.hasAttribute("data-megabuy")) {
+                            multiplierAttribute = "megamanagers"
+                        } else if (button.hasAttribute("data-multibuy")) {
+                            multiplierAttribute = "managers"
+                        } else if (button.hasAttribute("data-multibuild")) {
+                            multiplierAttribute = "cmanagers"
+                        } else if (button.hasAttribute("data-multialum")) {
+                            multiplierAttribute = "alummanagers"
+                        }
+
+                        if (multiplierAttribute !== null) {
+                            update(button, format(C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)) + "×")
+                        }
+                    } else {
+                        var requirements = button.getAttribute("data-show")
+                        if (requirements !== null) {
+                            if (meetsRequirements(requirements)) {
+                                // All the requirements were met!
+                                button.style.display = "inline-block"
+                                if (firstFrame) {
+                                    button.style.opacity = 1
+                                } else {
+                                    addFade(button)
+                                }
+                            }
+                        } else if (button.style.display === "none") {
+                            button.style.display = "inline-block"
+                        }
                     }
                 }
             }
