@@ -11545,7 +11545,9 @@
             "At this point, you will have unlocked lots of features! You may want to start getting turbines in the electricity menu to increase the amount of watts you get. You can even start unlocking phoenixes in the feathery phoenix menu, which is...interesting.",
             "Well done! I'm out of tips for now, so you'll have to go explore on your own from now on. Just try to hire lots of scientists to generate creativity and science, which will allow you to unlock new technologies! Hey, I wonder what LITERAL EXOTIC APPLES ARE...",
             "Fiery apples, eh? Note that you'll need to spend $10.000Q in order to get your first firetree. If you haven't obtained GOLDEN shards yet, all you need to do is build a completed rocket and get at least a BILLION golden clocks.",
-            'Impressive! You\'ve managed to get so much fiery wood that the game is forced to switch formats. You currently have a total of over 10^10^50 fiery wood, which is e1.000e50. (The little "e" means that the number of DIGITS of fiery wood you have is over 10^50!)'
+            'Impressive! You\'ve managed to get so much fiery wood that the game is forced to switch formats. You currently have a total of at least 10^10^50 fiery wood, which is e1.000e50. (The little "e" means that the number of DIGITS of fiery wood you have is over 10^50!)',
+            "Wormholes unlock...a special surprise. But you'll need to research some more!",
+            "Unlock the cosmos to increase the matter limit to eeee50!"
         ]
 
         function updateTip() {
@@ -11554,7 +11556,7 @@
                 progress = 0
             } else if (getTotals("clocks").isLess(10)) {
                 progress = 1
-            } else if (getTotals("money").isZero()) {
+            } else if (getTotals("money").isLess(1)) {
                 progress = 2
             } else if (getTotals("goldore").isLess(10)) {
                 progress = 3
@@ -11592,8 +11594,12 @@
                 progress = 19
             } else if (getTotals("fierywood").isLess("ee50")) {
                 progress = 20
-            } else {
+            } else if (getTotals("wormholes").isLess(1)) {
                 progress = 21
+            } else if (!hasResearch("wormy8")) {
+                progress = 22
+            } else {
+                progress = 23
             }
 
             update(tipElement, progressNotes[progress])
