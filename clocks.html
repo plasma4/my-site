@@ -9535,11 +9535,10 @@
                         if (e !== true) {
                             // Prevent the button being clicked multiple times during the same frame
                             if (alreadyClicked || button.hasAttribute("disabled")) {
-                                if (e !== true) {
-                                    e.stopPropagation()
-                                }
+                                e.stopPropagation()
                                 return
                             }
+                            alreadyClicked = true
 
                             var types = Array(len)
                             var amounts = Array(len)
