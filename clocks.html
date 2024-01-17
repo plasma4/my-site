@@ -3241,6 +3241,10 @@
         </div>
         <div id="wikiData">
             wormholes: Wormhole (12, A...wormhole to another dimension)
+            qubits: Qubit (11, A qubit that is used for quantum computing)
+            sandwiches: Metal-Insulator-Metal Plate (8, Used for a quantum computer)
+            qcomputers: QUANTUM Computer$!!!/s!!! (8, Used for a quantum computer)
+            foil: Golden Foil$ (8, A piece of golden foil used for advanced quantum technology)
             wormholeteams: Wormhole Research Team (12, A dediated team that researches the ins and outs of wormholes)
             burnt: Burnt Dark Matter Gram (8, A gram of burnt dark matter)
             shards: Golden Shard (7, An EXTREMELY rare and valuable shard found by breaking golden clocks)
@@ -3372,6 +3376,7 @@
             naphtha: Naphtha Bottle (2, An liquid that can be further processed into plastic)
             turbines: Turbine (4, A medium-sized steam turbine that produces energy with coal)
             megaturbines: Mega-Turbine (4, A GIGANTIC steam turbine that is powered with a whole lot of coal)
+            wormgenerators: Wormhole Power Generator (4, Calls upon the power of WORMHOLES)
             plastic: Plastic$ (3, You finally got it!)
             resistors: Basic Resistor (2, Resistors can be combined with other parts to create machines)
             transistors: Basic Transistor (2, Transistors can be combined with other parts to create machines)
@@ -4313,7 +4318,34 @@
                         Make a <span class="wormhole">WORMHOLE</span> team
                     </button>
 
-                    <br><br>
+                    <br>
+                    <button class="pure" data-earn="qubits+100" data-cost="wormholes-1" data-show="$quantum"
+                        data-desc="Deconstructing a wormhole gives you 100 qubits, which are used for your quantum computers!$qubits$">
+                        Deconstruct a wormhole <span class="bigger binary"></span>
+                    </button>
+                    <button class="gold" data-show="qubits>0" data-earn="sandwiches+1" data-cost="money-4000"
+                        data-desc="No, they don't taste good (but they cost you $4,000).\nInstead, you use them for quantum technology!$sandwiches$">
+                        Purchase a <span class="burning2">metal</span> sandwich
+                    </button>
+                    <button class="gold" data-show="qubits>=1000" data-earn="foil+1" data-cost="money-199950"
+                        data-desc="Getting your hands on just 1 piece of high-quality gold foil will set you back $199,950, which is likely a scam, but that's no problem, right?$foil$">
+                        Purchase gold foil
+                    </button>
+                    <button class="stripe4" data-show="sandwiches>0|foil>0" data-earn="qcomputers+1"
+                        data-cost="qubits-100000|sandwiches-100|foil-5"
+                        data-desc="Build a basic quantum computer from 100,000 qubits, 100 metal sandwiches, and 5 pieces of gold foil.\n[Effectiveness: 1,000,000,000× as much as a normal computer!]$qcomputers$">
+                        <span class="white">Build a QUANTUM COMPUTER</span>
+                    </button>
+
+                    <button class="diamond" data-earn="wormgenerators+1" data-cost="steel-1e12|wormholes-1"
+                        data-show="$wormpower"
+                        data-desc="{Each wormhole power generator costs an insurmountable 1 TRILLION steel as well as a wormhole but grants you 500 BILLION watts at no additional cost!}\nEach wormhole seems to contain almost an ENDLESS amount of power within them. Start making wormhole power generators and see the magic happen!$wormgenerators$">
+                        Make a <span class="wormhole">WORMHOLE</span> power generator
+                        <span class="mini caribbean" data-earn="wormgenerators+1"
+                            data-desc="-omegamanager power moment-" data-cost="steel-1e12" data-omegabuy></span>
+                    </button>
+
+                    <hr>
                     <button class="special" data-show="$wormy8" data-earn="$cosmos" data-hide="$cosmos"
                         data-desc="UNLOCK THE COSMOS!!!\nIt's FREEEEEE!!!">
                         <span class="glow2">UNLOCK THE COSMOS!!!</span>
@@ -4329,15 +4361,38 @@
                         </span>
                     </button>
 
+                    <hr>
+                    <span class="smallish">
+                        Aliens discovered: <span class="small serif orange">NONE! :p</span>
+                    </span>
+                    <br>
+                    <button class="stripe4" data-show="$aliens" data-fade="$aliens"
+                        data-desc="Sorry, I'm not done with aliens yet!">
+                        Aliens? That's the next update! <span class="big wonder"></span>
+                    </button>
+
                     <div id="wormsearch" class="study">
-                        <div data-cost="1e20" data-rp="1e160" data-show="$time" data-research="copper"
+                        <div data-cost="1.65e21" data-rp="1.67e167" data-iq="2500" data-show="$copper"
+                            data-research="aliens"
+                            data-desc="[You need 1.670e167 research points AND 2,500 digital knowlege to purchase this research!]\n{(To get enough digital knowlege, try building a quantum computer and waiting a bit.)}\nStart looking for ALIENS!\nThere's no turning back, however...">
+                            <span class="move1">NO</span>
+                            <span class="move3">TURNING</span>
+                            <span class="move4">BACK</span>: <span class="glow">$1.650s</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e20" data-rp="1e160" data-show="$quantum" data-research="copper"
                             data-desc="[You need 1.000e160 research points to purchase this research!]\nAllow each copper tower to start producing 1 firebar a second.\n(I don't have a better description!)">
                             Copper machines: <span class="glow">$100.00Q</span>
                             <span class="big money"></span>
                         </div>
-                        <div data-cost="5.3535e20" data-rp="5.353e53" data-show="$wormy8" data-research="time"
-                            data-desc="[THIS UPGRADE DOES NOT DO ANYTHING YET!!! You need 5.353e53 research points to purchase this research!]\nUnlock the ability to use time machines, allowing you to MASSIVELY increase clock production!">
-                            Time travel: <span class="glow">$535.35Q</span>
+                        <div data-cost="5.3535e20" data-rp="5.353e53" data-show="$wormpower" data-research="quantum"
+                            data-desc="[You need 5.353e53 research points to purchase this research!]\nUnlock the ability to use quantum computing, allowing you to increase digital knowlege MASSIVELY.">
+                            Quantum computing: <span class="glow">$535.35Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="5.2052e20" data-rp="5.2e52" data-show="$wormy8" data-research="wormpower"
+                            data-desc="[You need 5.200e52 research points to purchase this research!]\nUnlock the ability to use time machines, allowing you to MASSIVELY increase clock production!">
+                            <span class="yellow">Electric inspirations:</span> <span class="glow">$520.52Q</span>
                             <span class="big money"></span>
                         </div>
                         <div data-cost="2.25e19" data-rp="1e33" data-show="$wormy7" data-research="wormy8"
@@ -4360,17 +4415,17 @@
                             Infinite encouragement: <span class="glow">$1,000,000</span>
                             <span class="big money"></span>
                         </div>
-                        <div data-cost="1e19" data-show="wormholeteams>1000/$wormy" data-research="wormy4"
+                        <div data-cost="1e19" data-show="wormholeteams>=1000/$wormy" data-research="wormy4"
                             data-desc="Find out how extreme time dilation is near those intergalactic wormholes.\n(The amount of clocks that you have increases research team point production)">
                             Time testing: <span class="glow">$10.000Q</span>
                             <span class="big money"></span>
                         </div>
-                        <div data-cost="5e20" data-show="wormholeteams>100/$wormy" data-research="wormy3"
+                        <div data-cost="5e20" data-show="wormholeteams>=100/$wormy" data-research="wormy3"
                             data-desc="Start chucking random objects in your wormholes and see what happens!\n(Increases research team point production by 25% for each wormhole that you have)">
                             Testing: <span class="glow">$500.00Q</span>
                             <span class="big money"></span>
                         </div>
-                        <div data-cost="2.5e20" data-show="wormholeteams>10/$wormy" data-research="wormy2"
+                        <div data-cost="2.5e20" data-show="wormholeteams>=10/$wormy" data-research="wormy2"
                             data-desc="Along with each large wormhole research team, get a few thousand volunteers to help with the cause.\n(DOUBLES research team point production again)">
                             Volunteers: <span class="glow">$250.00Q</span>
                             <span class="big money"></span>
@@ -9279,6 +9334,15 @@
                 if (hasResearch("cosmos")) {
                     newResearches.push("cosmos")
                 }
+                if (hasResearch("aliens")) {
+                    newResearches.push("aliens")
+                }
+                if (hasResearch("quantum")) {
+                    newResearches.push("quantum")
+                }
+                if (hasResearch("wormpower")) {
+                    newResearches.push("wormpower")
+                }
                 if (hasResearch("wormy8")) {
                     newResearches.push("wormy8")
                 }
@@ -11552,7 +11616,8 @@
             "Fiery apples, eh? Note that you'll need to spend $10.000Q in order to get your first firetree. If you haven't obtained GOLDEN shards yet, all you need to do is build a completed rocket and get at least a BILLION golden clocks.",
             'Impressive! You\'ve managed to get so much fiery wood that the game is forced to switch formats. You currently have a total of at least 10^10^50 fiery wood, which is e1.000e50. (The little "e" means that the number of DIGITS of fiery wood you have is over 10^50!)',
             "Wormholes unlock...a special surprise. But you'll need to research some more!",
-            "Unlock the cosmos to increase the matter limit to eeee50!"
+            "Unlock the cosmos for FREE to increase the matter limit to eeee50!",
+            "Just because you've unlocked the cosmos doesn't mean the game is over. In fact, the omniverse ITSELF may be bigger than you think!"
         ]
 
         function updateTip() {
@@ -11603,8 +11668,10 @@
                 progress = 21
             } else if (!hasResearch("wormy8")) {
                 progress = 22
-            } else {
+            } else if (!hasResearch("cosmos")) {
                 progress = 23
+            } else {
+                progress = 24
             }
 
             update(tipElement, progressNotes[progress])
@@ -11668,7 +11735,6 @@
             var matterLimit = new Hyper("e" + digitCap)
             updateId("cap", Hyper(digitCap).format(2))
 
-            timeBonus = Hyper(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0)
             var oldMoney = new Hyper(C("money", issue))
 
             var shards = C("shards", issue)
@@ -11827,12 +11893,10 @@
                 return avaliable
             }
 
-            var watts
+            var watts = C("wormgenerators").mul("5e11")
             // Update all the values in the game, starting with wattage
             if (remove("money", new Hyper(wattUsage / 600))) {
-                watts = new Hyper(wattUsage)
-            } else {
-                watts = new Hyper()
+                watts = watts.add(new Hyper(wattUsage))
             }
 
             if (turbinesEnabled) {
@@ -11889,7 +11953,7 @@
             }
 
             if (computersEnabled && hasResearch("ai")) {
-                add("iq", useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1))
+                add("iq", C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)))
                 stuffTotals.iq = C("iq", issue)
             }
 
@@ -12549,6 +12613,7 @@
                 updateClass(speedElements[3], "big graystal")
             }
 
+            timeBonus = Hyper(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0)
             speed = speed.max(timeBonus).mul(baseSpeed)
 
             var noBoosts = ID("noBoosts")
@@ -12856,8 +12921,8 @@
             // Update the appearing of the buttons
             updateEffects()
 
-            // Save the game twice every second (it also saves when possible whenever you close the tab)
-            if (++frame % 30 === 0) {
+            // Save the game once every two seconds (it also saves when possible whenever you close the tab)
+            if (++frame % 120 === 0) {
                 saveLocally()
             }
 
