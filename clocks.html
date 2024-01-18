@@ -1161,6 +1161,22 @@
             background-color: #0cf2c0;
         }
 
+        .sleek {
+            box-shadow: 0 0 3px black;
+            border-color: white;
+            background-color: black;
+            color: white;
+        }
+
+        .sleek:hover,
+        .sleek:focus,
+        .sleek:active {
+            box-shadow: 0 0 3px white;
+            border-color: black;
+            background-color: white;
+            color: black;
+        }
+
         .pure {
             box-shadow: 0 0 3px white;
             border-color: black !important;
@@ -3304,6 +3320,7 @@
             energy: %Magic Energy$ (4, Energy that can be collected for spells)
             fire: %Magical Fire$ (7, Magical fire that can burn a hole in the multiverse)
             coppertowers: Copper Tower (8, A multiversal copper tower generating magical fire)
+            darktowers: Dark Tower (8, A mysterious dark tower)
             bags: %Infinity Bag (4, A one-time bag able to store an infinite amount of one item)
             coal: Coal$ (1, Fuel that is converted into coke)
             coke: Coke Piece (1, Fuel source)
@@ -3742,10 +3759,10 @@
                     </button>
                     <button class="yellowbg" data-earn="aluminum2+1" data-cost="money-2e11" data-show="aluminum1>0"
                         data-desc="These sodium aluminate precipitation factories produce aluminum crystals that can be processed further.\n(fun...)\nCosts $200,000,000,000.$aluminum2$">
-                        Get a SA Precipitation Factory
+                        Get a SA Precip. Factory
                         <span class="mini stripe3" data-earn="aluminum2+1" data-cost="money-2e11" data-sound="building"
                             data-show="alummanagers>0"
-                            data-desc="Get more aluminum managers in order to get more Sodium Oxide Factories!$aluminum2$"
+                            data-desc="Get more aluminum managers in order to get more SA Precipitation Factories!$aluminum2$"
                             data-multialum></span>
                     </button>
                     <button class="yellowbg" data-earn="aluminum3+1" data-cost="money-5e11" data-show="aluminum2>0"
@@ -3759,10 +3776,10 @@
                     <button class="orangebg" data-earn="aluminum4+1" data-cost="money-5e8|cokeovens-1"
                         data-show="aluminum3>0"
                         data-desc="Produces aluminum!\nCosts $500,000,000 as well as a coke oven.$aluminum4$">
-                        Get an Aluminum Smelter
+                        Get an <span class="outlined">Aluminum</span> Smelter
                         <span class="mini stripe3" data-earn="aluminum4+1" data-cost="money-5e8|cokeovens-1"
                             data-sound="building" data-show="platinum>=1e7"
-                            data-desc="You can get more aluminum smelters at once by hiring more construction managers.\n{You need aluminum managers to increase the amount of aluminum-related factories you can obtain at once.}$aluminum4$"
+                            data-desc="You can get more Aluminum Smelters at once by hiring more construction managers.\n{You need aluminum managers to increase the amount of aluminum-related factories you can obtain at once.}$aluminum4$"
                             data-multibuild></span>
                     </button>
 
@@ -4359,6 +4376,11 @@
                         data-desc="[Copper towers require MAGIC ENERGY, an upgrade you get after completing your rocket and purchase the MAGIC upgrade for 1 golden shard.]\nEach copper tower (across the multiverse) generates 0.01 MAGICAL FIRE per second.\nHowever, each copper tower is bigger and more costly than the last one!$coppertowers$">
                         +1 copper tower
                     </button>
+                    <button class="sleek" data-show="firebars>=100" data-earn="darktowers+1"
+                        data-cost="burnt-EXPdarktowers,2000"
+                        data-desc="Dark towers require increasing amounts of burnt dark matter.\nThey don't do anything useful until you get the dark tower research!$darktowers$">
+                        +1 dark tower
+                    </button>
                     <button class="pure" data-show="coppertowers>0" data-earn="wormholes+1" data-cost="burnt-1e100"
                         data-desc="Oooh, a wormhole to another dimension!\nCosts 1e100 grams of burnt dark matter though.\nEach wormhole is larger than the biggest superclusters of the multiverse.$wormholes$">
                         Construct a <span class="wormhole">WORMHOLE</span>
@@ -4438,9 +4460,15 @@
                     </button>
 
                     <div id="wormsearch" class="study">
+                        <div data-cost="1e24" data-rp="2.2e222" data-iq="6000" data-show="$aliens"
+                            data-research="darkness"
+                            data-desc="[You need 2.200e222 research points AND 6,000 digital knowlege to purchase this research!]\nWant dark towers to actually DO something? Get them to increase digital knowlege production!">
+                            <span class="move2">Dark tower smarts</span>: <span class="glow">$1.000S</span>
+                            <span class="big money"></span>
+                        </div>
                         <div data-cost="1.65e21" data-rp="5e200" data-iq="2500" data-show="$firepower"
                             data-research="aliens"
-                            data-desc="[You need 5e200 research points AND 2,500 digital knowlege to purchase this research!]\n{(To get enough digital knowlege, try building a quantum computer and waiting a bit.)}\nStart looking for ALIENS!\nThere's no turning back, however...">
+                            data-desc="[You need 5.000e200 research points AND 2,500 digital knowlege to purchase this research!]\n{(To get enough digital knowlege, try building a quantum computer and waiting a bit.)}\nStart looking for ALIENS!\nThere's no turning back, however...">
                             <span class="move1">NO</span>
                             <span class="move3">TURNING</span>
                             <span class="move4">BACK</span>: <span class="glow">$1.650s</span>
@@ -12076,7 +12104,7 @@
             }
 
             if (computersEnabled && hasResearch("ai")) {
-                add("iq", C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)))
+                add("iq", C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1))
                 stuffTotals.iq = C("iq", issue)
             }
 
