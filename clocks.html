@@ -11877,13 +11877,13 @@
 
             // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
             speed = speed.mul(frame + 1).floor(true).subOrFalse(speed.mul(frame).floor(true))
+            partyTime = partyTime.sub(speed)
             if (speed.isZero()) {
                 return
             } else if (partyTime.isPositive()) {
                 var divided = partySpending.div("1.1e16")
                 var partyBoost = divided.sqrt().sqrt(true).sqrt(true).mul(2.852).add(divided.sqrt().mul(0.2).min(8)).subOrFalse(2)
                 wageBuff = wageBoost.mul(partyBoost).mul(10)
-                partyTime = partyTime.sub(speed)
                 updateId("partyLeft", partyTime.max(0).div(60).format(2) + " seconds (a " + partyBoost.format(4) + "× boost)")
             } else {
                 wageBuff = wageBoost
