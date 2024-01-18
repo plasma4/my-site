@@ -10364,10 +10364,9 @@
                             sellPercent = 0
                         }
                         partyTime = new Hyper(proceed("\n\n"))
-                        partySpending = new Hyper(proceed("\n\n"), true).max("1e16")
+                        partySpending = new Hyper(proceed("\n\n")).max("1e16")
                         if (partyTime.isPositive()) {
                             ID("partyInput").disabled = true
-                            partyTime = new Hyper(216000)
                         }
                         updateInput("partyInput", "$" + partySpending.format())
                         noAudio = proceed("FX") === "true"
