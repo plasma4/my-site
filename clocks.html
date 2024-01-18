@@ -172,6 +172,16 @@
             border: 1px solid black;
         }
 
+        input:disabled {
+            cursor: not-allowed;
+            user-select: none;
+            opacity: 0.75;
+        }
+
+        input:disabled::selection {
+            color: white;
+        }
+
         .study {
             text-align: center;
             max-width: 750px;
