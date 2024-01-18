@@ -884,8 +884,13 @@
         }
 
         button:active,
-        .mini:active {
+        .mini:active,
+        .upper:active {
             transition: transform 200ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, border-radius 250ms, filter 500ms;
+        }
+
+        button:active,
+        .mini:active {
             transform: scale(1.08);
             background-color: #b1b1b1;
             border-radius: 25px;
@@ -934,6 +939,19 @@
             left: 0;
             height: 100%;
             width: 100%;
+        }
+
+        .upper {
+            transform: translateY(-5px);
+        }
+
+        .upper:hover,
+        .upper:focus {
+            transform: scale(1.01) translateY(-3px);
+        }
+
+        .upper:active {
+            transform: scale(1.02) translateY(-1px);
         }
 
         .special {
@@ -1501,6 +1519,20 @@
 
         .shiny {
             color: #e4bd1f;
+        }
+
+        .outlined {
+            text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black;
+            color: inherit;
+            transition: text-shadow 250ms;
+        }
+
+        .outlined:hover {
+            text-shadow: 3px 3px 2px black;
+        }
+
+        .outlined:active {
+            text-shadow: 4px 4px 2px white, 4px 4px 1px white;
         }
 
         @keyframes wobble {
@@ -3557,7 +3589,7 @@
                     <button data-earn="aluminumarms+1" data-sound="building" data-show="aluminum1>0"
                         data-desc="Well-made aluminum robot arms work four times faster than normal robot arms, yet still use the same amount of power!\nHowever, they cost 250 aluminum instead of 125.$aluminumarms$"
                         data-cost="aluminum-250" class="yellowbg">
-                        Build an aluminum robot arm
+                        Build an <span class="outlined">aluminum</span> robot arm
                         <span class="mini stripe1" data-earn="aluminumarms+100" data-sound="building"
                             data-desc="Build one hundred of these every time you press this button!$aluminumarms$"
                             data-cost="aluminum-25000" data-show="constructors>0">
@@ -3602,27 +3634,27 @@
                     <button class="cinammon" data-sound="building"
                         data-desc="You can make 25 resistors out of a piece of copper, 2 pieces of graphite, and 2 pieces of silicon.\nStart collecting these early!$resistors$"
                         data-cost="copper-1|graphite-2|silicon-2" data-earn="resistors+25" data-show="bottles>0">
-                        +25 <span class="resistor" role="img" aria-label="resistors"></span>
+                        +25 <span class="big resistor" role="img" aria-label="resistors"></span>
                     </button>
                     <button class="cinammon" data-sound="building"
                         data-desc="You can make 25 transistors out of five pieces of silicon.\nStart collecting them early!$transistors$"
                         data-cost="silicon-5" data-earn="transistors+25" data-show="resistors>0">
-                        +25 <span class="transistor" role="img" aria-label="transistors"></span>
+                        +25 <span class="big transistor" role="img" aria-label="transistors"></span>
                     </button>
                     <button class="cinammon" data-sound="building"
                         data-desc="[NOTE: You need to research natural gas below. In order to unlock it, however, you have to have the plastic research!]You can make 25 capacitors out of two pieces of copper and a piece of plastic in the middle.\nStart collecting them early!$capacitors$"
                         data-cost="copper-2|plastic-1" data-earn="capacitors+25" data-show="transistors>0">
-                        +25 <span class="capacitor" role="img" aria-label="capacitors"></span>
+                        +25 <span class="big capacitor" role="img" aria-label="capacitors"></span>
                     </button>
                     <button class="cinammon" data-sound="building"
                         data-desc="You can construct 25 inductors using eight copper pieces.\nStart collecting them early!$inductors$"
                         data-cost="copper-8" data-earn="inductors+25" data-show="capacitors>0">
-                        +25 <span class="inductor" role="img" aria-label="inductors"></span>
+                        +25 <span class="big inductor" role="img" aria-label="inductors"></span>
                     </button>
                     <button class="cinammon" data-sound="building"
                         data-desc="You can make 25 diodes out two pieces of silicon and five pieces of platinum.\nStart collecting them early!$diodes$"
                         data-cost="silicon-2|platinum-5" data-earn="diodes+25" data-show="inductors>0">
-                        +25 <span class="diode" role="img" aria-label="diodes"></span>
+                        +25 <span class="big diode" role="img" aria-label="diodes"></span>
                     </button>
 
                     <br>
@@ -3630,19 +3662,19 @@
                         data-desc="You can make a tiny integrated circuit out of ten resistors, transistors, capacitors, inductors, and diodes.$circuits$"
                         data-cost="resistors-10|transistors-10|capacitors-10|inductors-10|diodes-10"
                         data-earn="circuits+1" data-show="diodes>0">
-                        Build a <span class="circuit" role="img" aria-label="basic circuit"></span>
+                        Build a <span class="bigger circuit" role="img" aria-label="basic circuit"></span>
                     </button>
                     <button class="caribbean" data-sound="transaction"
                         data-desc="Buy 100 basic circuits with the press of a single button!\nPlus, they're only $1,000.$circuits$"
                         data-cost="money-1000" data-earn="circuits+100" data-show="$overseas">
-                        Purchase 100 <span class="circuit" role="img" aria-label="basic circuit"></span>
+                        Purchase 100 <span class="bigger circuit" role="img" aria-label="basic circuit"></span>
                     </button>
 
                     <br>
                     <button class="diamond" data-sound="building"
                         data-desc="Construct an circuit board out of 25 integrated circuits, 400 pieces of silicon, and 100 pieces of plastic.$boards$"
                         data-cost="circuits-25|silicon-400|plastic-100" data-earn="boards+1" data-show="$assembly">
-                        Build a <span class="chip" role="img" aria-label="circuit board"></span>
+                        Build a <span class="bigger chip" role="img" aria-label="circuit board"></span>
                     </button>
                     <button class="caribbean" data-sound="building"
                         data-desc="Build a small computer with 200 plastic pieces, 150 steel, and 50 copper, as well as two basic circuit boards.\nYour first computer will unlock new AI research!\nHowever, each computer uses 100 watts. You can change the priority of supplying energy to computers in the electricity menu.$computers$"
@@ -3682,7 +3714,7 @@
                     <button class="bronze" data-earn="glassmakers+1" data-cost="bricks-1250|money-1000"
                         data-show="bottles>0"
                         data-desc="Get a glassmaker to help automate glass bottle production through extrusion blowing.\nCosts $4,000 and 500 steel to set up the equipment, and requires a payment of $30 a second.$glassmakers$">
-                        Get a glassmaker <span class="bottle"></span>
+                        Get a glassmaker <span class="big bottle"></span>
                     </button>
 
                     <hr>
@@ -3868,7 +3900,7 @@
                     <br>
                     <!-- Veri Good... -->
                     <button class="retro" data-earn="jewelers+1" data-cost="goldb-25" data-show="goldb>0"
-                        data-desc="The jeweler makers loves gold and will be on your side for 25 gold blocks.\nThat seems overpriced, but you need them on your side to help take some work off your hands.\nWith their skilled hands, it only costs 4 clocks and a single golden nugget to make one.$jewelers$">
+                        data-desc="The jeweler makers LOVES gold and will be on your side for 25 gold blocks.\nThat seems overpriced, but you need them on your side to help take some work off your hands.\nWith their skilled hands, it only costs 4 clocks and a single golden nugget to make one, as well as a fee of one dollar.$jewelers$">
                         <span class="comical">
                             Get a pro fesin al jewe=er verigood <span class="person"></span> :o
                         </span>
@@ -3912,7 +3944,6 @@
                 </div>
 
                 <div id="wages" style="display: none">
-                    <!-- stuff.clocks = Infinity -->
                     <span class="big money"></span><span class="big money"></span><span class="big money"></span>
                     Pay your workers extra for a <i>SWEET</i> production boost!
                     <div class="smallish">(This does not include wattage requesting and clockmakers.)</div>
@@ -3924,18 +3955,22 @@
                     <span class="orange"> wage multiplier</span>.
                     <div class="small">
                         Increased wages = increased work speed! You currently have a
-                        <b class="small lime" id="wageAmount"></b>
-                        times boost.
+                        <b class="small lime" id="wageAmount"></b> boost.
                     </div>
 
                     <hr>
                     <input id="partyInput" placeholder="$10.000q" value="$10.000q"
                         aria-label="Money to spend on a party">
-                    <button class="special">Spend that much on a party</button>
-                    <div class="small">
-                        Give your workers a party to increase their effectiveness for a while!
+                    <button class="upper special" id="startParty">
+                        Spend that much on a <span class="outlined rainbow">party</span>
+                    </button>
+
+                    <div class="glow2 small">
+                        Current party time left: <span class="small red" id="partyLeft"></span>
                         <br>
-                        Note that the least you can spend is <span class="small green">$10.000q</span>.
+                        Give your workers a party to increase their effectiveness for one hour!
+                        <br>
+                        Note that the least you can spend is <span class="small lime">$10.000q</span>!
                     </div>
                 </div>
 
@@ -4371,16 +4406,15 @@
                         <span class="glow2">UNLOCK THE COSMOS!!!</span>
                     </button>
                     <button class="special" data-show="$cosmos" data-fade="$cosmos">
-                        <span class="glow2">
+                        <div class="glow2">
                             You've unlocked the
                             <br>
-                            <span class="small serif">LiTeRaL COSMOS!!!</span>
-                            <br>
-                            <span class="smaller glow2">
-                                (congrats: maximum matter increased to an astonishing
-                                10<sup class="smaller red">ee1.000e50</sup>, or 10^10^10^10^50)
-                            </span>
-                        </span>
+                            <div class="small serif">LiTeRaL COSMOS!!!</div>
+                        </div>
+                        <div class="smaller glow2">
+                            (congratulations: maximum matter increased to an astonishing
+                            10<sup class="smaller red">ee1.000e50</sup>, or 10^10^10^10^50!)
+                        </div>
                     </button>
 
                     <hr>
@@ -4394,9 +4428,9 @@
                     </button>
 
                     <div id="wormsearch" class="study">
-                        <div data-cost="1.65e21" data-rp="1.67e167" data-iq="2500" data-show="$firepower"
+                        <div data-cost="1.65e21" data-rp="5e200" data-iq="2500" data-show="$firepower"
                             data-research="aliens"
-                            data-desc="[You need 1.670e167 research points AND 2,500 digital knowlege to purchase this research!]\n{(To get enough digital knowlege, try building a quantum computer and waiting a bit.)}\nStart looking for ALIENS!\nThere's no turning back, however...">
+                            data-desc="[You need 5e200 research points AND 2,500 digital knowlege to purchase this research!]\n{(To get enough digital knowlege, try building a quantum computer and waiting a bit.)}\nStart looking for ALIENS!\nThere's no turning back, however...">
                             <span class="move1">NO</span>
                             <span class="move3">TURNING</span>
                             <span class="move4">BACK</span>: <span class="glow">$1.650s</span>
@@ -4407,8 +4441,8 @@
                             Fiery wormholes: <span class="glow">$1.234s</span>
                             <span class="big money"></span>
                         </div>
-                        <div data-cost="1e20" data-rp="1e160" data-show="$quantum" data-research="copper"
-                            data-desc="[You need 1.000e160 research points to purchase this research!]\nAllow each copper tower to start producing 1 firebar a second.\n(I don't have a better description!)">
+                        <div data-cost="1e20" data-rp="1.670e167" data-show="$quantum" data-research="copper"
+                            data-desc="[You need 1.670e167 research points to purchase this research!]\nAllow each copper tower to start producing 1 firebar a second.\n(I don't have a better description!)">
                             Copper machines: <span class="glow">$100.00Q</span>
                             <span class="big money"></span>
                         </div>
@@ -4658,7 +4692,7 @@
                     <button class="gold"
                         data-desc="Glue trees slowly produce rubber that can then be made into glue.\nOnly costs $80!$trees$"
                         data-cost="money-80" data-earn="trees+1" data-show="glue>0|phoenixes>0">
-                        Get a rubber tree
+                        Get a <span class="gray outlined">rubber</span> tree
                     </button>
 
                     <br>
@@ -4719,7 +4753,7 @@
                     <button class="special"
                         data-desc="OMEGA-managers...now the possibilities are INFINITE!\nThey cost 25 MILLION gold blocks though!$omegamanagers$"
                         data-cost="goldb-2.5e7" data-earn="omegamanagers+1" data-show="megamanagers>0">
-                        +1 <b class="red">O</b>MEGA-manager
+                        +1 <b class="outlined red">O</b>MEGA-manager
                         <span class="coin"></span> <span class="coin"></span> <span class="coin"></span>
                     </button>
 
@@ -6050,7 +6084,7 @@
                     this.$ = [sign, 0, digits, (digits > DIGITSMINUSONE ? value / (10n ** BigInt(digits - DIGITSMINUSONE)) : (value * (10n ** BigInt(DIGITSMINUSONE - digits))))]
                 } else if (typeof value === "number" && !isFinite(value)) {
                     if (!noWarnings) {
-                        console.error("Values given must be positive and finite.")
+                        console.error("Values given must be positive.")
                     }
                     this.$ = [1, 0, 0, 0n]
                     return
@@ -6265,7 +6299,7 @@
                             }
                         } else if (digits < 0) {
                             if (!noWarnings) {
-                                console.error("The value given could not be converted to a Hyper, as it contains negative numbers too far.")
+                                console.error("The value given could not be converted to a Hyper, as it contains negative numbers too far down.")
                             }
                             this.$ = [sign, 0, 0, 0n]
                             return
@@ -8704,10 +8738,10 @@
             ID("count").textContent = ++logCount
         }
 
-        var oldLog = console.log
-        var oldInfo = console.info
-        var oldWarn = console.warn
-        var oldError = console.error
+        var oldLog = console.log.bind(console)
+        var oldInfo = console.info.bind(console)
+        var oldWarn = console.warn.bind(console)
+        var oldError = console.error.bind(console)
 
         var logCount = 0, colorType = -1, logSectionHidden = true, logsNotAutoopened = true
         console.log = function () {
@@ -8752,6 +8786,7 @@
         console.error = function (message) {
             oldError.apply(console, arguments)
             var stackData = Error().stack.split(/\r\n|\n/)
+            oldError(stackData)
             var stack1 = stackData[1 + firefoxZero].split(":")
             var lastIndex1 = stack1.length - 1
             if (stackData.length === 3) {
@@ -8795,6 +8830,9 @@
                 easyTime = Date.now() + 500
 
                 if (target.getAttribute) {
+                    if (target.getAttribute("type") === "range") {
+                        sounds.press.play()
+                    }
                     hovered = target
                 } else {
                     hovered = null
@@ -9195,14 +9233,21 @@
             updateId("wattText", wattUsage === 1 ? "watt" : "watts")
         })
 
-        var partySpending = Hyper("1e16")
+        var partySpending = Hyper("1e16"), partyTime = Hyper(-1)
         ID("partyInput").addEventListener("change", function (e) {
             var value = e.target.value.trim()
             partySpending = new Hyper(value.charCodeAt(0) === 36 ? value.slice(1) : value, true).max("1e16")
             updateInput("partyInput", "$" + formatValue(partySpending))
         })
 
-        var wageMultiplier = Hyper(true), wageBoost = Hyper(true)
+        ID("startParty").addEventListener("click", function (e) {
+            ID("partyInput").setAttribute("disabled", true)
+            if (remove("money", partySpending)) {
+                partyTime = new Hyper(216000)
+            }
+        })
+
+        var wageMultiplier = Hyper(true), wageBoost = Hyper(true), wageBuff = Hyper(true)
         ID("wageSlider").addEventListener("input", function (e) {
             wageMultiplier = new Hyper(e.target.value).mul(0.01)
             wageBoost = wageMultiplier.sqrt().sqrt(true).mul(3).add(wageMultiplier.sqrt().mul(0.2).min(15)).subOrFalse(2.2)
@@ -9223,7 +9268,6 @@
                     updateInput("wageInput", formatted)
                 }
             }
-
             updateId("wageAmount", wageBoost.format(4) + "×")
         })
 
@@ -9473,7 +9517,6 @@
             rawAdd("crystal" + crystalType, Hyper(5 - crystalType))
             crystalTime = Date.now() + crystalSpeed * (Math.floor(++crystalTotal / 3) + 1)
 
-            // Firefox acts weird for some reason here
             if (!noAudio) {
                 var sound = sounds.press
                 sound.currentTime = 0
@@ -9737,7 +9780,6 @@
                                 }
                             }
 
-                            // Firefox doesn't always play the press sound for some reason
                             if (!noAudio) {
                                 if (sound === sounds.press) {
                                     sound.currentTime = 0
@@ -10307,8 +10349,16 @@
 
                         autosellOn = proceed("AX") === "t"
                         easyClick = proceed("\n") === "OK"
-                        sellPercent = Number(proceed("\n\n"))
-                        partySpending = new Hyper(proceed("\n\n")).max("1e16")
+                        sellPercent = Number(proceed("\n\nn"))
+                        if (!(sellPercent <= 100 && sellPercent >= 0)) {
+                            sellPercent = 0
+                        }
+                        partyTime = new Hyper(proceed("\n\n"))
+                        partySpending = new Hyper(proceed("\n\n"), true).max("1e16")
+                        if (partyTime.isPositive()) {
+                            ID("partyInput").disabled = true
+                            partyTime = new Hyper(216000)
+                        }
                         updateInput("partyInput", "$" + partySpending.format())
                         noAudio = proceed("FX") === "true"
                         sleekMode = proceed("EX") !== "[v]"
@@ -10696,7 +10746,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (easyClick ? "OK" : "ISSUE") + "\n" + sellPercent + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (easyClick ? "OK" : "ISSUE") + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -11455,7 +11505,7 @@
 
             if (propertyToRemove === "money") {
                 if (remove(propertyToRemove, removeAmount.mul(wageMultiplier))) {
-                    add(propertyToAdd, addAmount.mul(wageBoost))
+                    add(propertyToAdd, addAmount.mul(wageBuff))
                     return true
                 }
             } else if (remove(propertyToRemove, removeAmount)) {
@@ -11479,7 +11529,7 @@
 
             if (propertyToRemove === "money") {
                 if (remove(propertyToRemove, removeAmount.mul(wageMultiplier))) {
-                    add(propertyToAdd, addAmount.mul(wageBoost))
+                    add(propertyToAdd, addAmount.mul(wageBuff))
                     stuff[propertyToAdd] = stuff[propertyToAdd].min(limit)
                     return true
                 }
@@ -11503,11 +11553,11 @@
                 removeAmounts = [removeAmounts]
             }
 
-            var speedBoost = removeAmounts.includes("money")
+            var speedBoost = itemsToRemove.includes("money")
             for (var i = 0; i < itemsToRemove.length; i++) {
                 var property = itemsToRemove[i]
                 var amountToRemove = removeAmounts[i].mul(speed)
-                removeAmounts[i] = amountToRemove.mul(property === "money" ? wageMultiplier : wageBoost)
+                removeAmounts[i] = amountToRemove.mul(property === "money" ? wageMultiplier : wageBuff)
                 if (C(property).isLess(amountToRemove)) {
                     return false
                 }
@@ -11518,7 +11568,7 @@
             }
 
             if (speedBoost) {
-                var speedMultiplier = wageBoost.mul(speed)
+                var speedMultiplier = wageBuff.mul(speed)
                 for (i = 0; i < itemsToAdd.length; i++) {
                     rawAdd(itemsToAdd[i], addAmounts[i].mul(speedMultiplier))
                 }
@@ -11819,6 +11869,18 @@
             speed = speed.mul(frame + 1).floor(true).subOrFalse(speed.mul(frame).floor(true))
             if (speed.isZero()) {
                 return
+            } else if (partyTime.isPositive()) {
+                var divided = partySpending.div("1.1e16")
+                var partyBoost = divided.sqrt().sqrt(true).sqrt(true).mul(2.852).add(divided.sqrt().mul(0.2).min(8)).subOrFalse(2)
+                wageBuff = wageBoost.mul(partyBoost).mul(10)
+                partyTime = partyTime.sub(speed)
+                updateId("partyLeft", partyTime.max(0).div(60).format(2) + " seconds (a " + partyBoost.format(4) + "× boost)")
+            } else {
+                wageBuff = wageBoost
+                updateId("partyLeft", "no party active")
+            }
+            if (!partyTime.isPositive() && ID("partyInput").hasAttribute("disabled")) {
+                ID("partyInput").removeAttribute("disabled")
             }
 
             addUpTo("rocketbody", Hyper(C("Rocketbody", issue)).div(216000000), 100)
@@ -11999,8 +12061,7 @@
             }
 
             if (coalMachinesEnabled) {
-                var useableCM = useableData.coalminers
-                add("coal", useableCM.mul(1750).add(C("coalminers", issue).mul(1750)).mul(hasResearch("coal2") ? 2.5 : 1))
+                add("coal", useableData.coalminers.mul(1750).add(C("coalminers", issue).mul(1750)).mul(hasResearch("coal2") ? 2.5 : 1))
             } else {
                 add("coal", C("coalminers", issue).mul(1750).mul(hasResearch("coal2") ? 2.5 : 1))
             }
@@ -12113,7 +12174,7 @@
             add("goo", wells.mul(0.000165))
             add("energy", ponds.mul(0.000008))
 
-            multiExchange("gc", jewelerPower.mul(0.003), ["clocks", "gold"], [jewelerPower.mul(0.012), jewelerPower.mul(0.003)])
+            multiExchange("gc", jewelerPower.mul(0.003), ["clocks", "money", "gold"], [jewelerPower.mul(0.012), jewelerPower.mul(0.003), jewelerPower.mul(0.003)])
             exchange("goldb", barmolders.mul(0.005), "gold", 25)
 
             exchangeLimit(C("bottles", issue), "naphtha", separators.mul(0.015), "ngas")
