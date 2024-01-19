@@ -6464,7 +6464,7 @@
                     } else if (digits >= 9007199254740992) {
                         this.$ = [sign, eTotal + 1, digits, big50]
                     } else {
-                        this.$ = [sign, eTotal, eTotal < 2 ? Number(digits) : BigInt(digits), big50]
+                        this.$ = [sign, eTotal < 2 ? 0 : eTotal, eTotal < 2 ? Number(digits) : BigInt(digits), big50]
                     }
                 }
 
