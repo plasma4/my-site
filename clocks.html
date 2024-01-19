@@ -6271,8 +6271,11 @@
                     }
 
                     var abbreviationTotal = getAbbreviation()
-                    var eIndex = string.indexOf("e")
-                    if (eIndex === -1) {
+                    var eIndex = string.indexOf("e"), fIndex = string.indexOf("F")
+                    if (fIndex === -1) {
+                        fIndex = string.indexOf("f")
+                    }
+                    if (eIndex === -1 && fIndex === -1) {
                         var dot = string.indexOf(".")
                         if (dot !== -1) {
                             len = dot
@@ -6302,46 +6305,34 @@
                     }
 
                     var digits = 0, eTotal = 0
-                    if (eIndex === 0) {
-                        if (string.slice(0, 2) === "e^") {
-                            var spaceIndex = string.indexOf(" ")
-                            eTotal = string.slice(2, spaceIndex)
-                            if (eTotal <= -1) {
-                                if (!noWarnings) {
-                                    console.error("You cannot have a negative amount of 'e' exponentiated.")
-                                }
-                                this.$ = [sign, 0, 0, 0n]
-                                return
-                            } else {
-                                string = string.slice(spaceIndex + 1).trim()
-                                if (!string.includes("e")) {
-                                    string = "1e" + string
-                                    eTotal--
-                                }
-                                if (!isFinite(eTotal)) {
-                                    if (!noWarnings) {
-                                        console.error("The amount of 'e' letters is invalid.")
-                                    }
-                                    this.$ = [sign, 0, 0, 0n]
-                                    return
-                                }
+                    if (fIndex !== -1) {
+                        eTotal = Number(string.slice(fIndex + 1).replace(/,/g, ""))
+                        if (eTotal <= -1) {
+                            if (!noWarnings) {
+                                console.error("You cannot have a negative amount of 'e' values.")
                             }
+                            this.$ = [sign, 0, 0, 0n]
+                            return
                         } else {
-                            var match = string.match(/[^e/]/)
-                            if (match === null) {
-                                if (!noWarnings) {
-                                    console.error("The value given could not be converted to a Hyper.")
-                                }
-                                this.$ = [sign, 0, 0, 0n]
-                                return
-                            }
-                            eTotal = match.index
-                            string = string.slice(eTotal)
-                            if (!string.includes("e")) {
-                                string = "1e" + string
-                                eTotal--
-                            }
+                            string = fIndex === 0 ? "1" : string.slice(0, fIndex)
                         }
+                    }
+                    if (eIndex === 0) {
+                        var match = string.match(/[^e/]/)
+                        if (match === null) {
+                            if (!noWarnings) {
+                                console.error("The value given could not be converted to a Hyper.")
+                            }
+                            this.$ = [sign, 0, 0, 0n]
+                            return
+                        }
+                        eTotal += match.index
+                        string = string.slice(eTotal)
+                    }
+
+                    if (eTotal !== 0 && !string.includes("e")) {
+                        string = "1e" + string
+                        eTotal--
                     }
 
                     eIndex = string.indexOf("e")
@@ -7885,7 +7876,8 @@
                     var part2 = this.$[3].toString()
                     var i = part2.length
                     while (part2.charCodeAt(--i) === 48) { }
-                    return (this.$[0] === 1 ? "" : "-") + (--category >= 5 ? "e^" + category + " " : "e".repeat(category)) + (i === 0 ? part2[0] : (part2[0] + "." + part2.slice(1, i + 1))) + "e" + part1
+                    var afterE = (i === 0 ? part2[0] : (part2[0] + "." + part2.slice(1, i + 1))) + "e" + part1
+                    return (this.$[0] === 1 ? "" : "-") + (--category >= 4 ? afterE + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",") : ("e".repeat(category) + afterE))
                 }
 
                 var firstPart = this.$[3].toString()
@@ -7910,7 +7902,8 @@
                 if (category >= 2) {
                     var part1 = this.$[2]
                     var part2 = this.$[3].toString()
-                    return sign + (--category >= 5 ? "e^" + category + " " : "e".repeat(category)) + part2[0] + "." + part2.slice(1, 4) + "e" + formatValue(part1)
+                    var finalPart = part2[0] + "." + part2.slice(1, 4) + "e" + formatValue(part1)
+                    return sign + (--category >= 4 ? finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",") : ("e".repeat(category) + finalPart))
                 }
 
                 var digits = this.$[2]
