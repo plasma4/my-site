@@ -4047,22 +4047,30 @@
                     <br>
                     <input type="range" min="100" max="10000" value="0" tabindex="-1" id="wageSlider"
                         aria-hidden="true">
-                    <input id="wageInput" placeholder="1.00×" value="1.00×" aria-label="Wage multiplier">
-                    <span class="orange"> wage multiplier</span>.
+                    <label for="wageInput" class="orange">
+                        <input id="wageInput" placeholder="1.00×" value="1.00×" aria-label="Wage multiplier">
+                        wage multiplier.
+                    </label>
                     <div class="small">
                         Increased wages = increased work speed! You currently have a
                         <b class="small lime" id="wageAmount"></b> boost.
                     </div>
 
                     <hr>
-                    <input id="partyInput" placeholder="$10.000q" value="$10.000q"
-                        aria-label="Money to spend on a party">
-                    <button class="upper special" id="startParty">
+                    <label for="partyInput">
+                        Party cost <span class="money"></span>:
+                        <input id="partyInput" placeholder="$10.000q" value="$10.000q"
+                            aria-label="Money to spend on a party (at least $10.000q)">
+                    </label>
+                    <button class="upper special" data-show="$parties" id="startParty">
                         Spend that much on a <span class="outlined rainbow">party</span>
                     </button>
 
+                    <div class="smallish valuable">
+                        NOTE: You need the "Overdone parties" research to start one!
+                    </div>
                     <div class="glow2 small">
-                        Current party time left: <span class="small red" id="partyLeft"></span>
+                        Current party time left: <span id="partyLeft"></span>
                         <br>
                         Give your workers a party to increase their effectiveness for one hour!
                         <br>
@@ -12060,10 +12068,12 @@
                 var divided = partySpending.div("1.1e16")
                 var partyBoost = divided.sqrt().sqrt(true).sqrt(true).mul(2.852).add(divided.sqrt().mul(0.2).min(8)).subOrFalse(2)
                 wageBuff = wageBoost.mul(partyBoost).mul(10)
-                updateId("partyLeft", partyTime.max(0).div(60).format(2) + " seconds (a " + partyBoost.format(4) + "× boost)")
+                updateId("partyLeft", partyTime.max(0).div(60).format(speed.isLess(100) ? null : 2) + " seconds (a " + partyBoost.format(4) + "× boost)")
+                updateClass(ID("partyLeft"), "small serif orange")
             } else {
                 wageBuff = wageBoost
                 updateId("partyLeft", "no party active")
+                updateClass(ID("partyLeft"), "small serif red")
             }
             if (!partyTime.isPositive() && ID("partyInput").hasAttribute("disabled")) {
                 ID("partyInput").removeAttribute("disabled")
@@ -12600,7 +12610,7 @@
             if (valueMultiplier.isMore(1)) {
                 newStats = 'Sell multiplier: <span class="small blue">' + valueMultiplier.format(5) + (hasResearch("aisell") ? '×</span> <span class="serif small purple">(with the AI selling research)</span><br>' : "×</span><br>") + newStats
             }
-            
+
             valueMultiplier = valueMultiplier.mul(speed).mul(60)
 
             if (familyIncome.isPositive()) {
