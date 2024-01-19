@@ -4541,19 +4541,21 @@
                             </div>
                         </button>
 
-                        <hr>
-                        <span class="smallish">
+                        <div class="smallish">
                             Aliens discovered: <span class="small serif orange">NONE! :p</span>
-                        </span>
-                        <br>
+                        </div>
                         <button class="bland stripe4" data-show="$aliens" data-fade="$aliens"
                             data-desc="Sorry, I'm not done with aliens yet! You'll have to wait for the next update...">
                             Aliens? That's the next update! <span class="big wonder"></span>
                         </button>
 
                         <div id="wormsearch" class="study">
-                            <div data-cost="2e24" data-iq="3e18" data-show="$aliens"
-                                data-research="darkinfo"
+                            <div data-cost="4e24" data-iq="e1e70000" data-show="$aliens" data-research="aisell"
+                                data-desc="[You need e1.000e70,000 digital knowlege to purchase this research!]\nEven a professional seller sells compared to one of these!\n{This upgrade DOES NOT stay upon resetting.}\n(Increase clock sell value somewhat depending on your digital knowlege!)">
+                                <span class="rainbow">AI selling</span>: <span class="glow">$4.000S</span>
+                                <span class="big money"></span>
+                            </div>
+                            <div data-cost="2e24" data-iq="3e18" data-show="$aliens" data-research="darkinfo"
                                 data-desc="[You need 3.000Q digital knowlege to purchase this research!]\nYour dark towers are the perfect lookouts to the multiverse. Feed additional information from the dark towers into your AI!\n(Exponentiates digital knowlege gain by the amount of dark towers you own.)">
                                 <span class="move5">Dark information</span>: <span class="glow">$2.000S</span>
                                 <span class="big money"></span>
@@ -4564,8 +4566,7 @@
                                 <span class="move5">Dark tower smarts</span>: <span class="glow">$1.000S</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="1e24" data-iq="6400" data-show="$aliens"
-                                data-research="singularity"
+                            <div data-cost="1e24" data-iq="6400" data-show="$aliens" data-research="singularity"
                                 data-desc="[You need 6,400 digital knowlege to purchase this research!]\nAI is getting smarter. And smarter.\nGive it the final push to allow digital knowlege gain to be increased by ITSELF!">
                                 <span class="move4">AI singularity</span>: <span class="glow">$1.000S</span>
                                 <span class="big money"></span>
@@ -9054,12 +9055,10 @@
         }
 
         function cheat() {
-            var value = Hyper("1e100")
+            var value = Hyper("1e80")
             for (var i = 0; i < properties.length; i++) {
                 var name = properties[i]
-                if (name === "money") {
-                    add(name, Hyper("1e1000"))
-                } else if (name !== "bonus1" && name !== "bonus2" && name !== "bonus3") {
+                if (name !== "bonus1" && name !== "bonus2" && name !== "bonus3") {
                     add(name, value)
                 }
             }
@@ -10047,6 +10046,10 @@
                             if (part1 === "money") {
                                 if (hasResearch("marketing")) {
                                     multiplier = multiplier.mul(Hyper(true).add(useableData.computers.mul(0.04)))
+                                }
+
+                                if (hasResearch("aisell")) {
+                                    multiplier = multiplier.mul(C("iq").log10().log10().log10())
                                 }
                             } else if (part1 === "bonus1" || part1 === "bonus2" || part1 === "bonus3") {
                                 multiplier = timeBonus
@@ -12587,6 +12590,15 @@
             var newStats = moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec"))
 
             var valueMultiplier = (hasResearch("marketing") ? Hyper(60).add(useableData.computers.mul(2.4)) : Hyper(60)).mul(speed)
+
+            if (hasResearch("aisell")) {
+                valueMultiplier = valueMultiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
+            }
+
+            if (valueMultiplier.isMore(1)) {
+                newStats = 'Sell multiplier: <span class="small blue">' + valueMultiplier.format(5) + (hasResearch("aisell") ? '×</span> <span class="serif small purple">(with the AI selling research)</span><br>' : "×</span><br>") + newStats
+            }
+
             if (familyIncome.isPositive()) {
                 newStats += '<br>Family member clock value: <span class="small green">$' + familyIncome.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
             }
