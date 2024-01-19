@@ -3857,6 +3857,7 @@
                         <span class="big clock"></span>
                         <tt>clocks++</tt>
 
+                        <br>
                         <button data-desc="You're rich!$money$" data-earn="money+1" data-cost="clocks-1"
                             data-sound="transaction">
                             Sell 1 <span class="clock" role="img" aria-label="clock"></span>
@@ -4551,6 +4552,12 @@
                         </button>
 
                         <div id="wormsearch" class="study">
+                            <div data-cost="2e24" data-iq="3e18" data-show="$aliens"
+                                data-research="darkinfo"
+                                data-desc="[You need 3.000Q digital knowlege to purchase this research!]\nYour dark towers are the perfect lookouts to the multiverse. Feed additional information from the dark towers into your AI!\n(Exponentiates digital knowlege gain by the amount of dark towers you own.)">
+                                <span class="move5">Dark information</span>: <span class="glow">$2.000S</span>
+                                <span class="big money"></span>
+                            </div>
                             <div data-cost="1e24" data-rp="2.3e230" data-iq="22500" data-show="$aliens"
                                 data-research="darkness"
                                 data-desc="[You need 2.300e230 research points AND 22,500 digital knowlege to purchase this research!]\nWant dark towers to actually DO something? Get them to increase digital knowlege production!">
@@ -6456,7 +6463,7 @@
                     } else if (digits >= 9007199254740992) {
                         this.$ = [sign, eTotal + 1, digits, big50]
                     } else {
-                        this.$ = [sign, eTotal, eTotal < 2 ? Number(digits) : digits, big50]
+                        this.$ = [sign, eTotal, eTotal < 2 ? Number(digits) : BigInt(digits), big50]
                     }
                 }
 
@@ -7187,10 +7194,18 @@
                         data *= 10n
                     }
                     digits = digits >> 1n
+                    if (digits < 9007199254740992n) {
+                        digits = Number(digits)
+                    }
                 } else if (category === 2) {
                     var halfDigits = value.$[3] >> 1n
                     if (halfDigits < BIGONE) {
-                        value.$[2]--
+                        var digitDigits = value.$[2]
+                        if (digitDigits === BIGONE) {
+                            value.$ = [1, 1, LIMITMINUSONE, BIGONE]
+                            return value
+                        }
+                        value.$[2] = digitDigits - 1n
                         halfDigits *= 10n
                     }
                     value.$[3] = halfDigits
@@ -12225,7 +12240,10 @@
 
             if (computersEnabled && hasResearch("ai")) {
                 var iqGain = C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1)
-                add("iq", hasResearch("singularity") ? iqGain.mul(C("iq").sqrt().mul(C("iq").sqrt().sqrt())) : iqGain)
+                if (hasResearch("singularity")) [
+                    iqGain = iqGain.mul(C("iq").sqrt().mul(C("iq").sqrt().sqrt()))
+                ]
+                add("iq", hasResearch("darkinfo") ? iqGain.pow(Hyper(true).add(C("darktowers"))) : iqGain)
                 stuffTotals.iq = C("iq", issue)
             }
 
