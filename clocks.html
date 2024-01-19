@@ -9421,7 +9421,7 @@
                 wageMultiplier = new Hyper()
                 wageBoost = new Hyper(true)
             } else {
-                wageMultiplier = new Hyper(value.replace(/,|×/g, ""), true).min(100)
+                wageMultiplier = new Hyper(value.replace("×", ""), true).max(1).min(100)
                 wageBoost = wageMultiplier.sqrt().sqrt(true).mul(3).add(wageMultiplier.sqrt().mul(0.2).min(15)).subOrFalse(2.2)
                 var formatted = wageMultiplier.format(2) + "×"
                 if (formatted !== value) {
