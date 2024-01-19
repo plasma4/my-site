@@ -12589,7 +12589,7 @@
             var moneyLoss = oldMoney.sub(newMoney)
             var newStats = moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec"))
 
-            var valueMultiplier = (hasResearch("marketing") ? Hyper(60).add(useableData.computers.mul(2.4)) : Hyper(60)).mul(speed)
+            var valueMultiplier = (hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : Hyper(true))
 
             if (hasResearch("aisell")) {
                 valueMultiplier = valueMultiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
@@ -12598,6 +12598,8 @@
             if (valueMultiplier.isMore(1)) {
                 newStats = 'Sell multiplier: <span class="small blue">' + valueMultiplier.format(5) + (hasResearch("aisell") ? '×</span> <span class="serif small purple">(with the AI selling research)</span><br>' : "×</span><br>") + newStats
             }
+            
+            valueMultiplier = valueMultiplier.mul(speed).mul(60)
 
             if (familyIncome.isPositive()) {
                 newStats += '<br>Family member clock value: <span class="small green">$' + familyIncome.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
