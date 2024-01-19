@@ -9571,11 +9571,20 @@
                 if (hasResearch("cosmos")) {
                     newResearches.push("cosmos")
                 }
+                if (hasResearch("firepower")) {
+                    newResearches.push("firepower")
+                }
                 if (hasResearch("aliens")) {
                     newResearches.push("aliens")
                 }
-                if (hasResearch("firepower")) {
-                    newResearches.push("firepower")
+                if (hasResearch("singularity")) {
+                    newResearches.push("singularity")
+                }
+                if (hasResearch("darkness")) {
+                    newResearches.push("darkness")
+                }
+                if (hasResearch("darkinfo")) {
+                    newResearches.push("darkinfo")
                 }
                 if (hasResearch("copper")) {
                     newResearches.push("copper")
@@ -12409,7 +12418,7 @@
                 updateHTML(ID("fireReset"), "")
             }
 
-            if (firefruitDigits !== false && silverfruitDigits.isMoreOrEqual(20)) {
+            if (silverfruitDigits !== false && silverfruitDigits.isMoreOrEqual(20)) {
                 var silverGain = silverfruitDigits.subOrFalse(10).mul(hasResearch("silvergain") ? C("fierywood", issue).add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
                 updateId("silverReset", "Gain " + format(hasResearch("silversquare") ? silverGain.sqr() : silverGain) + " silver wood")
             } else {
