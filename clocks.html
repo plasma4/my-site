@@ -7212,6 +7212,7 @@
                     digits = digits >> 1n
                     if (digits < 9007199254740992n) {
                         digits = Number(digits)
+                        value.$[1] = 0
                     }
                 } else if (category === 2) {
                     var halfDigits = value.$[3] >> 1n
