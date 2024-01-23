@@ -4945,8 +4945,14 @@
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
                         <br>
+                        <button data-id="reality-bending" data-cooldown="3600" data-earn="clocks*1.1|gc*1.1|rc*1.1"
+                            data-cost="timeshards-0|shards-200|bags-0" data-show="timemachines>0"
+                            data-desc="Make your time machine increase the amount of all three types of clocks you own by 10% after an hour at a high cost!">
+                            <span class="half timemachineach"></span>
+                            <span class="cooldown" aria-hidden="true"></span>
+                        </button>
                         <button data-id="time-traveling" data-cooldown="10800" data-earn="timeshards+1"
-                            data-cost="qubits-125000" data-show="$timetravel"
+                            data-cost="qubits-125000" data-show="timemachines>0"
                             data-desc="Want to use a {TIME MACHINE} thingy? Create a weird {time crystal} to do that!\nCosts 125,000 qubits.$timeshards$">
                             <span class="half timeshardach"></span>
                             <span class="cooldown" aria-hidden="true"></span>
@@ -10465,8 +10471,9 @@
                                             continue
                                         }
                                         pow(action.slice(0, sign), Hyper(action.slice(sign + 1)))
+                                    } else {
+                                        mul(action.slice(0, sign), Hyper(action.slice(sign + 1)))
                                     }
-                                    mul(action.slice(0, sign), Hyper(action.slice(sign + 1)))
                                 }
                                 continue
                             }
