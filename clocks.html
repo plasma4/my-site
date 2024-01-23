@@ -443,6 +443,7 @@
         }
 
         .tiny {
+            pointer-events: none;
             border-radius: 50% !important;
             transform: scale(0.16) !important;
             margin: -50px !important;
@@ -3487,6 +3488,7 @@
             qubits: Qubit (11, A qubit that is used for quantum computing)
             sandwiches: Metal-Insulator-Metal Plate (8, Used for a quantum computer)
             qcomputers: QUANTUM Computer$!!!/s!!! (8, Used for a quantum computer)
+            timemachines: Time Machine (12, Just a simple time machine and nothing else to see)
             foil: Golden Foil$ (8, A piece of golden foil used for advanced quantum technology)
             wormholeteams: Wormhole Research Team (12, A dediated team that researches the ins and outs of wormholes)
             burnt: Burnt Dark Matter Gram (8, A gram of burnt dark matter)
@@ -4667,6 +4669,15 @@
                             <span class="white">Build a QUANTUM COMPUTER</span>
                         </button>
 
+                        <br>
+                        <button class="stripe5" data-show="$timetravel" data-earn="timemachines+1" data-sound="building"
+                            data-cost="qcomputers-3"
+                            data-desc="[NOTE: In order to USE a time machine, you'll need {time crystals} that can be crafted, each costing 1 Infinity Bag and 25 purple crystals.Build a time machine from 3 quantum computers!$timemachines$">
+                            <u data-desc="This isn't a link...hover OUTSIDE of me already!$timemachines$">
+                                <b class="burning4">Build a time machine</b>
+                            </u>
+                        </button>                      
+
                         <button class="diamond" data-earn="wormgenerators+1" data-cost="steel-1e12|wormholes-1"
                             data-sound="building" data-show="$wormpower"
                             data-desc="{Each wormhole power generator costs an insurmountable 1 TRILLION steel as well as a wormhole but grants you 500 BILLION watts at no additional cost!}\nEach wormhole seems to contain almost an ENDLESS amount of power within them. Start making wormhole power generators and see the magic happen!$wormgenerators$">
@@ -4707,8 +4718,13 @@
                         </button>
 
                         <div id="wormsearch" class="study">
-                            <div data-cost="eee1000000000000" data-iq="e1234F1234" data-show="$aliens"
-                                data-research="tetrate"
+                            <!-- <div data-cost="eee50" data-rp="1e250" data-iq="F7654321" data-show="$aliens"
+                                data-research="timetravel"
+                                data-desc="[You need 1.000e250 wormhole research points AS WELL AS 1F7,654,321 digital knowlege to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!">
+                                <span class="move4">Time travel</span>: <span class="glow">$ee1.000e50</span>
+                                <span class="big money"></span>
+                            </div> -->
+                            <div data-cost="eee12" data-iq="e1234F1234" data-show="$aliens" data-research="tetrate"
                                 data-desc="[You need 1e1,234F1,234 digital knowlege to purchase this research!]\nWhat? That big number isn't big enough? STILL!!?\n(Increase digital knowlege gain by itself automatically, {EVERY SINGLE FRAME})">
                                 <span class="move4">Tetrated AI</span>: <span class="glow">$ee1.000e1.000T</span>
                                 <span class="big money"></span>
@@ -4871,6 +4887,12 @@
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
                         <br>
+                        <button data-id="money-filled" data-cooldown="1342" data-earn="crystal2+1"
+                            data-cost="money-eee1e10" data-show="$timetravel"
+                            data-desc="Want to use a {TIME MACHINE} thingy? Create a weird {time crystal} to do that!">
+                            <span class="tiny vortexach"></span>
+                            <span class="cooldown" aria-hidden="true"></span>
+                        </button>
                         <button data-id="baggy" data-cooldown="900" data-earn="bags+1" data-cost="goo-1000|energy-10"
                             data-show="ponds>0"
                             data-desc="An Infinity Bag is able to store an infinite amount of contents, but at the cost of 1,000 goo and 10 energy.$bags$">
@@ -8254,7 +8276,6 @@
                 value.$[1] = newCategory < 9007199254740992n ? Number(newCategory) : newCategory
                 return value
             }
-
 
             /**
              * Finds the current value taken to an INTEGER power.
@@ -13542,7 +13563,7 @@
                                 cIndex = c.indexOf("-")
                                 text += "and " + getAmount(c.slice(0, cIndex), c.slice(cIndex + 1))
                             }
-                            text += ".}"
+                            text += text.charCodeAt(text.length - 1) === 33 ? "}" : ".}"
                         }
                     }
 
