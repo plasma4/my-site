@@ -3706,11 +3706,11 @@
         <span id="crystal" tabindex="0"></span>
 
         <nav id="navigation" aria-label="The navigation to switch tabs">
-            <span data-tab="main" title="Build menu"><span class="hammer"></span></span>
+            <span data-tab="main" title="Build menu" data-show="miners>0"><span class="hammer"></span></span>
             <span data-tab="clock" title="Clock menu"><span class="clock"></span></span>
             <span data-tab="wages" title="Wages menu" data-show="$wages"><span class="money"></span></span>
             <span data-tab="fierya" title="Fiery planting menu" data-show="$apples"><span class="gapple"></span></span>
-            <span data-tab="magic" title="Magic menu" data-show="$magic"><span class="wand"></span></span>
+            <span data-tab="magic" title="*MAGICAL* menu" data-show="$magic"><span class="wand"></span></span>
             <span data-tab="materials" title="Materials menu" data-show="money>=2500"><span class="brick"></span></span>
             <span data-tab="phoenix" title="Phoenix menu" data-show="managers>0"><span class="feather"></span></span>
             <span data-tab="tech" title="Management/research menu" data-show="furnaces>0">
@@ -3726,14 +3726,22 @@
             <span data-tab="achievements" title="Achievement menu" data-show="$achievements">
                 <span class="tiny flyach"></span>
             </span>
-            <span class="tab2" data-tab="subgc" title="Golden clock submenu"><span class="gc"></span></span>
-            <span class="tab2" data-tab="subrc" title="RADIOACTIVE clock submenu"><span class="rc"></span></span>
-            <span class="tab2" data-tab="subrobots" title="Clock machine submenu"><span class="circuit"></span></span>
-            <span class="tab2" data-tab="subtech" title="Computer submenu"><span class="chip"></span></span>
-            <span class="tab2" data-tab="subplastic" title="Plastic submenu"><span class="bottle"></span></span>
-            <span class="tab2" data-tab="subaluminum" title="Aluminum submenu"><span class="aluminum"></span></span>
-            <span class="tab2" data-tab="subsapple" title="Silver apple submenu"><span class="sapple"></span></span>
-            <span class="tab2" data-tab="subwormy" title="WORMHOLE submenu"><span class="binary"></span></span>
+            <span class="tab2" data-tab="subgc" title="Golden clock submenu" data-show="gc>0"><span
+                    class="gc"></span></span>
+            <span class="tab2" data-tab="subrc" title="RADIOACTIVE clock submenu" data-show="rc>0"><span
+                    class="rc"></span></span>
+            <span class="tab2" data-tab="subrobots" title="Clock machine submenu" data-show="arms>0"><span
+                    class="circuit"></span></span>
+            <span class="tab2" data-tab="subtech" title="Computer submenu" data-show="plastic>0"><span
+                    class="chip"></span></span>
+            <span class="tab2" data-tab="subplastic" title="Plastic submenu" data-show="$plastic"><span
+                    class="bottle"></span></span>
+            <span class="tab2" data-tab="subaluminum" title="Aluminum submenu" data-show="aluminum1>0"><span
+                    class="aluminum"></span></span>
+            <span class="tab2" data-tab="subsapple" title="Silver apple submenu" data-show="fierywood>0"><span
+                    class="sapple"></span></span>
+            <span class="tab2" data-tab="subwormy" title="WORMHOLE submenu" data-show="burnt>0"><span
+                    class="binary"></span></span>
         </nav>
 
         <div id="content">
@@ -4731,7 +4739,7 @@
                         <br>
                         <button class="stripe5" data-show="$timetravel" data-earn="timemachines+1" data-sound="building"
                             data-cost="qcomputers-3"
-                            data-desc="[NOTE: In order to USE a time machine, you'll need {time crystals} that can be crafted, each costing 1 Infinity Bag and 25 purple crystals.Build a time machine from 3 quantum computers!$timemachines$">
+                            data-desc="[NOTE: In order to USE a time machine, you'll need {time crystals} that can be crafted, each costing 1 Infinity Bag and 25 purple crystals.]\nBuild a time machine from 3 costly quantum computers each!$timemachines$">
                             <u data-desc="This isn't a link...hover OUTSIDE of me already!$timemachines$">
                                 <b class="burning4">Build a time machine</b>
                             </u>
@@ -4997,7 +5005,7 @@
 
                     <br>
                     <button data-earn="miners+1" data-cost="money-20000"
-                        data-desc="The miner is happy to help mine ores from beneath the ground, with a substantial starting fee of 20,000 dollars.\nTo extract the contents out of these, build a blast furnace with bricks (a future technology).\n(Each miner is also paid $6 a second. Miners obtain ores, NOT NUGGETS!)$miners$"
+                        data-desc="The miner is happy to help mine ores from beneath the ground, with a substantial starting fee of 20,000 dollars.\n[To extract the contents out of these, build a blast furnace with bricks (a technology you'll unlock after a while).\nNote that just GETTING a miner will unlock bricks!]\nEach miner is also paid $6 a second. Miners obtain ores, NOT NUGGETS!$miners$"
                         class="gold">
                         Get a miner <span class="big pickaxe"></span>
                         <span class="mini stripe1" data-earn="miners+1" data-cost="money-20000"
@@ -5902,65 +5910,75 @@
                                 <br>
                                 <span class="flyach" role="img" alt="A giant image of a flying clock!"></span>
                             </div>
-                            <span data-unlock="fc>=1e9" class="flyach ach2" role="img" title="You've unlocked this for producing a total of a BILLION flying clocks!"></span>
+                            <span data-unlock="fc>=1e9" class="flyach ach2" role="img"
+                                title="You've unlocked this for producing a total of a BILLION flying clocks!"></span>
                             <div data-unlock="gc>=2.5e13" class="glow">
                                 Produce a total of <span class="move3">25.000T</span> golden clocks!
                                 <br>
                                 <span class="gcach" role="img"
                                     alt="A giant golden clock with many gears within!"></span>
                             </div>
-                            <span data-unlock="gc>=1e15" class="gcach ach2" role="img" title="You've unlocked this for producing a total of a QUADRILLION golden clocks!"></span>
+                            <span data-unlock="gc>=1e15" class="gcach ach2" role="img"
+                                title="You've unlocked this for producing a total of a QUADRILLION golden clocks!"></span>
                             <div data-unlock="megaclocks>=5252525" class="gray">
                                 Produce a total of <span class="graydient">5,252,525</span> MegaClocks!
                                 <br>
                                 <span class="megaach" role="img" alt="A MegaClock filled with clocks on it!"></span>
                             </div>
-                            <span data-unlock="megaclocks>=7777777" class="megaach ach2" role="img" title="You've unlocked this for producing a total of 7,777,777 MegaClocks!"></span>
+                            <span data-unlock="megaclocks>=7777777" class="megaach ach2" role="img"
+                                title="You've unlocked this for producing a total of 7,777,777 MegaClocks!"></span>
                             <div data-unlock="wormholes>=1000" class="rainbow">
                                 Produce a total of <span class="move4">1,000</span> wormholes!
                                 <br>
                                 <span class="vortexach" role="img" alt="A giant wormhole to another place!"></span>
                             </div>
-                            <span data-unlock="wormholes>=10000" class="vortexach ach2" role="img" title="You've unlocked this for producing a total of 10,000 wormholes!"></span>
+                            <span data-unlock="wormholes>=10000" class="vortexach ach2" role="img"
+                                title="You've unlocked this for producing a total of 10,000 wormholes!"></span>
                             <div data-unlock="rc>=1234567" class="dangerous">
                                 Produce a total of <span class="move2">1,234,567</span> radioactive clocks!
                                 <br>
                                 <span class="rcach" role="img" alt="A huge radioactive clock with a researcher!"></span>
                             </div>
-                            <span data-unlock="rc>=7654321" class="rcach ach2" role="img" title="You've unlocked this for producing a total of 7,654,321 radioactive clocks!"></span>
+                            <span data-unlock="rc>=7654321" class="rcach ach2" role="img"
+                                title="You've unlocked this for producing a total of 7,654,321 radioactive clocks!"></span>
                             <div data-unlock="goldb>=2.5e10" class="valuable">
                                 Produce a total of <span class="valuable2">25.000B</span> gold bars!
                                 <br>
                                 <span class="goldbarach" role="img"
                                     alt="A vault filled to the brim with gold bars!"></span>
                             </div>
-                            <span data-unlock="goldb>=5e10" class="goldbarach ach2" role="img" title="You've unlocked this for producing a total of 50.000B gold bars!"></span>
+                            <span data-unlock="goldb>=5e10" class="goldbarach ach2" role="img"
+                                title="You've unlocked this for producing a total of 50.000B gold bars!"></span>
                             <div data-unlock="timeshards>=1" class="purple">
                                 Produce a <span class="burning3">TIME SHARD</span>!
                                 <br>
                                 <span class="timeshardach" role="img"
                                     alt="A bunch of time shards on a white background!"></span>
                             </div>
-                            <span data-unlock="timeshards>=25" class="timeshardach ach2" role="img" title="You've unlocked this for producing a total of 25 time shards!"></span>
+                            <span data-unlock="timeshards>=25" class="timeshardach ach2" role="img"
+                                title="You've unlocked this for producing a total of 25 time shards!"></span>
                             <div data-unlock="timemachines>=3" class="pink">
                                 Get 3 <span class="burning4">TIME MACHINES</span>!
                                 <br>
                                 <span class="timemachineach" role="img" alt="A time machine in a meadow!"></span>
                             </div>
-                            <span data-unlock="timemachines>=10" class="timemachineach ach2" role="img" title="You've unlocked this for making TEN time machines!"></span>
+                            <span data-unlock="timemachines>=10" class="timemachineach ach2" role="img"
+                                title="You've unlocked this for making TEN time machines!"></span>
                             <div data-unlock="firecoins>=1e6" class="beige">
                                 Make <span class="brown outlined">1,000,000</span> firecoins!
                                 <br>
                                 <span class="firecoinach" role="img"
                                     alt="A large firecoin designed from fiery wood!"></span>
                             </div>
-                            <span data-unlock="firecoins>=2e7" class="firecoinach ach2" role="img" title="You've unlocked this for producing a total of 20 MILLION firecoins!"></span>
+                            <span data-unlock="firecoins>=2e7" class="firecoinach ach2" role="img"
+                                title="You've unlocked this for producing a total of 20 MILLION firecoins!"></span>
                             <div data-unlock="phoenixes>=33333333333" class="red">
                                 Gain a total of <span class="burning">33,333,333,333</span> phoenixes!
                                 <br>
                                 <span class="phoenixach" role="img" alt="A large group of colorful phoenixes!"></span>
                             </div>
-                            <span data-unlock="phoenixes>=333333333333" class="phoenixach ach2" role="img" title="You've unlocked this for producing a total of 333,333,333,333 phoenixes!"></span>
+                            <span data-unlock="phoenixes>=333333333333" class="phoenixach ach2" role="img"
+                                title="You've unlocked this for producing a total of 333,333,333,333 phoenixes!"></span>
                         </span>
 
                         <br>
