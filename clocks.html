@@ -3479,7 +3479,7 @@
                                 input.setSelectionRange(0, 99999999)
                                 document.execCommand("copy")
                                 input.remove()
-                                onbeforeunload = null
+                                onunload = null
                                 localStorage.removeItem("clockGame")
                                 location.reload()
                             } catch (e) { }
@@ -11477,7 +11477,7 @@
             }
         }
 
-        onbeforeunload = function () {
+        onunload = function () {
             saveLocally()
         }
 
