@@ -4785,6 +4785,11 @@
                         </button>
 
                         <div id="wormsearch" class="study">
+                            <div data-cost="eee1000" data-iq="F25000000" data-show="$tetrate" data-research="genius"
+                                data-desc="[You need F25.000M digital knowlege to purchase this research!]\nQuantum computers are pretty powerful, right?\nThe more quantum computers you have, the faster the tetrational growth is.">
+                                <span class="move4">Quantum genius</span>: <span class="glow">$ee1.000e1,000</span>
+                                <span class="big money"></span>
+                            </div>
                             <div data-cost="eee100" data-rp="1e250" data-iq="F7654321" data-show="$aliens"
                                 data-research="timetravel"
                                 data-desc="[You need 1.000e250 wormhole research points AS WELL AS 1F7,654,321 digital knowlege to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!">
@@ -6147,6 +6152,16 @@
                     <strong class="smallish">
                         Made by Leo Zhang. All rights reserved!
                     </strong>
+
+                    <hr>
+                    <div class="pink">
+                        January 25, 2024: A few weeks of behind-the-scene exotic apple insanity!
+                        <div class="smallish pink">
+                            Burn <span class="move5">dark</span> <span class="move4">matter</span>,
+                            collect <span class="small wormhole">WORMHOLES</span>,
+                            and unlock <span class="glow2">THE COSMOS!!!</span>
+                        </div>
+                    </div>
 
                     <hr>
                     <div class="blue">
@@ -12738,7 +12753,7 @@
                 var iq = C("iq")
                 var iqGain = C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1)
                 if (hasResearch("tetrate")) {
-                    iqGain = iqGain.mul(iq.pow10Repeat(speed.add(speed)))
+                    iqGain = iqGain.mul(iq.pow10Repeat(speed.add(speed).mul(hasResearch("genius") ? Hyper(true).add(C("qcomputers").sqr()) : 1)))
                 }
                 if (hasResearch("singularity")) {
                     iqGain = iq.pow(Hyper.pow(3, speed))
