@@ -4959,9 +4959,9 @@
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
                         <br>
-                        <button data-id="reality-bending" data-cooldown="3600" data-earn="clocks*1.1|gc*1.1|rc*1.1"
-                            data-cost="timeshards-1|shards-200|bags-3" data-show="timemachines>0"
-                            data-desc="Make your time machine increase the amount of all three types of clocks you own by 10% after an hour at a high cost!">
+                        <button data-id="reality-bending" data-cooldown="100" data-earn="" id="timeSpell"
+                            data-cost="clocks-1" data-show="timemachines>0"
+                            data-desc="Make your time machine increase the amount of all three types of clocks you own by 10%, but at a significant cost!\nIf you have the time machine shard upgrade, you'll gain an additional +5% per time shard you'll own after casting this spell.">
                             <span class="half timemachineach"></span>
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
@@ -6039,10 +6039,17 @@
                             data-sound="transaction">
                             -10 <span class="shard" aria-label="GOLDEN shards"></span> for GOLDEN FURNACES!
                         </span>
+                        <span class="mini special" data-cost="shards-1e7" data-earn="$timeboost" data-fade="$timeboost"
+                            data-sound="transaction">
+                            -10,000,000 <span class="shard" aria-label="GOLDEN shards"></span>
+                            for time machine power to increase based on time shard amount
+                        </span>
                         <span class="mini special" data-cost="shards-1e8" data-earn="$shardboost"
                             data-fade="$shardboost" data-sound="transaction">
                             -100,000,000 <span class="shard" aria-label="GOLDEN shards"></span> for golden shards to
                             multiply its own gain by log10(shards + 1) + 1
+                            <br>
+                            NOTE: This provides no additional benefits and is useleess until AFTER a shard reset!
                         </span>
                     </div>
                 </div>
@@ -10358,6 +10365,7 @@
                     }
 
                     let isImproveAI = button.id === "improveAI"
+                    let isTimeSpell = button.id === "timeSpell"
                     function eventFunction(e) {
                         var multiplier = multiplierAttribute === null ? Hyper(true) : C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
 
@@ -10472,6 +10480,9 @@
                             var iq = C("iq")
                             var iqGain = C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1).pow(iq.sqr())
                             rawAdd("iq", hasResearch("darkinfo") ? iqGain.pow(Hyper(true).add(C("darktowers"))) : iqGain)
+                        } else if (isTimeSpell) {
+                            var multiplier = Hyper(1.1).add(hasResearch("timeboost") ? C("timeshards").mul(0.05) : 0)
+                            mul("clocks", multiplier)
                         }
 
                         for (t = 0; t < onclicks.length; t++) {
