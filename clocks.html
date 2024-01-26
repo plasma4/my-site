@@ -4959,8 +4959,8 @@
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
                         <br>
-                        <button data-id="reality-bending" data-cooldown="100" data-earn="" id="timeSpell"
-                            data-cost="clocks-1" data-show="timemachines>0"
+                        <button data-id="reality-bending" data-cooldown="3600" data-earn="" id="timeSpell"
+                            data-cost="timeshards-1|shards-200|crystal3-40" data-show="timemachines>0"
                             data-desc="Make your time machine increase the amount of all three types of clocks you own by 10%, but at a significant cost!\nIf you have the time machine shard upgrade, you'll gain an additional +5% per time shard you'll own after casting this spell.">
                             <span class="half timemachineach"></span>
                             <span class="cooldown" aria-hidden="true"></span>
@@ -9546,11 +9546,19 @@
         }
 
         function cheat() {
-            var value = Hyper("1e80")
-            for (var i = 0; i < properties.length; i++) {
-                var name = properties[i]
-                if (name !== "bonus1" && name !== "bonus2" && name !== "bonus3") {
-                    add(name, value)
+            if (confirm("Actually cheat?")) {
+                if (confirm("Actually, truly cheat?")) {
+                    if (confirm("Actually, TRULY cheat? THIS IS YOUR LAST CHANCE TO SAVE UNCHEATED PROGRESS!")) {
+                        var value = Hyper("1e80")
+                        for (var i = 0; i < properties.length; i++) {
+                            var name = properties[i]
+                            if (name === "qcomputers") {
+                                add(name, Hyper("1e8"))
+                            } else if (name !== "bonus1" && name !== "bonus2" && name !== "bonus3") {
+                                add(name, value)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -11434,7 +11442,7 @@
                     console.log("The save was loaded successfully (in " + text.length + " bytes).");
                     return !0
                 } catch (e) {
-                    alert("Loading the save failed (maybe it was invalid).")
+                    alert("Loading the save failed (maybe it was invalid). You may want to try reloading!")
                     oldError.bind(console)(e)
                 }
                 return !1
