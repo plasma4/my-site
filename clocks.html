@@ -8306,7 +8306,7 @@
                     var i = part2.length
                     while (part2.charCodeAt(--i) === 48) { }
                     var afterE = (i === 0 ? part2[0] : (part2[0] + "." + part2.slice(1, i + 1))) + "e" + part1
-                    return (this.$[0] === 1 ? "" : "-") + (--category >= 4 ? afterE + "F" + category.toString() : ("e".repeat(category) + afterE))
+                    return (this.$[0] === 1 ? "" : "-") + (category-- >= 4 ? afterE + "F" + category.toString() : ("e".repeat(category) + afterE))
                 }
 
                 var firstPart = this.$[3].toString()
