@@ -8327,7 +8327,7 @@
 
             /**
              * Formats the current value in a lossy readable form. The number is rounded down if it is not an integer.
-             * @param {number} additionalDigits The amount of digits to add (defaults to 0)
+             * @param {number} additionalDigits The amount of digits to add AFTER a dot (defaults to 0 and only works for numbers less than 10,000,000)
              * @returns {string}
              */
             Hyper.prototype.format = function (additionalDigits) {
