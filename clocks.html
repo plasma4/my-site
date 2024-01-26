@@ -12772,7 +12772,7 @@
                     iqGain = iqGain.mul(iq.pow10Repeat(speed.add(speed).mul(hasResearch("genius") ? Hyper(true).add(C("qcomputers").sqr()) : 1)))
                 }
                 if (hasResearch("singularity")) {
-                    iqGain = iq.pow(Hyper.pow(3, speed))
+                    iqGain = iq.add(1).pow(Hyper.pow(3, speed))
                 }
                 add("iq", hasResearch("darkinfo") ? iqGain.pow(Hyper(true).add(C("darktowers"))) : iqGain)
             }
