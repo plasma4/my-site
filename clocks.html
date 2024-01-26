@@ -6840,11 +6840,16 @@
                                     dollar = [sign, eTotal - 2n, big50 / 1000000000000000000000000000000000000000n, big50]
                                 }
                                 return
-                            } else if (digits === 1 && eTotal <= 2n) {
+                            } else if (digits === 1) {
                                 if (eTotal === 1n) {
                                     dollar = [sign, 0, Number(big50 / 1000000000000000000000000000000000000000000000000n), BIGONE]
                                 } else {
-                                    dollar = [sign, 0, Number(big50 / 1000000000000000000000000000000000000000n), BIGONE]
+                                    var divided = big50 / 1000000000000000000000000000000000000000n
+                                    if (eTotal === 2n) {
+                                        dollar = [sign, eTotal - 1n, Number(divided), BIGONE]
+                                    } else {
+                                        dollar = [sign, eTotal - 1n, divided, BIGONE]
+                                    }
                                 }
                             } else if (digits < 0) {
                                 if (!noWarnings) {
@@ -8335,7 +8340,7 @@
                     var part1 = this.$[2]
                     var part2 = this.$[3].toString()
                     var finalPart = formatValue(part1)
-                    return sign + (category >= 4 ? finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",") : ("e".repeat(category) + part2[0] + "." + part2.slice(1, 4) + finalPart))
+                    return sign + (--category >= 4 ? finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",") : ("e".repeat(category) + part2[0] + "." + part2.slice(1, 4) + "e" + finalPart))
                 }
 
                 var digits = this.$[2]
