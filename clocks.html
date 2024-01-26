@@ -8306,7 +8306,7 @@
                     var i = part2.length
                     while (part2.charCodeAt(--i) === 48) { }
                     var afterE = (i === 0 ? part2[0] : (part2[0] + "." + part2.slice(1, i + 1))) + "e" + part1
-                    return (this.$[0] === 1 ? "" : "-") + (--category >= 4 ? afterE + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",") : ("e".repeat(category) + afterE))
+                    return (this.$[0] === 1 ? "" : "-") + (--category >= 4 ? afterE + "F" + category.toString() : ("e".repeat(category) + afterE))
                 }
 
                 var firstPart = this.$[3].toString()
@@ -8334,8 +8334,8 @@
                     }
                     var part1 = this.$[2]
                     var part2 = this.$[3].toString()
-                    var finalPart = "e" + formatValue(part1)
-                    return sign + (--category >= 4 ? finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",") : ("e".repeat(category) + part2[0] + "." + part2.slice(1, 4) + finalPart))
+                    var finalPart = formatValue(part1)
+                    return sign + (category >= 4 ? finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",") : ("e".repeat(category) + part2[0] + "." + part2.slice(1, 4) + finalPart))
                 }
 
                 var digits = this.$[2]
