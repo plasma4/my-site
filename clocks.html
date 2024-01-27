@@ -8342,12 +8342,12 @@
                     }
                     var part1 = this.$[2]
                     var part2 = this.$[3].toString()
-                    if (category >= 4) {
+                    if (category >= 5) {
                         var finalPart
                         if (part1 < 1000n && category < 1000) {
-                            var hyperData = Hyper(part2)
+                            var hyperData = new Hyper(part2)
                             hyperData.$[2] -= 49
-                            finalPart = formatValue(hyperData.add(part1 - 1n), 2)
+                            finalPart = formatValue(hyperData.log10(true).add(part1), 2)
                         } else {
                             finalPart = formatValue(part1)
                         }
