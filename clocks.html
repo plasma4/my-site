@@ -7699,17 +7699,18 @@
                     return y
                 }
 
+                var newBase = new Hyper(base)
                 while (exponent > 1n) {
                     if (exponent % 2n === 1n) {
-                        y = y.mul(base)
+                        y = y.mul(newBase)
                         exponent--
                     }
 
-                    base = base.mul(base)
+                    newBase = newBase.sqr(true)
                     exponent >>= 1n
                 }
 
-                return base.mul(y)
+                return newBase.mul(y)
             }
 
             function HyperPower(start, exponent) {
