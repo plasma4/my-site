@@ -7765,7 +7765,10 @@
                 var digits = start.$[2]
                 start.$[1] = 0
                 start.$[2] = 0
-                var result = HyperAdd(HyperMultiply(fastLog(start, noClone), LOG10_E), digits)
+                var result = digits
+                if (digits !== BIGONE) {
+                    result = HyperAdd(HyperMultiply(fastLog(start, noClone), LOG10_E), digits)
+                }
                 if (divAmount != null) {
                     result = result.div(divAmount)
                 }
@@ -8339,8 +8342,19 @@
                     }
                     var part1 = this.$[2]
                     var part2 = this.$[3].toString()
-                    var finalPart = formatValue(part1)
-                    return sign + (--category >= 4 ? finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",") : ("e".repeat(category) + part2[0] + "." + part2.slice(1, 4) + "e" + finalPart))
+                    if (category >= 4) {
+                        var finalPart
+                        if (part1 < 1000n && category < 1000) {
+                            var hyperData = Hyper(part2)
+                            hyperData.$[2] -= 49
+                            finalPart = formatValue(hyperData.add(part1 - 1n), 2)
+                        } else {
+                            finalPart = formatValue(part1)
+                        }
+                        return sign + finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",")
+                    } else {
+                        return sign + ("e".repeat(--category) + part2[0] + "." + part2.slice(1, 4) + "e" + formatValue(part1))
+                    }
                 }
 
                 var digits = this.$[2]
