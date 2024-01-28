@@ -1232,6 +1232,23 @@
             background-color: #064722;
         }
 
+        .techy2 {
+            border-color: #1fedc7;
+            background-color: #2699a6;
+        }
+
+        .techy2:hover,
+        .techy2:focus {
+            border-color: #3688bf;
+            background-color: #1e3b75;
+        }
+
+        .techy2:active {
+            transition: border-radius 100ms, background-color 200ms, border-color 200ms, transform 500ms;
+            border-color: #a20cf2;
+            background-color: #470633;
+        }
+
         .sleek {
             box-shadow: 0 0 3px black;
             border-color: white;
@@ -3645,7 +3662,8 @@
             metafactories: %MetaFactor$y/ies (5, An automatic factory)
             megetafactories: %MegetaFactor$y/ies (6, An automatic GIANT factory)
             meta2factories: %MetaMetaFactor$y/ies (7, An automatic factory FOR factories)
-            metabuilders: %MetaBuilder (8, An automatic MetaMetaFactory builder)
+            metabuilders: %MetaBUILDER$/S (8, An automatic MetaMetaFactory builder)
+            metacloners: %MetaCloner (10, A giant machine able to clone itself AND produce MetaBUILDERS)
             rwatches: Radium Watch$es (3, A watch made of radium that has a worrying green glow)
             radiummakers: Radium Worker (4, Someone who makes radium clocks and watches)
             family: Family Member (1, One way to make clocks!)
@@ -4359,7 +4377,7 @@
 
                     <br>
                     <button data-desc="You're rich! (In fake currency! Yay!!!)$metabucks$" data-earn="metabucks+1"
-                        data-cost="metac-1" data-sound="transaction">
+                        class="techy2" data-cost="metac-1" data-sound="transaction">
                         Sell 1 <span class="metac" role="img" aria-label="MetaClock"></span>
                         <span class="mini silver" data-earn="metabucks+*1" data-cost="metac-10%"
                             data-sound="transaction" data-show="metac>=10" data-desc="Sell 10% of all your MetaClocks!">
@@ -4410,8 +4428,13 @@
                     <br>
                     <button data-earn="metabuilders+1" data-cost="meta2factories-500" data-show="megetafactories>0"
                         class="techy"
-                        data-desc="MetaBUILDERS produce the BEST type of digital factory: the MetaMetaFactory.\nAnd they make 50 EVERY SINGLE SECOND!$metabuilders$">
+                        data-desc="MetaBUILDERS (as machines themselves) produce the BEST type of digital factory: the MetaMetaFactory.\nAnd they make 50 EVERY SINGLE SECOND!$metabuilders$">
                         +1 MetaBUILDER
+                    </button>
+                    <button data-earn="metacloners+1" data-cost="metabucks-1e39" data-show="metabuilders>0"
+                        class="techy"
+                        data-desc="If MetaBUILDERS are machines, what if you made a self-replicating machine that was also able to make MetaBUILDERS?\nThat's where the MetaCloner comes on in, but at a hefty cost.$metacloners$">
+                        +1 MetaCloner
                     </button>
                 </div>
 
@@ -10317,6 +10340,7 @@
                 stuff.megetafactories = new Hyper(oldStuff.megetafactories)
                 stuff.meta2factories = new Hyper(oldStuff.meta2factories)
                 stuff.metabuilders = new Hyper(oldStuff.metabuilders)
+                stuff.metacloners = new Hyper(oldStuff.metacloners)
 
                 add("shards", newShards.add(oldShards))
                 add("crystal1", purpleCrystals.mul(0.25).ceil(true))
@@ -13091,6 +13115,8 @@
             add("metaclickers", C("metamachines").div(600).add(C("metafactories").div(6)).add(C("megetafactories").div(0.06)))
             add("metafactories", C("meta2factories").mul(C("metac").sqrt()).div(60000000))
             add("meta2factories", C("metabuilders").mul(50).div(60))
+            mul("metacloners", Hyper(1.0002).pow(speed))
+            add("metabuilders", C("metacloners").div(100))
 
             var limitedProperties = properties.slice(0)
             limitedProperties.splice(limitedProperties.indexOf("iq"), 1)
