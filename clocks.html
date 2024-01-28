@@ -6151,7 +6151,8 @@
                             <span class="shard"></span><span class="shard"></span><span class="shard"></span>
                         </button>
 
-                        <div class="small glow2">The researches below WILL BE GONE after ascending once again!</div>
+                        <div class="small valuable2">All researches below WILL BE GONE after ascending once again if you
+                            purchase them!</div>
                         <span class="mini special" data-cost="shards-1" data-earn="$shardsci" data-fade="$shardsci"
                             data-sound="transaction">
                             -1 <span class="shard" aria-label="GOLDEN shard"></span> for new researches costing science!
@@ -6173,13 +6174,26 @@
                             -10,000,000 <span class="shard" aria-label="GOLDEN shards"></span>
                             for time machine power to increase based on time shard amount
                         </span>
-                        <span class="mini special" data-cost="shards-1e8" data-earn="$shardboost"
-                            data-fade="$shardboost" data-sound="transaction">
+                        <div class="mini special" data-cost="shards-1e9" data-earn="$shardjewel" data-fade="$shardjewel"
+                            data-sound="transaction">
+                            -1,000,000,000 <span class="shard" aria-label="GOLDEN shards"></span> for golden shards to
+                            increase jeweler production <i class="outlined">significantly</i>
+                        </div>
+
+                        <br><br>
+                        <div class="red small">
+                            NOTE: The upgrades below are one-time and provide no benefits until AFTER shard resetting!
+                        </div>
+                        <div class="mini special" data-cost="shards-1e8" data-earn="$shardboost" data-fade="$shardboost"
+                            data-sound="transaction">
                             -100,000,000 <span class="shard" aria-label="GOLDEN shards"></span> for golden shards to
-                            multiply its own gain by log10(shards + 1) + 1
-                            <br>
-                            NOTE: This provides no additional benefits and is useless until AFTER a shard reset!
-                        </span>
+                            multiply its own gain by log10(shards + 1) + 1 for this shard reset only
+                        </div>
+                        <div class="mini special" data-cost="shards-1e10" data-earn="$doubleshard"
+                            data-fade="$doubleshard" data-sound="transaction">
+                            -10,000,000,000 <span class="shard" aria-label="GOLDEN shards"></span> to double golden
+                            shard gain for this shard reset only
+                        </div>
                     </div>
                 </div>
 
@@ -10189,6 +10203,9 @@
             if (hasResearch("shardboost")) {
                 newShards = newShards.mul(Hyper(true).add(C("shards").add(1).log10()))
             }
+            if (hasResearch("doubleshard")) {
+                newShards = newShards.add(newShards)
+            }
             newShards = newShards.floor()
             if (confirm(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You WILL NOT EARN ANY SHARDS OR BONUSES!!!\r\nYOU WILL ALSO ONLY HAVE 25% CRYSTAL POWER REMAINING! (Likely a bad idea!!!)" : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
                 var newResearches = []
@@ -12792,7 +12809,7 @@
             var copperTowers = C("coppertowers")
             var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
             var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
-            var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(C("shards").mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
+            var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
 
             var fcMakers = C("fcmakers")
             var labs = C("labs")
@@ -12834,7 +12851,7 @@
 
             var molders = C("molders")
             var barmolders = C("barmolds")
-            var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 4 : 1).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1)
+            var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 4 : 1).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1)
 
             var managers = C("managers")
             var managerPower = managers.mul(0.006 - 0.006 * Math.exp(-0.04 * managers))
@@ -13885,6 +13902,9 @@
                         var newShards = C("gc").mul(1e-9)
                         if (hasResearch("shardboost")) {
                             newShards = newShards.mul(Hyper(true).add(C("shards").add(1).log10()))
+                        }
+                        if (hasResearch("doubleshard")) {
+                            newShards = newShards.add(newShards)
                         }
                         text += newShards.isLess(1) ? "<br>[Ascending will NOT earn you ANY SHARDS and will also decrease crystal power!]" : "<br>[Ascending will earn you a total of " + format(newShards) + " shards but reset significant progress.]"
                     }
