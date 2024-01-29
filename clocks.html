@@ -3658,7 +3658,8 @@
             steelmills: Steel Mill (3, A mill in order to farm steel, ahem, farm...)
             millmakers: Steel Millmaker (3, A mill to make more steel mills)
             money: Dollar (0, Moneymoneymoney)
-            metabucks: MetaBuck (2, A funny-looking digital dollar)
+            metabucks: %MetaBuck (2, A funny-looking digital dollar)
+            metacoins: %MetaCoin (10, A silly green digital coin)
             clocks: Clock (0, A basic and cheap household clock)
             gc: Golden Clock (1, A golden clock with a metallic shine)
             goldore: Golden Nugget (1, A small golden nugget to use as you wish. You're golden!, ORE)
@@ -4387,9 +4388,9 @@
 
                     <br>
                     <button data-desc="You're rich! (In fake currency! Yay!!!)$metabucks$" data-earn="metabucks+1"
-                        class="techy2" data-cost="metac-1" data-sound="transaction">
+                        class="techy" data-cost="metac-1" data-sound="transaction">
                         Sell 1 <span class="metac" role="img" aria-label="MetaClock"></span>
-                        <span class="mini techy" data-earn="metabucks+*1" data-cost="metac-10%"
+                        <span class="mini techy2" data-earn="metabucks+*1" data-cost="metac-10%"
                             data-sound="transaction" data-show="metac>=10" data-desc="Sell 10% of all your MetaClocks!">
                             10% <span class="metac" role="img" aria-label="of MetaClocks"></span>
                         </span>
@@ -4441,8 +4442,14 @@
                         data-desc="MetaBUILDERS (as machines themselves) produce the BEST type of digital factory: the MetaMetaFactory.\nAnd they make 50 EVERY SINGLE SECOND!$metabuilders$">
                         +1 MetaBUILDER
                     </button>
-                    <button data-earn="metacloners+1" data-cost="metabucks-1e39" data-show="metabuilders>0"
-                        class="techy"
+                    <button data-earn="metacoins+1" data-cost="metabucks-1e36" data-show="metabucks>1e25" class="techy2"
+                        data-desc="MetaCoins are able to increase your MetaBUILDER construction rate, using some weird unexplained reason.\nPlus, they increase their sell value!$metacoins$">
+                        +1<span class="bigger metacoin" role="img" aria-label="MetaCoin"></span>
+                    </button>
+
+                    <br>
+                    <button data-earn="metacloners+1" data-cost="metabucks-5e55" data-show="metabuilders>0"
+                        class="techy2"
                         data-desc="If MetaBUILDERS are machines, what if you made a self-replicating machine that was also able to make MetaBUILDERS?\nThat's where the MetaCloner comes on in, but at a hefty cost.$metacloners$">
                         +1 MetaCloner
                     </button>
@@ -10782,6 +10789,8 @@
                                 if (hasResearch("aiselling")) {
                                     multiplier = multiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
                                 }
+                            } else if (part1 === "metabucks") {
+                                multiplier = C("metacoins").add(1).sqr()
                             } else if (part1 === "bonus1" || part1 === "bonus2" || part1 === "bonus3") {
                                 multiplier = timeBonus
                             }
@@ -13124,7 +13133,7 @@
             add("metac", C("metaclickers").div(6))
             add("metaclickers", C("metamachines").div(600).add(C("metafactories").div(6)).add(C("megetafactories").div(0.06)))
             add("metafactories", C("meta2factories").mul(C("metac").sqrt()).div(60000000))
-            add("meta2factories", C("metabuilders").mul(50).div(60))
+            add("meta2factories", C("metabuilders").mul(50).mul(Hyper(true).add(C("metacoins").pow(6))).div(60))
             mul("metacloners", Hyper(1.0002).pow(speed))
             add("metabuilders", C("metacloners").div(100))
 
