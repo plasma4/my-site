@@ -247,9 +247,14 @@
             color: green;
         }
 
+        .grid {
+            grid-template-columns: auto auto auto;
+        }
+
         .grid>* {
             background-color: #eabc80;
-            max-width: 500px;
+            transition: width 500ms;
+            font-size: 25px;
             margin: 2px;
             padding: 2px;
             border-radius: 4px;
@@ -710,16 +715,6 @@
         }
 
         @media (min-width: 1250px) {
-            .grid {
-                display: inline-grid;
-                grid-template-columns: 200px 200px 200px;
-                gap: 4px;
-            }
-
-            .grid>* {
-                font-size: 26px;
-            }
-
             * {
                 font-size: 30px;
             }
@@ -745,6 +740,15 @@
             * {
                 font-size: 32px;
             }
+
+            .grid {
+                display: inline-grid;
+                gap: 4px;
+            }
+
+            .grid>* {
+                width: 200px;
+            }
         }
 
         @media (min-width: 1500px) {
@@ -759,10 +763,15 @@
             .small {
                 font-size: 22px;
             }
+        }
 
+        @media (min-width: 1600px) {
             .grid {
                 display: inline-grid;
-                grid-template-columns: 300px 300px 300px;
+            }
+
+            .grid>* {
+                width: 300px;
             }
         }
 
