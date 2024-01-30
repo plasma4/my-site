@@ -3596,10 +3596,10 @@
         </header>
 
         <div id="properties">
-            wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            influence|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
-            s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
+            s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
         </div>
         <div id="rocketParts">
             rocketbody|rocketfins|rocketcone
@@ -3666,11 +3666,12 @@
             radiumore: Radium Bar (3, Scary!, ORE)
             radiummills: Radium Mill (5, A gigantic mill dedicated to slowly turn radium into tiny bars)
             rc: Radium Clock (3, Scary! Again!)
+            influence: Digital Influence$ (11, Influence that you have in the digital landscape)
             metac: %MetaClock (2, A weird digital clock)
             metaclickers: %MetaClicker (3, An automatic clicker)
             metamachines: %MetaMachine (4, An automatic machine)
             metafactories: %MetaFactor$y/ies (5, An automatic factory)
-            megetafactories: %MegetaFactor$y/ies (6, An automatic GIANT factory)
+            metamegafactories: %MegetaFactor$y/ies (6, An automatic GIANT factory)
             meta2factories: %MetaMetaFactor$y/ies (7, An automatic factory FOR factories)
             metabuilders: %MetaBUILDER$/S (8, An automatic MetaMetaFactory builder)
             metacloners: %MetaCloner (10, A giant machine able to clone itself AND produce MetaBUILDERS)
@@ -4368,7 +4369,6 @@
                 <div id="metaclock" style="display: none">
                     <span class="big metac"></span>
                     Digital clocks? <b>Really?</b>
-
                     <br>
                     <b class="smallish red">
                         Please be aware that digital clocks are UNFINISHED and do not have extra uses yet!
@@ -4383,6 +4383,10 @@
                         <div id="metabucks" class="green"
                             data-desc="MetaBucks are the digital currency of the modern clock-filled world."
                             data-for="$big metabuck">
+                        </div>
+                        <div id="influence" class="bluey"
+                            data-desc="Influence in the digital world translates to real-life influence!\n(As if you didn't know that already...)"
+                            data-for="influence$">
                         </div>
                     </div>
 
@@ -4423,21 +4427,21 @@
                         data-desc="MetaFactories produce 10 MetaClickers per second at no extra cost!$metafactories$">
                         +1 MetaFactory
                     </button>
-                    <button data-earn="megetafactories+1" data-cost="metafactories-10" data-show="metaclickers>0"
+                    <button data-earn="metamegafactories+1" data-cost="metafactories-10" data-show="metaclickers>0"
                         class="techy"
-                        data-desc="MegetaFactories (or Meta-MegaFactories) produce 1,000 MetaClickers a SECOND!$megetafactories$">
+                        data-desc="MegetaFactories (or Meta-MegaFactories) produce 1,000 MetaClickers a SECOND!$metamegafactories$">
                         +1 MegetaFactories
                     </button>
 
                     <br>
-                    <button data-earn="meta2factories+1" data-cost="metaclickers-5e6" data-show="megetafactories>0"
+                    <button data-earn="meta2factories+1" data-cost="metaclickers-5e6" data-show="metamegafactories>0"
                         class="techy"
                         data-desc="MetaMetaFactories produce MetaFactories.\nEven better, the more metaclickers you own, the better this effect is!$meta2factories$">
                         +1 MetaMetaFactory
                     </button>
 
                     <br>
-                    <button data-earn="metabuilders+1" data-cost="meta2factories-500" data-show="megetafactories>0"
+                    <button data-earn="metabuilders+1" data-cost="meta2factories-500" data-show="metamegafactories>0"
                         class="techy"
                         data-desc="MetaBUILDERS (as machines themselves) produce the BEST type of digital factory: the MetaMetaFactory.\nAnd they make 50 EVERY SINGLE SECOND!$metabuilders$">
                         +1 MetaBUILDER
@@ -4453,6 +4457,23 @@
                         data-desc="If MetaBUILDERS are machines, what if you made a self-replicating machine that was also able to make MetaBUILDERS?\nThat's where the MetaCloner comes on in, but at a hefty cost.$metacloners$">
                         +1 MetaCloner
                     </button>
+
+                    <br>
+                    <button data-earn="" id="metaReset" data-show="metacloners>1e6" class="cherrybg"
+                        data-desc="[You NEED 375 digital knowlege for your AI to be able to generate another meta-reality!]\nCreate a new reality (using the power of AI, of course) to meta-ify in!\n{Requires you to have 1.000e300 MetaBucks. Creating a new reality gives you influence.\nAdditionally, influence increases the maximum amount of meta items you can have at once.}">
+                        Create a new meta-reality
+                    </button>
+
+                    <hr>
+                    <div class="small yellow">
+                        Influence gives you an increased sell multiplier that is up to 2.5×!
+                        <b class="small orange">
+                            Note that your meta items cap out at about 1.79769e308, a very specific value indeed!
+                        </b>
+                        <br>
+                        This cannot be increased unless you obtain influence!
+                        (Currently capped at <b id="metaLimit" class="red"></b>)
+                    </div>
                 </div>
 
                 <div id="appley" style="display: none">
@@ -6346,6 +6367,7 @@
                     <hr>
                     <div class="small red">
                         January 27, 2024: Working on MetaClock content! (Unfinished)
+                        <span class="metac"></span><span class="metac"></span><span class="metac"></span>
                     </div>
                     <div class="pink">
                         January 25, 2024: A few weeks of behind-the-scene exotic apple insanity!
@@ -10349,12 +10371,14 @@
                 var blueCrystals = C("crystal3")
 
                 reset(true)
-                stuff.metamoney = new Hyper(oldStuff.metamoney)
+                stuff.metabucks = new Hyper(oldStuff.metabucks)
+                stuff.influence = new Hyper(oldStuff.influence)
+                stuff.metacoins = new Hyper(oldStuff.metacoins)
                 stuff.metac = new Hyper(oldStuff.metac)
                 stuff.metaclickers = new Hyper(oldStuff.metaclickers)
                 stuff.metamachines = new Hyper(oldStuff.metamachines)
                 stuff.metafactories = new Hyper(oldStuff.metafactories)
-                stuff.megetafactories = new Hyper(oldStuff.megetafactories)
+                stuff.metamegafactories = new Hyper(oldStuff.metamegafactories)
                 stuff.meta2factories = new Hyper(oldStuff.meta2factories)
                 stuff.metabuilders = new Hyper(oldStuff.metabuilders)
                 stuff.metacloners = new Hyper(oldStuff.metacloners)
@@ -10365,6 +10389,25 @@
                 add("crystal3", blueCrystals.mul(0.25).ceil(true))
                 researches = newResearches
                 console.log("A shard reset was done for " + format(newShards) + " new shards.")
+            }
+        })
+
+        ID("metaReset").addEventListener("click", function () {
+            if (C("iq").mul(0.2).sqrt(true).sqrt(true).isLess(375)) {
+                if (C("metabucks").isLess("1e300")) {
+                    alert("You need at least 375 digital knowlege as well as 1.000e300 MetaBucks to complete this reset!")
+                } else {
+                    alert("You need at least 375 digital knowlege to complete this reset!")
+                }
+            } else if (C("metabucks").isLess("1e300")) {
+                alert("You need at least 1.000e300 MetaBucks to complete this reset!")
+            } else {
+                var earnings = C("metabucks").log10().sub(250)
+                if (earnings !== false && earnings.isMoreOrEqual(1) && confirm("Are you sure you want to reset this meta-reality in exchange for " + format(earnings) + " influence? Your meta-filled progress will reset, BUT you will increase the maximum amount of meta items you can own!")) {
+                    add("influence", earnings.floor())
+                    clearAmount(["metabucks", "metacoins", "metac", "metaclickers", "metamachines", "metafactories", "metamegafactories", "meta2factories", "metabuilders", "metacloners"], true)
+                    setup(true)
+                }
             }
         })
 
@@ -10782,6 +10825,7 @@
                             }
 
                             if (part1 === "money") {
+                                multiplier = multiplier.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5)))
                                 if (hasResearch("marketing")) {
                                     multiplier = multiplier.mul(Hyper(true).add(useableData.computers.mul(0.04)))
                                 }
@@ -13018,7 +13062,7 @@
             add("clocks", cpt)
             if (autosellOn) {
                 var quantity = cpt.mul(sellPercent).mul(speed).mul(0.01)
-                rawAdd("money", quantity.mul(Hyper(true).add(useableData.computers.mul(0.04))).mul(hasResearch("aiselling") ? C("iq").add(1).log10().add(1).log10().add(1).log10() : 1))
+                rawAdd("money", quantity.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("aiselling") ? C("iq").add(1).log10().add(1).log10().add(1).log10() : 1))
                 rawRemove("clocks", quantity)
             }
 
@@ -13131,7 +13175,7 @@
             updateId("constructorsUsed", format(cManagersUsed))
 
             add("metac", C("metaclickers").div(6))
-            add("metaclickers", C("metamachines").div(600).add(C("metafactories").div(6)).add(C("megetafactories").div(0.06)))
+            add("metaclickers", C("metamachines").div(600).add(C("metafactories").div(6)).add(C("metamegafactories").div(0.06)))
             add("metafactories", C("meta2factories").mul(C("metac").sqrt()).div(60000000))
             add("meta2factories", C("metabuilders").mul(50).mul(Hyper(true).add(C("metacoins").pow(6))).div(60))
             mul("metacloners", Hyper(1.0002).pow(speed))
@@ -13142,7 +13186,20 @@
             limitedProperties.splice(limitedProperties.indexOf("science"), 1)
             limitedProperties.splice(limitedProperties.indexOf("wscience"), 1)
             limitedProperties.splice(limitedProperties.indexOf("creativity"), 1)
-            limit(limitedProperties, matterLimit)
+            var metaLimited = [], newLimited = []
+            for (var i = 0; i < limitedProperties.length; i++) {
+                var limitedProperty = limitedProperties[i]
+                if (limitedProperty.slice(0, 4) === "meta") {
+                    metaLimited.push(limitedProperty)
+                } else {
+                    newLimited.push(limitedProperty)
+                }
+            }
+            limit(newLimited, matterLimit)
+
+            var metaCap = Hyper(2).pow(C("influence").mul(5).add(1024))
+            limit(metaLimited, metaCap)
+            updateId("metaLimit", metaCap.format())
 
             var negativeElement = ID("wattsNegative")
             var subtracted = startingWatts.subOrFalse(wattUse)
@@ -13349,7 +13406,7 @@
             var moneyLoss = oldMoney.sub(newMoney)
             var newStats = moneyLoss.isLess("eee100") ? moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")) : ""
 
-            var valueMultiplier = (hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : Hyper(true))
+            var valueMultiplier = Hyper(true).add(C("influence").mul(0.01).min(2.5)).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : Hyper(true))
 
             if (hasResearch("aiselling")) {
                 valueMultiplier = valueMultiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
@@ -13718,7 +13775,7 @@
                 update(speedElements[0], "Speed multiplier: " + speed.format(speed.isLess(100) ? 2 : 0) + "×")
             }
 
-            // Update everything within the game (like wood)
+            // Update all the values that are within the game
             updateGame()
 
             // Update the research elements
