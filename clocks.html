@@ -3605,7 +3605,7 @@
         </header>
 
         <div id="properties">
-            influence|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            metaresets|influence|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -10416,7 +10416,8 @@
                 var earnings = C("metabucks").log10().sub(250)
                 if (earnings !== false && earnings.isMoreOrEqual(1) && confirm("Are you sure you want to reset this meta-reality in exchange for " + format(earnings) + " influence? Your meta-filled progress will reset, BUT you will increase the maximum amount of meta items you can own!")) {
                     add("influence", earnings.floor())
-                    clearAmount(["metabucks", "metacoins", "metac", "metaclickers", "metamachines", "metafactories", "metamegafactories", "meta2factories", "metabuilders", "metacloners"], true)
+                    add("metaresets", Hyper(true))
+                                        clearAmount(["metabucks", "metacoins", "metac", "metaclickers", "metamachines", "metafactories", "metamegafactories", "meta2factories", "metabuilders", "metacloners"], true)
                     setup(true)
                 }
             }
@@ -13568,6 +13569,10 @@
             }
 
             var themeCSS = colorIsBright(mainHex) ? "" : "*{color:#fff}html{background-color:#000}#hover{background-color:#000}"
+            var metaResets = Number(C("metaresets")) % 6
+            if (metaResets !== 0) {
+                themeCSS += ".metac,.metabuck{filter:hue-rotate(" + metaResets * 60 + "deg)}"
+            }
             if (sleekMode) {
                 themeCSS += "#navigation>span{background-color:#999}.comical{background:none}#navigation>span:hover{background-color:#888}#navigation>span:active{background-color:#555}button,.mini{border-color:white;color:white;background:none!important;background-color:black!important;text-shadow:none!important;filter:none!important}#spells>button:before{background:conic-gradient(#fff6 var(--time-left),transparent var(--time-left))}"
             }
