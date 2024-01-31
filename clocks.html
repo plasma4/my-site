@@ -9866,13 +9866,15 @@
                     } else {
                         enterDown = true
                     }
-                    easyButton = target
-                    easyTime = Date.now() + 500
-                    if (target.parentElement.id === "spells") {
-                        ID("spells").onmousedown({ target: target, stopPropagation: function () { } })
-                    } else {
-                        target.click()
-                    }
+                    if (target.parentElement) {
+                        easyButton = target
+                        easyTime = Date.now() + 500
+                        if (target.parentElement.id === "spells") {
+                            ID("spells").onmousedown({ target: target, stopPropagation: function () { } })
+                        } else {
+                            target.click()
+                        }
+                     }
 
                     e.preventDefault()
                 }
