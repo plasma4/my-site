@@ -84,7 +84,8 @@
             font-family: Georgia, "Times New Roman", Times;
         }
 
-        tt {
+        tt,
+        .metabg {
             font-family: "Courier New", Courier, monospace;
             color: white;
         }
@@ -2306,6 +2307,64 @@
             background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAABf0lEQVRIS2N8PXHRfwYgYOLmAmJOEBOD/vf1O1gcnQYLIgFS9P/7+g2skxHdAeiG4LIcZMDvpyfAhrBKW4A9gM3xMPOQzQGxURyArBmkAZsm1BBAWA4LAGIdAbEcFqLfICGAHvwgBxDjc4aF+yD2xzsRFRKolkNCAcUByMGPrhgSAt8Y2KWYwZZ9yWlGiX+eKbVg/s9nf7FGB7qnYNEAdwCLmBBKHP559Q7MRw4uXJbDXILPETDzYeaBzEcJAZACWAiQYzmpjsDpAGyW/z25AhIae++hBDsuDpOzEliK2TwCIzpAHgWFAl4HIAc7qZbDHIXLERgOeDtnDbgggkXBr/tPoXH/jYFcy/E5gk1RGh4CIHWMIAfAEggi+HGndqLiAEkRtoSJbB/cAbSwHF/CBDkCZCfYATCF+PI5qT5HV48tJOBRAMnvkOKVx9Qao5Ch1HLkkPhy+ihK3QEOAeSKBV68UstWdHPQim2wA37egpbpsLKdVpbDzIU6gl3NiQEAW+RqkUNLSTsAAAAASUVORK5CYII=");
         }
 
+        .metabg {
+            box-shadow: 0 0 6px #12df7f;
+            color: white;
+            animation: meta 10s linear infinite;
+            animation-direction: alternate;
+        }
+
+        .metabg:hover,
+        .metabg:focus {
+            filter: invert(100%);
+        }
+
+        .metabg:active {
+            filter: none;
+        }
+
+        @keyframes meta {
+            0% {
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAChJREFUOE9jVH3h9J+BAsAIMuC2xD6yjRg1gIFhNAxGwwCUgQY+HQAASqc+UMTVCQkAAAAASUVORK5CYII=");
+                background-position: 0px 0px;
+            }
+
+            15% {
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAChJREFUOE9jFNr47D8DBYARZMA7fymyjRg1gIFhNAxGwwCUgQY+HQAAzAM+qsDxXjwAAAAASUVORK5CYII=");
+                background-position: -32px 32px;
+            }
+
+            25% {
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAChJREFUOE9jVH3h9J+BAsAIMuC2xD6yjRg1gIFhNAxGwwCUgQY+HQAASqc+UMTVCQkAAAAASUVORK5CYII=");
+                background-position: 96px 96px;
+            }
+
+            40% {
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAChJREFUOE9jVH3h9J+BAsAIMuC2xD6yjRg1gIFhNAxGwwCUgQY+HQAASqc+UMTVCQkAAAAASUVORK5CYII=");
+                background-position: 0px 80px;
+            }
+
+            45% {
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAG5JREFUWEdjPGSx+j8DBcDg+kQKdDMwMIIcYHcilGxDPvHbMPB9PEK2/lEHjIbAaAiMhsBoCIyGwGgIMJ57pkBReyDI/RjZVTFII9gBRlIPyDZEQfcZw4PLUmTrH3XAaAiMhsBoCIyGwGgIjIYAACsD2nHOwR40AAAAAElFTkSuQmCC");
+                background-position: -32px 0px;
+            }
+
+            55% {
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAChJREFUOE9jVH3h9J+BAsAIMuC2xD6yjRg1gIFhNAxGwwCUgQY+HQAASqc+UMTVCQkAAAAASUVORK5CYII=");
+                background-position: 0px 0px;
+            }
+
+            80% {
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAG5JREFUWEdj3PBh4X8GCoDeEi8KdDMwMIIcECAQT7Yh96a8ZlDKESVb/6gDRkNgNARGQ2A0BEZDYDQEGGNb7lHUHpgh70R2VQzSCHbA4holsg35uliBgTv2Adn6Rx0wGgKjITAaAqMhMBoCoyEAAAqi2hb/YxclAAAAAElFTkSuQmCC");
+                background-position: -128px 32px;
+            }
+
+            100% {
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAChJREFUOE9jVH3h9J+BAsAIMuC2xD6yjRg1gIFhNAxGwwCUgQY+HQAASqc+UMTVCQkAAAAASUVORK5CYII=");
+                background-position: 32px -64px;
+            }
+        }
+
         .yellowbg,
         .orangebg,
         .cherrybg {
@@ -3606,7 +3665,7 @@
         </header>
 
         <div id="properties">
-            metaresets|influence|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -3670,6 +3729,7 @@
             money: Dollar (0, Moneymoneymoney)
             metabucks: %MetaBuck (2, A funny-looking digital dollar)
             metacoins: %MetaCoin (10, A silly green digital coin)
+            metaholes: %MetaHole (11, A hole made from digital influence)
             clocks: Clock (0, A basic and cheap household clock)
             gc: Golden Clock (1, A golden clock with a metallic shine)
             goldore: Golden Nugget (1, A small golden nugget to use as you wish. You're golden!, ORE)
@@ -4469,9 +4529,16 @@
                     </button>
 
                     <br>
-                    <button data-earn="" id="metaReset" data-show="metacloners>1e6" class="cherrybg"
+                    <button data-earn="" id="metaReset" data-show="metacloners>1e6" class="metabg"
                         data-desc="[You NEED 375 digital knowlege for your AI to be able to generate another meta-reality!]\nCreate a new reality (using the power of AI, of course) to meta-ify in!\n{Requires you to have 1.000e300 MetaBucks. Creating a new reality gives you influence.\nAdditionally, influence increases the maximum amount of meta items you can have at once.}">
                         Create a new meta-reality
+                    </button>
+
+                    <br>
+                    <button data-earn="metaholes+1" data-cost="influence-1" id="metaReset" data-show="influence>=100"
+                        class="metabg"
+                        data-desc="Make a MetaHole using your influence!\nUnlocks something new for the next update...$metaholes$">
+                        Make a MetaHole
                     </button>
 
                     <hr>
@@ -6375,6 +6442,10 @@
                     </strong>
 
                     <hr>
+                    <div class="small orange">
+                        January 31, 2024: Now working on MetaHoles! Have fun!
+                        <span class="metabuck"></span>
+                    </div>
                     <div class="small red">
                         January 27, 2024: Working on MetaClock content! (Unfinished)
                         <span class="metac"></span><span class="metac"></span><span class="metac"></span>
@@ -9875,7 +9946,7 @@
                         } else {
                             target.click()
                         }
-                     }
+                    }
 
                     e.preventDefault()
                 }
@@ -10385,6 +10456,7 @@
                 reset(true)
                 stuff.metabucks = new Hyper(oldStuff.metabucks)
                 stuff.influence = new Hyper(oldStuff.influence)
+                stuff.metaholes = new Hyper(oldStuff.metaholes)
                 stuff.metacoins = new Hyper(oldStuff.metacoins)
                 stuff.metac = new Hyper(oldStuff.metac)
                 stuff.metaclickers = new Hyper(oldStuff.metaclickers)
@@ -10418,7 +10490,7 @@
                 if (earnings !== false && earnings.isMoreOrEqual(1) && confirm("Are you sure you want to reset this meta-reality in exchange for " + format(earnings) + " influence? Your meta-filled progress will reset, BUT you will increase the maximum amount of meta items you can own!")) {
                     add("influence", earnings.floor())
                     add("metaresets", Hyper(true))
-                                        clearAmount(["metabucks", "metacoins", "metac", "metaclickers", "metamachines", "metafactories", "metamegafactories", "meta2factories", "metabuilders", "metacloners"], true)
+                    clearAmount(["metabucks", "metacoins", "metac", "metaclickers", "metamachines", "metafactories", "metamegafactories", "meta2factories", "metabuilders", "metacloners"], true)
                     setup(true)
                 }
             }
