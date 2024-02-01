@@ -1631,7 +1631,7 @@
         .stripe2,
         .stripe3,
         .stripe4,
-        .stripe4 {
+        .stripe5 {
             border-color: black;
             background-size: 200% 100%;
             text-shadow: 3px 3px 5px #000c;
@@ -3666,10 +3666,10 @@
         </header>
 
         <div id="properties">
-            metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
-            s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
+            s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
         </div>
         <div id="rocketParts">
             rocketbody|rocketfins|rocketcone
@@ -3731,6 +3731,8 @@
             metabucks: %MetaBuck (2, A funny-looking digital dollar)
             metacoins: %MetaCoin (10, A silly green digital coin)
             metaholes: %MetaHole (11, A hole made from digital influence)
+            metadisks: %MetaDisk (11, A digital disk that generates MetaSpin)
+            metaspin: %MetaSpin$ (10, Spin!)
             clocks: Clock (0, A basic and cheap household clock)
             gc: Golden Clock (1, A golden clock with a metallic shine)
             goldore: Golden Nugget (1, A small golden nugget to use as you wish. You're golden!, ORE)
@@ -4459,6 +4461,8 @@
                             data-desc="Influence in the digital world translates to real-life influence!\n(As if you didn't know that already...)"
                             data-for="influence$">
                         </div>
+                        <div id="metaspin" class="stripe5" data-desc="MetaSpin spins!" data-for="MetaSpin$">
+                        </div>
                     </div>
 
                     <br>
@@ -4536,15 +4540,21 @@
                     </button>
 
                     <br>
-                    <button data-earn="metaholes+1" data-cost="influence-1" id="metaReset" data-show="influence>=100"
-                        class="metabg"
+                    <button data-earn="metaholes+1" data-cost="influence-1" data-show="influence>=100" class="metabg"
                         data-desc="Make a MetaHole using your influence!\nUnlocks something new for the next update...$metaholes$">
                         Make a MetaHole
+                    </button>
+                    <button data-earn="metadisks+1" data-cost="metaholes-5" data-show="influence>=100" class="metabg"
+                        data-desc="Create a MetaDisk using 5 MetaHoles.\nMetaDisks spin and generate MetaSpin!$metadisks$">
+                        Make a MetaDisk
                     </button>
 
                     <hr>
                     <div class="small yellow">
-                        Influence gives you an +1% sell multiplier STACKING with other multipliers that is up to 2.5×!
+                        Influence gives you an +1% sell multiplier STACKING with other multipliers!
+                        <br>
+                        Normally, the sell limit that is up to 2.5×, but your <b id="spinAmount" class="orange"></b>
+                        MetaSpin is increasing it to <b id="metaSell" class="lime"></b>.
                         <b class="small orange">
                             Note that your meta items cap out at about 1.79769e308, a very specific value indeed!
                         </b>
@@ -10458,6 +10468,8 @@
                 stuff.metabucks = new Hyper(oldStuff.metabucks)
                 stuff.influence = new Hyper(oldStuff.influence)
                 stuff.metaholes = new Hyper(oldStuff.metaholes)
+                stuff.metadisks = new Hyper(oldStuff.metadisks)
+                stuff.metaspin = new Hyper(oldStuff.metaspin)
                 stuff.metacoins = new Hyper(oldStuff.metacoins)
                 stuff.metac = new Hyper(oldStuff.metac)
                 stuff.metaclickers = new Hyper(oldStuff.metaclickers)
@@ -10911,7 +10923,7 @@
                             }
 
                             if (part1 === "money") {
-                                multiplier = multiplier.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5)))
+                                multiplier = multiplier.mul(Hyper(true).add(C("influence").mul(0.01).min(C("metaspin").add(10).log10().add(1.5))))
                                 if (hasResearch("marketing")) {
                                     multiplier = multiplier.mul(Hyper(true).add(useableData.computers.mul(0.04)))
                                 }
@@ -13266,6 +13278,7 @@
             add("meta2factories", C("metabuilders").mul(50).mul(Hyper(true).add(C("metacoins").pow(6))).div(60))
             mul("metacloners", Hyper(1.0002).pow(speed))
             add("metabuilders", C("metacloners").div(100))
+            add("metaspin", C("metadisks").div(10000))
 
             var limitedProperties = properties.slice(0)
             limitedProperties.splice(limitedProperties.indexOf("iq"), 1)
@@ -13286,6 +13299,8 @@
             var metaCap = Hyper(2).pow(C("influence").mul(5).add(1024))
             limit(metaLimited, metaCap)
             updateId("metaLimit", metaCap.format())
+            updateId("spinAmount", C("metaspin").format(2))
+            updateId("metaSell", C("metaspin").add(10).log10().add(1.5).format(4) + "×")
 
             var negativeElement = ID("wattsNegative")
             var subtracted = startingWatts.subOrFalse(wattUse)
@@ -13492,7 +13507,7 @@
             var moneyLoss = oldMoney.sub(newMoney)
             var newStats = moneyLoss.isLess("eee100") ? moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")) : ""
 
-            var valueMultiplier = Hyper(true).add(C("influence").mul(0.01).min(2.5)).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : Hyper(true))
+            var valueMultiplier = Hyper(true).add(C("influence").mul(0.01).min(C("metaspin").add(10).log10().add(1.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : Hyper(true))
 
             if (hasResearch("aiselling")) {
                 valueMultiplier = valueMultiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
