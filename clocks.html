@@ -6406,8 +6406,8 @@
                         <br><br>
                         Mods allow you to customize the game. Scripts should be in JavaScript.
                         <br>
-                        You can use <i>the comments in the source code</i> to guide you. Mods will automatically
-                        save.
+                        You can use <i>the comments in the source code</i> to guide you.
+                        The mod program will automatically save!
                         <br>
                         To modify add CSS, change the <tt>extraCSS</tt> variable.
                         (Note that the CSS code added is added AFTER the game's own style sheet.)
@@ -6441,9 +6441,11 @@
                         You can set the <tt>data</tt> variable to an object, which will get passed to all events
                         added through <tt>addEventListener()</tt>.
                         <br>
-                        You can also set <tt>window.hideModWarning</tt> to <tt>true</tt> <i>before the game
-                            loads</i>
+                        You can also set <tt>window.hideModWarning</tt> to <tt>true</tt>
+                        <i>before the game loads</i>
                         through an extension to skip the mod warning whenever the game loads up.
+                        <br>
+                        You can't do this with a mod itself for security reasons!
                     </div>
                 </div>
 
@@ -7605,8 +7607,7 @@
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
                     var max = d1 > d2 ? d1 : d2
-                    var sum
-                    sum = start.$[3] + minorPart / (10n ** (d1 - d2))
+                    var sum = start.$[3] + minorPart / (10n ** (d1 - d2))
                     if (sum >= BIGLIMIT) {
                         if (max === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
@@ -7622,8 +7623,7 @@
                     var d1 = BigInt(minorPart.toString().length - 1)
                     var d2 = b.$[2]
                     var max = d1 > d2 ? d1 : d2
-                    var sum
-                    sum = b.$[3] + minorPart / (10n ** (d2 - d1))
+                    var sum = b.$[3] + minorPart / (10n ** (d2 - d1))
                     if (sum >= BIGLIMIT) {
                         if (max === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
@@ -7736,8 +7736,7 @@
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
                     var max = d1 > d2 ? d1 : d2
-                    var sum
-                    sum = start.$[3] - minorPart / (10n ** (d1 - d2))
+                    var sum = start.$[3] - minorPart / (10n ** (d1 - d2))
                     if (sum >= BIGLIMIT) {
                         if (max === BIGLIMIT) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
