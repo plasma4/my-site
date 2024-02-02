@@ -7074,11 +7074,6 @@
                                 var firstNonZero = match.index
                                 string = string.slice(firstNonZero)
                             }
-
-                            if (string.length >= HDIGITS) {
-                                eTotal++
-                                var big50 = BigInt(string.slice(0, HDIGITS))
-                            }
                         }
 
                         var dot = beforeE.indexOf("."), digits = 0
