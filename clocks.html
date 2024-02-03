@@ -4573,14 +4573,12 @@
                     Apples!
 
                     <br>
-                    <b class="smallish">
-                        IMPORTANT: Due to the lack of infinite storage in your universe,
+                    <b class="small">
+                        IMPORTANT: Due to the lack of infinite storage in your currently colonized multiverse,
                         ALL materials, workers, and buildings are capped at 10<sup class="small orange">80</sup>
                         until you find additional space!
-                        <br>
-                        (Currently capped at 10<sup class="small red" id="cap"></sup>)
                     </b>
-                    <br><br>
+                    <div class="orange">(Currently capped at 10<sup class="small red" id="cap"></sup>)</div>
 
                     <div class="sub">
                         <div class="grid">
@@ -5063,7 +5061,7 @@
 
                         <div id="wormsearch" class="study">
                             <div data-cost="eee1000" data-iq="F25000000" data-show="$tetrate" data-research="genius"
-                                data-desc="[You need F25.000M digital knowlege to purchase this research!]\nQuantum computers are pretty powerful, right?\nThe more quantum computers you have, the faster the tetrational growth is.">
+                                data-desc="[You need F25.000M digital knowlege to purchase this research!]\nQuantum computers are pretty powerful, right?\n(The more quantum computers you have, the more effective Tetrated AI is.)">
                                 <span class="move4">Quantum genius</span>: <span class="glow">$ee1.000e1,000</span>
                                 <span class="big money"></span>
                             </div>
@@ -7609,32 +7607,38 @@
                     var d1 = start.$[2]
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
-                    var max = d1 > d2 ? d1 : d2
-                    var sum = start.$[3] + minorPart / (10n ** (d1 - d2))
+                    var diff = d1 - d2
+                    if (diff > DIGITSMINUSONE) {
+                        return new Hyper(start)
+                    }
+                    var sum = start.$[3] + minorPart / (10n ** diff)
                     if (sum >= BIGLIMIT) {
-                        if (max === LIMITMINUSONE) {
+                        if (d1 === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, max + 1n, sum / 10n]
+                        b.$ = [sign, 2, d1 + 1n, sum / 10n]
                     } else {
-                        b.$ = [sign, 2, max, sum]
+                        b.$ = [sign, 2, d1, sum]
                     }
                     return b
                 } else if (c1 === 1 && c2 === 2) {
                     var minorPart = start.$[2]
                     var d1 = BigInt(minorPart.toString().length - 1)
                     var d2 = b.$[2]
-                    var max = d1 > d2 ? d1 : d2
-                    var sum = b.$[3] + minorPart / (10n ** (d2 - d1))
+                    var diff = d2 - d1
+                    if (diff > DIGITSMINUSONE) {
+                        return b
+                    }
+                    var sum = b.$[3] + minorPart / (10n ** diff)
                     if (sum >= BIGLIMIT) {
-                        if (max === LIMITMINUSONE) {
+                        if (d2 === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, max + 1n, sum / 10n]
+                        b.$ = [sign, 2, d2 + 1n, sum / 10n]
                     } else {
-                        b.$ = [sign, 2, max, sum]
+                        b.$ = [sign, 2, d2, sum]
                     }
                     return b
                 } else if (c1 === c2) {
@@ -7738,14 +7742,17 @@
                     var d1 = start.$[2]
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
-                    var max = d1 > d2 ? d1 : d2
-                    var sum = start.$[3] - minorPart / (10n ** (d1 - d2))
+                    var diff = d1 - d2
+                    if (diff > DIGITSMINUSONE) {
+                        return new Hyper(start)
+                    }
+                    var sum = start.$[3] - minorPart / (10n ** diff)
                     if (sum >= BIGLIMIT) {
-                        if (max === BIGLIMIT) {
+                        if (d1 === BIGLIMIT) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, max + 1n, sum / 10n]
+                        b.$ = [sign, 2, d1 + 1n, sum / 10n]
                     } else if (sum < HDIGITS) {
                         if (sum < 16n) {
                             if (sum <= -16n) {
@@ -7757,22 +7764,24 @@
                             b.$ = [sign, 1, 10n ** sum, BIGONE]
                         }
                     } else {
-                        b.$ = [sign, 2, max, sum]
+                        b.$ = [sign, 2, d1, sum]
                     }
                     return b
                 } else if (c1 === 1 && c2 === 2) {
                     var minorPart = start.$[2]
                     var d1 = BigInt(minorPart.toString().length - 1)
                     var d2 = b.$[2]
-                    var max = d1 > d2 ? d1 : d2
-                    var sum
-                    sum = minorPart / (10n ** (d2 - d1)) - b.$[3]
+                    var diff = d2 - d1
+                    if (diff > DIGITSMINUSONE) {
+                        return b
+                    }
+                    var sum = minorPart / (10n ** diff) - b.$[3]
                     if (sum >= BIGLIMIT) {
-                        if (max === BIGLIMIT) {
+                        if (d2 === BIGLIMIT) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, max + 1n, sum / 10n]
+                        b.$ = [sign, 2, d2 + 1n, sum / 10n]
                     } else if (sum < BIGDIGITS) {
                         if (sum < 16n) {
                             if (sum <= -16n) {
@@ -7784,7 +7793,7 @@
                             b.$ = [sign, 1, 10n ** sum, BIGONE]
                         }
                     } else {
-                        b.$ = [sign, 2, max, sum]
+                        b.$ = [sign, 2, d2, sum]
                     }
                     return b
                 } else if (c1 === c2) {
