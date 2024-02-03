@@ -913,6 +913,7 @@
 
         button {
             padding: 4px 2px 4px 2px;
+            border: solid 4px #333;
             width: 329.333px;
             max-width: 75vw;
             min-height: 60px;
@@ -924,7 +925,6 @@
             font-size: 22px;
             cursor: pointer;
             margin: 1px;
-            border: solid 2px #616161;
             background-color: #e1e1e1;
             transition: transform 500ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, border-radius 500ms, filter 1s;
             border-radius: 5px;
@@ -941,6 +941,7 @@
 
         .mini {
             padding: 4px 8px 4px 8px;
+            border: solid 2px #616161;
             min-width: 44px;
             font-size: 16px;
         }
@@ -953,6 +954,7 @@
         .mini:hover,
         button:focus,
         .mini:focus {
+            filter: drop-shadow(5px 5px 1px black);
             transform: scale(1.035);
             background-color: #d5d5d5;
             border-radius: 12px;
@@ -962,6 +964,7 @@
         .mini:active,
         .upper:active {
             transition: transform 200ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, border-radius 250ms, filter 500ms;
+            filter: drop-shadow(8px 8px 3px black);
         }
 
         button:active,
@@ -1727,7 +1730,7 @@
         }
 
         .outlined:active {
-            text-shadow: 4px 4px 2px white, 4px 4px 1px white;
+            text-shadow: 4px 4px 2px #fffc;
         }
 
         @keyframes wobble {
@@ -6186,7 +6189,7 @@
                             imagine achieving something that resets upon a SINGLE shard reset
                         </span>
                         <br><br>
-                        <b class="valuable">Achievements (10):</b>
+                        <b class="valuable">Achievements (10 normal & 10 secret):</b>
 
                         <span id="ach">
                             <div data-unlock="fc>=2.5e7" class="orange">
@@ -6267,7 +6270,7 @@
 
                         <br>
                         <i class="orange">
-                            You have earned <b class="yellow" id="achievementAmount"></b> achievements!
+                            You have earned <b class="outlined yellow" id="achievementAmount"></b> achievements!
                         </i>
                         <br>
                         <span class="locked" data-label="???"></span>
