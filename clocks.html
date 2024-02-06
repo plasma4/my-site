@@ -913,8 +913,7 @@
 
         button {
             padding: 4px 2px 4px 2px;
-            border: solid 4px #333;
-            width: 325.333px;
+            width: 329.333px;
             max-width: 75vw;
             min-height: 60px;
         }
@@ -925,6 +924,7 @@
             font-size: 22px;
             cursor: pointer;
             margin: 1px;
+            border: solid 2px #616161;
             background-color: #e1e1e1;
             transition: transform 500ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, border-radius 500ms, filter 1s;
             border-radius: 5px;
@@ -941,7 +941,6 @@
 
         .mini {
             padding: 4px 8px 4px 8px;
-            border: solid 2px #616161;
             min-width: 44px;
             font-size: 16px;
         }
@@ -954,7 +953,6 @@
         .mini:hover,
         button:focus,
         .mini:focus {
-            filter: drop-shadow(5px 5px 1px black);
             transform: scale(1.035);
             background-color: #d5d5d5;
             border-radius: 12px;
@@ -964,7 +962,6 @@
         .mini:active,
         .upper:active {
             transition: transform 200ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, border-radius 250ms, filter 500ms;
-            filter: drop-shadow(8px 8px 3px black);
         }
 
         button:active,
@@ -1730,7 +1727,7 @@
         }
 
         .outlined:active {
-            text-shadow: 4px 4px 2px #fffc;
+            text-shadow: 4px 4px 2px white, 4px 4px 1px white;
         }
 
         @keyframes wobble {
@@ -3580,8 +3577,6 @@
         }
     </style>
 
-    <style></style>
-
     <script id="errorScript">
         "use strict"
         var loaded = false, firstFrame = true
@@ -3663,6 +3658,8 @@
 
 <body>
     <!-- Copyright 2024 Leo Zhang. All rights reserved. -->
+    <style></style>
+
     <div id="everything" style="display: none">
         <header>
             <h1>Welcome to Time Transcending Clocks!</h1>
@@ -4573,12 +4570,14 @@
                     Apples!
 
                     <br>
-                    <b class="small">
-                        IMPORTANT: Due to the lack of infinite storage in your currently colonized multiverse,
+                    <b class="smallish">
+                        IMPORTANT: Due to the lack of infinite storage in your universe,
                         ALL materials, workers, and buildings are capped at 10<sup class="small orange">80</sup>
                         until you find additional space!
+                        <br>
+                        (Currently capped at 10<sup class="small red" id="cap"></sup>)
                     </b>
-                    <div class="orange">(Currently capped at 10<sup class="small red" id="cap"></sup>)</div>
+                    <br><br>
 
                     <div class="sub">
                         <div class="grid">
@@ -5061,7 +5060,7 @@
 
                         <div id="wormsearch" class="study">
                             <div data-cost="eee1000" data-iq="F25000000" data-show="$tetrate" data-research="genius"
-                                data-desc="[You need F25.000M digital knowlege to purchase this research!]\nQuantum computers are pretty powerful, right?\n(The more quantum computers you have, the more effective Tetrated AI is.)">
+                                data-desc="[You need F25.000M digital knowlege to purchase this research!]\nQuantum computers are pretty powerful, right?\nThe more quantum computers you have, the faster the tetrational growth is.">
                                 <span class="move4">Quantum genius</span>: <span class="glow">$ee1.000e1,000</span>
                                 <span class="big money"></span>
                             </div>
@@ -5096,9 +5095,9 @@
                                 <span class="move5">Dark information</span>: <span class="glow">$2.000S</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="1e24" data-rp="2.3e230" data-iq="22500" data-show="$aliens"
+                            <div data-cost="1e24" data-rp="2.3e230" data-iq="12345" data-show="$aliens"
                                 data-research="darkness"
-                                data-desc="[You need 2.300e230 research points AND 22,500 digital knowlege to purchase this research!]\nWant dark towers to actually DO something? Get them to increase digital knowlege production!">
+                                data-desc="[You need 2.300e230 research points AND 12,345 digital knowlege to purchase this research!]\nWant dark towers to actually DO something? Get them to increase digital knowlege production!">
                                 <span class="move5">Dark tower smarts</span>: <span class="glow">$1.000S</span>
                                 <span class="big money"></span>
                             </div>
@@ -6187,9 +6186,9 @@
                             imagine achieving something that resets upon a SINGLE shard reset
                         </span>
                         <br><br>
-                        <b class="valuable">Achievements (10 normal & 10 secret):</b>
+                        <b class="valuable">Achievements (10):</b>
 
-                        <div id="ach">
+                        <span id="ach">
                             <div data-unlock="fc>=2.5e7" class="orange">
                                 Produce a total of <span class="move1">25.000M</span> flying clocks!
                                 <br>
@@ -6264,11 +6263,11 @@
                             </div>
                             <span data-unlock="phoenixes>=333333333333" class="phoenixach ach2" role="img"
                                 title="You've unlocked this for producing a total of 333,333,333,333 phoenixes!"></span>
-                        </div>
+                        </span>
 
                         <br>
                         <i class="orange">
-                            You have earned <b class="outlined yellow" id="achievementAmount"></b> achievements!
+                            You have earned <b class="yellow" id="achievementAmount"></b> achievements!
                         </i>
                         <br>
                         <span class="locked" data-label="???"></span>
@@ -6909,7 +6908,7 @@
         const shortSuffixesLower = ["", "k", "m", "b", "t", "", "", "", "", "o", "n", "d", "ud", "dd", "td", ""]
 
         var HDIGITS = 50
-        var Hyper
+        var Hyper, H
         (function () {
             var BIGDIGITS = 50n, DIGITSMINUSONE = 49, BIGDIGITSMINUSONE = 49n, TENPOWTEN = 10000000000n, REPEATSTR = "0000000000000000000000000000000000000000000000000", BIGONE = 10000000000000000000000000000000000000000000000000n, BIGLIMIT = 100000000000000000000000000000000000000000000000000n, FOURLIMIT = 400000000000000000000000000000000000000000000000000n, TWOBIG = 20000000000000000000000000000000000000000000000000n, LIMITMINUSONE = 99999999999999999999999999999999999999999999999999n, DOUBLELIMITDIVTEN = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DOUBLELIMIT = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DIGITSODD = false, RANDOMSIZE = 8, RANDOMMODULO = 0, RANDOMREPEAT = 1
 
@@ -7607,38 +7606,32 @@
                     var d1 = start.$[2]
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
-                    var diff = d1 - d2
-                    if (diff > DIGITSMINUSONE) {
-                        return new Hyper(start)
-                    }
-                    var sum = start.$[3] + minorPart / (10n ** diff)
+                    var max = d1 > d2 ? d1 : d2
+                    var sum = start.$[3] + minorPart / (10n ** (d1 - d2))
                     if (sum >= BIGLIMIT) {
-                        if (d1 === LIMITMINUSONE) {
+                        if (max === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, d1 + 1n, sum / 10n]
+                        b.$ = [sign, 2, max + 1n, sum / 10n]
                     } else {
-                        b.$ = [sign, 2, d1, sum]
+                        b.$ = [sign, 2, max, sum]
                     }
                     return b
                 } else if (c1 === 1 && c2 === 2) {
                     var minorPart = start.$[2]
                     var d1 = BigInt(minorPart.toString().length - 1)
                     var d2 = b.$[2]
-                    var diff = d2 - d1
-                    if (diff > DIGITSMINUSONE) {
-                        return b
-                    }
-                    var sum = b.$[3] + minorPart / (10n ** diff)
+                    var max = d1 > d2 ? d1 : d2
+                    var sum = b.$[3] + minorPart / (10n ** (d2 - d1))
                     if (sum >= BIGLIMIT) {
-                        if (d2 === LIMITMINUSONE) {
+                        if (max === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, d2 + 1n, sum / 10n]
+                        b.$ = [sign, 2, max + 1n, sum / 10n]
                     } else {
-                        b.$ = [sign, 2, d2, sum]
+                        b.$ = [sign, 2, max, sum]
                     }
                     return b
                 } else if (c1 === c2) {
@@ -7742,17 +7735,14 @@
                     var d1 = start.$[2]
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
-                    var diff = d1 - d2
-                    if (diff > DIGITSMINUSONE) {
-                        return new Hyper(start)
-                    }
-                    var sum = start.$[3] - minorPart / (10n ** diff)
+                    var max = d1 > d2 ? d1 : d2
+                    var sum = start.$[3] - minorPart / (10n ** (d1 - d2))
                     if (sum >= BIGLIMIT) {
-                        if (d1 === BIGLIMIT) {
+                        if (max === BIGLIMIT) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, d1 + 1n, sum / 10n]
+                        b.$ = [sign, 2, max + 1n, sum / 10n]
                     } else if (sum < HDIGITS) {
                         if (sum < 16n) {
                             if (sum <= -16n) {
@@ -7764,24 +7754,22 @@
                             b.$ = [sign, 1, 10n ** sum, BIGONE]
                         }
                     } else {
-                        b.$ = [sign, 2, d1, sum]
+                        b.$ = [sign, 2, max, sum]
                     }
                     return b
                 } else if (c1 === 1 && c2 === 2) {
                     var minorPart = start.$[2]
                     var d1 = BigInt(minorPart.toString().length - 1)
                     var d2 = b.$[2]
-                    var diff = d2 - d1
-                    if (diff > DIGITSMINUSONE) {
-                        return b
-                    }
-                    var sum = minorPart / (10n ** diff) - b.$[3]
+                    var max = d1 > d2 ? d1 : d2
+                    var sum
+                    sum = minorPart / (10n ** (d2 - d1)) - b.$[3]
                     if (sum >= BIGLIMIT) {
-                        if (d2 === BIGLIMIT) {
+                        if (max === BIGLIMIT) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, d2 + 1n, sum / 10n]
+                        b.$ = [sign, 2, max + 1n, sum / 10n]
                     } else if (sum < BIGDIGITS) {
                         if (sum < 16n) {
                             if (sum <= -16n) {
@@ -7793,7 +7781,7 @@
                             b.$ = [sign, 1, 10n ** sum, BIGONE]
                         }
                     } else {
-                        b.$ = [sign, 2, d2, sum]
+                        b.$ = [sign, 2, max, sum]
                     }
                     return b
                 } else if (c1 === c2) {
@@ -13576,7 +13564,7 @@
                     achievement.style.display = "none"
                 }
             }
-            updateId("achievementAmount", ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
+            updateId("achievementAmount", ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
 
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
         }
