@@ -6909,14 +6909,19 @@
         // Set the version
         const version = "0.1.0"
 
-        /** @type {string[]} An array with abbreviations for numbers up to fifty digits */
-        const shortSuffixes = ["", "K", "M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "Ud", "Dd", "Td", "qd", "Qd"]
-        const shortSuffixesLower = ["", "k", "m", "b", "t", "", "", "", "", "o", "n", "d", "ud", "dd", "td", ""]
+        /** @type {string[]} An array with abbreviations for numbers up to a whole lot (will not work properly if suffixes are more than 2 letters) */
+        var shortSuffixes = ["", "K", "M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "Ud", "Dd", "Td", "qd", "Qd", "sd", "Sd", "Od", "Nd", "V", "Uv", "Dv", "Tv", "qv", "Qv", "sv", "Sv", "Ov", "Nv", "t", "Ut", "Dt", "Tt", "qt", "Qt", "st", "St", "Ot", "Nt", "qr", "Uq", "Dq", "Tq", "qq", "Qq", "sq", "Sq", "Oq", "Nq", "Qu", "UQ", "DQ", "TQ", "qQ", "QQ", "sQ", "SQ", "OQ", "NQ", "Sg", "Us", "Ds", "Ts", "qs", "Qs", "ss", "Ss", "Os", "Ns", "Sp", "US", "DS", "TS", "qS", "QS", "sS", "SS", "OS", "NS", "Og", "Uo", "Do", "To", "qo", "Qo", "so", "So", "Oo", "No", "Na", "Un", "Dn", "Tn", "qn", "Qn", "sn", "Sn", "On", "Nn", "C", "UC", "DC", "TC", "qC", "QC", "sC", "SC", "OC", "NC"]
+        /** @type {string[]} An array with LOWERCASE abbreviations for numbers up to a decillion (only works for one-letter lowercase suffixes) */
+        var shortSuffixesLower = ["", "k", "m", "b", "t", "", "", "", "", "o", "n", "d"]
 
+        /** @type {number} The minimum number of digits to stop using abbreviations for. Defaults to 50 but can be changed up to 303 (a centillion). */
+        var abbreviationLimit = 50
+
+        /** @type {number} The number of digits the HyperNumber is accurate to. */
         var HDIGITS = 50
-        var Hyper, H
+        var Hyper
         (function () {
-            var BIGDIGITS = 50n, DIGITSMINUSONE = 49, BIGDIGITSMINUSONE = 49n, TENPOWTEN = 10000000000n, REPEATSTR = "0000000000000000000000000000000000000000000000000", BIGONE = 10000000000000000000000000000000000000000000000000n, BIGLIMIT = 100000000000000000000000000000000000000000000000000n, FOURLIMIT = 400000000000000000000000000000000000000000000000000n, TWOBIG = 20000000000000000000000000000000000000000000000000n, LIMITMINUSONE = 99999999999999999999999999999999999999999999999999n, DOUBLELIMITDIVTEN = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DOUBLELIMIT = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DIGITSODD = false, RANDOMSIZE = 8, RANDOMMODULO = 0, RANDOMREPEAT = 1
+            var BIGDIGITS = 50n, DIGITSMINUSONE = 49, BIGDIGITSMINUSONE = 49n, REPEATSTR = "0000000000000000000000000000000000000000000000000", BIGONE = 10000000000000000000000000000000000000000000000000n, BIGONEDIVTEN = 1000000000000000000000000000000000000000000000000n, BIGONEDIVTENPOWTEN = 1000000000000000000000000000000000000000n, DIGITSOFDIGITS = 2, BIGLIMIT = 100000000000000000000000000000000000000000000000000n, FOURLIMIT = 400000000000000000000000000000000000000000000000000n, TWOBIG = 20000000000000000000000000000000000000000000000000n, LIMITMINUSONE = 99999999999999999999999999999999999999999999999999n, DOUBLELIMITDIVTEN = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DOUBLELIMIT = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DIGITSODD = false, RANDOMSIZE = 8, RANDOMMODULO = 0, RANDOMREPEAT = 1
 
             /**
              * Creates an Hyper (also called a "hyper-number") instance that represents a POSITIVE finite integer, which can handle high-quality values anywhere from above 10^(-9007199254740992) to 10^^(10^50) with default precision by using BigInt.
@@ -6927,7 +6932,7 @@
                 if (!(this instanceof Hyper)) {
                     return new Hyper(value)
                 } else if (value == null || value === false || value === 0) {
-                    /** @type {[0 | 1, number | bigint, bigint]} A three-value array storing the information for the Hyper. If the $[0] is 0, then the $[1] is a Number, and if $[0] is 1, then $[1] is a BigInt. If $[0] is either 0 or 1, then $[1] stores the number of digits as either BigInt or number, and $[2] stores the starting 50 (or a custom amount) digits of the number as a BigInt. Otherwise, $[0] stores the number of times "of digits" the number has. (So, if $[0] is 3, then $[1] represents the number of digits of digits of digits of the number.) Then, $[2] would represent the starting 50 (or a custom amount) digits of the number that is the number of times "of digits" the number has (minus one). (That means that if $[0] is 3, then $[2] is the first 50 (or a custom amount) digits of the number of digits of digits of the number.) This means that Hypers can store values up to about 10^^9007199254740992. */
+                    /** @type {[1 | -1, number | bigint, number | bigint, bigint]} A four-term array storing the information for the Hyper value. If the $[1] is 0, then the $[2] is a Number, and if $[1] is 1, then $[2] is a BigInt. If $[1] is either 0 or 1, then $[2] stores the number of digits as either BigInt or number, and $[3] stores the starting 50 (or a custom amount) digits of the number as a BigInt. Otherwise, $[1] stores the number of 10^ there is in the number. (So, if $[1] is 3, then $[2] represents the number of digits of digits of digits of the number.) Then, $[3] would represent the starting 50 (or a custom amount) digits of the number that is the number of times "of digits" the number has (minus one). (That means that if $[1] is 3, then $[3] is the first 50 (or a custom amount) digits of the number of digits of digits of the number.) This means that Hypers can store values up to about 10^^(1e^50) with default precision. */
                     this.$ = [1, 0, 0, 0n]
                 } else if (value === true || value === 1) {
                     this.$ = [1, 0, 0, BIGONE]
@@ -7100,7 +7105,7 @@
                             return
                         }
 
-                        var big50 = BigInt((beforeE + REPEATSTR).slice(0, HDIGITS))
+                        var bigPart = BigInt((beforeE + REPEATSTR).slice(0, HDIGITS))
 
                         var originalDigits = digits
                         digits += parseInt(string)
@@ -7128,7 +7133,7 @@
 
                             if (digits >= BIGLIMIT) {
                                 eTotal++
-                                big50 = BigInt(digits.toString().slice(0, HDIGITS))
+                                bigPart = BigInt(digits.toString().slice(0, HDIGITS))
                                 digits = digits.toString().length - 1
                             }
                         } else if (eTotal !== 0n && digits < 0) {
@@ -7140,26 +7145,23 @@
                         } else if (eTotal !== 0n && digits < HDIGITS) {
                             if (digits === 0) {
                                 if (eTotal === 1n) {
-                                    dollar = [sign, 0, Number(big50 / BIGONE), BIGONE]
+                                    dollar = [sign, 0, Number(bigPart / BIGONE), BIGONE]
                                 } else if (eTotal === 2n) {
-                                    dollar = [sign, 0, Number(big50 / 1000000000000000000000000000000000000000000000000n), BIGONE]
+                                    dollar = [sign, 0, Number(bigPart / BIGONEDIVTEN), BIGONE]
                                 } else if (eTotal === 3n) {
-                                    dollar = [sign, 0, Number(big50 / 1000000000000000000000000000000000000000n), BIGONE]
+                                    dollar = [sign, 0, Number(bigPart / BIGONEDIVTENPOWTEN), BIGONE]
                                 } else {
-                                    dollar = [sign, eTotal - 2n, big50 / 1000000000000000000000000000000000000000n, big50]
+                                    dollar = [sign, eTotal - 2n, bigPart / BIGONEDIVTENPOWTEN, bigPart]
                                 }
                                 return
                             } else if (digits === 1) {
                                 if (eTotal === 1n) {
-                                    dollar = [sign, 0, Number(big50 / 1000000000000000000000000000000000000000000000000n), BIGONE]
+                                    dollar = [sign, 0, Number(bigPart / BIGONEDIVTEN), BIGONE]
                                 } else {
-                                    var divided = big50 / 1000000000000000000000000000000000000000n
-                                    if (eTotal === 2n) {
-                                        dollar = [sign, eTotal - 1n, Number(divided), BIGONE]
-                                    } else {
-                                        dollar = [sign, eTotal - 1n, divided, BIGONE]
-                                    }
+                                    dollar = [sign, eTotal - 1n, bigPart / BIGONEDIVTENPOWTEN, BIGONE]
                                 }
+                            } else if (digits < DIGITSOFDIGITS) {
+                                dollar = [sign, eTotal - 1n, 10n ** (10n ** BigInt(digits)), BIGONE]
                             } else if (digits < 0) {
                                 if (!noWarnings) {
                                     console.error("The value given could not be converted to a Hyper, as it contains negative numbers too far down.")
@@ -7168,9 +7170,9 @@
                                 return
                             } else {
                                 if (eTotal === 1n && digits < 16) {
-                                    dollar = [sign, 0, Number(big50 / (10n ** BigInt(DIGITSMINUSONE - digits))), BIGONE]
+                                    dollar = [sign, 0, Number(bigPart / (10n ** BigInt(DIGITSMINUSONE - digits))), BIGONE]
                                 } else {
-                                    dollar = [sign, eTotal, big50 / (10n ** BigInt(DIGITSMINUSONE - digits)), BIGONE]
+                                    dollar = [sign, eTotal, bigPart / (10n ** BigInt(DIGITSMINUSONE - digits)), BIGONE]
                                 }
                             }
                             return
@@ -7181,18 +7183,15 @@
                         if (digits <= -9007199254740992) {
                             dollar = [sign, 0, 0, 0n]
                         } else if (digits >= 9007199254740992) {
-                            dollar = [sign, eTotal + 1n, digits, big50]
+                            dollar = [sign, eTotal + 1n, digits, bigPart]
                         } else {
-                            dollar = [sign, eTotal < 2n ? 0n : eTotal, eTotal < 2n ? Number(digits) : BigInt(digits), big50]
+                            dollar = [sign, eTotal < 2n ? 0n : eTotal, eTotal < 2n ? Number(digits) : BigInt(digits), bigPart]
                         }
 
                         function getAbbreviation() {
                             var abbreviationIndex = -1
                             last = string[len - 2] + string[len - 1]
                             abbreviationIndex = shortSuffixes.indexOf(last)
-                            if (abbreviationIndex === -1) {
-                                abbreviationIndex = shortSuffixesLower.indexOf(last.toLowerCase())
-                            }
 
                             if (abbreviationIndex === -1) {
                                 var last = string[len - 1]
@@ -7220,10 +7219,11 @@
                     if (category < 9007199254740992n) {
                         dollar[1] = Number(category)
                     } else if (category > BIGLIMIT) {
+                        // Change the BIGLIMIT value to something else to modify the maximum F amount
                         if (!noWarnings) {
                             console.error("The value you have inputted is too large!")
                         }
-                        dollar = [sign, 0, 0, 0n]
+                        dollar = [dollar[0], 0, 0, 0n]
                     }
                     this.$ = dollar
                 }
@@ -7236,17 +7236,20 @@
             Hyper.setDigits = function (newDigits) {
                 var digits = parseInt(newDigits)
                 if (digits >= 10000000) {
-                    throw RangeError("Maximum Hyper precision of 1000000 exceeded.")
-                } else if (!isFinite(digits) || digits < 1) {
-                    throw RangeError("A Hyper value should have a precision between 1 and 1000000.")
+                    throw RangeError("Maximum Hyper precision of 10000000 exceeded.")
+                } else if (!isFinite(digits) || digits < 16) {
+                    throw RangeError("A Hyper value should have a precision between 16 and 10000000.")
                 }
 
                 HDIGITS = digits
+                DIGITSOFDIGITS = (digits - 1).toString().length
                 BIGDIGITS = BigInt(HDIGITS)
                 DIGITSMINUSONE = HDIGITS - 1
                 BIGDIGITSMINUSONE = BigInt(DIGITSMINUSONE)
                 REPEATSTR = "0".repeat(DIGITSMINUSONE)
                 BIGONE = 10n ** BIGDIGITSMINUSONE
+                BIGONEDIVTEN = BIGONE / 10n
+                BIGONEDIVTENPOWTEN = BIGONE / 10000000000n
                 BIGLIMIT = 10n * BIGONE
                 FOURLIMIT = BIGLIMIT << 2n
                 TWOBIG = BIGONE << 1n
@@ -7612,32 +7615,38 @@
                     var d1 = start.$[2]
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
-                    var max = d1 > d2 ? d1 : d2
-                    var sum = start.$[3] + minorPart / (10n ** (d1 - d2))
+                    var diff = d1 - d2
+                    if (diff > DIGITSMINUSONE) {
+                        return new Hyper(start)
+                    }
+                    var sum = start.$[3] + minorPart / (10n ** diff)
                     if (sum >= BIGLIMIT) {
-                        if (max === LIMITMINUSONE) {
+                        if (d1 === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, max + 1n, sum / 10n]
+                        b.$ = [sign, 2, d1 + 1n, sum / 10n]
                     } else {
-                        b.$ = [sign, 2, max, sum]
+                        b.$ = [sign, 2, d1, sum]
                     }
                     return b
                 } else if (c1 === 1 && c2 === 2) {
                     var minorPart = start.$[2]
                     var d1 = BigInt(minorPart.toString().length - 1)
                     var d2 = b.$[2]
-                    var max = d1 > d2 ? d1 : d2
-                    var sum = b.$[3] + minorPart / (10n ** (d2 - d1))
+                    var diff = d2 - d1
+                    if (diff > DIGITSMINUSONE) {
+                        return b
+                    }
+                    var sum = b.$[3] + minorPart / (10n ** diff)
                     if (sum >= BIGLIMIT) {
-                        if (max === LIMITMINUSONE) {
+                        if (d2 === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, max + 1n, sum / 10n]
+                        b.$ = [sign, 2, d2 + 1n, sum / 10n]
                     } else {
-                        b.$ = [sign, 2, max, sum]
+                        b.$ = [sign, 2, d2, sum]
                     }
                     return b
                 } else if (c1 === c2) {
@@ -7741,14 +7750,17 @@
                     var d1 = start.$[2]
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
-                    var max = d1 > d2 ? d1 : d2
-                    var sum = start.$[3] - minorPart / (10n ** (d1 - d2))
+                    var diff = d1 - d2
+                    if (diff > DIGITSMINUSONE) {
+                        return new Hyper(start)
+                    }
+                    var sum = start.$[3] - minorPart / (10n ** diff)
                     if (sum >= BIGLIMIT) {
-                        if (max === BIGLIMIT) {
+                        if (d1 === BIGLIMIT) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, max + 1n, sum / 10n]
+                        b.$ = [sign, 2, d1 + 1n, sum / 10n]
                     } else if (sum < HDIGITS) {
                         if (sum < 16n) {
                             if (sum <= -16n) {
@@ -7760,22 +7772,24 @@
                             b.$ = [sign, 1, 10n ** sum, BIGONE]
                         }
                     } else {
-                        b.$ = [sign, 2, max, sum]
+                        b.$ = [sign, 2, d1, sum]
                     }
                     return b
                 } else if (c1 === 1 && c2 === 2) {
                     var minorPart = start.$[2]
                     var d1 = BigInt(minorPart.toString().length - 1)
                     var d2 = b.$[2]
-                    var max = d1 > d2 ? d1 : d2
-                    var sum
-                    sum = minorPart / (10n ** (d2 - d1)) - b.$[3]
+                    var diff = d2 - d1
+                    if (diff > DIGITSMINUSONE) {
+                        return b
+                    }
+                    var sum = minorPart / (10n ** diff) - b.$[3]
                     if (sum >= BIGLIMIT) {
-                        if (max === BIGLIMIT) {
+                        if (d2 === BIGLIMIT) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
                             return b
                         }
-                        b.$ = [sign, 2, max + 1n, sum / 10n]
+                        b.$ = [sign, 2, d2 + 1n, sum / 10n]
                     } else if (sum < BIGDIGITS) {
                         if (sum < 16n) {
                             if (sum <= -16n) {
@@ -7787,7 +7801,7 @@
                             b.$ = [sign, 1, 10n ** sum, BIGONE]
                         }
                     } else {
-                        b.$ = [sign, 2, max, sum]
+                        b.$ = [sign, 2, d2, sum]
                     }
                     return b
                 } else if (c1 === c2) {
