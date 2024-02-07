@@ -3607,7 +3607,7 @@
                     text = "NOTE: Try reloading. If that does not fix the issue, double click anywhere to reset the game.\r\nYour save will automatically be copied in case this issue gets fixed!\r\n" + text
 
                     document.addEventListener("dblclick", function () {
-                        if (confirm("Attempt to reset the game? A copy of the save will be automatically copied to your clipboard.")) {
+                        if (doubleCheck("Attempt to reset the game? A copy of the save will be automatically copied to your clipboard.")) {
                             try {
                                 var input = document.createElement("input")
                                 input.value = clockSave
@@ -3733,6 +3733,7 @@
             metacoins: %MetaCoin (10, A silly green digital coin)
             metaholes: %MetaHole (11, A hole made from digital influence)
             metadisks: %MetaDisk (11, A digital disk that generates MetaSpin)
+            metatorus: %MetaTor$us/i (11, A spinny little 3D object that creates MetaSpin and MetaHoles)
             metaspin: %MetaSpin$ (10, Spin!)
             clocks: Clock (0, A basic and cheap household clock)
             gc: Golden Clock (1, A golden clock with a metallic shine)
@@ -3863,7 +3864,7 @@
             <span data-tab="metaclock" title="MetaClock menu" data-show="$meta"><span class="metac"></span></span>
             <span data-tab="appley" title="Exotic apple menu" data-show="$apples"><span class="gapple"></span></span>
             <span data-tab="magic" title="*MAGICAL* menu" data-show="$magic"><span class="wand"></span></span>
-            <span data-tab="materials" title="Materials menu" data-show="money>=2500"><span class="brick"></span></span>
+            <span data-tab="materials" title="Materials menu" data-show="family>1"><span class="brick"></span></span>
             <span data-tab="phoenix" title="Phoenix menu" data-show="managers>0"><span class="feather"></span></span>
             <span data-tab="tech" title="Management/research menu" data-show="furnaces>0">
                 <span class="flask"></span>
@@ -4241,9 +4242,9 @@
                             <span class="mini special" id="addAutosell"
                                 data-desc="Increase the percent of clocks you are AUTO-selling.">+</span>
                         </button>
-                        <button class="special" id="easyClicking" data-show="family>0"
-                            data-desc="Easy clicking clicks 20 times a second on a button if you are pressing the Space/Enter key, or if you are pressing down on a button.">
-                            Toggle easy clicking
+                        <button class="special" id="autoClicking" data-show="family>0"
+                            data-desc="Autoclicking clicks 20 times a second on a button automatically.\n{(If you are pressing the Space/Enter key, or if you are pressing down on a button, it will also autoclick at the same rate.\nAutoclicking and pressing down doubles the speed of this effect.)}">
+                            Toggle autoclicker
                         </button>
 
                         <br><br>
@@ -4337,7 +4338,7 @@
 
                         <br>
                         <button data-earn="goldore+10" data-cost="money-10" data-show="money>=10"
-                            data-desc="Ten pieces of ore only cost $10 because the technology to extract the gold out is significantly more complex.\nDon't get too much at the start!$goldore$"
+                            data-desc="Ten pieces of ore only cost $10 because the technology to extract the gold out is significantly more complex.\n[Don't get too much at the start!]$goldore$"
                             class="silver">
                             Buy 10 pieces of gold ore <span class="goldbar"></span>
                         </button>
@@ -4548,6 +4549,11 @@
                     <button data-earn="metadisks+1" data-cost="metaholes-5" data-show="influence>=100" class="metabg"
                         data-desc="Create a MetaDisk using 5 MetaHoles.\nMetaDisks spin and generate MetaSpin!$metadisks$">
                         Make a MetaDisk
+                    </button>
+                    <button data-earn="metatorus+1" data-cost="metaholes-100|metadisks-25" data-show="metadisks>5"
+                        class="metabg"
+                        data-desc="Create a MetaDisk using 100 MetaHoles and 25 MetaDisks.\nMetaTori spin so quickly that they generate MetaSpin AND MetaHoles slowly over time!$metatorus$">
+                        Make a MetaTorus
                     </button>
 
                     <hr>
@@ -5283,20 +5289,20 @@
                     You can extract many items from under the earth, albeit with a price.
 
                     <br>
-                    <button data-earn="miners+1" data-cost="money-20000"
-                        data-desc="The miner is happy to help mine ores from beneath the ground, with a substantial starting fee of 20,000 dollars.\n[To extract the contents out of these, build a blast furnace with bricks (a technology you'll unlock after a while).\nNote that just GETTING a miner will unlock bricks!]\nEach miner is also paid $6 a second. Miners obtain ores, NOT NUGGETS!$miners$"
+                    <button class="bronze" data-earn="diggers+1" data-cost="money-35000"
+                        data-desc="You're going to need $40,000 for a single digger, and each digger will need to be paid $10 a second!\nYeah, they're going 2 need a hefty payment for doing something that mundane.$diggers$">
+                        Get a digger <span class="big shovel"></span>
+                        <span class="mini stripe2" data-earn="diggers+1" data-cost="money-35000"
+                            data-desc="You can get more MEGA-managers to buy diggers faster.$diggers$"
+                            data-show="miners>0" data-megabuy></span>
+                    </button>
+                    <button data-earn="miners+1" data-cost="money-20000" data-show="diggers>0"
+                        data-desc="The miner is happy to help mine ores from beneath the ground, with a substantial starting fee of 20,000 dollars.\n{To extract the contents out of these, build a blast furnace with bricks (a technology you'll unlock after a while).\nNote that just GETTING a miner will unlock bricks!}\nEach miner is also paid $6 a second. Miners obtain ores, NOT NUGGETS!$miners$"
                         class="gold">
                         Get a miner <span class="big pickaxe"></span>
                         <span class="mini stripe1" data-earn="miners+1" data-cost="money-20000"
-                            data-desc="Hold your clickers!\nFor every manager you get, you get +1 purchasing power.$miners$"
+                            data-desc="Hold your clickers!\nFor every manager you get, you get +1 purchasing power.\n(Note that even though you can buy more at once, the cost for each INDIVIDUAL miner is still identical!)$miners$"
                             data-show="miners>0" data-multibuy></span>
-                    </button>
-                    <button class="bronze" data-earn="diggers+1" data-cost="money-50000" data-show="miners>0"
-                        data-desc="You're going to need $50,000 for a single digger, and each digger will need to be paid $10 a second!\nYeah, THey're goING 2.0*2.0 need A HHEEFFTTYY PayMINT (c) 2^2 someTHING that ;boooooring;.$diggers$">
-                        Get a digger <span class="big shovel"></span>
-                        <span class="mini stripe2" data-earn="diggers+1" data-cost="money-50000"
-                            data-desc="You can get more MEGA-managers to buy diggers faster.$diggers$"
-                            data-show="miners>0" data-megabuy></span>
                     </button>
 
                     <br>
@@ -5335,7 +5341,7 @@
                     <br>
                     <button class="bronze"
                         data-desc="Molders help create 1 hand-made brick from each piece of clay you dig.\nMolders require an initial cost of $10,000 and 4 golden clocks, plus a pay of $5 a second.$molders$"
-                        data-cost="money-10000|gc-4" data-earn="molders+1" data-show="diggers>0">
+                        data-cost="money-10000|gc-4" data-earn="molders+1" data-show="bricks>0">
                         Get a molder <span class="mold"></span>
                         <span class="mini stripe2" data-cost="money-10000|gc-4" data-earn="molders+1"
                             data-desc="You can get more MEGA-managers in order to get more molders quicker!$molders$"
@@ -5353,8 +5359,8 @@
 
                     <br>
                     <button class="cinammon"
-                        data-desc="Woodcutters are free to get, but get paid $15 a second!\nNot blue wood just yet. You'll see the cost of that...\n(NOTE: To prevent yourself from losing money too quickly, don't get too many of these!)$woodcutters$"
-                        data-earn="woodcutters+1" data-show="kilns>0">
+                        data-desc="Woodcutters cost $2,500 to get, but get paid $15 every single second!\nNot blue wood just yet. You'll see the cost of that...\n(NOTE: To prevent yourself from losing money too quickly, don't get too many of these!)$woodcutters$"
+                        data-earn="woodcutters+1" data-cost="money-2500" data-show="kilns>0">
                         Get a <span class="glow">woodcutter</span> <span class="big wood"></span>
                     </button>
 
@@ -9810,7 +9816,7 @@
                 mouseY = e.clientY
                 var target = e.target
                 if (target.getAttribute) {
-                    if (mouseDown && easyClick && easyButton !== null && easyButton !== target) {
+                    if (mouseDown && autoClick && easyButton !== null && easyButton !== target) {
                         easyButton = target
                         easyTime = Date.now() + 50
                     }
@@ -9867,9 +9873,9 @@
         }
 
         function cheat() {
-            if (confirm("Actually cheat?")) {
-                if (confirm("Actually, truly cheat?")) {
-                    if (confirm("Actually, TRULY cheat? THIS IS YOUR LAST CHANCE TO SAVE UNCHEATED PROGRESS!")) {
+            if (doubleCheck("Actually cheat?")) {
+                if (doubleCheck("Actually, truly cheat?")) {
+                    if (doubleCheck("Actually, TRULY cheat? THIS IS YOUR LAST CHANCE TO SAVE UNCHEATED PROGRESS!")) {
                         var value = Hyper("1e80")
                         for (var i = 0; i < properties.length; i++) {
                             var name = properties[i]
@@ -9884,15 +9890,31 @@
             }
         }
 
+        // Custom functions to disable easy clicking after prompting
+        function message(a) {
+            easyButton = null
+            alert(a)
+        }
+
+        function doubleCheck(a) {
+            easyButton = null
+            return confirm(a)
+        }
+
+        function ask(a, b) {
+            easyButton = null
+            return prompt(a, b)
+        }
+
         function createRemoveMenu(property) {
-            var amount = prompt('How much do you want to remove? To remove ALL of an item, you can also type "all".\r\n(You can use values like 123.456M and 4e100.)', 1)
+            var amount = ask('How much do you want to remove? To remove ALL of an item, you can also type "all".\r\n(You can use values like 123.456M and 4e100.)', 1)
             if (amount !== null) {
                 if (amount === "all") {
                     clearAmount(property)
                 }
                 var amountToRemove = new Hyper(amount.replace(/,/, ""), true).floor(true)
                 if (property === "cmanagers" && cManagersUsed.isMore(C(property).subOrFalse(amountToRemove))) {
-                    alert("You need to have less workers working on the rocket in order to remove construction managers.\r\n(The fact that I had to think of this edge case because you tried to remove construction managers...)")
+                    message("You need to have less workers working on the rocket in order to remove construction managers.\r\n(The fact that I had to think of this edge case because you tried to remove construction managers...)")
                 } else {
                     remove(property, amountToRemove)
                 }
@@ -9916,7 +9938,7 @@
             updateId("removeButton", isRemoving ? "Disable Item Removal" : "Enable Item Removal (THIS BUTTON IS FOR REMOVING ITEMS ONLY!)")
         }
 
-        var easyButton = null, easyTime = -1, spaceDown = false, enterDown = false
+        var easyButton = null, easyTime = -1, autoTime = Date.now() + 50, spaceDown = false, enterDown = false
         document.addEventListener("keyup", function (e) {
             if (e.keyCode === 32) {
                 spaceDown = false
@@ -10108,7 +10130,7 @@
                 input.setSelectionRange(0, 99999999)
                 document.execCommand("copy")
                 input.remove()
-                alert("Copied in " + (newSave.length / 1000).toFixed(2) + "KB!")
+                message("Copied in " + (newSave.length / 1000).toFixed(2) + "KB!")
             }
         })
 
@@ -10127,17 +10149,17 @@
             var clipboard = navigator.clipboard
             if (clipboard && clipboard.readText) {
                 clipboard.readText().then(function (text) {
-                    if (Date.now() - oldTime > 200 || getTotals("clocks") === 0 || confirm("Attempt to load the save? Your current save will be lost!")) {
+                    if (Date.now() - oldTime > 200 || getTotals("clocks") === 0 || doubleCheck("Attempt to load the save? Your current save will be lost!")) {
                         load(text)
                     }
                 }, function (e) {
                     if (clipboardNotDisabledAlready) {
-                        alert("If you wish to import the save without granting access, you can also paste directly or drag a save file anywhere here.")
+                        message("If you wish to import the save without granting access, you can also paste directly or drag a save file anywhere here.")
                         clipboardNotDisabledAlready = false
                     }
                 })
             } else {
-                alert("Your browser does not support importing from the clipboard. Try pasting your save into the browser or dragging a save file instead!")
+                message("Your browser does not support importing from the clipboard. Try pasting your save into the browser or dragging a save file instead!")
             }
         })
 
@@ -10275,9 +10297,9 @@
             }
         })
 
-        var easyClick = false
-        ID("easyClicking").addEventListener("click", function () {
-            easyClick = !easyClick
+        var autoClick = false
+        ID("autoClicking").addEventListener("click", function () {
+            autoClick = !autoClick
             if (!noAudio) {
                 sounds.press.cloneNode().play()
             }
@@ -10354,7 +10376,7 @@
                 newShards = newShards.add(newShards)
             }
             newShards = newShards.floor()
-            if (confirm(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You WILL NOT EARN ANY SHARDS OR BONUSES!!!\r\nYOU WILL ALSO ONLY HAVE 25% CRYSTAL POWER REMAINING! (Likely a bad idea!!!)" : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
+            if (doubleCheck(newShards.isZero() ? "Are you ABSOLUTELY SURE you want to do a reset? You WILL NOT EARN ANY SHARDS OR BONUSES!!!\r\nYOU WILL ALSO ONLY HAVE 25% CRYSTAL POWER REMAINING! (Likely a bad idea!!!)" : "Are you ABSOLUTELY SURE you want to do a reset for " + format(newShards) + " shards?\r\nOnly 25% of your unused crystal power will remain!")) {
                 var newResearches = []
                 if (hasResearch("meta")) {
                     newResearches.push("meta")
@@ -10464,6 +10486,7 @@
                 stuff.influence = new Hyper(oldStuff.influence)
                 stuff.metaholes = new Hyper(oldStuff.metaholes)
                 stuff.metadisks = new Hyper(oldStuff.metadisks)
+                stuff.metatorus = new Hyper(oldStuff.metatorus)
                 stuff.metaspin = new Hyper(oldStuff.metaspin)
                 stuff.metacoins = new Hyper(oldStuff.metacoins)
                 stuff.metac = new Hyper(oldStuff.metac)
@@ -10487,15 +10510,15 @@
         ID("metaReset").addEventListener("click", function () {
             if (C("iq").mul(0.2).sqrt(true).sqrt(true).isLess(375)) {
                 if (C("metabucks").isLess("1e300")) {
-                    alert("You need at least 375 digital knowlege as well as 1.000e300 MetaBucks to complete this reset!")
+                    message("You need at least 375 digital knowlege as well as 1.000e300 MetaBucks to complete this reset!")
                 } else {
-                    alert("You need at least 375 digital knowlege to complete this reset!")
+                    message("You need at least 375 digital knowlege to complete this reset!")
                 }
             } else if (C("metabucks").isLess("1e300")) {
-                alert("You need at least 1.000e300 MetaBucks to complete this reset!")
+                message("You need at least 1.000e300 MetaBucks to complete this reset!")
             } else {
                 var earnings = C("metabucks").log10().sub(250)
-                if (earnings !== false && earnings.isMoreOrEqual(1) && confirm("Are you sure you want to reset this meta-reality in exchange for " + format(earnings) + " influence? Your meta-filled progress will reset, BUT you will increase the maximum amount of meta items you can own!")) {
+                if (earnings !== false && earnings.isMoreOrEqual(1) && doubleCheck("Are you sure you want to reset this meta-reality in exchange for " + format(earnings) + " influence? Your meta-filled progress will reset, BUT you will increase the maximum amount of meta items you can own!")) {
                     add("influence", earnings.floor())
                     add("metaresets", Hyper(true))
                     clearAmount(["metabucks", "metacoins", "metac", "metaclickers", "metamachines", "metafactories", "metamegafactories", "meta2factories", "metabuilders", "metacloners"], true)
@@ -10508,7 +10531,7 @@
             var earnings = C("firefruit").log10()
             if (earnings !== false) {
                 earnings = earnings.mul(0.9).sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3).floor(true)
-                if (earnings.isPositive() && confirm("Are you sure? You will LOSE all of your fiery progress!")) {
+                if (earnings.isPositive() && doubleCheck("Are you sure? You will LOSE all of your fiery progress!")) {
                     add("fierywood", earnings)
                     clearAmount(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
                     setup(true)
@@ -10520,7 +10543,7 @@
             var earnings = C("silverfruit").log10()
             if (earnings !== false) {
                 earnings = earnings.sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
-                if (earnings.isPositive() && confirm("Are you sure? You will LOSE all of your precious silvery progress!")) {
+                if (earnings.isPositive() && doubleCheck("Are you sure? You will LOSE all of your precious silvery progress!")) {
                     add("silverwood", (hasResearch("silversquare") ? earnings.sqr() : earnings).floor(true))
                     clearAmount(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
                     setup(true)
@@ -11410,7 +11433,7 @@
                         updateId("wageAmount", wageBoost.format(4) + "×")
 
                         autosellOn = proceed("AX") === "t"
-                        easyClick = proceed("\n") === "OK"
+                        autoClick = proceed("\n") === "OX"
                         sellPercent = Number(proceed("\n\nn"))
                         if (!(sellPercent <= 100 && sellPercent >= 0)) {
                             sellPercent = 0
@@ -11799,7 +11822,7 @@
                     console.log("The save was loaded successfully (in " + text.length + " bytes).");
                     return !0
                 } catch (e) {
-                    alert("Loading the save failed (maybe it was invalid). You may want to try reloading!")
+                    message("Loading the save failed (maybe it was invalid). You may want to try reloading!")
                     oldError.bind(console)(e)
                 }
                 return !1
@@ -11807,7 +11830,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (easyClick ? "OK" : "ISSUE") + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -11906,7 +11929,7 @@
 
         function pasteEvent(e) {
             var pasted = e.clipboardData.getData("text/plain")
-            if (!(["INPUT", "SELECT", "TEXTAREA"]).includes(document.activeElement.tagName) && pasted.length !== 0 && (getTotals("clocks") === 0 || confirm("Attempt to load the save? Your current save will be lost!"))) {
+            if (!(["INPUT", "SELECT", "TEXTAREA"]).includes(document.activeElement.tagName) && pasted.length !== 0 && (getTotals("clocks") === 0 || doubleCheck("Attempt to load the save? Your current save will be lost!"))) {
                 load(pasted)
                 e.preventDefault()
             }
@@ -11924,12 +11947,12 @@
             var files = e.dataTransfer.files
             if (files.length !== 1) {
                 if (files.length !== 0) {
-                    alert("You must drag exactly one file to import.")
+                    message("You must drag exactly one file to import.")
                 }
             } else {
                 var reader = new FileReader()
                 reader.onload = function () {
-                    if (confirm("Try to import the save?")) {
+                    if (doubleCheck("Try to import the save?")) {
                         load(reader.result)
                     }
                 }
@@ -12232,7 +12255,7 @@
 
                 wageMultiplier = Hyper(true)
                 wageBoost = Hyper(true)
-                easyClick = false
+                autoClick = false
                 easyButton = null
                 easyTime = -1
                 autosellOn = false
@@ -12295,7 +12318,7 @@
                 }, 2500)
                 ID("wipe").onclick = function () {
                     clearTimeout(resetTimeout)
-                    if (confirm("Are you ABSOLUTELY SURE you want to erase all your progress? This includes crystals!")) {
+                    if (doubleCheck("Are you ABSOLUTELY SURE you want to erase all your progress? This includes crystals!")) {
                         reset(true)
                         console.info("The game reset successfully.")
                     }
@@ -12759,10 +12782,11 @@
             "Note that you should focus on buying golden nuggets rather than gold ore for now. Gold ore is only useful after you progress farther.",
             "Keep buying golden nuggets until you get 5 of them.",
             "You can make a golden clock from 5 clocks and 1 golden nugget. Once you collect 5 golden clocks, you'll be able to purchase a family member and start earning clocks!",
-            "Keep getting family members! Saving up $20,000 allows you to obtain your first miner. Note that you can click on the moving crystals at the top left of the screen to collect blue, green, or purple crystals. It's a good idea to these in the crystal menu for significant speed boosts, and not to hog them.",
+            "Keep getting family members! Saving up $35,000 allows you to obtain your first digger. Note that you can click on the moving crystals at the top left of the screen to collect blue, green, or purple crystals. It's a good idea to these in the crystal menu for significant speed boosts, and not to hog them.",
+            "Now, get a miner for $20,000! Don't worry: getting clocks becomes MUCH easier later on.",
             "Miners give you ore, but you'll need a furnace to use them. At this point, you can get bricks for $1 each. If you get 1,250 bricks, you can get a furnace (in the first build menu).",
-            "It's a good idea to automate brick production by first getting a digger. Then, in the construction (brick) menu, get a molder and then a kiln. You'll also need a woodcutter to power the kiln! Once you automate it, you might want to spend some crystals to speed up brick production.",
-            "Buy your first furnace for 1,250 bricks!",
+            "It's a good idea to automate brick production by getting molders and kilns. From there, you'll also need a woodcutter to power the kiln! (DO NOT get too many woodcutters: you'd be surprised how often people lose money too quickly because of this mistake.) Once you automate it, you might want to spend some crystals to speed up brick production.",
+            "Save up, and then purchase your first furnace (in the very first menu) for 1,250 bricks!",
             "Congrats on getting a furnace and automating brick production! It's time to get your first manager in the new research/management menu. You'll need to get 1,000 golden clocks for them though. (This is a perfect time to get some gold bars. Once you have 25 gold bars, get a jeweler. Jewelers will SLOWLY produce golden clocks. You might want to spend some crystals to speed up this process!)",
             "Now that you have a manager, get a scientist! Scientists generate science and creativity. You'll want to have a lot of both to get new researches!",
             'With a scientist, you now have access to research upgrading! It\'s a good idea to first get the "Research steel working" upgrade, which will allow you to construct steel mills in the first menu.',
@@ -12795,42 +12819,44 @@
                 progress = 5
             } else if (getTotals("family").isZero()) {
                 progress = 6
-            } else if (getTotals("miners").isZero()) {
+            } else if (getTotals("diggers").isZero()) {
                 progress = 7
-            } else if (getTotals("bricks").isZero()) {
+            } else if (getTotals("miners").isZero()) {
                 progress = 8
-            } else if (getTotals("woodcutters").isZero()) {
+            } else if (getTotals("bricks").isZero()) {
                 progress = 9
-            } else if (getTotals("furnaces").isZero()) {
+            } else if (getTotals("woodcutters").isZero()) {
                 progress = 10
-            } else if (getTotals("managers").isZero()) {
+            } else if (getTotals("furnaces").isZero()) {
                 progress = 11
-            } else if (getTotals("scientists").isZero()) {
+            } else if (getTotals("managers").isZero()) {
                 progress = 12
-            } else if (!hasResearch("mills")) {
+            } else if (getTotals("scientists").isZero()) {
                 progress = 13
-            } else if (getTotals("arms").isZero()) {
+            } else if (!hasResearch("mills")) {
                 progress = 14
-            } else if (getTotals("watts").isZero()) {
+            } else if (getTotals("arms").isZero()) {
                 progress = 15
-            } else if (getTotals("factories").isZero()) {
+            } else if (getTotals("watts").isZero()) {
                 progress = 16
-            } else if (getTotals("arms").isLess(240)) {
+            } else if (getTotals("factories").isZero()) {
                 progress = 17
-            } else if (getTotals("turbines").isZero()) {
+            } else if (getTotals("arms").isLess(240)) {
                 progress = 18
-            } else if (!hasResearch("apples")) {
+            } else if (getTotals("turbines").isZero()) {
                 progress = 19
-            } else if (getTotals("fierywood").isLess("ee50")) {
+            } else if (!hasResearch("apples")) {
                 progress = 20
-            } else if (getTotals("wormholes").isLess(1)) {
+            } else if (getTotals("fierywood").isLess("ee50")) {
                 progress = 21
-            } else if (!hasResearch("wormy8")) {
+            } else if (getTotals("wormholes").isLess(1)) {
                 progress = 22
-            } else if (!hasResearch("cosmos")) {
+            } else if (!hasResearch("wormy8")) {
                 progress = 23
-            } else {
+            } else if (!hasResearch("cosmos")) {
                 progress = 24
+            } else {
+                progress = 25
             }
 
             update(tipElement, progressNotes[progress])
@@ -13144,7 +13170,7 @@
 
             // Update the amount of clocks that you have
             var familySqrt = C("family").sqrt()
-            var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.05)
+            var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.15)
             var clockmakerIncome = clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)
 
             cpt = cpt.add(electricCPT).add(clockmakerIncome).add(familyIncome)
@@ -13273,7 +13299,9 @@
             add("meta2factories", C("metabuilders").mul(50).mul(Hyper(true).add(C("metacoins").pow(6))).div(60))
             mul("metacloners", Hyper(1.0002).pow(speed))
             add("metabuilders", C("metacloners").div(100))
-            add("metaspin", C("metadisks").div(10000))
+            var metaTorus = C("metatorus")
+            add("metaspin", C("metadisks").mul(0.0001).add(metaTorus.div(60)))
+            add("metaholes", metaTorus.mul(0.0001))
 
             var limitedProperties = properties.slice(0)
             limitedProperties.splice(limitedProperties.indexOf("iq"), 1)
@@ -13679,9 +13707,15 @@
                 crystalImage.className = "crystal" + ((crystalTotal % 3) + 1)
             }
 
-            if (easyClick && easyButton !== null && easyButton.id !== "easyClicking" && easyTime <= newTime) {
+            if (easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "autosell" && easyTime <= newTime) {
                 easyButton.click()
-                easyTime += 50
+                easyTime += 1
+                alreadyClicked = false
+            }
+
+            if (autoClick && hovered !== null && hovered.id !== "autoClicking" && hovered.id !== "autosell" && autoTime <= newTime) {
+                hovered.click()
+                autoTime += 1
             }
 
             var diff = newTime - time
@@ -14087,8 +14121,8 @@
                         }
                     } else if (hovered.id === "autosell" || hovered.id === "addAutosell" || hovered.id === "minusAutosell") {
                         text += "<br>[Autosell is currently " + (autosellOn ? "ENABLED and sells " + sellPercent + "% of clocks you make" : "DISABLED") + "]"
-                    } else if (hovered.id === "easyClicking") {
-                        text += easyClick ? "<br>[Easy clicking is currently ENABLED]" : "<br>[Easy clicking is currently DISABLED]"
+                    } else if (hovered.id === "autoClicking") {
+                        text += autoClick ? "<br>[Autoclicking is currently ENABLED. (Autoclicking on this button is disabled by default!)]" : "<br>[Autoclicking is currently DISABLED.]"
                     } else if (hovered.id === "shardAscend") {
                         var newShards = C("gc").mul(1e-9)
                         if (hasResearch("shardboost")) {
@@ -14211,7 +14245,7 @@
                     addScripts()
                 })
                 panel.addEventListener("dblclick", function (e) {
-                    if (confirm("Remove ALL mods?") && confirm("Are you ABSOLUTELY SURE you want to remove all mods?\nThis CANNOT be undone and may break the game!")) {
+                    if (doubleCheck("Remove ALL mods?") && doubleCheck("Are you ABSOLUTELY SURE you want to remove all mods?\nThis CANNOT be undone and may break the game!")) {
                         clearTimeout(moddingTimeout)
                         var lenPlusOne = clockMods.length + 1
                         for (var i = 1; i < lenPlusOne; i++) {
@@ -14265,7 +14299,7 @@
 
         ID("addMod").addEventListener("click", function (e) {
             var source = ID("modSource").value.trim()
-            if (source.length !== 0 && confirm("Are you ABSOLUTELY SURE you want to add this mod?\r\nMods may compromise privacy and do unexpected things.")) {
+            if (source.length !== 0 && doubleCheck("Are you ABSOLUTELY SURE you want to add this mod?\r\nMods may compromise privacy and do unexpected things.")) {
                 localStorage.setItem("clockMod" + (clockMods.length + 1), source)
                 var script = document.createElement("script")
                 script.appendChild(document.createTextNode(source))
