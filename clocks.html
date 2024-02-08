@@ -7135,6 +7135,9 @@
                                 eTotal++
                                 bigPart = BigInt(digits.toString().slice(0, HDIGITS))
                                 digits = digits.toString().length - 1
+                                if (eTotal === 1n) {
+                                    eTotal = 2n
+                                }
                             }
                         } else if (eTotal !== 0n && digits < 0) {
                             if (!noWarnings) {
