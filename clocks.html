@@ -80,6 +80,20 @@
             padding: 10px;
         }
 
+        #ticker {
+            position: fixed;
+            display: none;
+            white-space: pre;
+            user-select: all;
+            background-color: #333;
+            text-align: center;
+            top: 0;
+            left: 0;
+            width: 300%;
+            height: 24px;
+            font-size: 18px;
+        }
+
         .serif {
             font-family: Georgia, "Times New Roman", Times;
         }
@@ -273,6 +287,11 @@
             border-radius: 6px;
         }
 
+        code {
+            font-size: inherit;
+            font-family: "Courier New", Courier, monospace;
+        }
+
         #logSection {
             font-size: 15px;
             display: none;
@@ -369,7 +388,7 @@
             position: fixed;
             pointer-events: none;
             display: block;
-            top: 16px;
+            top: 46px;
             right: -16px;
             transition: opacity 1s, transform 500ms;
             opacity: 0;
@@ -630,6 +649,10 @@
 
             u {
                 font-size: 18px;
+            }
+
+            #ticker {
+                display: block;
             }
         }
 
@@ -6893,6 +6916,8 @@
         </div>
     </div>
 
+    <div id="ticker"></div>
+
     <div id="modPanel" tabindex="0">
         You have mods that are active. Press any key or wait to make this panel disappear.
         <br>
@@ -10993,7 +11018,6 @@
 
                                 rawAdd(part1, number)
                             }
-
                         }
                     }
                 }
@@ -11001,7 +11025,8 @@
         }
 
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
+        var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
+        var newsOptions = ["Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "I have a very important message to make: *", "Oh, you can't select any text on the page? I really wonder how that happened...", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as cody</code>", "Sorry, but we only support 3 dimensions currently. Come back later for 8!", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dotdotdot                                                                                 DONE!', "pay your workers more", "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:light)")
         if (darkModeMedia.matches) {
@@ -13724,13 +13749,13 @@
                 crystalImage.className = "crystal" + ((crystalTotal % 3) + 1)
             }
 
-            if (easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "autosell" && easyTime <= newTime) {
+            if (easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "crystal" && easyButton.id !== "autosell" && easyTime <= newTime) {
                 easyButton.click()
                 easyTime += 1
                 alreadyClicked = false
             }
 
-            if (autoClick && hovered !== null && hovered.id !== "autoClicking" && hovered.id !== "autosell" && autoTime <= newTime) {
+            if (autoClick && hovered !== null && hovered.id !== "autoClicking" && easyButton.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
                 hovered.click()
                 autoTime += 1
             }
@@ -13928,6 +13953,36 @@
 
             // Update all the values that are within the game
             updateGame()
+
+            // Update the silly news ticker
+            var ticky = ID("ticker")
+            var newsTicks = 1000 / newsSpeed
+            var newsAmount = newsOptions.length
+
+            var l, h, s, f
+            function O(r) {
+            for (var e, t = 1779033703, o = 3144134277, a = 1013904242, n = 2773480762, i = 0; i < r.length; i++) e = r.charCodeAt(i), t = o ^ Math.imul(t ^ e,
+                597399067), o = a ^ Math.imul(o ^ e, 2869860233), a = n ^ Math.imul(a ^ e, 951274213), n = t ^ Math.imul(n ^ e, 2716044179);
+            t = Math.imul(a ^ t >>> 18, 597399067), o = Math.imul(n ^ o >>> 22, 2869860233), a = Math.imul(t ^ a >>> 17, 951274213), n = Math.imul(o ^ n >>> 19,
+                2716044179), l = (t ^ o ^ a ^ n) >>> 0, h = (o ^ t) >>> 0, s = (a ^ t) >>> 0, f = (n ^ t) >>> 0
+            }
+
+            var newsID = Math.floor(frame / newsTicks) - 1
+            O(newsID.toString().repeat(4))
+            var oldNewsItem = [l, h, s, f][newsID & 3] % newsAmount
+
+
+            newsID = Math.floor(frame / newsTicks)
+            O(newsID.toString().repeat(4))
+            var newsItem = [l, h, s, f][newsID & 3] % newsAmount
+            if (oldNewsItem === newsItem) {
+                updateHTML(ticky, "duplicate news ticker moment duplicate news ticker moment")
+            } else {
+                updateHTML(ticky, newsOptions[newsItem])
+            }
+
+            var percent = ((frame / newsTicks) % 1) * -200
+            ticky.style.left = (newsItem === newsAmount - 1 ? (-200 - percent) : percent) + "%"
 
             // Update the research elements
             var researchElem = ID("research")
