@@ -365,12 +365,14 @@
         .category,
         #lossNote,
         .study,
-        #modPanel {
+        #modPanel,
+        #noteBox {
             display: none;
         }
 
-        #modPanel {
-            position: absolute;
+        #modPanel,
+        #noteBox {
+            position: fixed;
             background-color: black;
             color: white;
             padding-top: 10px;
@@ -379,6 +381,23 @@
             left: 0;
             width: 100%;
             height: calc(100% - 10px);
+        }
+
+        #note {
+            display: flex;
+        }
+
+        #note,
+        #noteBox {
+            justify-content: center;
+            align-items: center;
+        }
+
+        #note {
+            transition: none;
+            font-size: 10vh;
+            font-family: "Helvetica", "Trebuchet MS";
+            font-weight: 700;
         }
 
         label {
@@ -2447,11 +2466,27 @@
         }
 
         .cross:before {
-            transform: rotate(45deg);
+            transform: rotate(-45deg);
         }
 
         .cross:after {
-            transform: rotate(-45deg);
+            transform: rotate(45deg);
+        }
+
+        #closeNote {
+            transform: translateY(-10px) scale(2);
+            position: fixed;
+            cursor: pointer;
+            top: 60px;
+            right: 75px;
+        }
+
+        #closeNote:before {
+            transform: scale(2) rotate(-45deg);
+        }
+
+        #closeNote:after {
+            transform: scale(2) rotate(45deg);
         }
 
         .bland {
@@ -3256,7 +3291,6 @@
             cursor: pointer;
             display: none;
             pointer-events: auto;
-            z-index: 9;
             top: 0;
             left: 0;
             animation: rotate 2s linear infinite;
@@ -3884,8 +3918,6 @@
             crystal1: Blue Crystal (100, Provides a 10× speed boost for ten seconds)
         </div>
 
-        <span id="crystal" tabindex="0"></span>
-
         <nav id="navigation" aria-label="The navigation to switch tabs">
             <span data-tab="main" title="Build menu" data-show="miners>0"><span class="hammer"></span></span>
             <span data-tab="clock" title="Clock menu"><span class="clock"></span></span>
@@ -4266,9 +4298,9 @@
                         <button class="special" id="autosell"
                             data-desc="Automatically sells any clocks you have made as soon as you obtain them.">
                             Toggle clock autoselling <span class="money"></span>
-                            <span class="mini special" id="minusAutosell"
+                            <span class="mini special" id="minusAutosell" tabindex="0"
                                 data-desc="Decrease the percent of clocks you are AUTO-selling.">-</span>
-                            <span class="mini special" id="addAutosell"
+                            <span class="mini special" id="addAutosell" tabindex="0"
                                 data-desc="Increase the percent of clocks you are AUTO-selling.">+</span>
                         </button>
                         <button class="special" id="autoClicking" data-show="family>0"
@@ -6920,6 +6952,8 @@
             <span data-for="crystal2">0×</span> <span class="crystal2" role="presentation"></span>
             <span data-for="crystal1">0×</span> <span class="crystal1" role="presentation"></span>
         </div>
+
+        <span id="crystal" tabindex="0"></span>
     </div>
 
     <div id="ticker"></div>
@@ -6928,6 +6962,10 @@
         You have mods that are active. Press any key or wait to make this panel disappear.
         <br>
         <b class="red">IMPORTANT: If you want to remove all mods, quickly double click on this panel.</b>
+    </div>
+
+    <div id="noteBox">
+        <div id="note"></div><span class="cross" id="closeNote" tabindex="0"></span>
     </div>
 
     <script id="script">
@@ -9939,9 +9977,13 @@
         }
 
         // Custom functions to disable easy clicking after prompting
-        function message(a) {
+        function message(a, color) {
             easyButton = null
-            alert(a)
+            ID("noteBox").style.display = "flex"
+            if (color != null) {
+                ID("noteBox").style.backgroundColor = color
+            }
+            ID("note").innerHTML = a
         }
 
         function doubleCheck(a) {
@@ -10049,6 +10091,11 @@
                 })
             }
         }
+
+        attachEvent("closeNote", function () {
+            ID("noteBox").style.display = "none"
+            ID("note").innerHTML = ""
+        })
 
         attachEvent("skip", function () {
             setTimeout(function () {
@@ -12911,7 +12958,7 @@
             updateClass(tipElement, "small " + ["red", "orange", "yellow", "green", "blue", "pink"][progress % 6])
             updateId("tipNumber", progress + 1)
             if (progress === 0) {
-                updateHTML(ID("tips"), "You haven't completed any tips yet!")
+                updateHTML(ID("tips"), '<div class="small purple">You haven\'t completed ANY tips yet!</div>')
             } else {
                 var result = '<b class="large">Previous tips:</b>'
                 for (var i = 0; i < progress; i++) {
@@ -13617,7 +13664,7 @@
                     var key = properties[i]
                     if (getTotals(key).isPositive() && !hiddenWikiItems.includes(key)) {
                         if ((key !== "fierypower" && key !== "silverpower") || !C(key).isEqual(1)) {
-                            allData.push((i & 1 ? '<span class="small purple">' : '<span class="small pink">') + getAmount(key) + "</span>")
+                            allData.push((i & 1 ? '<span class="small purple">' : '<span class="small pink">') + getAmount(key) + (key === "clocks" ? " (oh, that thing!)</span>" : "</span>"))
                         }
                     }
                 }
@@ -13967,24 +14014,27 @@
 
             var l, h, s, f
             function O(r) {
-            for (var e, t = 1779033703, o = 3144134277, a = 1013904242, n = 2773480762, i = 0; i < r.length; i++) e = r.charCodeAt(i), t = o ^ Math.imul(t ^ e,
-                597399067), o = a ^ Math.imul(o ^ e, 2869860233), a = n ^ Math.imul(a ^ e, 951274213), n = t ^ Math.imul(n ^ e, 2716044179);
-            t = Math.imul(a ^ t >>> 18, 597399067), o = Math.imul(n ^ o >>> 22, 2869860233), a = Math.imul(t ^ a >>> 17, 951274213), n = Math.imul(o ^ n >>> 19,
-                2716044179), l = (t ^ o ^ a ^ n) >>> 0, h = (o ^ t) >>> 0, s = (a ^ t) >>> 0, f = (n ^ t) >>> 0
+                for (var e, t = 1779033703, o = 3144134277, a = 1013904242, n = 2773480762, i = 0; i < r.length; i++) e = r.charCodeAt(i), t = o ^ Math.imul(t ^ e,
+                    597399067), o = a ^ Math.imul(o ^ e, 2869860233), a = n ^ Math.imul(a ^ e, 951274213), n = t ^ Math.imul(n ^ e, 2716044179);
+                t = Math.imul(a ^ t >>> 18, 597399067), o = Math.imul(n ^ o >>> 22, 2869860233), a = Math.imul(t ^ a >>> 17, 951274213), n = Math.imul(o ^ n >>> 19,
+                    2716044179), l = (t ^ o ^ a ^ n) >>> 0, h = (o ^ t) >>> 0, s = (a ^ t) >>> 0, f = (n ^ t) >>> 0
             }
 
-            var newsID = Math.floor(frame / newsTicks) - 1
-            O(newsID.toString().repeat(4))
-            var oldNewsItem = [l, h, s, f][newsID & 3] % newsAmount
-
-
-            newsID = Math.floor(frame / newsTicks)
-            O(newsID.toString().repeat(4))
-            var newsItem = [l, h, s, f][newsID & 3] % newsAmount
-            if (oldNewsItem === newsItem) {
-                updateHTML(ticky, "duplicate news ticker moment duplicate news ticker moment")
+            if (C("clocks").isZero()) {
+                update(ticky, "imagine having no clocks at all (that means BUILD A CLOCK for this message to change!) :p")
             } else {
-                updateHTML(ticky, newsOptions[newsItem])
+                var newsID = Math.floor(frame / newsTicks) - 1
+                O(newsID.toString().repeat(4))
+                var oldNewsItem = [l, h, s, f][newsID & 3] % newsAmount
+
+                newsID = Math.floor(frame / newsTicks)
+                O(newsID.toString().repeat(4))
+                var newsItem = [l, h, s, f][newsID & 3] % newsAmount
+                if (oldNewsItem === newsItem) {
+                    updateHTML(ticky, "duplicate news ticker moment duplicate news ticker moment")
+                } else {
+                    updateHTML(ticky, newsOptions[newsItem])
+                }
             }
 
             var percent = ((frame / newsTicks) % 1) * -200
