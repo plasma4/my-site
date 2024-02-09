@@ -91,7 +91,7 @@
             left: 0;
             width: 300%;
             height: 20px;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .serif,
@@ -760,7 +760,7 @@
 
             #ticker {
                 height: 24px;
-                font-size: 18px;
+                font-size: 16px;
             }
         }
 
@@ -6983,10 +6983,9 @@
         /** @type {string[]} An array with LOWERCASE abbreviations for numbers up to a decillion (only works for one-letter lowercase suffixes) */
         var shortSuffixesLower = ["", "k", "m", "b", "t", "", "", "", "", "o", "n", "d"]
 
-        /** @type {number} The minimum number of digits to stop using abbreviations for. Defaults to 50 but can be changed up to 303 (a centillion). */
-        var abbreviationLimit = 50
+        /** @type {string[]} The minimum number of digits to stop using abbreviations for. Defaults to 50 but can be changed up to 303. */
+        var abbreviationLimit = 303
 
-        /** @type {number} The number of digits the HyperNumber is accurate to. */
         var HDIGITS = 50
         var Hyper
         (function () {
@@ -7216,24 +7215,31 @@
                             return
                         } else if (eTotal !== 0n && digits < HDIGITS) {
                             if (digits === 0) {
-                                if (eTotal === 1n) {
-                                    dollar = [sign, 0, Number(bigPart / BIGONE), BIGONE]
-                                } else if (eTotal === 2n) {
-                                    dollar = [sign, 0, Number(bigPart / BIGONEDIVTEN), BIGONE]
-                                } else if (eTotal === 3n) {
-                                    dollar = [sign, 0, Number(bigPart / BIGONEDIVTENPOWTEN), BIGONE]
-                                } else {
-                                    dollar = [sign, eTotal - 2n, bigPart / BIGONEDIVTENPOWTEN, bigPart]
+                                if (!noWarnings) {
+                                    console.error("The value given contains an illogical zero.")
                                 }
+                                dollar = [sign, 0, 0, 0n]
                                 return
                             } else if (digits === 1) {
                                 if (eTotal === 1n) {
                                     dollar = [sign, 0, Number(bigPart / BIGONEDIVTEN), BIGONE]
                                 } else {
-                                    dollar = [sign, eTotal - 1n, bigPart / BIGONEDIVTENPOWTEN, BIGONE]
+                                    var value = bigPart / BIGONEDIVTEN
+                                    if (eTotal === 2n && value < 16n) {
+                                        dollar = [sign, 0, 10 ** Number(value), BIGONE]
+                                    } else if (value < BIGDIGITS) {
+                                        dollar = [sign, eTotal - 1n, 10n ** value, BIGONE]
+                                    } else {
+                                        dollar = [sign, eTotal, value, BIGONE]
+                                    }
                                 }
                             } else if (digits < DIGITSOFDIGITS) {
-                                dollar = [sign, eTotal - 1n, 10n ** (10n ** BigInt(digits)), BIGONE]
+                                var value = bigPart / 10n ** BigInt(HDIGITS - digits - 1)
+                                if (value < BIGDIGITS) {
+                                    dollar = [sign, eTotal - 1n, 10n ** value, BIGONE]
+                                } else {
+                                    dollar = [sign, eTotal, value, BIGONE]
+                                }
                             } else if (digits < 0) {
                                 if (!noWarnings) {
                                     console.error("The value given could not be converted to a Hyper, as it contains negative numbers too far down.")
@@ -7241,10 +7247,11 @@
                                 dollar = [sign, 0, 0, 0n]
                                 return
                             } else {
-                                if (eTotal === 1n && digits < 16) {
-                                    dollar = [sign, 0, Number(bigPart / (10n ** BigInt(DIGITSMINUSONE - digits))), BIGONE]
+                                var digitValue = bigPart / (10n ** BigInt(DIGITSMINUSONE - digits))
+                                if (eTotal === 1n && digitValue < 9007199254740992) {
+                                    dollar = [sign, 0, Number(digitValue), BIGONE]
                                 } else {
-                                    dollar = [sign, eTotal, bigPart / (10n ** BigInt(DIGITSMINUSONE - digits)), BIGONE]
+                                    dollar = [sign, eTotal, digitValue, BIGONE]
                                 }
                             }
                             return
@@ -9586,7 +9593,7 @@
             }
             var isBig = typeof number === "bigint" || typeof number === "string"
             if (!isBig && typeof number !== "number") {
-                console.error("Cannot format a " + (typeof number) + " because it is not a string, number, BigInt, or HyperHumbber.")
+                console.error("Cannot format a " + (typeof number) + " because it is not a string, number, BigInt, or HyperNumber.")
             }
             var string = number.toString(), afterDots = ".", dotIndex = string.indexOf(".")
             if (dotIndex !== -1) {
@@ -9615,9 +9622,10 @@
                 length = Number(string.slice(eIndex + 2))
                 string = string.slice(0, eIndex)
             }
-            if (length > HDIGITS) {
+
+            if (length > Math.min(abbreviationLimit, 303)) {
                 if (isBig) {
-                    return string[0] + "." + string[1] + string[2] + string[3] + "e" + length
+                    return string[0] + "." + string[1] + string[2] + string[3] + "e" + (length - 1)
                 }
                 return (string.charCodeAt(1) === 46 ? (string + "000").slice(0, 4) : (string + ".00")) + "e" + length
             }
@@ -9631,7 +9639,6 @@
                 return string[0] + string[1] + "." + string[2] + string[3] + string[4] + shortSuffixes[thousandPower]
             }
         }
-
         /**
          * The data that a game event contains.
          * @typedef EventObject
@@ -11079,7 +11086,7 @@
 
         var stuff, stuffTotals, frame, offlineFrames
         var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
-        var newsOptions = ['<u class="smaller">click here</u> to get a nothing', "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select any text on the page? I really wonder how that happened...", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8!", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
+        var newsOptions = ['<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "Modding a tree be like :T", "There's only so many news tickers I can think of...", "You and a super intelligent snail with F1,000,000 digital knowlege both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select any text on the page? I really wonder how that happened...", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8!", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:light)")
         if (darkModeMedia.matches) {
