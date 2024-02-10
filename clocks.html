@@ -3706,7 +3706,7 @@
                                 input.setSelectionRange(0, 99999999)
                                 document.execCommand("copy")
                                 input.remove()
-                                onunload = null
+                                onpagehide = null
                                 localStorage.removeItem("clockGame")
                                 location.reload()
                             } catch (e) { }
@@ -5386,6 +5386,8 @@
                     <span class="mini special" id="moveDown">DOWN</span>
                     <span class="mini special" id="moveLeft">LEFT</span>
                     <span class="mini special" id="moveRight">RIGHT</span>
+                    <br>
+                    <span class="mini warn2" id="die">DIE (CANNOT UNDO)</span>
                 </div>
 
                 <div id="materials" style="display: none">
@@ -10531,7 +10533,10 @@
             isRemoving = !isRemoving
         })
 
+        onpagehide = saveLocally
+
         window.addEventListener("blur", function () {
+            saveLocally()
             isRemoving = false
             shiftDown = false
             updateId("removeButton", "Enable Item Removal (THIS BUTTON IS FOR REMOVING ITEMS ONLY!)")
@@ -10838,9 +10843,17 @@
             }
         }
 
-        function setupDungeons() {
+        function setupDungeons(data, screenW, screenH) {
+            dungeonX = screenW
+            dungeonY = screenH
             var rowText = "<span></span>".repeat(dungeonX)
             ID("underground").innerHTML = (rowText + "<br>").repeat(dungeonY - 1) + rowText
+            dungeonData = data.split("\n")
+            var firstPart = dungeonData[0].split(",")
+            spawnX = firstPart[0]
+            spawnY = firstPart[1]
+            dungeonData.shift()
+            dungeonDepth = dungeonData.length
         }
 
         // Formats a Hyper
@@ -12021,7 +12034,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + characterX + "A" + dieFrame + "A" + characterY + "C" + fallSpeed + "C" + health + "B" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + health + "B" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -12112,10 +12125,6 @@
                 console.log("A save could not be loaded.")
                 reset(true)
             }
-        }
-
-        onunload = function () {
-            saveLocally()
         }
 
         function pasteEvent(e) {
@@ -13788,48 +13797,58 @@
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
         }
 
-        var BRICK1 = 0, BRICK2 = 1, GRASS = 2, CHARACTER = 3, characterSections = 1000000, dieFrame = 0
+        var BRICK1 = 0, BRICK2 = 1, GRASS = 2, CHARACTER = 3, characterSections = 1000000, dieFrame = 0, spawnX = 0, spawnY = 0, dungeonDepth = 0, dungeonData = []
         function updateDungeon() {
             if (--dieFrame > 0) {
                 ID("underground").style.opacity = dieFrame < 25 ? 1 - dieFrame * 0.04 : (dieFrame * 0.04 - 1)
-                ID("underground").style.filter = "hue-rotate(" + dieFrame * 7.2 + "deg)"
+                var filterEffect = ""
+                if (dieFrame < 5) {
+                    var scaling = 1 + dieFrame * 0.01
+                    filterEffect = "brightness(" + Math.pow(scaling, 15) + ")"
+                    ID("underground").style.transform = "scale(" + scaling + ")"
+                } else if (dieFrame < 10) {
+                    var scaling = 1.1 - dieFrame * 0.01
+                    filterEffect = "brightness(" + Math.pow(scaling, 15) + ")"
+                    ID("underground").style.transform = "scale(" + scaling + ")"
+                }
+                ID("underground").style.filter = filterEffect + "hue-rotate(" + dieFrame * 7.2 + "deg)"
             } else {
                 ID("underground").removeAttribute("style")
                 var tiles = ID("underground").getElementsByTagName("span")
                 var tileAmount = dungeonX * dungeonY
+                var extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 1))
                 for (var i = 0; i < tileAmount; i++) {
                     var x = i % dungeonX
-                    var y = Math.floor(i / dungeonX)
+                    var y = Math.floor(i / dungeonX) + extraY
                     var cx = Math.floor(characterX / characterSections)
                     var cy = Math.floor(characterY / characterSections)
-                    var type = -1
-                    if (cx === 4 || cx === 5) {
-                        characterY += fallSpeed++
-                        if (characterY >= characterSections * 10) {
-                            resetCharacter()
-                            return
-                        }
-                    } else if (cx < 0 || cx >= dungeonY) {
+                    if (!dungeonData[cy + 1] || !("brgp".includes(dungeonData[cy + 1][cx]))) {
+                        characterY += ++fallSpeed
+                        cy = Math.floor(characterY / characterSections)
+                        extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 1))
+                    } else {
+                        fallSpeed = 0
+                        characterY = Math.floor(characterY / characterSections) * characterSections
+                    }
+
+                    if (health === 0 || cy >= dungeonDepth) {
                         resetCharacter()
                         return
                     }
+
+                    var type = -1
                     if (x === cx && y === cy) {
                         type = CHARACTER
-                    } else if (y !== 0 && x !== 4 && x !== 5) {
-                        if (y === 1) {
-                            type = GRASS
-                        } else if (x === 3 || x === 6) {
-                            type = BRICK2
-                        } else {
-                            type = BRICK1
-                        }
+                    } else if (y < dungeonDepth) {
+                        type = "brgp".indexOf(dungeonData[y][x])
                     }
-                    tiles[i].className = "big " + (type > -1 ? ["brownbrick", "redbrick", "grass", "person"][type] : "blank")
+                    updateClass(tiles[i], "big " + (type > -1 ? ["brownbrick", "redbrick", "grass", "person"][type] : "blank"))
                 }
             }
         }
 
         function resetCharacter() {
+            health = 100
             dieFrame = 50
             fallSpeed = 0
             characterX = 0
@@ -13839,17 +13858,18 @@
         }
 
         function moveCharacter(direction) {
-            if (dieFrame < 0) {
+            if (dieFrame < 0 && !characterMoved) {
+                characterMoved = true
                 var cx = Math.floor(characterX / characterSections)
                 var cy = Math.floor(characterY / characterSections)
                 if (direction === 0) {
-                    if (cx === 5 || cy === 0 || (cx !== 4 && cx !== 5)) {
+                    if (!("brgp".includes(dungeonData[cy][cx - 1]))) {
                         characterX -= characterSections
                     }
                 } else if (direction === 1) {
                     // No up action
                 } else if (direction === 2) {
-                    if (cx === 4 || cy === 0 || (cx !== 4 && cx !== 5)) {
+                    if (!("brgp".includes(dungeonData[cy][cx + 1]))) {
                         characterX += characterSections
                     }
                 } else if (direction === 3) {
@@ -13870,8 +13890,13 @@
         attachEvent("moveRight", function () {
             moveCharacter(RIGHT)
         })
+        attachEvent("die", function () {
+            if (dieFrame < 0 && doubleCheck("Are you sure you want to DIE? You can't undo this!")) {
+                resetCharacter()
+            }
+        })
 
-        var noItemWarning = true, alreadyClicked = true
+        var noItemWarning = true, alreadyClicked = true, characterMoved = false
 
         function datesClose(date, month, day, maxDaysBefore) {
             return (date.getMonth() + 1) === month && (date.getDate() + maxDaysBefore) > day && date.getDate() <= day
@@ -14503,8 +14528,9 @@
             // Reset the speed
             speed = Hyper(baseSpeed)
 
-            // Reset the button click variable
+            // Reset the button click and dungeon update variables
             alreadyClicked = false
+            characterMoved = false
 
             // Update the appearing of the buttons
             updateEffects()
@@ -14521,7 +14547,24 @@
             setTimeout(draw, (frame % 3 === 0 ? 16 : 17) - Date.now() + newTime)
         }
 
-        setupDungeons()
+        setupDungeons(`0,0
+
+gggg  gggg
+rrrr  rrrr
+brrr  rrrb
+bbrr  rrbb
+bbbr  rbbb
+bbbr  rbbb
+bbbr  rbbb
+bbbr  rbbb
+bbbr  rbbb
+bbbr  rbbb
+bbbr  rbbb
+bbbr     b
+bbbr  rbbb
+bbbr  rbbb
+bbbr  rbbb
+bbbr  rbbb`, 10, 10)
 
         if (storageWorks) {
             function getMods() {
