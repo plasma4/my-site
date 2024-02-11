@@ -10852,6 +10852,8 @@
             var firstPart = dungeonData[0].split(",")
             spawnX = firstPart[0]
             spawnY = firstPart[1]
+            characterX = spawnX * characterSections
+            characterY = spawnY * characterSections
             dungeonData.shift()
             dungeonDepth = dungeonData.length
         }
@@ -13851,10 +13853,8 @@
             health = 100
             dieFrame = 50
             fallSpeed = 0
-            characterX = 0
-            characterX = 0
-            characterY = 0
-            characterY = 0
+            characterX = spawnX * characterSections
+            characterY = spawnY * characterSections
         }
 
         function moveCharacter(direction) {
@@ -14547,20 +14547,20 @@
             setTimeout(draw, (frame % 3 === 0 ? 16 : 17) - Date.now() + newTime)
         }
 
-        setupDungeons(`0,0
-
+        setupDungeons(`1,0
+b        b
 gggg  gggg
 rrrr  rrrr
 brrr  rrrb
 bbrr  rrbb
 bbbr  rbbb
+bbbrb rbbb
 bbbr  rbbb
 bbbr  rbbb
 bbbr  rbbb
 bbbr  rbbb
 bbbr  rbbb
-bbbr  rbbb
-bbbr     b
+bbbr bbbbb
 bbbr  rbbb
 bbbr  rbbb
 bbbr  rbbb
