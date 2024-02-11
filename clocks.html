@@ -80,8 +80,20 @@
             padding: 10px;
         }
 
+        #health {
+            display: block;
+            border: solid 2px black;
+            border-radius: 3px;
+            width: 316px;
+            height: 10px;
+            background-color: red;
+            margin: 4px 0 2px 0;
+        }
+
         #underground {
+            display: block;
             line-height: 32px;
+            width: 320px;
         }
 
         #ticker {
@@ -5377,16 +5389,18 @@
                     <span class="big redbrick"></span>
                     Discover the power of pixels!
                     <br>
-                    <b>Dungeons are still missing core gameplay and are new. Please be patient!</b>
-                    <br>
-                    Use your arrow, WASD keys, or the arrows on the screen.
+                    <b class="small">Dungeons are still missing core gameplay and are new. Please be patient!</b>
+                    <i class="smallish">
+                        Use your arrow keys, WASD keys, or the buttons below in order to move around the dungeon.
+                    </i>
 
                     <div id="underground"></div>
+                    <span id="health"></span>
                     <span class="mini special" id="moveUp">UP</span>
                     <span class="mini special" id="moveDown">DOWN</span>
                     <span class="mini special" id="moveLeft">LEFT</span>
                     <span class="mini special" id="moveRight">RIGHT</span>
-                    <br>
+                    <br><br>
                     <span class="mini warn2" id="die">DIE (CANNOT UNDO)</span>
                 </div>
 
@@ -13818,16 +13832,17 @@
                 ID("underground").removeAttribute("style")
                 var tiles = ID("underground").getElementsByTagName("span")
                 var tileAmount = dungeonX * dungeonY
-                var extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 1))
+                var extraX = Math.max(0, Math.floor(characterX / characterSections - dungeonX + 2))
+                var extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 3))
                 for (var i = 0; i < tileAmount; i++) {
-                    var x = i % dungeonX
+                    var x = i % dungeonX + extraX
                     var y = Math.floor(i / dungeonX) + extraY
                     var cx = Math.floor(characterX / characterSections)
                     var cy = Math.floor(characterY / characterSections)
                     if (!dungeonData[cy + 1] || !("brgp".includes(dungeonData[cy + 1][cx]))) {
                         characterY += ++fallSpeed
                         cy = Math.floor(characterY / characterSections)
-                        extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 1))
+                        extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 3))
                     } else {
                         fallSpeed = 0
                         characterY = Math.floor(characterY / characterSections) * characterSections
@@ -13845,6 +13860,14 @@
                         type = "brgp".indexOf(dungeonData[y][x])
                     }
                     updateClass(tiles[i], "big " + (type > -1 ? ["brownbrick", "redbrick", "grass", "person"][type] : "blank"))
+                }
+            }
+            if (health >= 100) {
+                ID("health").removeAttribute("style")
+            } else {
+                var newWidth = health * 3.16 + "px"
+                if (ID("health").style.width !== newWidth) {
+                    ID("health").style.width = health * 3.16 + "px"
                 }
             }
         }
@@ -14548,7 +14571,7 @@
         }
 
         setupDungeons(`1,0
-b        b
+g        g
 gggg  gggg
 rrrr  rrrr
 brrr  rrrb
@@ -14556,15 +14579,50 @@ bbrr  rrbb
 bbbr  rbbb
 bbbrb rbbb
 bbbr  rbbb
-bbbr  rbbb
+bbbr  rbb 
 bbbr  rbbb
 bbbr  rbbb
 bbbr  rbbb
 bbbr bbbbb
 bbbr  rbbb
+bbbr  rb b
+bbbr  rbbb
+bbbr  rbbbrrrr
+bbbr         r
+b br  rbgg   r
+bbrr  rbgg   r
+bbbr  rb   rrr
+bbbr      b
+bbbr  rbbbb
+brrr  rbrr
+bbbr  rbrb
+bbbr  rbrb
+bbbr  rrrb
+bb rb rbbb
+bbbr  rbbr
+bbbr  rrrr
+brbr  rbrr
+bbbr  rbbr
 bbbr  rbbb
 bbbr  rbbb
-bbbr  rbbb`, 10, 10)
+b br  rb  
+b br  rbrb
+br r  rbbb
+bbbr rrbbb
+bbbr  rbbb  rrrr
+bbbr  rbbr  r  r
+bbbr  rbrr  rrrr
+bbbr  rbbb  r  r
+rbbr  rbbb  rrrr          r
+bbbr  rbbbbbbrbrbrbrr     r
+rr                        r
+bbbbbbbbbbbbbbbbbbbbbbbbb b
+b        rrbrr    rrbr    r
+rr         b              r
+rrr      bbbbb            r
+rrrr      bbb             r
+rrrrr      b              r
+bbbbbbbggg   gggrrrbbbbbbbb`, 10, 10)
 
         if (storageWorks) {
             function getMods() {
