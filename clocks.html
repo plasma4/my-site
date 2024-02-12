@@ -389,6 +389,7 @@
         #modPanel,
         #noteBox {
             position: fixed;
+            white-space: pre-wrap;
             background-color: black;
             color: white;
             padding-top: 10px;
@@ -411,7 +412,7 @@
 
         #note {
             transition: none;
-            font-size: 10vh;
+            font-size: 3vh;
             font-family: "Helvetica", "Trebuchet MS";
             font-weight: 700;
         }
@@ -612,6 +613,10 @@
             #itemInfo {
                 opacity: 1;
                 transform: scale(0.5) translate(150px, -40px);
+            }
+
+            button {
+                font-size: 20px;
             }
         }
 
@@ -985,7 +990,7 @@
         button,
         .mini {
             text-align: center;
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
             margin: 1px;
             border: solid 2px #616161;
@@ -2490,11 +2495,11 @@
         }
 
         #closeNote {
-            transform: translateY(-10px) scale(2);
+            transform: translateY(-10px);
             position: fixed;
             cursor: pointer;
-            top: 60px;
-            right: 75px;
+            top: 40px;
+            right: 50px;
         }
 
         #closeNote:before {
@@ -3781,10 +3786,10 @@
         </header>
 
         <div id="properties">
-            metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            coins|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
-            s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
+            coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
         </div>
         <div id="rocketParts">
             rocketbody|rocketfins|rocketcone
@@ -3843,6 +3848,7 @@
             steelmills: Steel Mill (3, A mill in order to farm steel, ahem, farm...)
             millmakers: Steel Millmaker (3, A mill to make more steel mills)
             money: Dollar (0, Moneymoneymoney)
+            coins: Coin (1, Wow, a coin! So cool!)
             metabucks: %MetaBuck (2, A funny-looking digital dollar)
             metacoins: %MetaCoin (10, A silly green digital coin)
             metaholes: %MetaHole (11, A hole made from digital influence)
@@ -4792,7 +4798,7 @@
                         <br>
                         <span class="mini special" data-show="fierywood>0" data-cost="fierywood-10"
                             data-earn="$morefwood" data-fade="$morefwood" data-sound="transaction">
-                            -10 <span class="fwood" aria-label="fiery wood"></span> for a 3× fiery wood gain boost
+                            -10 <span class="fwood" aria-label="fiery wood"></span> for a 4× fiery wood gain boost
                         </span>
                         <span class="mini special" data-show="$morefwood" data-cost="fierywood-50000"
                             data-earn="$morebwood" data-fade="$morebwood" data-sound="transaction">
@@ -5401,11 +5407,14 @@
                     <span class="big redbrick"></span>
                     Discover the power of pixels!
                     <br>
-                    <b class="small">Dungeons are still missing core gameplay and are new. Please be patient!</b>
+                    <b class="small">Dungeons are still IN BETA and are new. They're not finished!</b>
                     <i class="smallish">
                         Use your arrow keys, WASD keys, or the buttons below in order to move around the dungeon.
                     </i>
+                    <div class="small red">Note that there may be something past dungeons in the future...</div>
 
+                    <div id="coins" class="valuable" data-desc="Yay! A coin!" data-for="$bigger coin"></div>
+                    <hr>
                     <div id="underground"></div>
                     <span id="health"></span>
                     <span class="mini special" id="moveUp">UP</span>
@@ -6598,6 +6607,9 @@
                         Made by Leo Zhang. All rights reserved!
                     </strong>
 
+                    <div class="large pink">Version <b>0.2.0</b>: <i>dungeon beta + news!</i></div>
+                    <div class="small purple">Explore your way in mysterious dungeons!</div>
+                    <div class="small rainbow">Also, news tickers!</div>
                     <hr>
                     <div class="small orange">
                         January 31, 2024: Now working on MetaHoles! Have fun!
@@ -6607,13 +6619,13 @@
                         January 27, 2024: Working on MetaClock content! (Unfinished)
                         <span class="metac"></span><span class="metac"></span><span class="metac"></span>
                     </div>
-                    <div class="pink">
+                    <div class="smallish pink">
                         January 25, 2024: A few weeks of behind-the-scene exotic apple insanity!
-                        <div class="smallish pink">
-                            Burn <span class="move5">dark</span> <span class="move4">matter</span>,
-                            collect <span class="small wormhole">WORMHOLES</span>,
-                            and unlock <span class="glow2">THE COSMOS!!!</span>
-                        </div>
+                    </div>
+                    <div class="smallish red">
+                        Burn <span class="move5">dark</span> <span class="move4">matter</span>,
+                        collect <span class="small wormhole">WORMHOLES</span>,
+                        and unlock <span class="glow2">THE COSMOS!!!</span>
                     </div>
 
                     <hr>
@@ -7057,7 +7069,7 @@
         ID("script").remove()
 
         // Set the version
-        const version = "0.1.0"
+        const version = "0.2.0"
 
         /** @type {string[]} An array with abbreviations for numbers up to a whole lot (will not work properly if suffixes are more than 2 letters) */
         var shortSuffixes = ["", "K", "M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "Ud", "Dd", "Td", "qd", "Qd", "sd", "Sd", "Od", "Nd", "V", "Uv", "Dv", "Tv", "qv", "Qv", "sv", "Sv", "Ov", "Nv", "t", "Ut", "Dt", "Tt", "qt", "Qt", "st", "St", "Ot", "Nt", "qr", "Uq", "Dq", "Tq", "qq", "Qq", "sq", "Sq", "Oq", "Nq", "Qu", "UQ", "DQ", "TQ", "qQ", "QQ", "sQ", "SQ", "OQ", "NQ", "Sg", "Us", "Ds", "Ts", "qs", "Qs", "ss", "Ss", "Os", "Ns", "Sp", "US", "DS", "TS", "qS", "QS", "sS", "SS", "OS", "NS", "Og", "Uo", "Do", "To", "qo", "Qo", "so", "So", "Oo", "No", "Na", "Un", "Dn", "Tn", "qn", "Qn", "sn", "Sn", "On", "Nn", "C", "UC", "DC", "TC", "qC", "QC", "sC", "SC", "OC", "NC"]
@@ -10731,7 +10743,7 @@
         ID("fireReset").addEventListener("click", function () {
             var earnings = C("firefruit").log10()
             if (earnings !== false) {
-                earnings = earnings.mul(0.9).sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3).floor(true)
+                earnings = earnings.mul(0.9).sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 1.6 : 0.4).floor(true)
                 if (earnings.isPositive() && doubleCheck("Are you sure? You will LOSE all of your fiery progress!")) {
                     add("fierywood", earnings)
                     clearAmount(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
@@ -11202,7 +11214,7 @@
         var characterX = 0, characterY = 0, fallSpeed = 0, health = 100, dungeonX = 10, dungeonY = 10
         var stuff, stuffTotals, frame, offlineFrames
         var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
-        var newsOptions = ['<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "Modding a tree be like :T", "There's only so many news tickers I can think of...", "You and a super intelligent snail with F1,000,000 digital knowlege both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select any text on the page? I really wonder how that happened...", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8!", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
+        var newsOptions = ['<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "You and a super intelligent snail with F1,000,000 digital knowlege both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select any text on the page? I really wonder how that happened...", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8!", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
 
         var darkModeMedia = matchMedia("(prefers-color-scheme:light)")
         if (darkModeMedia.matches) {
@@ -11640,7 +11652,7 @@
                     if (loaded) {
                         reset(true);
                     }
-                    if (version === "0.0.5.1" || version === "0.1.0") {
+                    if (version === "0.0.5.1" || version === "0.1.0" || version === "0.1.1" || version === "0.2.0") {
                         // I minimized the saving code and lost the non-compressed version, so only this part makes much sense. Oops!
                         function proceed(endingString) {
                             var index = $.indexOf(endingString)
@@ -11661,6 +11673,16 @@
 
                         autosellOn = proceed("AX") === "t"
                         autoClick = proceed("\n") === "OX"
+                        if (version === "0.2.0") {
+                            collectedX = proceed("\n").split(" ")
+                            collectedY = proceed("\n").split(" ")
+                            for (var c = 0; c < collectedX.length; c++) {
+                                collectedX[c] = parseInt(collectedX[c])
+                            }
+                            for (c = 0; c < collectedY.length; c++) {
+                                collectedY[c] = parseInt(collectedY[c])
+                            }
+                        }
                         characterX = Number(proceed("A"))
                         dieFrame = Number(proceed("A"))
                         characterY = Number(proceed("C"))
@@ -12054,7 +12076,7 @@
                     console.log("The save was loaded successfully (in " + text.length + " bytes).");
                     return !0
                 } catch (e) {
-                    message("Loading the save failed (maybe it was invalid). You may want to try reloading!")
+                    message('Loading the save failed (maybe it was invalid). You may want to try reloading!\r\n<b class="pink">[' + (e.stack == null ? e : e.stack) + "]</b>")
                     oldError.bind(console)(e)
                 }
                 return !1
@@ -12062,7 +12084,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + health + "B" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + health + "B" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -13208,7 +13230,7 @@
 
             var silverfruitMultiplier = C("silverfruit").add(1)
             var fWoodWizardCost = C("fwoodwizards").mul(0.01)
-            var fWoodWizardPower = fWoodWizardCost.mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 3 : 1)
+            var fWoodWizardPower = fWoodWizardCost.mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 4 : 1)
 
             if (hasResearch("silverwood")) {
                 fWoodWizardPower = fWoodWizardPower.mul(Hyper(2).pow(C("silverwood")))
@@ -13579,7 +13601,7 @@
             var silverfruitDigits = C("silverfruit").log10()
 
             if (firefruitDigits !== false && firefruitDigits.isMoreOrEqual(40)) {
-                updateId("fireReset", "Gain " + format(firefruitDigits.mul(0.9).subOrFalse(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).div(hasResearch("morefwood") ? 1 : 3)) + " fiery wood")
+                updateId("fireReset", "Gain " + format(firefruitDigits.mul(0.9).subOrFalse(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 1.6 : 0.4)) + " fiery wood")
             } else {
                 updateHTML(ID("fireReset"), "")
             }
@@ -13820,12 +13842,12 @@
                     achievement.style.display = "none"
                 }
             }
-            updateId("achievementAmount", ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
+            updateId("achievementAmount", ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
 
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
         }
 
-        var BRICK1 = 0, BRICK2 = 1, GRASS = 2, CHARACTER = 3, characterSections = 1000000, dieFrame = 0, spawnX = 0, spawnY = 0, dungeonDepth = 0, dungeonData = []
+        var dungeonKey = "brgpc$e", collisionKey = "brgpc", collectingKey = "$e", battleCharacter = "e", coinCharacter = "$", characterSections = 100, dieFrame = 0, spawnX = 0, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = []
         function updateDungeon() {
             if (--dieFrame > 0) {
                 ID("underground").style.opacity = dieFrame < 25 ? 1 - dieFrame * 0.04 : (dieFrame * 0.04 - 1)
@@ -13846,32 +13868,59 @@
                 var tileAmount = dungeonX * dungeonY
                 var extraX = Math.max(0, Math.floor(characterX / characterSections - dungeonX + 2))
                 var extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 3))
+
+                var cx = Math.floor(characterX / characterSections)
+                var cy = Math.floor(characterY / characterSections)
+                if (!dungeonData[cy + 1] || !(collisionKey.includes(dungeonData[cy + 1][cx]))) {
+                    characterY += ++fallSpeed
+                    cy = Math.floor(characterY / characterSections)
+                    extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 3))
+                } else {
+                    fallSpeed = 0
+                    characterY = Math.floor(characterY / characterSections) * characterSections
+                }
+
+                if (health === 0 || cy >= dungeonDepth) {
+                    resetCharacter()
+                    return
+                }
                 for (var i = 0; i < tileAmount; i++) {
                     var x = i % dungeonX + extraX
                     var y = Math.floor(i / dungeonX) + extraY
-                    var cx = Math.floor(characterX / characterSections)
-                    var cy = Math.floor(characterY / characterSections)
-                    if (!dungeonData[cy + 1] || !("brgpce".includes(dungeonData[cy + 1][cx]))) {
-                        characterY += ++fallSpeed
-                        cy = Math.floor(characterY / characterSections)
-                        extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 3))
-                    } else {
-                        fallSpeed = 0
-                        characterY = Math.floor(characterY / characterSections) * characterSections
-                    }
-
-                    if (health === 0 || cy >= dungeonDepth) {
-                        resetCharacter()
-                        return
-                    }
-
+                    var hideItem = false
                     var type = -1
+                    var item = y < dungeonDepth ? dungeonData[y][x] : -2
                     if (x === cx && y === cy) {
-                        type = CHARACTER
-                    } else if (y < dungeonDepth) {
-                        type = "brgpce".indexOf(dungeonData[y][x])
+                        type = 3
+                        if (collectingKey.includes(item)) {
+                            for (var t = 0; t < collectedX.length; t++) {
+                                if (collectedX[t] === x && collectedY[t] === y) {
+                                    hideItem = true
+                                    break
+                                }
+                            }
+                            if (!hideItem) {
+                                if (item === coinCharacter) {
+                                    rawAdd("coins", Hyper(true))
+                                }
+                                collectedX.push(x)
+                                collectedY.push(y)
+                            } 
+                        }
+                    } else if (item !== -2) {
+                        for (var t = 0; t < collectedX.length; t++) {
+                            if (collectedX[t] === x && collectedY[t] === y) {
+                                hideItem = true
+                                break
+                            }
+                        }
+                        if (hideItem) {
+                            updateClass(tiles[i], "big blank")
+                            continue
+                        }
+                        type = dungeonKey.indexOf(item)
                     }
-                    updateClass(tiles[i], "big " + (type > -1 ? ["brownbrick", "redbrick", "grass", "person", "concrete", "exclamation"][type] : "blank"))
+                    updateClass(tiles[i], "big " + (type > -1 ? ["brownbrick", "redbrick", "grass", "person", "concrete", "coin", "exclamation"][type] : "blank"))
                 }
             }
             if (health >= 100) {
@@ -13888,6 +13937,8 @@
             health = 100
             dieFrame = 50
             fallSpeed = 0
+            collectedX = []
+            collectedY = []
             characterX = spawnX * characterSections
             characterY = spawnY * characterSections
         }
@@ -13898,13 +13949,13 @@
                 var cx = Math.floor(characterX / characterSections)
                 var cy = Math.floor(characterY / characterSections)
                 if (direction === 0) {
-                    if (!("brgpc".includes(dungeonData[cy][cx - 1]))) {
+                    if (cy < dungeonDepth && !(collisionKey.includes(dungeonData[cy][cx - 1]))) {
                         characterX -= characterSections
                     }
                 } else if (direction === 1) {
                     // No up action
                 } else if (direction === 2) {
-                    if (!("brgpc".includes(dungeonData[cy][cx + 1]))) {
+                    if (cy < dungeonDepth && !(collisionKey.includes(dungeonData[cy][cx + 1]))) {
                         characterX += characterSections
                     }
                 } else if (direction === 3) {
@@ -14043,13 +14094,13 @@
 
             if (easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "crystal" && easyButton.id !== "autosell" && easyTime <= newTime) {
                 easyButton.click()
-                easyTime += 1
+                easyTime = Date.now() + 50
                 alreadyClicked = false
             }
 
             if (autoClick && hovered !== null && hovered.id !== "autoClicking" && hovered.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
                 hovered.click()
-                autoTime += 1
+                autoTime = Date.now() + 50
             }
 
             var diff = newTime - time
@@ -14246,7 +14297,7 @@
             // Update all the values that are within the game
             updateGame()
 
-            // Update dungeons (and dragons)
+            // Update dungeons (and also not dragons, oops)
             if (hasResearch("dungeon")) {
                 updateDungeon()
             }
@@ -14257,7 +14308,9 @@
             var newsAmount = newsOptions.length
 
             if (C("clocks").isZero()) {
-                update(ticky, "imagine having no clocks at all (that means BUILD A CLOCK for this message to change!) :p")
+                update(ticky, "imagine having no clocks at all :p")
+            } else if (C("clocks").isLess(10)) {
+                update(ticky, "imagine having less than ten clocks :p")
             } else {
                 var newsID = Math.floor(frame / newsTicks) - 1
                 var oldNewsItem = seedsFromString(newsID.toString().repeat(4))[newsID & 3] % newsAmount
@@ -14267,7 +14320,19 @@
                 if (oldNewsItem === newsItem) {
                     updateHTML(ticky, "duplicate news ticker moment duplicate news ticker moment")
                 } else {
-                    updateHTML(ticky, newsOptions[newsItem])
+                    var news = newsOptions[newsItem]
+                    if (news.includes("$SHARDEARN$")) {
+                        var newShards = C("gc").mul(1e-9)
+                        if (hasResearch("shardboost")) {
+                            newShards = newShards.mul(Hyper(true).add(C("shards").add(1).log10()))
+                        }
+                        if (hasResearch("doubleshard")) {
+                            newShards = newShards.add(newShards)
+                        }
+                        updateHTML(ticky, news.replace("$SHARDEARN$", newShards.format()))
+                    } else {
+                        updateHTML(ticky, news)
+                    }
                 }
             }
 
@@ -14493,7 +14558,7 @@
                         if (hasResearch("doubleshard")) {
                             newShards = newShards.add(newShards)
                         }
-                        text += newShards.isLess(1) ? "<br>[Ascending will NOT earn you ANY SHARDS and will also decrease crystal power!]" : "<br>[Ascending will earn you a total of " + format(newShards) + " shards but reset significant progress.]"
+                        text += newShards.isLess(1) ? "<br>[Ascending will NOT earn you ANY SHARDS and will also decrease crystal power!]" : "<br>[Ascending will earn you a total of " + newShards.format() + " shards but reset significant progress.]"
                     }
 
                     if (parent !== null && hovered.tagName !== "BUTTON" && parent.tagName === "BUTTON") {
@@ -14588,7 +14653,7 @@ gggc  cggg
 rrrr  rrrr
 brrr  rrrb
 bbrr  rrbb
-bbbe  rbbb
+bbbe$ rbbb
 bbbrb rbbb
 bbbr  rbbb
 bbbr  rbb 
@@ -14600,7 +14665,7 @@ bbbr  rbbb
 bbbr  rb b
 bbbr  rbbb
 bbbr  rbbbrrrr
-bbbr         r
+bbbr  $$$$$  r
 b br  rbgg   r
 bbrr  rbgg   r
 bbbr  rb   rrr
@@ -14627,7 +14692,7 @@ bbbr  rbrr  rrrr
 bbbr  rbbb  r  r
 rbbr  rbbb  rrrr          r
 bbbr  rbbbbbbrbrbrbrr     r
-rr             e   e      r
+rr      $$$    e   e      r
 ccccccccccccccccccccccccc b
 b        rrbrr    rrbr    r
 rr         b              r
