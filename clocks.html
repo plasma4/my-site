@@ -93,7 +93,7 @@
         #underground {
             display: block;
             line-height: 32px;
-            width: 320px;
+            white-space: pre;
         }
 
         #ticker {
@@ -10885,7 +10885,7 @@
             dungeonX = screenW
             dungeonY = screenH
             var rowText = "<span></span>".repeat(dungeonX)
-            ID("underground").innerHTML = (rowText + "<br>").repeat(dungeonY - 1) + rowText
+            ID("underground").innerHTML = (rowText + "\r\n").repeat(dungeonY - 1) + rowText
             dungeonData = data.split("\n")
             var firstPart = dungeonData[0].split(",")
             spawnX = firstPart[0]
@@ -13864,7 +13864,7 @@
                 ID("underground").style.filter = filterEffect + "hue-rotate(" + dieFrame * 7.2 + "deg)"
             } else {
                 ID("underground").removeAttribute("style")
-                var tiles = ID("underground").getElementsByTagName("span")
+                var tiles = ID("underground").children
                 var tileAmount = dungeonX * dungeonY
                 var extraX = Math.max(0, Math.floor(characterX / characterSections - dungeonX + 2))
                 var extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 3))
