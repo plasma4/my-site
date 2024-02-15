@@ -13916,7 +13916,7 @@
                 var item = y < depth ? tileData[y][x] : -1
                 if (x === cx && y === cy) {
                     type = 3
-                    if (inBattle >= 30 && collectingKey.includes(item)) {
+                    if ((inBattle >= 30 || inBattle < 0) && collectingKey.includes(item)) {
                         for (var t = 0; t < collectedX.length; t++) {
                             if (collectedX[t] === x && collectedY[t] === y) {
                                 hideItem = true
@@ -13934,7 +13934,7 @@
                         }
                     }
                 } else if (item !== -1) {
-                    if (inBattle >= 30) {
+                    if (inBattle >= 30 || inBattle < 0) {
                         for (var t = 0; t < collectedX.length; t++) {
                             if (collectedX[t] === x && collectedY[t] === y) {
                                 hideItem = true
@@ -14676,9 +14676,9 @@
             setTimeout(draw, (frame % 3 === 0 ? 16 : 17) - Date.now() + newTime)
         }
 
-        var battleX = 0
+        var battleX = 1
         var battleY = 2
-        var battleDungeon = ["ggggggggg", "", "", "cbbbbbbb c", "cccccccc c", "cccccccc c", "ccccccccgc", "", "rrrr  rrrr"]
+        var battleDungeon = ["ggggggggg", "", "", "bbbbbbbb c", "bbbccccc c", "bccccccc c", "ccccccccgc", "", "rrrr  rrrr"]
         setupDungeons(`1,0
 g        g
 gggc  cggg
