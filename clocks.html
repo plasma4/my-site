@@ -10175,7 +10175,11 @@
                         easyButton = target
                         easyTime = Date.now() + 500
                         if (target.parentElement.id === "spells") {
-                            ID("spells").onmousedown({ target: target, stopPropagation: function () { } })
+                            var doRun = true
+                            target.onmousedown({ target: target, fakeEvent: true, stopPropagation: function () { doRun = false } })
+                            if (doRun) {
+                                ID("spells").onmousedown({ target: target, fakeEvent: true, stopPropagation: function () { doRun = false } })
+                            }
                         } else {
                             target.click()
                         }
