@@ -10247,9 +10247,11 @@
             logsHidden = !logsHidden
         })
         attachEvent("toggleModding", function () {
-            if(ID("modding").hasAttribute("style")) {
+            if (ID("modding").hasAttribute("style")) {
+                ID("toggleModding").textContent = "Close modding"
                 ID("modding").removeAttribute("style")
             } else {
+                ID("toggleModding").textContent = "Open modding"
                 ID("modding").style.display = "none"
             }
         })
