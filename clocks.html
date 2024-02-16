@@ -12977,16 +12977,17 @@
             }
 
             var speedBoost = itemsToRemove.includes("money")
-            for (var i = 0; i < itemsToRemove.length; i++) {
+            var removeLen = itemsToRemove.length
+            for (var i = 0; i < removeLen; i++) {
                 var property = itemsToRemove[i]
-                var amountToRemove = removeAmounts[i].mul(speed)
-                removeAmounts[i] = amountToRemove.mul(property === "money" ? wageMultiplier : wageBuff)
+                var amountToRemove = removeAmounts[i].mul(speed).mul(property === "money" ? wageMultiplier : wageBuff)
+                removeAmounts[i] = amountToRemove
                 if (C(property).isLess(amountToRemove)) {
                     return false
                 }
             }
 
-            for (i = 0; i < itemsToRemove.length; i++) {
+            for (i = 0; i < removeLen; i++) {
                 rawRemove(itemsToRemove[i], removeAmounts[i])
             }
 
