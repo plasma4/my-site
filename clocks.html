@@ -1631,31 +1631,31 @@
         .stripe1,
         .repeat1,
         .move1 {
-            background: repeating-linear-gradient(45deg, #ec5729, #ec5729 10%, #ef8d16 10%, #ef8d16 20%);
+            background: linear-gradient(#ec5729, #ef8d16);
         }
 
         .stripe2,
         .repeat2,
         .move2 {
-            background: repeating-linear-gradient(45deg, #ebdc0d, #ebdc0d 10%, #75e32b 10%, #75e32b 20%);
+            background: linear-gradient(#ebdc0d, #75e32b);
         }
 
         .stripe3,
         .repeat3,
         .move3 {
-            background: repeating-linear-gradient(45deg, #2add5d, #2add5d 10%, #1dacd8 10%, #1dacd8 20%);
+            background: linear-gradient(#2add5d, #1dacd8);
         }
 
         .stripe4,
         .repeat4,
         .move4 {
-            background: repeating-linear-gradient(45deg, #af49de, #af49de 10%, #e72ad4 10%, #e72ad4 20%);
+            background: linear-gradient(#af49de, #e72ad4);
         }
 
         .stripe5,
         .repeat5,
         .move5 {
-            background: repeating-linear-gradient(45deg, white, white 10%, black 10%, black 20%);
+            background: linear-gradient(white, black);
         }
 
         .wow,
@@ -1670,6 +1670,7 @@
         .move4,
         .move5 {
             transition: text-shadow 250ms;
+            filter: drop-shadow(0 2px 2px black);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -1703,40 +1704,13 @@
             text-shadow: 0 0 6px #fff8;
         }
 
-        .move1,
-        .move2,
-        .move3,
-        .move4,
-        .move5 {
-            animation: flashStripes 3s linear infinite;
-            background-size: 200% 100%;
-        }
-
         .stripe1,
         .stripe2,
         .stripe3,
         .stripe4,
         .stripe5 {
             border-color: black;
-            background-size: 200% 100%;
             text-shadow: 3px 3px 5px #000c;
-        }
-
-        .stripe1 {
-            animation: stripes 4s linear infinite;
-        }
-
-        .stripe2 {
-            animation: stripes 3.5s linear infinite;
-        }
-
-        .stripe3 {
-            animation: stripes 3s linear infinite;
-        }
-
-        .stripe4,
-        .stripe5 {
-            animation: stripes 2.5s linear infinite;
         }
 
         @keyframes stripes {
@@ -2638,6 +2612,24 @@
             margin: 70px 64px 70px 64px;
             border-radius: 50px;
             transform: scale(2);
+        }
+
+        .hue {
+            animation: colorful 1s linear infinite;
+        }
+
+        @keyframes colorful {
+            0% {
+                filter: none;
+            }
+
+            50% {
+                filter: hue-rotate(359.999deg) contrast(2);
+            }
+
+            100% {
+                filter: hue-rotate(0deg) contrast(1);
+            }
         }
 
         .blank,
@@ -3840,7 +3832,7 @@
         </header>
 
         <div id="properties">
-            coins|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -5469,6 +5461,18 @@
 
                     <div id="coins" class="valuable" data-desc="Yay! A coin!" data-for="$bigger coin"></div>
                     <hr>
+                    <div id="shop" class="small yellow">
+                        Shop:
+                        <br>
+                        <span class="mini special" data-cost="coins-1000" data-earn="$damage" data-fade="$damage"
+                            data-desc="Costs 1,000 coins. Double your damage output!">
+                            Double damage
+                        </span>
+                        <span class="mini special bland"
+                            data-desc="Sorry, young explorer. I don't think you'll ever be ready for me!">
+                            Battle me
+                        </span>
+                    </div>
                     <div id="underground"></div>
                     <span id="health"></span>
                     <span id="enemyHealth"></span>
@@ -6569,6 +6573,11 @@
                     <label for="useSleek">
                         <input type="checkbox" class="check2" id="useSleek">
                         Enable Sleek Mode
+                    </label>
+                    <br>
+                    <label for="useStripes">
+                        <input type="checkbox" id="useStripes">
+                        Enable striped buttons and text (buttons need Sleek Mode disabled)
                     </label>
                     <br>
                     <label for="useSeasons">
@@ -10557,6 +10566,10 @@
             sleekMode = ID("useSleek").checked
         })
 
+        ID("useStripes").addEventListener("change", function () {
+            stripedButtons = ID("useStripes").checked
+        })
+
         ID("useSeasons").addEventListener("change", function () {
             seasonsEnabled = ID("useSeasons").checked
         })
@@ -11285,9 +11298,9 @@
         }
 
         const LEFT = 0, UP = 1, RIGHT = 2, DOWN = 3
-        var characterX = 0, characterY = 0, fallSpeed = 0, health = 100, enemiesBattled = 0, enemiesKilled = 0, battleFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = 100
+        var characterX = 0, characterY = 0, fallSpeed = 0, health = 100, enemiesBattled = 0, enemiesKilled = 0, battleFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Infinity
         var stuff, stuffTotals, frame, offlineFrames
-        var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
+        var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, stripedButtons = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
         var newsOptions = ["Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomorrow's yesterday. As Bob knows his burgers, of course.", "Do you get all the references? Because this one's meta", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ seconds. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Then, there you go!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select any text on the page? I really wonder how that happened...", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?            <<<not formal", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8!", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Listen, just imagine that you actually had 1e1,000 golden nuggets. What would you do with them? Oh wait, the multiverse died.", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
         newsOptions.unshift("Including this news ticker, there are currently " + (newsOptions.length + 1) + " unique tickers. Now, next up...")
 
@@ -11778,7 +11791,8 @@
                         }
                         updateInput("partyInput", "$" + partySpending.format())
                         noAudio = proceed("FX") === "true"
-                        sleekMode = proceed("EX") !== "[v]"
+                        stripedButtons = proceed("DDDX") === "V"
+                        sleekMode = proceed("EX") === "["
                         seasonsEnabled = proceed("fX") === "true"
                         usingTheme = proceed("Xz") === "true"
                         mainColor = proceed("Wc").replace("!", "#")
@@ -12163,7 +12177,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesKilled + "ENM_X" + enemiesBattled + "ENM_VYZX" + battleFrame + "ENM_VF" + health + "B" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesKilled + "ENM_X" + enemiesBattled + "ENM_VYZX" + battleFrame + "ENM_VF" + health + "B" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -12591,6 +12605,7 @@
                 sellPercent = 100
                 usingTheme = false
                 sleekMode = true
+                stripedButtons = false
                 mainColor = "#333"
                 backColor = "d"
 
@@ -13926,7 +13941,7 @@
             Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
         }
 
-        var dungeonKey = "brgpc$e", collisionKey = "brgpc", collectingKey = "$e", battleCharacter = "e", coinCharacter = "$", characterSections = 100, dieFrame = 0, spawnX = 0, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true
+        var dungeonKey = "brgpc$e", collisionKey = "brgpc", collectingKey = "$e", shopCharacter = "p", battleCharacter = "e", coinCharacter = "$", characterSections = 100, dieFrame = 0, spawnX = 0, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true
         function updateDungeon() {
             var tiles = Array.from(ID("underground").children).slice(1)
             var tileAmount = dungeonX * dungeonY
@@ -13994,8 +14009,11 @@
                 return
             }
 
+            var nextToShop = false
             var enemyType = (enemiesBattled % 6) + 1
-            var typeArray = ["brownbrick", "redbrick", "grass", "person", "concrete", "coin", inBattle >= 0 ? "enemy" + enemyType : "exclamation"]
+            var enemyCap = enemyType === 1 ? 300 : 250
+            enemyHealth = Math.min(enemyCap, enemyHealth)
+            var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? "enemy" + enemyType : "exclamation", "person"]
             battleFrame++
             for (var i = 0; i < tileAmount; i++) {
                 var x = i % dungeonX + extraX
@@ -14004,7 +14022,7 @@
                 var type = -1
                 var item = y < depth ? tileData[y][x] : -1
                 if (x === cx && y === cy) {
-                    type = 3
+                    type = 7
                     if ((inBattle >= 30 || inBattle < 0) && collectingKey.includes(item)) {
                         for (var t = 0; t < collectedX.length; t++) {
                             if (collectedX[t] === x && collectedY[t] === y) {
@@ -14025,6 +14043,9 @@
                             collectedY.push(y)
                         }
                     }
+                } else if (item === shopCharacter && (x + 1) === cx && y === cy) {
+                    nextToShop = true
+                    type = dungeonKey.indexOf(item)
                 } else if (item !== -1) {
                     if (inBattle >= 30 || inBattle < 0) {
                         for (var t = 0; t < collectedX.length; t++) {
@@ -14041,6 +14062,12 @@
                     type = dungeonKey.indexOf(item)
                 }
                 updateClass(tiles[i], "big " + (type !== -1 ? typeArray[type] : "blank"))
+            }
+
+            if (nextToShop) {
+                ID("shop").removeAttribute("style")
+            } else if (ID("shop").style.display !== "none") {
+                ID("shop").style.display = "none"
             }
 
             if (inBattle === 0) {
@@ -14120,18 +14147,19 @@
                         attackID.splice(i, 1)
                         len--
                     } else if ((data !== "hammer" || attackMultiplier !== 4) && attackMultiplier > 0 && data !== "shard" && Math.floor(xData) === 7 && Math.floor(yData) === 2) {
-                        if (data === "clock") {
-                            enemyHealth -= 25
-                        } else if (data === "gc") {
-                            enemyHealth -= 40
+                        var healthToRemove = 25
+                        if (data === "gc") {
+                            healthToRemove = 40
                         }
+
+                        enemyHealth -= healthToRemove * (hasResearch("damage") ? 2 : 1)
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
                         attackDataY.splice(i, 1)
                         attackID.splice(i, 1)
                         len--
                     } else {
-                        var extraCSS = ""
+                        var additionalCSS = ""
                         if (data === "gc" || data === "radiumbar") {
                             xData = attackDataX[i] += 0.03 * dungeonSpeed * attackMultiplier
                         } else if (data === "hammer" || data === "shovel") {
@@ -14139,17 +14167,17 @@
                             if (attackMultiplier === 4) {
                                 attackDataY[i] -= 0.15 * dungeonSpeed * attackMultiplier
                             }
-                            extraCSS = ";transform: rotate(" + (xData * 100) + "deg)"
+                            additionalCSS = ";transform: rotate(" + (xData * 100) + "deg)"
                         } else if (data === "bolt") {
                             xData = attackDataX[i] += 0.2 * dungeonSpeed * attackMultiplier
-                            extraCSS = ";transform: rotate(" + (xData * 25) + "deg)"
+                            additionalCSS = ";transform: rotate(" + (xData * 25) + "deg)"
                         } else {
                             if (data === "shard") {
                                 attackID[i] -= 0.1
                             }
                             xData = attackDataX[i] += 0.05 * dungeonSpeed * attackMultiplier
                         }
-                        attackHTML += '<span class="' + data + '" style="top:' + (8 + 32 * yData) + 'px;left:' + (7 + 32 * xData) + 'px' + extraCSS + '"></span>'
+                        attackHTML += '<span class="' + data + '" style="top:' + (8 + 32 * yData) + 'px;left:' + (7 + 32 * xData) + 'px' + additionalCSS + '"></span>'
                         i++
                     }
                 }
@@ -14171,10 +14199,10 @@
                 }
             }
 
-            if (enemyHealth >= 100) {
+            if (enemyHealth >= enemyCap) {
                 ID("enemyHealth").removeAttribute("style")
             } else {
-                var newWidth = (enemyHealth * 3.16).toFixed(2) + "px"
+                var newWidth = (enemyHealth * 316 / enemyCap).toFixed(2) + "px"
                 if (ID("enemyHealth").style.width !== newWidth) {
                     ID("enemyHealth").style.width = newWidth
                 }
@@ -14186,7 +14214,7 @@
                 characterY = startingY
                 enemiesKilled++
                 add("coins", new Hyper(21 + enemyType * 6.3).round())
-                enemyHealth = 100
+                enemyHealth = Infinity
             }
         }
 
@@ -14195,7 +14223,7 @@
             ID("health").style.width = "0px"
             ID("enemyHealth").style.width = "316px"
             health = 100
-            enemyHealth = 100
+            enemyHealth = Infinity
             dieFrame = 50
             fallSpeed = 0
             collectedX = []
@@ -14334,6 +14362,10 @@
                 ID("useSleek").checked = sleekMode
             }
 
+            if (ID("useStripes").checked !== stripedButtons) {
+                ID("useStripes").checked = stripedButtons
+            }
+
             if (ID("useSeasons").checked !== seasonsEnabled) {
                 ID("useSeasons").checked = seasonsEnabled
             }
@@ -14353,9 +14385,15 @@
             if (metaResets !== 0) {
                 themeCSS += ".metac,.metabuck{filter:hue-rotate(" + metaResets * 60 + "deg)}"
             }
+
             if (sleekMode) {
                 themeCSS += "#navigation>span{background-color:#999}.comical{background:none}#navigation>span:hover{background-color:#888}#navigation>span:active{background-color:#555}button,.mini{border-color:white;color:white;background:none!important;background-color:black!important;text-shadow:none!important;filter:none!important}#spells>button:before{background:conic-gradient(#fff6 var(--time-left),transparent var(--time-left))}"
             }
+
+            if (stripedButtons) {
+                themeCSS += ".stripe1,.repeat1,.move1{background:repeating-linear-gradient(45deg,#ec5729,#ec5729 10%,#ef8d16 10%,#ef8d16 20%)}.stripe2,.repeat2,.move2{background:repeating-linear-gradient(45deg,#ebdc0d,#ebdc0d 10%,#75e32b 10%,#75e32b 20%)}.stripe3,.repeat3,.move3{background:repeating-linear-gradient(45deg,#2add5d,#2add5d 10%,#1dacd8 10%,#1dacd8 20%)}.stripe4,.repeat4,.move4{background:repeating-linear-gradient(45deg,#af49de,#af49de 10%,#e72ad4 10%,#e72ad4 20%)}.stripe5,.repeat5,.move5{background:repeating-linear-gradient(45deg,white,white 10%,black 10%,black 20%)}.wow,.repeat1,.repeat2,.repeat3,.repeat4,.repeat5,.move1,.move2,.move3,.move4,.move5{transition:text-shadow 250ms;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.move1,.move2,.move3,.move4,.move5{animation:flashStripes 3s linear infinite;background-size:200% 100%}.stripe1,.stripe2,.stripe3,.stripe4,.stripe5{background-size:200% 100%}.stripe1{animation:stripes 4s linear infinite}.stripe2{animation:stripes 3.5s linear infinite}.stripe3{animation:stripes 3s linear infinite}.stripe4,.stripe5{animation:stripes 2.5s linear infinite}"
+            }
+
             updateInput("mainColor", mainHex)
             updateInput("backColor", backHex)
 
@@ -14978,7 +15016,7 @@ bbbr  rbrr  rrrr
 bbbr  rbbb  r  r
 rbbr  rbbb  rrrr          r
 bbbr  rbbbbbbrbrbrbrr     r
-rr      $$$    e   e          $$$
+rrp     $$$    e   e          $$$
 ccccccccccccccccccccccccc b  b   b
 b        rrbrr    rrbr    r
 rr         b              r
@@ -14991,14 +15029,14 @@ bbbbbbbgggeeegggrrrbbbbbbbb
                    e    e    e       eec
 ggggggggggggg gggggggggggggggggggggggggg
     $
-    $                 c $$$
-    $ $ $ $ $$$$$   c bbbbbb  bbb $$
+    $       bbbbbbb   c $$$
+    $ $ $ $ $$$$$     bbbbbb  bbb $$
 rggccccccccc$$$$$$$$c c           cc $
-r                   c c             c   bbbbbbbbbbbbbbb
+r           bbbbbbbbc c             c   bbbbbbbbbbbbbbb
 r                   c c              c                c
 r                   c c                cc             c
 r                   c c               cc c  eee       c
-rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr$$  $$rrrrc
+rrrrrrrrrrrrrrrrrrrrr rrrrrrrrrrrrrrrrrrrrrr$$  $$rrrrc
                              ccccccccccccccc ccc      c
                                                                 $`, 10, 10)
 
