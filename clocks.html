@@ -14896,6 +14896,17 @@
                             text += "<br>{Clicking on this button will cost you "
                             var costs = cost.split("|")
                             var len = costs.length
+
+                            var maxClicks = null
+                            if (len >= 2) {
+                                for (var t = 0; t < len; t++) {
+                                    var c = costs[t]
+                                    var cIndex = c.indexOf("-")
+                                    var divValue = C(c.slice(0, cIndex)).div(c.slice(cIndex + 1))
+                                    maxClicks = maxClicks === null ? divValue : maxClicks.min(divValue)
+                                }
+                            }
+
                             if (len === 1) {
                                 var c = costs[0]
                                 var cIndex = c.indexOf("-")
@@ -14917,7 +14928,30 @@
                                 cIndex = c.indexOf("-")
                                 text += "and " + getAmount(c.slice(0, cIndex), c.slice(cIndex + 1))
                             }
-                            text += text.charCodeAt(text.length - 1) === 33 ? "}" : ".}"
+                            text += text.charCodeAt(text.length - 1) === 33 ? "}" : ". You currently have "
+
+                            if (len === 1) {
+                                var c = costs[0]
+                                text += getAmount(c.slice(0, c.indexOf("-")))
+                            } else if (len === 2) {
+                                var c1 = costs[0]
+                                var c2 = costs[1]
+                                text += getAmount(c1.slice(0, c1.indexOf("-"))) + " and " + getAmount(c2.slice(0, c2.indexOf("-")))
+                            } else {
+                                len--
+                                for (var t = 0; t < len; t++) {
+                                    var c = costs[t]
+                                    text += getAmount(c.slice(0, c.indexOf("-"))) + ", "
+                                }
+                                c = costs[len]
+                                cIndex = c.indexOf("-")
+                                text += "and " + getAmount(c.slice(0, cIndex), c.slice(cIndex + 1))
+                            }
+
+                            text += "."
+                            if (maxClicks !== null) {
+                                text += "<br>You could click on this " + maxClicks.format(3) + " times" + (maxClicks.isLess("1e7") ? " [(including incomplete clicks)] with those items.}" : ".}")
+                            }
                         }
                     }
 
