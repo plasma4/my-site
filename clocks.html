@@ -2801,10 +2801,7 @@
             transform: scale(0.5);
             width: 64px;
             height: 64px;
-            margin-left: -8px;
-            margin-right: 8px;
-            margin-top: -12px;
-            margin-bottom: -20px;
+            margin: -12px 8px -24px -8px;
         }
 
         .enemy2 {
@@ -14087,6 +14084,8 @@
                 }
             }
 
+            var boundX = dungeonX - 0.75
+            var boundY = dungeonY - 0.75
             if (inBattle >= 0) {
                 var attackHTML = ""
                 var doubleX = characterX * 2 / characterSections
@@ -14097,7 +14096,7 @@
                     var xData = attackDataX[i]
                     var yData = attackDataY[i]
                     var attackMultiplier = attackID[i]
-                    if (xData >= 9.5 || xData <= -0.25 || yData >= 9.5 || yData <= -0.25) {
+                    if (xData >= boundX || xData <= -0.25 || yData >= boundY || yData <= -0.25 || collisionKey.includes(tileData[Math.floor(xData), Math.floor(yData)])) {
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
                         attackDataY.splice(i, 1)
@@ -14166,7 +14165,7 @@
             if (health >= 100) {
                 ID("health").removeAttribute("style")
             } else {
-                var newWidth = health * 3.16 + "px"
+                var newWidth = (health * 3.16).toFixed(2) + "px"
                 if (ID("health").style.width !== newWidth) {
                     ID("health").style.width = newWidth
                 }
@@ -14175,7 +14174,7 @@
             if (enemyHealth >= 100) {
                 ID("enemyHealth").removeAttribute("style")
             } else {
-                var newWidth = enemyHealth * 3.16 + "px"
+                var newWidth = (enemyHealth * 3.16).toFixed(2) + "px"
                 if (ID("enemyHealth").style.width !== newWidth) {
                     ID("enemyHealth").style.width = newWidth
                 }
@@ -14933,7 +14932,7 @@
 
         var battleX = 1
         var battleY = 2
-        var battleDungeon = ["cgggggggg", "", "       e", "bbbbbbbb c", "bbbccccc c", "bccccccc c", "ccccccccgc", "", "rrrr  rrrr"]
+        var battleDungeon = ["cgggggggg", "      rr", "       e", "bbbbbbbb c", "bbbccccc c", "bccccccc c", "ccccccccgc", "", "rrrr  rrrr"]
         setupDungeons(`1,0
 g        g
 gggc  cggg
