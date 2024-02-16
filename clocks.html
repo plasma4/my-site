@@ -13997,7 +13997,7 @@
                 return
             }
 
-            // var enemyType = (enemiesBattled % 6) + 1
+            var enemyType = (enemiesBattled % 6) + 1
             var typeArray = ["brownbrick", "redbrick", "grass", "person", "concrete", "coin", inBattle >= 0 ? "enemy" + enemyType : "exclamation"]
             battleFrame++
             for (var i = 0; i < tileAmount; i++) {
