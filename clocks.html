@@ -12649,6 +12649,11 @@
                     child.removeAttribute("class")
                 }
 
+                if (loaded) {
+                    // Reset the dungeon data
+                    resetDungeonData()
+                }
+
                 // Setup everything...again
                 setup(true)
 
@@ -14234,6 +14239,11 @@
             collectedY = []
             characterX = spawnX * characterSections
             characterY = spawnY * characterSections
+        }
+
+        function resetDungeonData() {
+            characterX = 0, characterY = 0, fallSpeed = 0, health = 100, enemiesBattled = 0, enemiesKilled = 0, battleFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Infinity, dieFrame = 0, collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
+            clearAmount("coins", true)
         }
 
         function moveCharacter(direction) {
