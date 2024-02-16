@@ -10237,6 +10237,9 @@
                     }
                 } else if (isSpaceOrEnter) {
                     if (e.keyCode === 32) {
+                        if (currentTab === "dungeon") {
+                            return
+                        }
                         spaceDown = true
                     } else {
                         enterDown = true
@@ -12604,7 +12607,7 @@
                 autosellOn = false
                 sellPercent = 100
                 usingTheme = false
-                sleekMode = true
+                sleekMode = false
                 stripedButtons = false
                 mainColor = "#333"
                 backColor = "d"
