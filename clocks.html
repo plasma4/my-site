@@ -402,7 +402,8 @@
         #lossNote,
         .study,
         #modPanel,
-        #noteBox {
+        #noteBox,
+        #tipInfo {
             display: none;
         }
 
@@ -743,6 +744,10 @@
                 font-size: 27px;
             }
 
+            #tipInfo {
+                display: block;
+            }
+
             #left,
             #items,
             #more {
@@ -914,11 +919,12 @@
 
         #tips,
         #resourceData {
-            line-height: 160%;
+            line-height: 140%;
+            white-space: pre-wrap;
         }
 
-        #resourceData {
-            white-space: pre-wrap;
+        #tips {
+            font-size: 22px;
         }
 
         #wiki1,
@@ -938,6 +944,7 @@
 
         .linky {
             transition: color 200ms, transform 100ms;
+            font-weight: 600;
             display: inline-block;
             color: #e7a5f6;
         }
@@ -4074,13 +4081,8 @@
                     <span role="presentation"></span><span role="presentation"></span><span role="presentation"></span>
                 </div>
 
-                <div class="small">
+                <div class="small" id="tipInfo">
                     Tip #<span id="tipNumber" class="small beige"></span>: <span id="tip" class="small"></span>
-                    <div class="smaller pink">
-                        You also have the ability to change themes or disable the audio: go to settings.
-                        Enabling Sleek Mode turns all the buttons black and calms the screen down.
-                    </div>
-
                     <i class="small green" id="seasonInfo">
                         NOTE: Why is the so-called Clock&trade; not a clock? There is currently a season active!
                     </i>
@@ -5503,6 +5505,10 @@
                             data-desc="[Costs 1,500 coins.] Gain the ability to heal in battles too, and also double healing speed OUTSIDE of battles!">
                             Heal in battles
                         </span>
+                        <span class="mini special" data-cost="coins-5000" data-earn="$coin" data-fade="$coin"
+                            data-desc="[Costs 5,000 coins.] Gain a {+0.1% sell multiplier} for EVERY SINGLE coin that you currently own!">
+                            Not selling
+                        </span>
                         <span class="mini special" data-cost="coins-10000" data-earn="$brain" data-fade="$brain"
                             data-desc="[Costs 10,000 coins.] Gain 1 max health for every single enemy killed!">
                             Big brain move
@@ -6166,7 +6172,6 @@
                         Buy a <span class="battery" role="img" aria-label="battery"></span> made of blue wood
                     </button>
                     <button class="diamond" data-earn="turbines+1" data-cost="money-500000|steel-125000"
-                        data-show="bottles>0"
                         data-desc="Each steam turbine needs 300 coal a second to power and produces 2,000 watts each (enough to power 20 machines).\nYou need $500,000 and 125,000 steel to build one of these!$turbines$">
                         Get a steam turbine
                         <span class="mini caribbean" data-earn="turbines+1"
@@ -6938,16 +6943,20 @@
                 <div id="tips" style="display: none"></div>
 
                 <div id="resources" style="display: none">
+                    <u title="View the previous tips" id="viewTips" class="linky" role="link">View tips</u>
+                    <u title="View the wiki" id="viewWiki" class="linky" role="link">View wiki</u>
+
                     <div class="small purple">
                         Note that if you close or hide the game, you will gain a purple crystal every 15 minutes.
                         This game includes many hours of content, so have fun!
                     </div>
+                    <div class="smaller pink">
+                        Additionally, you also have the ability to change themes or disable the audio: go to settings.
+                        Enabling Sleek Mode turns all the buttons black and calms the screen down.
+                    </div>
 
                     <b>Here is an overview of the amount of every resource, worker, and building you have:</b>
                     <div class="small blue" id="resourceData"></div>
-
-                    <u title="View the previous tips" id="viewTips" class="linky" role="link">View tips</u>
-                    <u title="View the wiki" id="viewWiki" class="linky" role="link">View wiki</u>
                 </div>
 
                 <div id="wiki" style="display: none">
@@ -6971,7 +6980,7 @@
                     <u title="View the settings" id="viewSettings" class="linky" role="link">View settings</u>
                     &nbsp;
                     <u title="View how much you have of all items" id="viewResources" class="linky" role="link">
-                        View resources
+                        View resources/tips
                     </u>
                     &nbsp;
                     <u title="Copy the save file to your clipboard" class="save" id="copy" role="link">
@@ -11324,10 +11333,7 @@
                             }
 
                             if (part1 === "money") {
-                                multiplier = multiplier.mul(Hyper(true).add(C("influence").mul(0.01).min(C("metaspin").add(10).log10().add(1.5))))
-                                if (hasResearch("marketing")) {
-                                    multiplier = multiplier.mul(Hyper(true).add(useableData.computers.mul(0.04)))
-                                }
+                                multiplier = multiplier.mul(Hyper(true).add(C("influence").mul(0.01).min(C("metaspin").add(10).log10().add(1.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001)) : 1))
 
                                 if (hasResearch("aiselling")) {
                                     multiplier = multiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
@@ -13216,9 +13222,9 @@
             "Robot arms (as well as other machines) require electricity! A new electricity panel allows you to obtain up to an impressive 25,000 watts, which is enough to power 250 robot arms. Although requesting watts isn't cheap, using them to power robot arms gives you far greater gain. Start checking that panel to make sure you have enough electricity to power all machines!",
             "If you get more robot arms, you can obtain a factory: these work 120 times as fast as normal robot arms at just 80 times the cost! Note that you can also get constructors to get more robot arms at once.",
             "Make sure to check your researches every once in a while: you never know if you've unlocked a new upgrade. Now's a good time to increase the amount of scientists and managers that you have!",
-            "At this point, you will have unlocked lots of features! You may want to start getting turbines in the electricity menu to increase the amount of watts you get. You can even start unlocking phoenixes in the feathery phoenix menu, which is...interesting.",
-            "Well done! I'm out of tips for now, so you'll have to go explore on your own from now on. Just try to hire lots of scientists to generate creativity and science, which will allow you to unlock new technologies! Hey, I wonder what LITERAL EXOTIC APPLES ARE...",
-            "Fiery apples, eh? Note that you'll need to spend $10.000Q in order to get your first firetree. If you haven't obtained GOLDEN shards yet, all you need to do is build a completed rocket and get at least a BILLION golden clocks.",
+            "At this point, you will have unlocked lots of features! You may want to start getting turbines in the electricity menu to increase the amount of watts you get. You can even start unlocking phoenixes in the feathery phoenix menu, which is...interesting! (If you're wondering how to increase your wattage past 25,000 watts, you'll need to get steam turbines.)",
+            "Well done! I'm out of tips for now, so you'll have to go explore on your own from now on. Just try to hire lots of scientists to generate creativity and science, which will allow you to unlock new technologies! Hey, I wonder what LITERAL EXOTIC APPLES ARE... (Steam turbines are powered by coal, which are produced by miners. It's also possible to unlock coal mining machines further down the line! These are important if you ever want to make more clocks/second!)",
+            "Fiery apples, eh? Note that you'll need to spend $10.000Q on firefruit in order to get your first firetree. If you haven't obtained GOLDEN shards yet, all you need to do is build a completed rocket and get at least a BILLION golden clocks.",
             'Impressive! You\'ve managed to get so much fiery wood that the game is forced to switch formats. You currently have a total of at least 10^10^50 fiery wood, which is e1.000e50. (The little "e" means that the number of DIGITS of fiery wood you have is over 10^50!)',
             "Wormholes unlock...a special surprise. But you'll need to research some more!",
             "Unlock the cosmos for FREE to increase the matter limit to eeee50!",
@@ -13291,7 +13297,7 @@
                 for (var i = 0; i < progress; i++) {
                     result += '<div class="small ' + ["red", "orange", "yellow", "green", "blue", "pink"][i % 6] + '">' + progressNotes[i] + "</div>"
                 }
-                updateHTML(ID("tips"), result)
+                updateHTML(ID("tips"), result + '<b class="small purple">Current tip: ' + progressNotes[progress] + "</b>")
             }
         }
 
@@ -13603,7 +13609,7 @@
             add("clocks", cpt)
             if (autosellOn) {
                 var quantity = cpt.mul(sellPercent).mul(speed).mul(0.01)
-                rawAdd("money", quantity.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("aiselling") ? C("iq").add(1).log10().add(1).log10().add(1).log10() : 1))
+                rawAdd("money", quantity.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("aiselling") ? C("iq").add(1).log10().add(1).log10().add(1).log10() : 1)).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001)) : 1)
                 rawRemove("clocks", quantity)
             }
 
@@ -13952,7 +13958,7 @@
             var moneyLoss = oldMoney.sub(newMoney)
             var newStats = moneyLoss.isLess("eee100") ? moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")) : ""
 
-            var valueMultiplier = Hyper(true).add(C("influence").mul(0.01).min(C("metaspin").add(10).log10().add(1.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : Hyper(true))
+            var valueMultiplier = Hyper(true).add(C("influence").mul(0.01).min(C("metaspin").add(10).log10().add(1.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001)) : 1)
 
             if (hasResearch("aiselling")) {
                 valueMultiplier = valueMultiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
@@ -15162,9 +15168,9 @@ bbbbbbbgggeeegggrrrbbbbbbbb
 
                                      bbb
                    e    e    e       eec
-ggggggggggggg gggggggggggggggggggggggggg
-    $
-    $       bbbbbbb   c $$$
+ggggggggggggg  ggggggggggggggggggggggggg
+    $        r
+    $       bbbbbbb     $$$
     $ $ $ $ $$$$$     bbbbbb  bbb $$
 rggccccccccc$$$$$$$$c c           cc $
 r           bbbbbbbbc c             c   bbbbbbbbbbbbbbb
