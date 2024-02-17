@@ -5476,7 +5476,7 @@
                     </div>
                     <hr>
                     <div id="shop" class="small orange">
-                        Hello! I'm the shopkeeper. I can use my secret methods and products to give you a big boost!
+                        Hello! I'm a shopkeeper. I can use my secret methods and products to give you a big boost!
                         <div id="difficultyContainer" class="smallish yellow">
                             <label class="hidden" for="difficulty">
                                 Difficulty level requested (defaults to 1)
@@ -14137,7 +14137,7 @@
                             collectedY.push(y)
                         }
                     }
-                } else if (item === shopCharacter && (x + 1) === cx && y === cy) {
+                } else if (item === shopCharacter && ((x - 1) === cx || (x + 1) === cx) && y === cy) {
                     nextToShop = true
                     type = dungeonKey.indexOf(item)
                 } else if (item !== -1) {
@@ -15160,7 +15160,7 @@ bbbr  rbrr  rrrr
 bbbr  rbbb  r  r
 rbbr  rbbb  rrrr          r
 bbbr  rbbbbbbrbrbrbrr     r
-rrp     $$$    e   e          $$$
+rrp     $$$    e   e   c      $$$
 ccccccccccccccccccccccccc b  b   b
 b        rrbrr    rrbr    r
 rr         b              r
@@ -15169,8 +15169,8 @@ rrrr      bbb             rbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccc
 rrrrr      b              r                         c                      c                                                                                                                                                             cccccccccccccccccccccccccccccccccc
 bbbbbbbgggeeegggrrrbbbbbbbb
 
-                                     bbb
-                   e    e    e       eec
+                                      bb
+      p            e    e    e      geec
 ggggggggggggg  ggggggggggggggggggggggggg
     $        r
     $       bbbbbbb     $$$
@@ -15181,8 +15181,40 @@ r                   c c              c                c
 r                   c c                cc             c
 r                   c c               cc c  eee       c
 rrrrrrrrrrrrrrrrrrrrr rrrrrrrrrrrrrrrrrrrrrr$$  $$rrrrc
-                             ccccccccccccccc ccc      c
-                                                                $`, 10, 10)
+bbb    $$$$$$$$$    $$$$$$$      ccccccccc ccc      cbb
+cccccccccccccccccccccccccccccc              bbbbbbb bbb
+c                                                 r$rrrb
+c                                                  $$$$$b
+c                                                  $$  b
+c                                                  $  b
+c                                                  $ b
+cg            p                                    $b
+cggccccccccccccccccccc                             $b
+cggg                e    e    e    e    e    e    e$b
+brbrbr  brbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrrrrrr
+r     c  c
+gr    c  c
+ggr  cc  cc
+gggrccc  ccc
+r        bbb
+r        rrrrrrrrrr
+r        eee      r
+ccccccccccccccccc b
+                cer
+                ceb                                           ccc
+                cer                               $$$$$$$$$$$$$$c
+                ceb                                cggggggggggg$c
+                cer                               cc          $$c
+                ceb                              c           $$$c       rrrrrrrrrrrr
+                ceb                             cc          $$$$c                     $  $
+                cebbb                          ccc             cc             $$$$$r  c  c
+$$$$$$$$$$$$$$$$$$$                           cccc            ccc      $rrrrrrrrrrrrrrrrrrrrrrrrrrr r
+$$$$$$$$$$$$$$$$$$$                c b bbbbbbbbbbb           cccc     $rr                         b b
+ccccccccccccccccccccc c c c c c c cc           bbb         $cccccc   $rrr                         b b
+eeeeeeeeeeeee        $ $ $ $ $ $ $    c     c          c   $cccccc  $rrrr                         b b
+ bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb $rrrrr                         b b
+                    e         e     e e e e       $$$$$         e  rrrrrr                         b b
+ccccrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr                       rrr rrr`, 10, 10)
 
         if (storageWorks) {
             function getMods() {
