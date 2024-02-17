@@ -2179,7 +2179,7 @@
         }
 
         .red {
-            color: #fa536c;
+            color: #f44861;
         }
 
         .orange {
@@ -4577,6 +4577,9 @@
                     <div class="smallish">(This does not include wattage requesting and clockmakers.)</div>
 
                     <br>
+                    <label class="hidden" for="wageSlider">
+                        The wage multiplier you want to pay your workers, divided by 100.
+                    </label>
                     <input type="range" min="100" max="10000" value="0" tabindex="-1" id="wageSlider"
                         aria-hidden="true">
                     <label for="wageInput" class="orange">
@@ -5470,9 +5473,18 @@
                         Your attack damage is <b class="red" id="damage"></b>
                     </div>
                     <hr>
-                    <div id="shop" class="small yellow">
-                        Shop:
-                        <br>
+                    <div id="shop" class="small orange">
+                        Hello! I'm the shopkeeper. I can use my secret methods and products to give you a big boost!
+                        <div id="difficultyContainer" class="smallish yellow">
+                            <label class="hidden" for="difficulty">
+                                Difficulty level requested (defaults to 1)
+                            </label>
+                            <input type="range" min="1" max="10" value="0" tabindex="-1" id="difficulty">
+                            <div class="small green">
+                                (Difficulty level of enemies: <b id="difficultyText" class="small lime"></b>)
+                            </div>
+                            Difficulty increases gold gain but also increases enemy HP!
+                        </div>
                         <span class="mini special" data-cost="coins-250" data-earn="$damage" data-fade="$damage"
                             data-desc="[Costs 250 coins.] Double your damage output!">
                             Double damage
@@ -5481,6 +5493,11 @@
                             data-fade="$damage2"
                             data-desc="[Costs 1,000 coins.] Double your damage output one more time!">
                             Double damage AGAIN
+                        </span>
+                        <span class="mini special" data-cost="coins-777" data-show="$damage2" data-earn="$harder"
+                            data-fade="$harder"
+                            data-desc="[Costs 777 coins.] Gain the ability to challenge harder enemies!\n{Any time you visit me, I'll give you a custom slider to adjust the difficulty.}">
+                            A challenge
                         </span>
                         <span class="mini special" data-cost="coins-1500" data-earn="$heal" data-fade="$heal"
                             data-desc="[Costs 1,500 coins.] Gain the ability to heal in battles too, and also double healing speed OUTSIDE of battles!">
@@ -10258,52 +10275,50 @@
             var target = e.target
             updateRemoveAmount(e)
             if (!(["INPUT", "SELECT", "TEXTAREA", "U"]).includes(target.tagName)) {
-                if (currentTab === "dungeon") {
-                    var code = e.keyCode
-                    if (code === 65) {
-                        moveCharacter(LEFT)
-                    } else if (code === 87 || code === 32) {
-                        moveCharacter(UP)
-                    } else if (code === 68) {
-                        moveCharacter(RIGHT)
-                    } else if (code === 83) {
-                        moveCharacter(DOWN)
-                    } else {
-                        moveCharacter(code - 37)
-                    }
-                }
-
-                var isSpaceOrEnter = e.keyCode === 32 || e.keyCode === 13
                 if (e.repeat) {
-                    if (isSpaceOrEnter) {
-                        e.preventDefault()
-                    }
-                } else if (isSpaceOrEnter) {
-                    if (currentTab === "dungeon") {
+                    if (e.keyCode === 32 || e.keyCode === 13) {
                         e.preventDefault()
                         e.stopPropagation()
-                        return
                     }
-                    if (e.keyCode === 32) {
-                        spaceDown = true
-                    } else {
-                        enterDown = true
-                    }
-                    if (target.parentElement) {
-                        easyButton = target
-                        easyTime = Date.now() + 500
-                        if (target.parentElement.id === "spells") {
-                            var doRun = true
-                            target.onmousedown({ target: target, fakeEvent: true, stopPropagation: function () { doRun = false } })
-                            if (doRun) {
-                                ID("spells").onmousedown({ target: target, fakeEvent: true, stopPropagation: function () { doRun = false } })
-                            }
+                } else if (!e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                    if (currentTab === "dungeon") {
+                        var code = e.keyCode
+                        if (code === 65) {
+                            moveCharacter(LEFT)
+                        } else if (code === 87 || code === 32) {
+                            moveCharacter(UP)
+                        } else if (code === 68) {
+                            moveCharacter(RIGHT)
+                        } else if (code === 83) {
+                            moveCharacter(DOWN)
                         } else {
-                            target.click()
+                            moveCharacter(code - 37)
                         }
-                    }
+                        e.preventDefault()
+                        e.stopPropagation()
+                    } else if (e.keyCode === 32 || e.keyCode === 13) {
+                        if (e.keyCode === 32) {
+                            spaceDown = true
+                        } else {
+                            enterDown = true
+                        }
+                        if (target.parentElement) {
+                            easyButton = target
+                            easyTime = Date.now() + 500
+                            if (target.parentElement.id === "spells") {
+                                var doRun = true
+                                target.onmousedown({ target: target, fakeEvent: true, stopPropagation: function () { doRun = false } })
+                                if (doRun) {
+                                    ID("spells").onmousedown({ target: target, fakeEvent: true, stopPropagation: function () { doRun = false } })
+                                }
+                            } else {
+                                target.click()
+                            }
+                        }
 
-                    e.preventDefault()
+                        e.preventDefault()
+                        e.stopPropagation()
+                    }
                 }
             }
         })
@@ -10541,6 +10556,11 @@
                 ID("wiki1").style.display = "none"
             }
             ID("wiki2").removeAttribute("style")
+        })
+
+        ID("difficulty").addEventListener("input", function (e) {
+            difficulty = Number(e.target.value)
+            ID("difficultyText").textContent = difficulty
         })
 
         var wattUsage = 0
@@ -11346,7 +11366,7 @@
         }
 
         const LEFT = 0, UP = 1, RIGHT = 2, DOWN = 3
-        var characterX = 0, characterY = 0, fallSpeed = 0, health = 100, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Infinity
+        var characterX = 0, characterY = 0, fallSpeed = 0, health = 100, difficulty = 1, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Infinity
         var stuff, stuffTotals, frame, offlineFrames
         var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, stripedButtons = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
         var newsOptions = ["Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomorrow's yesterday. As Bob knows his burgers, of course.", "Do you get all the references? Because this one's meta", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ seconds. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Then, there you go!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select any text on the page? I really wonder how that happened...", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?            <<<not formal", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8!", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Listen, just imagine that you actually had 1e1,000 golden nuggets. What would you do with them? Oh wait, the multiverse died.", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
@@ -11827,6 +11847,10 @@
                         enemiesDefeated = Number(proceed("ENM_X"))
                         enemiesBattled = Number(proceed("ENM_VYZX")) - 1
                         battleFrame = Number(proceed("ENM_VF"))
+                        difficulty = Math.max(proceed("DDD") / 4362, 1)
+                        updateInput("difficulty", difficulty)
+                        ID("difficultyText").textContent = difficulty
+
                         health = Number(proceed("B"))
                         sellPercent = Number(proceed("\n\nn"))
                         if (!(sellPercent <= 100 && sellPercent >= 0)) {
@@ -12225,7 +12249,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + health + "B" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + health + "B" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -12609,7 +12633,7 @@
             if (element === null) {
                 console.error("The element ID given does not correspond to an HTML element.")
             }
-            var string = value.toString()
+            var string = String(value)
             if (element.value !== string) {
                 element.value = string
             }
@@ -12619,7 +12643,7 @@
             if (!(element instanceof HTMLElement || element instanceof Element)) {
                 console.error("The variable given to update the text content is not an HTML element.")
             }
-            var string = value.toString()
+            var string = String(value)
             if (element.innerHTML !== string) {
                 element.innerHTML = string
             }
@@ -14071,7 +14095,7 @@
 
             var nextToShop = false
             var enemyType = (enemiesBattled % 6) + 1
-            var enemyCap = enemyType === 1 ? 300 : 100
+            var enemyCap = (enemyType === 1 ? 300 : 100) * Math.pow(difficulty, 1.3)
             enemyHealth = Math.min(enemyCap, enemyHealth)
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? "enemy" + enemyType : "exclamation", "person"]
             battleFrame++
@@ -14096,6 +14120,7 @@
                             } else if (item === battleCharacter) {
                                 inBattle = 60
                                 enemiesBattled++
+                                enemyHealth = Infinity
                                 startingX = characterX
                                 startingY = characterY
                             }
@@ -14270,14 +14295,14 @@
 
             updateId("damage", 25 * (hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) + " for normal clocks and " + 40 * (hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) + " for golden ones")
             updateId("health", Math.max(health, 0).toFixed(2) + "/" + healthCap.toFixed(2))
-            updateId("enemyHealth", enemyHealth.toFixed(2) + "/" + enemyCap.toFixed(2))
+            updateId("enemyHealth", Math.min(Math.max(enemyHealth, 0), enemyCap).toFixed(2) + "/" + enemyCap.toFixed(2))
 
             if (enemyHealth <= 0) {
                 inBattle = -1
                 characterX = startingX
                 characterY = startingY
                 enemiesDefeated++
-                add("coins", new Hyper(21 + enemyType * 6.3).round())
+                add("coins", new Hyper((21 + enemyType * 6.3) * difficulty).round())
                 enemyHealth = Infinity
             }
         }
@@ -14297,7 +14322,7 @@
         }
 
         function resetDungeonData() {
-            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = 100, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Infinity, dieFrame = 0, collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
+            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = 100, difficulty = 1, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Infinity, dieFrame = 0, collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
             clearAmount("coins", true)
         }
 
@@ -14344,19 +14369,20 @@
             }
         }
 
-        attachEvent("moveUp", function () {
+        ID("moveUp").addEventListener("click", function () {
             moveCharacter(UP)
         })
-        attachEvent("moveDown", function () {
+        ID("moveDown").addEventListener("click", function () {
             moveCharacter(DOWN)
         })
-        attachEvent("moveLeft", function () {
+        ID("moveLeft").addEventListener("click", function () {
             moveCharacter(LEFT)
         })
-        attachEvent("moveRight", function () {
+        ID("moveRight").addEventListener("click", function () {
             moveCharacter(RIGHT)
         })
-        attachEvent("die", function () {
+
+        ID("die").addEventListener("click", function () {
             if (dieFrame < 0 && doubleCheck("Are you sure you want to DIE? You can't undo this!")) {
                 resetCharacter()
             }
@@ -14620,6 +14646,12 @@
 
             updateInput("wattSlider", wattUsage)
             updateInput("wageSlider", wageMultiplier.mul(100))
+
+            if (hasResearch("harder")) {
+                ID("difficultyContainer").removeAttribute("style")
+            } else if (ID("difficultyContainer").style.display !== "none") {
+                ID("difficultyContainer").style.visibility = "hidden"
+            }
 
             var boostElem = ID("turbineBoost")
             if (hasResearch("turbineOverclock")) {
