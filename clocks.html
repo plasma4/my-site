@@ -11845,9 +11845,11 @@
                                 collectedY[c] = parseInt(collectedY[c])
                             }
                         }
-                        characterX = Number(proceed("A"))
+                        var cx = proceed("A")
+                        characterX = cx === false ? spawnX * characterSections : Number(cx)
                         dieFrame = Number(proceed("A"))
-                        characterY = Number(proceed("C"))
+                        var cy = proceed("C")
+                        characterY = cy === false ? spawnY * characterSections : Number(cy)
                         fallSpeed = Number(proceed("C"))
                         inBattle = Number(proceed("FIGHT_VAL")) - 1
                         enemiesDefeated = Number(proceed("ENM_X"))
@@ -11857,7 +11859,8 @@
                         updateInput("difficulty", difficulty)
                         ID("difficultyText").textContent = difficulty
 
-                        health = Number(proceed("B"))
+                        health = proceed("B")
+                        health = health === false ? 100 : Number(health)
                         sellPercent = Number(proceed("\n\nn"))
                         if (!(sellPercent <= 100 && sellPercent >= 0)) {
                             sellPercent = 0
