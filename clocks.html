@@ -14128,7 +14128,7 @@
             var tileAmount = dungeonX * dungeonY
             var tileData = dungeonData
             var depth = dungeonDepth
-            var healthCap = 100 + (hasResearch("candy") ? 25 : 0) + (hasResearch("candy2") ? 25 : 0) + (hasResearch("candy3") ? 25 : 0) + (hasResearch("brain") ? enemiesDefeated : 0) + Math.ceil(Math.pow(C("redcandypower"), 2.5))
+            var healthCap = 100 + (hasResearch("candy") ? 25 : 0) + (hasResearch("candy2") ? 25 : 0) + (hasResearch("candy3") ? 25 : 0) + (hasResearch("brain") ? enemiesDefeated : 0) + Math.ceil(Math.pow(C("redcandypower"), 1.5))
 
             if (--dieFrame > 0) {
                 collisionKey = collisionKey.replace(battleCharacter, "")
