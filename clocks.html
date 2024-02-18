@@ -16,13 +16,12 @@
             font-size: 18px;
             font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
             font-weight: 400;
+            cursor: default;
             color: black;
             word-break: break-word;
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
-            -webkit-user-select: none;
             touch-action: manipulation;
-            user-select: none;
         }
 
         body::-webkit-scrollbar {
@@ -118,6 +117,7 @@
             position: fixed;
             display: none;
             white-space: pre;
+            -webkit-user-select: all;
             user-select: all;
             background-color: #333;
             text-align: center;
@@ -228,7 +228,6 @@
 
         input:disabled {
             cursor: not-allowed;
-            user-select: none;
             opacity: 0.75;
         }
 
@@ -932,14 +931,6 @@
             font-size: 24px;
             color: #edd5cb;
             white-space: pre-wrap;
-            -webkit-user-select: text;
-            user-select: text;
-        }
-
-        #wiki1>*,
-        #wiki2>* {
-            -webkit-user-select: text;
-            user-select: text;
         }
 
         .linky {
@@ -2363,8 +2354,6 @@
 
         #logs {
             display: none;
-            -webkit-user-select: text;
-            user-select: text;
             font-size: 12px;
             color: white;
         }
@@ -5521,17 +5510,26 @@
                             Heal in battles
                         </span>
                         <span class="mini special" data-cost="coins-2500" data-show="$heal" data-earn="$speed"
-                            data-hide="$speed"
-                            data-desc="[Costs 2,500 coins.] Your attacks speed up over the course of the battle, up to 50% faster.">
+                            data-fade="$speed"
+                            data-desc="[Costs 2,500 coins.] Your attacks speed up over the course of the battle, up to +80% faster.">
                             Speed attacks
+                        </span>
+                        <span class="mini special" data-cost="coins-1000" data-show="$speed" data-earn="$super"
+                            data-fade="$super"
+                            data-desc="[Costs 1,000 coins.] Your attacks now speed up to +800% faster instead of +80%!">
+                            Superspeed
                         </span>
                         <span class="mini special" data-cost="coins-5000" data-earn="$coin" data-fade="$coin"
                             data-desc="[Costs 5,000 coins.] Gain a {+0.1% sell multiplier that stacks with other multipliers} for EVERY SINGLE coin that you currently own!\nIt's just that good!">
                             Not selling
                         </span>
-                        <span class="mini special" data-cost="coins-10000" data-earn="$brain" data-fade="$brain"
-                            data-desc="[Costs 10,000 coins.] Gain 1 max health for every single enemy killed!">
+                        <span class="mini special" data-cost="coins-8000" data-earn="$brain" data-fade="$brain"
+                            data-desc="[Costs 8,000 coins.] Gain 1 max health for every single enemy you have defeated!">
                             Big brain move
+                        </span>
+                        <span class="mini special" data-cost="coins-10000" data-earn="$natural" data-fade="$natural"
+                            data-desc="[Costs 10,000 coins.] Eat less poison to prevent your healing speed from slowing down!">
+                            Naturally flavored candies
                         </span>
                         <span class="mini special" data-cost="coins-2500" data-earn="$candy" data-hide="$candy"
                             data-desc="[Costs 2,500 coins.] Eat a {magical} candy to increase your max health by 25! (Sorry, I don't have a lot of these candies.)">
@@ -5547,7 +5545,7 @@
                             data-desc="[Costs 2,500 coins.] Eat a {magical} candy to increase your max health by 25! (Sorry, I don't have a lot of these candies!!!!)">
                             Magical candies (2/3)
                         </span>
-                        <span class="mini special" data-cost="coins-2500" data-show="$candy3" data-earn="$candy3"
+                        <span class="mini special" data-cost="coins-2500" data-show="$candy3" data-earn=""
                             data-fade="$candy3"
                             data-desc="[Costs 2,500 coins.] You've already eaten 3 magical candies, increasing your max health by a total of 75! (Sorry, I'm sold out now.)">
                             Magical candies (SOLD OUT)
@@ -5562,6 +5560,7 @@
                     <div id="underground"></div>
                     <span id="health"></span>
                     <span id="enemyHealth"></span>
+                    <span class="mini special2" id="moveUp" data-desc="Pew! Pew!">SHOOT FIREBALL</span>
                     <span class="mini special" id="moveUp">UP</span>
                     <span class="mini special" id="moveDown">DOWN</span>
                     <span class="mini special" id="moveLeft">LEFT</span>
@@ -14103,11 +14102,11 @@
             } else {
                 ID("underground").removeAttribute("style")
                 collisionKey = collisionKey.replace(battleCharacter, "")
-                health = Math.min(health + Math.max(100 - health, 10) * 0.01, healthCap)
+                health = Math.min(health + Math.max(100 - (hasResearch("natural") ? 0 : health), 10) * 0.01, healthCap)
             }
 
             if (hasResearch("heal")) {
-                health = Math.min(health + Math.max(100 - health, 10) * 0.01, healthCap)
+                health = Math.min(health + Math.max(100 - (hasResearch("natural") ? 0 : health), 10) * 0.01, healthCap)
             }
 
             var extraX = Math.max(0, Math.floor(characterX / characterSections - dungeonX + 2))
@@ -14192,7 +14191,7 @@
             }
 
             if (inBattle === 0) {
-                if (waitBeforeAttack++ === Math.max(45 - fightFrame * (hasResearch("speed") ? 5 : 0), 30)) {
+                if (waitBeforeAttack++ === Math.max(45 - fightFrame * (hasResearch("speed") ? 5 : 0), hasResearch("super") ? 5 : 25)) {
                     fightFrame++
                     waitBeforeAttack = 0
                     attackData.push(fightFrame % 3 === 2 ? "gc" : "clock")
@@ -14254,15 +14253,15 @@
                         len--
                     } else if ((attackMultiplier < 0 || data === "shard") && Math.floor(2 * xData + 1.2) === doubleX && Math.floor(2 * yData) === doubleY) {
                         if (data === "bolt") {
-                            health -= 15
+                            health -= 15 * Math.max(1, 0.4 + (difficulty * difficulty) * 0.127)
                         } else if (data === "hammer") {
-                            health -= 35
+                            health -= 35 * Math.max(1, 0.4 + (difficulty * difficulty * difficulty) * 0.127)
                             characterX -= 0.5 * characterSections
                             attackID[i] = 4
                             i++
                             continue
                         } else {
-                            health -= 25
+                            health -= 25 * Math.max(1, 0.6 + (difficulty * difficulty) * 0.127)
                         }
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
@@ -14348,10 +14347,12 @@
         }
 
         function resetCharacter() {
+            waitBeforeAttack = 0
+            fightFrame = 0
             inBattle = -1
             ID("health").style.width = "0px"
             ID("enemyHealth").style.width = "316px"
-            health = 100 + (hasResearch("candy") ? 25 : 0) + (hasResearch("candy2") ? 25 : 0) + (hasResearch("candy3") ? 25 : 0)
+            health = 100 + (hasResearch("candy") ? 25 : 0) + (hasResearch("candy2") ? 25 : 0) + (hasResearch("candy3") ? 25 : 0) + (hasResearch("brain") ? enemiesDefeated : 0)
             enemyHealth = Infinity
             dieFrame = 50
             fallSpeed = 0
