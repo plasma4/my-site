@@ -5560,7 +5560,7 @@
                             Naturally flavored candies
                         </span>
                         <span class="mini special" data-cost="coins-25000" data-earn="$fireball" data-fade="$fireball"
-                            data-desc="[Costs 25,000 coins.] Shoot a fireball (sorry, fireFRUIT) at an enemy by clicking on the button or pressing the F key!">
+                            data-desc="[Costs 25,000 coins.] Shoot a fireball (sorry, fireFRUIT) at an enemy by clicking on the SHOOT FIREFRUIT BUTTON or by simply pressing the F key!">
                             Fiery danger
                         </span>
                         <span class="mini special" data-cost="coins-2500" data-earn="$candy" data-hide="$candy"
@@ -5586,6 +5586,11 @@
                             data-fade="$collector"
                             data-desc="[Costs 1,000 coins.] Gain red and yellow candies by defeating enemies of similar colors now!\n{You also gain an option to eat all of your red candies to increase your maximum health.}">
                             Candy collector
+                        </span>
+                        <span class="mini special" data-cost="coins-9777" data-show="$collector" data-earn="$coinboost"
+                            data-fade="$coinboost"
+                            data-desc="[Costs 9,777 coins.] Make each yellow candy you own increase coin gain by +3%!">
+                            Not inflated
                         </span>
                         <hr>
                         <span class="mini special2 bland"
@@ -14173,6 +14178,11 @@
                 health = Math.min(health + Math.max(100 - (hasResearch("natural") ? 0 : health), 10) * 0.01, healthCap)
             }
 
+            if (health <= 0 || cy >= depth) {
+                resetCharacter()
+                return
+            }
+
             if (hasResearch("heal")) {
                 health = Math.min(health + Math.max(100 - (hasResearch("natural") ? 0 : health), 10) * 0.01, healthCap)
             }
@@ -14189,11 +14199,6 @@
             } else {
                 fallSpeed = 0
                 characterY = Math.floor(characterY / characterSections) * characterSections
-            }
-
-            if (health <= 0 || cy >= depth) {
-                resetCharacter()
-                return
             }
 
             var nextToShop = false
@@ -14410,7 +14415,7 @@
                 characterY = startingY
                 enemiesDefeated++
                 enemyHealth = Infinity
-                add("coins", new Hyper((21 + enemyType * 6.3) * difficulty).round())
+                add("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round())
                 if (hasResearch("collector")) {
                     if (enemyType === 1 || enemyType === 3) {
                         add("redcandy", new Hyper(enemyType))
