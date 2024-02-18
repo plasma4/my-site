@@ -24,6 +24,11 @@
             touch-action: manipulation;
         }
 
+        .nosel {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
         body::-webkit-scrollbar {
             background-color: transparent;
             width: 12px;
@@ -5489,7 +5494,7 @@
                             <div class="small green">
                                 (Difficulty level of enemies: <b id="difficultyText" class="small lime"></b>)
                             </div>
-                            Difficulty increases gold gain but also increases enemy HP!
+                            Difficulty increases gold gain but also increases enemy HP (as well as damage after a bit)!
                         </div>
                         <span class="mini special" data-cost="coins-250" data-earn="$damage" data-fade="$damage"
                             data-desc="[Costs 250 coins.] Double your damage output!">
@@ -5531,6 +5536,10 @@
                             data-desc="[Costs 10,000 coins.] Eat less poison to prevent your healing speed from slowing down!">
                             Naturally flavored candies
                         </span>
+                        <span class="mini special" data-cost="coins-25000" data-earn="$fireball" data-fade="$fireball"
+                            data-desc="[Costs 25,000 coins.] Shoot a fireball (sorry, fireFRUIT) at an enemy by clicking on the button or pressing the F key!">
+                            Fiery danger
+                        </span>
                         <span class="mini special" data-cost="coins-2500" data-earn="$candy" data-hide="$candy"
                             data-desc="[Costs 2,500 coins.] Eat a {magical} candy to increase your max health by 25! (Sorry, I don't have a lot of these candies.)">
                             Magical candies (0/3)
@@ -5560,11 +5569,15 @@
                     <div id="underground"></div>
                     <span id="health"></span>
                     <span id="enemyHealth"></span>
-                    <span class="mini special2" id="moveUp" data-desc="Pew! Pew!">SHOOT FIREBALL</span>
-                    <span class="mini special" id="moveUp">UP</span>
-                    <span class="mini special" id="moveDown">DOWN</span>
-                    <span class="mini special" id="moveLeft">LEFT</span>
-                    <span class="mini special" id="moveRight">RIGHT</span>
+                    <span class="mini special2 nosel" id="shootFireball" data-desc="Pew! Pew!" tabindex="0"
+                        style="display: none">
+                        &nbsp;SHOOT FIREFRUIT
+                    </span>
+                    <br>
+                    <span class="mini special nosel" id="moveUp" tabindex="0">UP</span>
+                    <span class="mini special nosel" id="moveDown" tabindex="0">DOWN</span>
+                    <span class="mini special nosel" id="moveLeft" tabindex="0">LEFT</span>
+                    <span class="mini special nosel" id="moveRight" tabindex="0">RIGHT</span>
                     <br><br>
                     <span class="mini warn2" id="die">DIE (CANNOT UNDO)</span>
                 </div>
@@ -10313,17 +10326,25 @@
                         var code = e.keyCode
                         if (code === 65) {
                             moveCharacter(LEFT)
+                            e.preventDefault()
+                            e.stopPropagation()
                         } else if (code === 87 || code === 32) {
                             moveCharacter(UP)
+                            e.preventDefault()
+                            e.stopPropagation()
                         } else if (code === 68) {
                             moveCharacter(RIGHT)
+                            e.preventDefault()
+                            e.stopPropagation()
                         } else if (code === 83) {
                             moveCharacter(DOWN)
-                        } else {
+                            e.preventDefault()
+                            e.stopPropagation()
+                        } else if (code >= 37 && code <= 40) {
                             moveCharacter(code - 37)
+                            e.preventDefault()
+                            e.stopPropagation()
                         }
-                        e.preventDefault()
-                        e.stopPropagation()
                     } else if (e.keyCode === 32 || e.keyCode === 13) {
                         if (e.keyCode === 32) {
                             spaceDown = true
@@ -11168,8 +11189,9 @@
                         costs = costData.trim().split("|")
                         len = costs.length
                     }
-                    let containsSpell = button.parentElement.id === "spells"
+
                     // Add the click event (and mouse/touchpad press for spells)
+                    let containsSpell = button.parentElement.id === "spells"
                     if (containsSpell) {
                         button.onmousedown = eventFunction
                         button.ontouchstart = eventFunction
@@ -14056,6 +14078,11 @@
 
         var dungeonKey = "brgpc$e", collisionKey = "brgpc", collectingKey = "$e", shopCharacter = "p", battleCharacter = "e", coinCharacter = "$", characterSections = 100, dieFrame = 0, spawnX = 0, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true
         function updateDungeon() {
+            if (hasResearch("fireball")) {
+                ID("shootFireball").removeAttribute("style")
+            } else if (ID("shootFireball").style.display !== "none") {
+                ID("shootFireball").style.display = "none"
+            }
             var tiles = Array.from(ID("underground").children).slice(1)
             var tileAmount = dungeonX * dungeonY
             var tileData = dungeonData
@@ -14253,15 +14280,15 @@
                         len--
                     } else if ((attackMultiplier < 0 || data === "shard") && Math.floor(2 * xData + 1.2) === doubleX && Math.floor(2 * yData) === doubleY) {
                         if (data === "bolt") {
-                            health -= 15 * Math.max(1, 0.4 + (difficulty * difficulty) * 0.127)
+                            health -= 15 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072)
                         } else if (data === "hammer") {
-                            health -= 35 * Math.max(1, 0.4 + (difficulty * difficulty * difficulty) * 0.127)
+                            health -= 35 * Math.max(1, 0.2 + Math.pow(difficulty, 2.5) * 0.072)
                             characterX -= 0.5 * characterSections
                             attackID[i] = 4
                             i++
                             continue
                         } else {
-                            health -= 25 * Math.max(1, 0.6 + (difficulty * difficulty) * 0.127)
+                            health -= 25 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072)
                         }
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
@@ -14409,6 +14436,14 @@
                 }
             }
         }
+
+        ID("shootFireball").addEventListener("click", function () {
+            attackData.push("fapple")
+            attackDataX.push(characterX / characterSections + 0.6)
+            attackDataY.push(characterY / characterSections + 0.1625)
+            attackID.push(1)
+            sounds.press.cloneNode().play()
+        })
 
         ID("moveUp").addEventListener("click", function () {
             moveCharacter(UP)
