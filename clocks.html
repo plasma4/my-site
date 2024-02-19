@@ -16,12 +16,15 @@
             font-size: 18px;
             font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
             font-weight: 400;
-            cursor: default;
             color: black;
             word-break: break-word;
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             touch-action: manipulation;
+        }
+
+        body {
+            cursor: default;
         }
 
         .nosel {
@@ -5283,17 +5286,15 @@
                             </div>
                         </button>
 
-                        <div class="smallish">
-                            Aliens discovered: <span class="small serif orange">NONE! :p</span>
-                        </div>
-                        <button class="bland flashy4" data-show="$aliens" data-fade="$aliens"
-                            data-desc="Sorry, I'm not done with aliens yet! You'll have to wait for the next update...">
-                            Aliens? That's the next update! <span class="big wonder"></span>
+                        <button class="cherrybg" id="brainyAI" data-show="$brainy" data-earn="" data-hide="$improve"
+                            data-cost="money-5e19" data-sound="transaction"
+                            data-desc="Improve your AI further!\nNOTE: Confused about why there's an [F] in your number? The value after that represents the number of [e] values, so e1,000F5 equals eeeeee1,000. This means that the number gets significantly bigger!$iq$">
+                            Improve AI
                         </button>
                         <button class="cherrybg" id="improveAI" data-show="$improve" data-earn="" data-cost="money-5e22"
                             data-sound="transaction"
                             data-desc="Improve your AI further!\nNOTE: Confused about why there's an [F] in your number? The value after that represents the number of [e] values, so e1,000F5 equals eeeeee1,000. This means that the number gets significantly bigger!$iq$">
-                            Improve AI
+                            Improve AI (MORE)
                         </button>
 
                         <div id="wormsearch" class="study">
@@ -5339,13 +5340,18 @@
                                 <span class="move5">Dark tower smarts</span>: <span class="glow">$1.000S</span>
                                 <span class="big money"></span>
                             </div>
+                            <div data-cost="1e23" data-iq="5000" data-show="$aliens" data-research="brainy"
+                                data-desc="[You need 5,000 digital knowledge to purchase this research!]\nNeed some more knowledge? Unlock a new button to increase your digital knowledge!">
+                                <span class="pink">Brain points</span>: <span class="glow">$100.00s</span>
+                                <span class="big money"></span>
+                            </div>
                             <div data-cost="0" data-show="$singularity" data-research="achievements"
                                 data-desc="So like...I can get an AI to generate images of achievements for FREE!!?\nNice.">
                                 <span class="blue">AI image generation</span>: <span class="sky">FREE!</span>
                             </div>
                             <div data-cost="1.65e21" data-rp="5e200" data-iq="2500" data-show="$firepower"
                                 data-research="aliens"
-                                data-desc="[You need 5.000e200 research points AND 2,500 digital knowledge to purchase this research!]\n{(To get enough digital knowledge, try building a quantum computer and waiting a bit.)}\nStart looking for ALIENS!\nThere's no turning back, however...">
+                                data-desc="[You need 5.000e200 research points AND 2,500 digital knowledge to purchase this research!]\n{(To get enough digital knowledge, try building a quantum computer and waiting a bit.)}\nStart researching ADVANCED TECHNOLOGY!\nThere's no turning back, however...">
                                 <span class="move1">NO</span>
                                 <span class="move2">TURNING</span>
                                 <span class="move3">BACK</span>: <span class="glow">$1.650s</span>
@@ -11570,6 +11576,7 @@
                     }
 
                     let isImproveAI = button.id === "improveAI"
+                    let isBrainyAI = button.id === "brainyAI"
                     let isTimeSpell = button.id === "timeSpell"
                     function eventFunction(e) {
                         var multiplier = multiplierAttribute === null ? Hyper(true) : C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
@@ -11680,6 +11687,8 @@
                             var iq = C("iq")
                             var iqGain = C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1).pow(iq.sqr())
                             rawAdd("iq", hasResearch("darkinfo") ? iqGain.pow(Hyper(true).add(C("darktowers"))) : iqGain)
+                        } else if (isBrainyAI) {
+                            add("iq", Hyper(1e15))
                         } else if (isTimeSpell) {
                             var multiplier = Hyper(1.1).add(hasResearch("timeboost") ? C("timeshards").mul(0.05) : 0)
                             mul("clocks", multiplier)
@@ -15477,11 +15486,12 @@
                         var cost = hovered.getAttribute("data-cost")
                         if (cost !== null) {
                             text += "<br>{Clicking on this button will cost you "
+                            var noEXP = !cost.includes("EXP")
                             var costs = cost.split("|")
                             var len = costs.length
 
                             var maxClicks = null
-                            if (len >= 2) {
+                            if (noEXP && len >= 2) {
                                 for (var t = 0; t < len; t++) {
                                     var c = costs[t]
                                     var cIndex = c.indexOf("-")
