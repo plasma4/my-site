@@ -14048,7 +14048,7 @@
             add("clocks", cpt)
             if (autosellOn) {
                 var quantity = cpt.mul(sellPercent).mul(speed).mul(0.01)
-                rawAdd("money", quantity.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("aiselling") ? C("iq").add(1).log10().add(1).log10().add(1).log10() : 1)).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001)) : 1)
+                rawAdd("money", quantity.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("aiselling") ? C("iq").add(1).log10().add(1).log10().add(1).log10() : Hyper(true))).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001)) : 1)
                 rawRemove("clocks", quantity)
             }
 
