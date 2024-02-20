@@ -14984,7 +14984,7 @@
         const NONE = 0
         const HALLOWEEN = 1
         const CHRISTMAS = 2
-        var season = -1, activeElement = document.activeElement, previousHTML = null
+        var season = -1, activeElement = document.activeElement, previousHTML = ""
         draw = function () {
             if (document.hidden) {
                 requestAnimationFrame(draw)
@@ -15482,7 +15482,7 @@
                     }
                 }
                 if (text === null) {
-                    if (hoverElem.textContent.length !== 0) {
+                    if (previousHTML.length !== 0) {
                         hoverElem.innerHTML = ""
                         previousHTML = ""
                         hoverElem.removeAttribute("class")
