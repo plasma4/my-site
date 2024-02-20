@@ -5712,10 +5712,20 @@
                             data-desc="[Costs 4 shield potions.] Red candy gain is TETRATED by the number of coins plus one!\n{Tetration is repeated exponentiation, so it's HUGE!}">
                             That's coiny
                         </span>
-                        <span class="mini special" data-cost="shieldpotions-12" data-show="$healthful" data-earn="$looting"
-                            data-fade="$coins"
-                            data-desc="[Costs 12 shield potions.] Boss coin gain is multiplied by an ADDITIONAL 50 times!">
+                        <span class="mini special" data-cost="shieldpotions-12" data-show="$healthful" data-earn="$lootingi"
+                            data-fade="$lootingi"
+                            data-desc="[Costs 12 shield potions.] Boss coin gain is multiplied by an ADDITIONAL 50 times! (Stacks with other Looting upgrades!)">
                             Looting I
+                        </span>
+                        <span class="mini special" data-cost="coins-7777777" data-show="$lootingi" data-earn="$lootingii"
+                            data-fade="$lootingii"
+                            data-desc="[Costs 7,777,777 coins.] Coin gain is multiplied by 7,777 times. (Stacks with other Looting upgrades!)">
+                            Looting II
+                        </span>
+                        <span class="mini special" data-cost="coins-1e11" data-show="$lootingii" data-earn="$lootingiii"
+                            data-fade="$lootingiii"
+                            data-desc="[Costs 100.00B coins.] Coin gain is multiplied by 10,000 times. (Stacks with Looting I and Looting II!)">
+                            Looting II
                         </span>
                         <hr>
                         <span class="mini special2 bland"
@@ -14955,7 +14965,7 @@
                         }
                     }
                 }
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul(isBoss ? hasResearch("looting") ? 750 : 15 : 1))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)))
                 isBoss = false
             }
         }
