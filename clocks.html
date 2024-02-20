@@ -5581,10 +5581,12 @@
                         <hr>
                         You have a basic mixer. Mix candies together for cool potions!
                         <br>
-                        <span class="mini special burning" id="mixHealth" data-desc="Mix a healing potion! (Healing potions also give +15% healing speed OUTSIDE of battle when unused per potion.)\n{Costs 15 red candies.}">
+                        <span class="mini special burning" id="mixHealth"
+                            data-desc="Mix a healing potion! (Healing potions also give +15% healing speed OUTSIDE of battle when unused per potion.)\n{Costs 15 red candies.}">
                             Mix a healing potion
                         </span>
-                        <span class="mini special burning2" id="mixShield" data-desc="Mix a shield potion! (Shield potions also give +50 max health when unused.)\n{Costs 25 red candies and 5 yellow candies.}">
+                        <span class="mini special burning2" id="mixShield"
+                            data-desc="Mix a shield potion! (Shield potions also give +50 max health when unused.)\n{Costs 25 red candies and 5 yellow candies.}">
                             Mix a shield potion
                         </span>
                         <br>
@@ -5705,10 +5707,15 @@
                             data-desc="[Costs 5 healing potions.] Red candy gain is multiplied by your remaining health at the end of the battle!">
                             Healthful candy
                         </span>
-                        <span class="mini special" data-cost="shieldpotions-5" data-show="$healthful" data-earn="$coins"
+                        <span class="mini special" data-cost="shieldpotions-4" data-show="$healthful" data-earn="$coins"
                             data-fade="$coins"
-                            data-desc="[Costs 5 shield potions.] Red candy gain is TETRATED by the number of coins plus one!\n{Tetration is repeated exponentiation, so it's HUGE!}">
-                            Healthy money
+                            data-desc="[Costs 4 shield potions.] Red candy gain is TETRATED by the number of coins plus one!\n{Tetration is repeated exponentiation, so it's HUGE!}">
+                            That's coiny
+                        </span>
+                        <span class="mini special" data-cost="shieldpotions-12" data-show="$healthful" data-earn="$looting"
+                            data-fade="$coins"
+                            data-desc="[Costs 12 shield potions.] Boss coin gain is multiplied by an ADDITIONAL 50 times!">
+                            Looting I
                         </span>
                         <hr>
                         <span class="mini special2 bland"
@@ -14924,7 +14931,6 @@
                 if (hasResearch("money")) {
                     rawAdd("money", cps.mul(300))
                 }
-                isBoss = false
                 waitBeforeAttack = 0
                 fightFrame = 0
                 inBattle = -1
@@ -14932,18 +14938,25 @@
                 characterY = startingY
                 enemiesDefeated++
                 enemyHealth = new Hyper2(Infinity)
-                if (!isBoss && hasResearch("collector")) {
-                    if (enemyType === 1 || enemyType === 3) {
-                        var redCandyToAdd = Hyper2(enemyType).mul(hasResearch("healthful") ? health : 1)
+                if (hasResearch("collector")) {
+                    if (isBoss) {
+                        var redCandyToAdd = Hyper2(50 * enemyType).mul(hasResearch("healthful") ? health : 1)
                         redCandy = redCandy.add(hasResearch("coins") ? redCandyToAdd.tetr(C("coins").add(1).toString()) : redCandyToAdd)
-                    } else if (enemyType === 4) {
-                        var redCandyToAdd = Hyper2(3 * enemyType).mul(hasResearch("healthful") ? health : 1)
-                        redCandy = redCandy.add(hasResearch("coins") ? redCandyToAdd.tetr(C("coins").add(1).toString()) : redCandyToAdd)
-                    } else if (enemyType === 5) {
-                        rawAdd("yellowcandy", Hyper(2))
+                        rawAdd("yellowcandy", Hyper(40))
+                    } else {
+                        if (enemyType === 1 || enemyType === 3) {
+                            var redCandyToAdd = Hyper2(enemyType).mul(hasResearch("healthful") ? health : 1)
+                            redCandy = redCandy.add(hasResearch("coins") ? redCandyToAdd.tetr(C("coins").add(1).toString()) : redCandyToAdd)
+                        } else if (enemyType === 4) {
+                            var redCandyToAdd = Hyper2(3 * enemyType).mul(hasResearch("healthful") ? health : 1)
+                            redCandy = redCandy.add(hasResearch("coins") ? redCandyToAdd.tetr(C("coins").add(1).toString()) : redCandyToAdd)
+                        } else if (enemyType === 5) {
+                            rawAdd("yellowcandy", Hyper(2))
+                        }
                     }
                 }
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul(isBoss ? 15 : 1))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul(isBoss ? hasResearch("looting") ? 750 : 15 : 1))
+                isBoss = false
             }
         }
 
@@ -15034,15 +15047,15 @@
         attachEvent("mixHealth", function () {
             if (mixingType === 0 && redCandy.gte(15)) {
                 redCandy = redCandy.sub(15)
-            mixingType = 1
-            mixingTime = 1200
+                mixingType = 1
+                mixingTime = 1200
             }
         })
         attachEvent("mixShield", function () {
             if (mixingType === 0 && redCandy.gte(25) && rawRemove("yellowcandy", Hyper(5))) {
                 redCandy = redCandy.sub(25)
-            mixingType = 2
-            mixingTime = 1800
+                mixingType = 2
+                mixingTime = 1800
             }
         })
         attachEvent("moveUp", function () {
