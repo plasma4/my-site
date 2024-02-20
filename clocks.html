@@ -3937,7 +3937,7 @@
         </header>
 
         <div id="properties">
-            shieldpotions|yellowcandy|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            yellowcandy|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -5704,6 +5704,11 @@
                             data-fade="$healthful"
                             data-desc="[Costs 5 healing potions.] Red candy gain is multiplied by your remaining health at the end of the battle!">
                             Healthful candy
+                        </span>
+                        <span class="mini special" data-cost="shieldpotions-5" data-show="$healthful" data-earn="$coins"
+                            data-fade="$coins"
+                            data-desc="[Costs 5 shield potions.] Red candy gain is TETRATED by the number of coins plus one!\n{Tetration is repeated exponentiation, so it's HUGE!}">
+                            Healthy money
                         </span>
                         <hr>
                         <span class="mini special2 bland"
@@ -14927,16 +14932,18 @@
                 characterY = startingY
                 enemiesDefeated++
                 enemyHealth = new Hyper2(Infinity)
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul(isBoss ? 15 : 1))
                 if (!isBoss && hasResearch("collector")) {
                     if (enemyType === 1 || enemyType === 3) {
-                        redCandy = redCandy.add(Hyper2(enemyType).mul(hasResearch("healthful") ? health : 1))
+                        var redCandyToAdd = Hyper2(enemyType).mul(hasResearch("healthful") ? health : 1)
+                        redCandy = redCandy.add(hasResearch("coins") ? redCandyToAdd.tetr(C("coins").add(1).toString()) : redCandyToAdd)
                     } else if (enemyType === 4) {
-                        redCandy = redCandy.add(hasResearch("healthful") ? health.mul(2) : 1)
+                        var redCandyToAdd = Hyper2(3 * enemyType).mul(hasResearch("healthful") ? health : 1)
+                        redCandy = redCandy.add(hasResearch("coins") ? redCandyToAdd.tetr(C("coins").add(1).toString()) : redCandyToAdd)
                     } else if (enemyType === 5) {
                         rawAdd("yellowcandy", Hyper(2))
                     }
                 }
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul(isBoss ? 15 : 1))
             }
         }
 
