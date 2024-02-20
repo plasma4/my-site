@@ -14852,14 +14852,14 @@
                 characterY = startingY
                 enemiesDefeated++
                 enemyHealth = new Hyper2(Infinity)
-                add("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul(isBoss ? 15 : 1))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul(isBoss ? 15 : 1))
                 if (hasResearch("collector")) {
                     if (enemyType === 1 || enemyType === 3) {
                         redCandy = redCandy.add(enemyType)
                     } else if (enemyType === 4) {
                         redCandy = redCandy.add(2)
                     } else if (enemyType === 5) {
-                        add("yellowcandy", new Hyper(2))
+                        rawAdd("yellowcandy", new Hyper(2))
                     }
                 }
             }
