@@ -2644,15 +2644,19 @@
 
         @keyframes colorful {
             0% {
-                filter: none;
+                filter: hue-rotate(90deg);
             }
 
             50% {
                 filter: hue-rotate(359.999deg) contrast(2);
             }
 
+            80% {
+                filter: hue-rotate(-90deg) contrast(0.3);
+            }
+
             100% {
-                filter: hue-rotate(0deg) contrast(1);
+                filter: hue-rotate(90deg) contrast(1);
             }
         }
 
@@ -2745,12 +2749,16 @@
         .grass,
         .concrete,
         .exclamation,
+        .boss,
         .enemy1,
         .enemy2,
         .enemy3,
         .enemy4,
         .enemy5,
         .enemy6,
+        .boss1,
+        .boss2,
+        .boss3,
         .redcandy,
         .yellowcandy,
         .purplecandy {
@@ -2841,6 +2849,24 @@
 
         .enemy6 {
             background-position: -320px 0px;
+        }
+
+        .boss1,
+        .boss2,
+        .boss3 {
+            background-image: url("data:image/png;base64,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");
+            transform: scale(0.5);
+            width: 128px;
+            height: 128px;
+            margin: -100px 0px -40px 0px;
+        }
+
+        .boss2 {
+            background-position: -128px 0px;
+        }
+
+        .boss3 {
+            background-position: -256px 0px;
         }
 
         .blank {
@@ -3393,6 +3419,11 @@
         .exclamation {
             background-position: -208px -96px;
             filter: none;
+        }
+
+        .boss {
+            background-position: -208px -96px;
+            animation: colorful 3s linear infinite;
         }
 
         .redcandy {
@@ -11799,7 +11830,7 @@
         }
 
         const LEFT = 0, UP = 1, RIGHT = 2, DOWN = 3
-        var characterX = 0, characterY = 0, fallSpeed = 0, health = Hyper2(100), difficulty = 1, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = new Hyper2(Infinity)
+        var sceneFrame = 0, characterX = 0, characterY = 0, fallSpeed = 0, health = Hyper2(100), isBoss = false, difficulty = 1, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = new Hyper2(Infinity)
         var stuff, stuffTotals, frame, offlineFrames
         var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, stripedButtons = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
         var newsOptions = ["Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "what? i fight in an old dungeon? for what? coins? candy? CANDY? WHTA DA HUH?", "The news tickers that you get are based on how long the game has been actively running on your device. (Or other devices with exporting.)", "Don't even try to use base64 tools on the save file!", "You know zooming out on the news ticker won't help you?", "ARE YOU BORD?", "Purple, green, then BLUE!!???? Why are the colors out of order!!!!??????? Come oneeee!!!!!!!!!", "did you know that many people think Google's AI (Gemini) is better than ChatGPT?", "Flipper Zeroes likely won't work on your car because they use an advanced method that prevents signal data from being reused. (Somewhat well, anyway.)", "To open inspector, press...                               Ctrl+Shift+Q+Q on a Chromium laptop. Much effect!", "Modding the game is an idea you could have: the tools are already in place!", "The CSS code is over 3,333 lines long! It's even over 3,335 lines long!", window.location.href, "Moose code: " + "- .... .. ... / .. ... / .- / -.-. .- -".replace(/ /g, '<span class="rc"></span>').replace(/\./g, 'moose').replace(/-/g, 'mooose'), "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomorrow's yesterday. As Bob knows his burgers, of course.", "Do you get all the references? Because this one's meta", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ seconds. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Then, there you go!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select any text on the page? I really wonder how that happened...", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?            <<<not formal", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8!", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Listen, just imagine that you actually had 1e1,000 golden nuggets. What would you do with them? Oh wait, the multiverse died.", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
@@ -12275,17 +12306,18 @@
                                 collectedY[c] = parseInt(collectedY[c])
                             }
                         }
-                        var cx = proceed("A")
-                        characterX = cx === false ? spawnX * characterSections : Number(cx)
+                        characterX = proceed("A")
+                        characterX = characterX === false ? spawnX * characterSections : Number(characterX)
                         dieFrame = Number(proceed("A"))
-                        var cy = proceed("C")
-                        characterY = cy === false ? spawnY * characterSections : Number(cy)
+                        characterY = proceed("C")
+                        characterY = characterY === false ? spawnY * characterSections : Number(characterY)
                         fallSpeed = Number(proceed("C"))
                         inBattle = Number(proceed("FIGHT_VAL")) - 1
                         enemiesDefeated = Number(proceed("ENM_X"))
                         enemiesBattled = Number(proceed("ENM_VYZX")) - 1
                         battleFrame = Number(proceed("ENM_VF"))
                         difficulty = Math.max(proceed("DDD") / 4362, 1)
+                        isBoss = proceed("YESTYPE") === "true"
                         updateInput("difficulty", difficulty)
                         ID("difficultyText").textContent = difficulty
 
@@ -12694,7 +12726,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + isBoss + "YESTYPE" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -14468,7 +14500,7 @@
             return Hyper2(100 + (hasResearch("candy") ? 25 : 0) + (hasResearch("candy2") ? 25 : 0) + (hasResearch("candy3") ? 25 : 0) + (hasResearch("brain") ? enemiesDefeated : 0)).add(redCandyPower.pow(1.35)).mul(hasResearch("expohealth") ? new Hyper2(1.03).pow(redCandyPower) : 1).ceil()
         }
 
-        var dungeonKey = "brgpc$e", collisionKey = "brgpc", collectingKey = "$e", shopCharacter = "p", battleCharacter = "e", coinCharacter = "$", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0)
+        var dungeonKey = "brgpc$e!", collisionKey = "brgpc", collectingKey = "$!e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", coinCharacter = "$", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0)
         function updateDungeon() {
             if (hasResearch("fireball")) {
                 ID("shootFireball").removeAttribute("style")
@@ -14519,6 +14551,7 @@
                 } else {
                     ID("underground").removeAttribute("style")
                 }
+
                 if (collisionKey[0] !== battleCharacter) {
                     collisionKey = battleCharacter + collisionKey
                 }
@@ -14531,6 +14564,8 @@
                 health = healthCap.min(health.add(Hyper2(100).sub(hasResearch("natural") ? 0 : health).max(10).mul(0.01)))
             }
 
+            var cx = Math.floor(characterX / characterSections)
+            var cy = Math.floor(characterY / characterSections)
             if (health <= 0 || cy >= depth) {
                 resetCharacter()
                 return
@@ -14543,8 +14578,6 @@
             var extraX = Math.max(0, Math.floor(characterX / characterSections - dungeonX + 2))
             var extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 3))
 
-            var cx = Math.floor(characterX / characterSections)
-            var cy = Math.floor(characterY / characterSections)
             if (!tileData[cy + 1] || !(collisionKey.includes(tileData[cy + 1][cx]))) {
                 characterY += ++fallSpeed
                 cy = Math.floor(characterY / characterSections)
@@ -14555,10 +14588,10 @@
             }
 
             var nextToShop = false
-            var enemyType = (enemiesBattled % 6) + 1
-            var enemyCap = Hyper2((enemyType === 1 ? 300 : 100) * Math.pow(difficulty, 1.3))
+            var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][enemiesBattled % 34] : ((enemiesBattled % 6) + 1)
+            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3))
             enemyHealth = enemyCap.min(enemyHealth)
-            var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? "enemy" + enemyType : "exclamation", "person"]
+            var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "person"]
             battleFrame++
             for (var i = 0; i < tileAmount; i++) {
                 var x = i % dungeonX + extraX
@@ -14567,7 +14600,7 @@
                 var type = -1
                 var item = y < depth ? tileData[y][x] : -1
                 if (x === cx && y === cy) {
-                    type = 7
+                    type = 8
                     if ((inBattle >= 30 || inBattle < 0) && collectingKey.includes(item)) {
                         for (var t = 0; t < collectedX.length; t++) {
                             if (collectedX[t] === x && collectedY[t] === y) {
@@ -14578,7 +14611,8 @@
                         if (!hideItem) {
                             if (item === coinCharacter) {
                                 rawAdd("coins", Hyper(true))
-                            } else if (item === battleCharacter) {
+                            } else if (item === battleCharacter || item === extremeBattleCharacter) {
+                                isBoss = item === extremeBattleCharacter
                                 inBattle = 60
                                 enemiesBattled++
                                 enemyHealth = new Hyper2(Infinity)
@@ -14591,7 +14625,7 @@
                     }
                 } else if (item === shopCharacter && ((x - 1) === cx || (x + 1) === cx) && y === cy) {
                     nextToShop = true
-                    type = dungeonKey.indexOf(item)
+                    type = 8
                 } else if (item !== -1) {
                     if (inBattle >= 30 || inBattle < 0) {
                         for (var t = 0; t < collectedX.length; t++) {
@@ -14616,6 +14650,7 @@
                 ID("shop").style.display = "none"
             }
 
+            sceneFrame++
             if (inBattle === 0) {
                 if (waitBeforeAttack++ === Math.max(45 - fightFrame * (hasResearch("speed") ? 5 : 0), hasResearch("super") ? 5 : 25)) {
                     fightFrame++
@@ -14626,7 +14661,38 @@
                     attackID.push(1)
                 }
 
-                if (enemyType === 1 && battleFrame % 90 === 0) {
+                if (isBoss) {
+                    if (battleFrame % 8 === 0) {
+                        attackData.push("hammer")
+                        attackDataX.push(7)
+                        attackDataY.push(2.1625)
+                        attackID.push(-1)
+                    }
+                    if (battleFrame % 25 === 0) {
+                        attackData.push("shard")
+                        attackDataX.push(7)
+                        attackDataY.push(2.1625)
+                        attackID.push(-1)
+                    }
+                    if (enemyType === 2 && battleFrame % 20 === 0) {
+                        attackData.push("goldbar")
+                        attackDataX.push(7)
+                        attackDataY.push(2.1625)
+                        attackID.push(-1)
+                    }
+                    if (enemyType === 3 && battleFrame % 3 === 0 && battleFrame % 60 <= 20) {
+                        attackData.push("binary")
+                        attackDataX.push(7)
+                        attackDataY.push(2.1625)
+                        attackID.push(-1)
+                    }
+                    if (enemyType === 3 && battleFrame % 10 === 0) {
+                        attackData.push("wonder")
+                        attackDataX.push(7)
+                        attackDataY.push(2.1625)
+                        attackID.push(-1)
+                    }
+                } else if (enemyType === 1 && battleFrame % 90 === 0) {
                     attackData.push("hammer")
                     attackDataX.push(7)
                     attackDataY.push(2.1625)
@@ -14657,6 +14723,8 @@
                     attackDataY.push(2.1625)
                     attackID.push(2.5)
                 }
+            } else {
+                sceneFrame = 0
             }
 
             var boundX = dungeonX - 0.75
@@ -14680,6 +14748,10 @@
                     } else if ((attackMultiplier < 0 || data === "shard") && Math.floor(2 * xData + 1.2) === doubleX && Math.floor(2 * yData) === doubleY) {
                         if (data === "bolt") {
                             health = health.sub(15 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072))
+                        } else if (data === "goldbar") {
+                            health = health.sub(50 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072))
+                        } else if (data === "wonder") {
+                            health = health.sub(new Hyper2(1.02).pow(sceneFrame).mul(1000 * Math.max(1, 0.2 + Math.pow(difficulty, 3.6) * 0.072)))
                         } else if (data === "hammer") {
                             health = health.sub(35 * Math.max(1, 0.2 + Math.pow(difficulty, 2.5) * 0.072))
                             characterX -= 0.5 * characterSections
@@ -14716,12 +14788,18 @@
                                 attackDataY[i] -= 0.15 * dungeonSpeed * attackMultiplier
                             }
                             additionalCSS = ";transform: rotate(" + (xData * 100) + "deg)"
+                        } else if (data === "binary") {
+                            xData = attackDataX[i] += 0.15 * dungeonSpeed * attackMultiplier
+                            var mod2 = xData % 1.8
+                            additionalCSS = ";transform: scale(" + ((mod2 >= 0.9 ? 1.8 - mod2 : mod2) + 0.1) + ")"
                         } else if (data === "bolt") {
                             xData = attackDataX[i] += 0.2 * dungeonSpeed * attackMultiplier
                             additionalCSS = ";transform: rotate(" + (xData * 25) + "deg)"
                         } else {
                             if (data === "shard") {
                                 attackID[i] -= 0.1
+                            } else if (data === "wonder") {
+                                attackID[i] -= 0.04
                             }
                             xData = attackDataX[i] += 0.05 * dungeonSpeed * attackMultiplier
                         }
@@ -14762,6 +14840,7 @@
             updateId("enemyHealth", Math.min(Math.max(enemyHealth, 0), enemyCap).toFixed(2) + "/" + enemyCap.toFixed(2))
 
             if (enemyHealth <= 0) {
+                isBoss = false
                 waitBeforeAttack = 0
                 fightFrame = 0
                 inBattle = -1
@@ -14769,7 +14848,7 @@
                 characterY = startingY
                 enemiesDefeated++
                 enemyHealth = new Hyper2(Infinity)
-                add("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round())
+                add("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul(isBoss ? 15 : 1))
                 if (hasResearch("collector")) {
                     if (enemyType === 1 || enemyType === 3) {
                         redCandy = redCandy.add(enemyType)
@@ -14783,6 +14862,7 @@
         }
 
         function resetCharacter() {
+            isBoss = false
             waitBeforeAttack = 0
             fightFrame = 0
             inBattle = -1
@@ -14799,7 +14879,7 @@
         }
 
         function resetDungeonData() {
-            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), difficulty = 1, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = new Hyper2(Infinity), dieFrame = 0, collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
+            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), isBoss = false, difficulty = 1, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = new Hyper2(Infinity), dieFrame = 0, collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
             clearAmount("coins", true)
         }
 
@@ -15601,7 +15681,7 @@
 
         var battleX = 1
         var battleY = 2
-        var battleDungeon = ["cgggggggg", "      rr", "       e", "bbbbbbbb c", "bbbccccc c", "bccccccc c", "ccccccccgc", "", "rrrr  rrrr"]
+        var battleDungeon = ["cgggggggg", "      rr", "       e", "bbbbbbbb c", "", "cccccccc c", "grrr  rrrg"]
         setupDungeons(`gS       g
 gggc  cggg
 rrrr  rrrr
@@ -15645,9 +15725,9 @@ bbbr  rbbr  r  r
 bbbr  rbrr  rrrr
 bbbr  rbbb  r  r
 rbbr  rbbb  rrrr          r
-bbbr  rbbbbbbrbrbrbrr     r
-rrp     $$$    e   e   c      $$$
-ccccccccccccccccccccccccc b  b   b
+bbbr  rbbbbbbrbrbrbr      r
+rrp     $$$  e e e   c       $$$$$$$$
+ccccccccccccccccccccccccc b  b   b  b
 b        rrbrr    rrbr    r
 rr         b              r
 rrr      bbbbb                                     $       eee       $            $$$                                                       $             $$$$$$$$$$$$$$
@@ -15684,7 +15764,7 @@ ggr  cc  cc
 gggrccc  ccc
 r        bbb
 r        rrrrrrrrrr
-r        eee      r
+r!ccc    eee      r
 ccccccccccccccccc b
                 cer
                 ceb                                           ccc
@@ -15695,12 +15775,12 @@ ccccccccccccccccc b
                 ceb                             cc          $$$$c                     $  $      ggggg
 c               cebbb                          ccc             cc             $$$$$r  c  c          g
 c$$$$$$$$$$$$$$$$$$                           cccc            ccc      $rrrrrrrrrrrrrrrrrrrrrrrrrrr r
-cg$$$$$$$$$$$$$$$$$                  b bbbbbbbbbbb           cccc     $rr                         b b
+cg$$$$$$$$$$$$$$$$$       ! ! ! !    b bbbbbbbbbbb           cccc     $rr                         b b
 ccccccccccccccccccccc c c c c c c  c           bbb         $cccccc   $rrr     cceeee              b b
 eeeeeeeeeeeee        $ $ $ $ $ $ $r b cc    c          c   $cccccc  $rrrr     g ecccc             b b
  bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb $rrrrr     g e    c            b b
                     e         e     e e e e       $$$$$         e  rrrrrr     g e     c           b b              cccg
-ccccrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g e      c        rrr rrr              cg
+cccc rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g e      c        rrr rrr              cg
                                                                        cc     $ e       ccc                          cg
                                                                        c    bbbbebbbb      c      $$$        e    e  cg
                                                                        c   bb  cec         cccccccccccccccccccccccccccg
@@ -15735,20 +15815,20 @@ ccccrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g 
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cce$c
+                                   cc$$$gg$$$cc                                                                                                   $cce$c
                                    cc$$$$$$$$cc                                                                                                    cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                    cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$ec
+                                   ccgg$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$ggcc                                                                                                    cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$gg$$$$cc                                                                                                   $cc$ec
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$gg$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                                                                                                                                     cc$$cccc      $
                               p   e   e   e   e   e                                                                                                $cc$$c$ c      $
