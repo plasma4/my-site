@@ -5760,8 +5760,12 @@
                             data-fade="$health3" data-desc="[Costs 1,250 yellow candy.] Make your yellow candy increase your red candy effect!">
                             Candy mastery
                         </span>
-                        <span class="mini special" data-cost="goldenpotions-3" data-show="$health3" data-earn="$coins2"
-                            data-fade="$coins2" data-desc="[Costs 3 *GOLDEN* potions.] Make slog(slog(slog(red candy))) multiply coin gain! (Minimum effect is 1× and maximum is 1,000,000,000,000×)">
+                        <span class="mini special" data-cost="coins-4e31" data-show="$health2" data-earn="$golden"
+                            data-fade="$golden" data-desc="[Costs 40.000N coins.] Multiply your golden potion effect by log10(coins + 10)!">
+                            Golden gains
+                        </span>
+                        <span class="mini special" data-cost="goldenpotions-4" data-show="$health3" data-earn="$coins2"
+                            data-fade="$coins2" data-desc="[Costs 4 *GOLDEN* potions.] Make slog(slog(slog(red candy))) multiply coin gain! (Minimum effect is 1× and maximum is 1,000,000,000,000×)">
                             Healthy coins
                         </span>
                         <span class="mini special" data-cost="coins-2e16" data-show="$lootingi|$lootingii|$lootingiii"
@@ -14301,7 +14305,7 @@
             add("goo", wells.mul(0.000165))
             add("energy", ponds.mul(0.000008))
 
-            multiExchange("gc", jewelerPower.mul(0.003).mul(Hyper(true).add(C("goldenpotions").mul(0.1))), ["clocks", "money", "gold"], [jewelerPower.mul(0.012), jewelerPower.mul(0.003), jewelerPower.mul(0.003)])
+            multiExchange("gc", jewelerPower.mul(0.003).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.1) : 0.1))), ["clocks", "money", "gold"], [jewelerPower.mul(0.012), jewelerPower.mul(0.003), jewelerPower.mul(0.003)])
             exchange("goldb", barmolders.mul(0.005), "gold", 25)
 
             exchangeLimit(C("bottles"), "naphtha", separators.mul(0.015), "ngas")
@@ -15008,7 +15012,7 @@
                 enemiesDefeated++
                 enemyHealth = new Hyper2(Infinity)
 
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1))
 
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
