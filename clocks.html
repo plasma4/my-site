@@ -5779,12 +5779,25 @@
                         </span>
                         <hr>
                         <span class="mini special2 bland"
-                            data-desc="Sorry, young explorer. I don't think you'll ever be ready for me!">
-                            Battle me
+                            data-desc="Sorry, young explorer. I don't think you'll ever be ready for that!" data-hide="coins>=1e27">
+                            Unlock Zone II
+                        </span>
+                        <span class="mini special2"
+                            data-desc="What? You actually want to unlock it? You'll need to speed 100.00N coins!" data-show="coins>=1e27" data-cost="coins-1e32" data-earn="$zone" data-hide="$zone">
+                            Unlock Zone II
+                        </span>
+                        <span class="mini warn" data-show="$zone" id="zonei" data-earn=""
+                            data-desc="[Go to the first zone!]">
+                            Travel to Zone I
+                        </span>
+                        <span class="mini warn" data-show="$zone" id="zoneii" data-earn=""
+                            data-desc="[Well, I think you might be ready!]">
+                            Travel to Zone II
                         </span>
                         <br><br>
                     </div>
                     <div id="underground"></div>
+                    <div id="zoneEffect" class="small serif"></div>
                     <span id="health"></span>
                     <span id="enemyHealth"></span>
                     <span class="mini special2 nosel" id="shootFireball" data-desc="Pew! Pew!" style="display: none">
@@ -7468,7 +7481,7 @@
         ID("script").remove()
 
         // Set the version
-        const version = "0.2.0"
+        const version = "0.2.1"
 
         var Hyper2 = ExpantaNum
         Hyper2.prototype.isPlural = function () {
@@ -11627,9 +11640,178 @@
                     break
                 }
             }
-            characterX = spawnX * characterSections
-            characterY = spawnY * characterSections
             dungeonDepth = dungeonData.length
+        }
+
+        function setZone() {
+        setupDungeons([`gS       g
+gggc  cggg
+rrrr  rrrr
+brrr  rrrb
+bbrr  rrbb
+bbbe$ rbbb
+bbbrb rbbb
+bbbr  rbbb
+bbbr  rbb 
+bbbr  rbbb
+bbbr  rbbb                          bbbbbbbbb
+bbbr  ebbb                                $
+bbbr bbbbb                           !cccc c
+bbbr  rbbb                          ccc  ccc
+bbbr  rb b                  ccccccccccc
+bbbr                    g      $$$$ e c
+bbbr   rr rrrrgggggggcgcgcgggggcccccccc
+bbbr  c$$$$  r
+b br  rbgg   r
+bbrr  rbgg   r
+bbbr  rb   rrr
+bbbr      b
+bbbr  rbbbb
+brrr  rbrr
+bbbr  rbrb
+bbbr  rbrb
+bbbe  rrrb
+bb rb rbbb
+bbbr  rbbr
+bbbr  rrrr
+brbr  rbrr
+bbbr  rbbr
+bbbr  rbbb           $
+bbbr  rbbb          eee
+b br  rb     e     ccccc
+b br  rbrb e g    ccccccc
+br r       g   ccccccccccc
+bbbr rrbbbg gggg
+bbbr  rbbb  rrrr
+bbbr  rbbr  r  r
+bbbr  rbrr  rrrr
+bbbr  rbbb  r  r
+rbbr  rbbb  rrrr          r
+bbbr  rbbbbbbrbrbrbr      r
+rrp     $$$  e e e   c       $$$$$$$$
+ccccccccccccccccccccccccc b  b   b  b
+b        rrbrr    rrbr    r
+rr         b              r
+rrr      bbbbb                                     $       eee       $            $$$                                                       $             $$$$$$$$$$$$$$
+rrrr      bbb             rbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccbbbbbrrrrbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  b$$$b$$b$b b b$b
+rrrrr      b              r                         c                      c                                                                                                                                                             cccccccccccccccccccccccccccccccccc
+bbbbbbbgggeeegggrrrbbbbbbbb
+
+                                      bb
+      p            e    e    e      geec
+ggggggggggggg  ggggggggggggggggggggggggg
+    $        r
+    $       bbbbbbb     $$$
+    $ $ $ $ $$$$$     bbbbbb  bbb $$
+rggccccccccc$$$$$$$$c c           cc $
+r           bbbbbbbbc c             c   bbbbbbbbbbbbbbb
+r                   c c              c                c
+r                   c c                cc             c
+r                   c c               cc c  eee       c
+rrrrrrrrrrrrrrrrrrrrr rrrrrrrrrrrrrrrrrrrrrr$$  $$rrrrc
+bbb    $$$$$$$$$    $$$$$$$      ccccccccc ccc      cbb
+cccccccccccccccccccccccccccccc              bbbbbbb bbb
+c                                                 r$rrrb
+c                                                  $$$$$b
+c                                                  $$  b
+c                                                  $  b
+c                                                  $ b
+cg            p                                    $b
+cggccccccccccccccccccc                             $b
+cggg                e    e    e    e    e    e    e$b
+brbrbr  brbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrrrrrr
+r     c  c
+gr    c  c
+ggr  cc  cc
+gggrccc  ccc
+r        bbb
+r        rrrrrrrrrr
+r!ccc    eee      r
+ccccccccccccccccc b
+                cer
+                ceb                                           ccc
+                cer                               $$$$$$$$$$$$$$c
+                ceb                                cggggggggggg$c
+                cer                               cc          $$c
+                ceb                              c           $$$c       rrrrrrrrrrrr
+                ceb                             cc          $$$$c                     $  $      ggggg
+c               cebbb                          ccc             cc             $$$$$r  c  c          g
+c$$$$$$$$$$$$$$$$$$                           cccc            ccc      $rrrrrrrrrrrrrrrrrrrrrrrrrrr r
+cg$$$$$$$$$$$$$$$$$       ! ! ! !    b bbbbbbbbbbb           cccc     $rr                         b b
+ccccccccccccccccccccc c c c c c c  c           bbb         $cccccc   $rrr     cceeee              b b
+eeeeeeeeeeeee        $ $ $ $ $ $ $r b cc    c          c   $cccccc  $rrrr     g ecccc             b b
+ bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb $rrrrr     g e    c            b b
+                    e         e     e e e e       $$$$$         e  rrrrrr     g e     c           b b              cccg
+cccc rrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g e      c        rrr rrr              cg
+                        bb                                             cc     $ e       ccc                          cg
+                                                                       c    bbbbebbbb      c      $$$        e    e  cg
+                                                                       c   bb  cec         cccccccccccccccccccccccccccg
+                                                                       crrrrr  $$$       $$$$$$$$$$                   c
+                                                                        r$  bbbbbbb  bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                                                                        rcccccccc    c    c cccc cccc $$    c    bbbbbbb b bbbb
+                                                                                   $      c cccc cccc       c    bbbbbbb b bbbb
+                                                                        rcccccccccgg      c cccc cccc       c    bbbbbbb b bbbb
+                                                                        rcccccccc    c    c cccc cccc       c    bbbbbbb b bbbb
+                                                                                    ccc
+                                       c cc g g gggg  ggggg ggggg g  $ggggcc   $ccc$$$cccc
+                                       ce$b     gg                 ccccccccc$$cccccccgc
+                                       ce$b                $      cccccccc$$$ccc$    b
+                                       ce$b                g     cccc$$$$$$$ccccc$$$$b
+                                       ce$b                       cccc$$cccccccbbbrrrr
+                                       c$$b                        cccc$             r
+                                       c$$b                         cccc$            r
+                                       c$$b                         ccccc$           r                                       e 
+                                       c$$b                         cccccc$          r                                      ece$                         p
+                                       c$$b                         ccccccc$$$$$$$$$$e          e         eeeee         e e ccee   $$$$$$$$$$$$$$$$$$$$ccb
+                                      ccc                    !        cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc$$c
+                                        gggg                                                                                                       $cc$$c
+                                   cc$$$$$$$$cc                                                                                                    cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                    cc$ec
+                                   cc$$$$$$$$cc                                                                                                   $cceec
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$gg$$$cc                                                                                                   $cce$c
+                                   cc$$$$$$$$cc                                                                                                    cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   ccgg$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$ggcc                                                                                                    cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$gg$$$$cc                                                                                                   $cc$ec
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$$gg$$cc                                                                                                   $cc$$c
+                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                    cc      cc                                                                                                      cc$$cccc      $$$$$$$
+                              p   e   e   e   e   e  !                                                                                             $cc$$c$ c      $
+                              bbbbbbbbbbbbbbbbbbbbbbbn                                                                                           e  e  $$$ c      b$
+                                                      g$                                                                                         e  e    $ c     bb$$
+                                                       g$                                                                 eccccccccccccccccccccccccccccccc ccc  bbb$$$
+                                                        g$$$                                                               e$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$    ebbbb$$$$
+                                                         ggg     $!                                                    !! errrrrbbbbbccccccccccccccccccccccccccccccbrbrbrbrbr
+                                                            ccccccc                                                    cccc`, `cS$$$$$$$$c
+ggggggggg c
+rrrrrrrrr c
+          r
+p        rr
+cccc cccbbb
+   cec
+   cec
+   cec
+   eee
+
+$$$$$$$$$$$$$$$$$$cc
+cccccccccccccccccccccc`][zone - 1], 10, 10)
         }
 
         // Formats a Hyper
@@ -11978,7 +12160,7 @@
         ]
 
         const LEFT = 0, UP = 1, RIGHT = 2, DOWN = 3
-        var sceneFrame = 0, characterX = 0, characterY = 0, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = 0, isBoss = false, difficulty = 1, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = new Hyper2(Infinity)
+        var zone = 1, sceneFrame = 0, characterX = characterSections, characterY = 0, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = 0, isBoss = false, difficulty = 1, enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = new Hyper2(Infinity)
         var stuff, stuffTotals, frame, offlineFrames
         var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, stripedButtons = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
         var newsOptions = ["So, if I remove this news ticker, will there be less content?", "There are " + progressNotes.length + " tips in the game (currently, of course).", "Why is it called a news TICKER? Is it ticking?", "[pretend this has a bad dad joke here]", "\u2014From someone", "What is NaN, you ask? Why don't you Bing it up? (Sorry, I had to say it.)", firefoxZero === 0 ? "You are using Firefox!" : "You are NOT using Firefox.", "How bad do your clocks have to be to be worth ONE DOLLAR?", "Hear me out: I never update the devlog because you likely haven't even seen it yet.", "You have just read news ticker $NEWSID$. Congrats!", "This news ticker was seeded using math. Isn't that weird? This is also news message $NEWSID$.", "Did you know digital clocks used to be a part of the game? They used 3D printers (and were NOT very good).", "What are MegaClocks filled with? Who knows?", "Listen, this is an incremental game, not an RPG. Don't get too excited.", "Please observe the next news message carefully. It could affect you in many ways!", "Modern clocks are mass-produced, and a common material is clock brass.", "News tickers were added in 0.2.0. The current version is " + version + ".", "Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "what? i fight in an old dungeon? for what? coins? candy? CANDY? WHTA DA HUH? WHY? WHAT DOES THIS HAVE TO DO WITH? WHAT?", "You have been in dungeon battles for a total of $BATTLEFRAME$ frames!", "The news tickers that you get are based on how long the game has been actively running on your device. (Or other devices with exporting.)", "Don't even try to use base64 tools on the save file!", "You know zooming out on the news ticker won't help you?", "ARE YOU BORD?", "Purple, green, then BLUE!!???? Why are the colors out of order!!!!??????? Come oneeee!!!!!!!!!", "did you know that many people think Google's AI (Gemini) is better than ChatGPT 3.5?", "Flipper Zeroes likely won't work on your car because they use an advanced method that prevents signal data from being reused. (Somewhat well, anyway.)", "To open inspector, press...                               Ctrl+Shift+Q+Q on a Chromium laptop. Much effect! WAIT! DON'T ACTUALLY DO IT!", "Modding the game is an idea you could have: the tools are already in place!", "The CSS code is over 3,333 lines long! It's even over 3,335 lines long!", window.location.href, "Moose code: " + "- .... .. ... / .. ... / .- / -.-. .- -".replace(/ /g, '<span class="rc"></span>').replace(/\./g, "moose").replace(/-/g, "mooose"), "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomo-row's yesterday. Bob, of course, nose this.", "Do you get all the references? Because this one's meta (but NOT omega)", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ seconds. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Then, there you go!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1 me bored true=valid', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select any text on the page? I really wonder how that happened...", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?            <<<not formal", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8!", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Listen, just imagine that you actually had 1e1,000 golden nuggets. What would you do with them? Oh wait, the multiverse died.", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
@@ -12423,7 +12605,7 @@
                     if (loaded) {
                         reset(true);
                     }
-                    if (version === "0.0.5.1" || version === "0.1.0" || version === "0.1.1" || version === "0.2.0") {
+                    if (version === "0.0.5.1" || version === "0.1.0" || version === "0.1.1" || version === "0.2.0" || version === "0.2.1") {
                         // I minimized the saving code and lost the non-compressed version, so only this part makes much sense. Oops!
                         function proceed(endingString) {
                             var index = $.indexOf(endingString)
@@ -12444,7 +12626,7 @@
 
                         autosellOn = proceed("AX") === "t"
                         autoClick = proceed("\n") === "OX"
-                        if (version === "0.2.0") {
+                        if (version === "0.2.0" || version === "0.2.1") {
                             collectedX = proceed("\n").split(" ")
                             collectedY = proceed("\n").split(" ")
                             for (var c = 0; c < collectedX.length; c++) {
@@ -12469,6 +12651,7 @@
 
                         mixingType = Number(proceed("RRR"))
                         mixingTime = Number(proceed("RR"))
+                        zone = Math.max(proceed("ZZO"), 1)
                         health = proceed("B")
                         health = Hyper2(health === false ? 100 : health)
                         startingX = Number(proceed("XXX"))
@@ -12881,7 +13064,7 @@
 
             save = function () {
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + isBoss + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + isBoss + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + zone + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -14719,7 +14902,7 @@
 
             var cx = Math.floor(characterX / characterSections)
             var cy = Math.floor(characterY / characterSections)
-            if (health <= 0 || cy >= depth) {
+            if (health.lte(0) || cy >= depth) {
                 resetCharacter()
                 return
             }
@@ -14742,7 +14925,7 @@
 
             var nextToShop = false
             var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][enemiesBattled % 34] : ((enemiesBattled % 6) + 1)
-            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3))
+            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? 2859.528 : 1)
             enemyHealth = enemyCap.min(enemyHealth)
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "person"]
 
@@ -14804,6 +14987,8 @@
             }
 
             sceneFrame++
+            var zoneSpeed = 150
+            var zoneEffect = zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(Math.min(Math.ceil(sceneFrame / zoneSpeed), 4))(Math.pow(sceneFrame % zoneSpeed, 37) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1)
             if (inBattle === 0) {
                 battleFrame++
                 if (waitBeforeAttack++ === Math.max(45 - fightFrame * (hasResearch("speed") ? 5 : 0), hasResearch("super") ? 5 : 25)) {
@@ -14881,6 +15066,9 @@
                     attackDataY.push(2.1625)
                     attackID.push(2.5)
                 }
+                updateId("zoneEffect", zoneEffect.format() + "× damage")
+            } else {
+                updateHTML(ID("zoneEffect"), "")
             }
 
             var damageMultiplier = (hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)
@@ -14904,21 +15092,21 @@
                         len--
                     } else if ((attackMultiplier < 0 || data === "shard") && Math.floor(2 * xData + 1.2) === doubleX && Math.floor(2 * yData) === doubleY) {
                         if (data === "bolt") {
-                            health = health.sub(15 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072))
+                            health = health.sub(zoneEffect.mul(15 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072)))
                         } else if (data === "fapple" || data === "sapple" || data === "gapple") {
-                            health = health.sub(20 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072))
+                            health = health.sub(zoneEffect.mul(20 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072)))
                         } else if (data === "goldbar") {
-                            health = health.sub(50 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072))
+                            health = health.sub(zoneEffect.mul(50 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072)))
                         } else if (data === "wonder") {
-                            health = health.sub(new Hyper2(1.02).pow(sceneFrame).mul(1000 * Math.max(1, 0.2 + Math.pow(difficulty, 3.6) * 0.072)))
+                            health = health.sub(zoneEffect.mul(new Hyper2(1.02).pow(sceneFrame).mul(1000 * Math.max(1, 0.2 + Math.pow(difficulty, 3.6) * 0.072))))
                         } else if (data === "hammer") {
-                            health = health.sub(35 * Math.max(1, 0.2 + Math.pow(difficulty, 2.5) * 0.072))
+                            health = health.sub(zoneEffect.mul(35 * Math.max(1, 0.2 + Math.pow(difficulty, 2.5) * 0.072)))
                             characterX -= 0.5 * characterSections
                             attackID[i] = 4
                             i++
                             continue
                         } else {
-                            health = health.sub(25 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072))
+                            health = health.sub(zoneEffect.mul(25 * Math.max(1, 0.2 + (difficulty * difficulty) * 0.072)))
                         }
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
@@ -15012,7 +15200,7 @@
                 enemiesDefeated++
                 enemyHealth = new Hyper2(Infinity)
 
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1))
+                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1))
 
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
@@ -15149,6 +15337,20 @@
                 rawRemove("yellowcandy", Hyper(80))
                 mixingType = 3
                 mixingTime = 14400
+            }
+        })
+        attachEvent("zonei", function () {
+            if (zone !== 1) {
+                zone = 1
+                setZone()
+                resetCharacter()
+            }
+        })
+        attachEvent("zoneii", function () {
+            if (zone !== 2) {
+                zone = 2
+                setZone()
+                resetCharacter()
             }
         })
 
@@ -15898,162 +16100,6 @@
         var battleX = 1
         var battleY = 2
         var battleDungeon = ["cgggggggg", "      rr", "       e", "bbbbbbbb c", "", "cccccccc c", "grrr  rrrg"]
-        setupDungeons(`gS       g
-gggc  cggg
-rrrr  rrrr
-brrr  rrrb
-bbrr  rrbb
-bbbe$ rbbb
-bbbrb rbbb
-bbbr  rbbb
-bbbr  rbb 
-bbbr  rbbb
-bbbr  rbbb                          bbbbbbbbb
-bbbr  ebbb                                $
-bbbr bbbbb                           !cccc c
-bbbr  rbbb                          ccc  ccc
-bbbr  rb b                  ccccccccccc
-bbbr                    g      $$$$ e c
-bbbr   rr rrrrgggggggcgcgcgggggcccccccc
-bbbr  c$$$$  r
-b br  rbgg   r
-bbrr  rbgg   r
-bbbr  rb   rrr
-bbbr      b
-bbbr  rbbbb
-brrr  rbrr
-bbbr  rbrb
-bbbr  rbrb
-bbbe  rrrb
-bb rb rbbb
-bbbr  rbbr
-bbbr  rrrr
-brbr  rbrr
-bbbr  rbbr
-bbbr  rbbb           $
-bbbr  rbbb          eee
-b br  rb     e     ccccc
-b br  rbrb e g    ccccccc
-br r       g   ccccccccccc
-bbbr rrbbbg gggg
-bbbr  rbbb  rrrr
-bbbr  rbbr  r  r
-bbbr  rbrr  rrrr
-bbbr  rbbb  r  r
-rbbr  rbbb  rrrr          r
-bbbr  rbbbbbbrbrbrbr      r
-rrp     $$$  e e e   c       $$$$$$$$
-ccccccccccccccccccccccccc b  b   b  b
-b        rrbrr    rrbr    r
-rr         b              r
-rrr      bbbbb                                     $       eee       $            $$$                                                       $             $$$$$$$$$$$$$$
-rrrr      bbb             rbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccbbbbbrrrrbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  b$$$b$$b$b b b$b
-rrrrr      b              r                         c                      c                                                                                                                                                             cccccccccccccccccccccccccccccccccc
-bbbbbbbgggeeegggrrrbbbbbbbb
-
-                                      bb
-      p            e    e    e      geec
-ggggggggggggg  ggggggggggggggggggggggggg
-    $        r
-    $       bbbbbbb     $$$
-    $ $ $ $ $$$$$     bbbbbb  bbb $$
-rggccccccccc$$$$$$$$c c           cc $
-r           bbbbbbbbc c             c   bbbbbbbbbbbbbbb
-r                   c c              c                c
-r                   c c                cc             c
-r                   c c               cc c  eee       c
-rrrrrrrrrrrrrrrrrrrrr rrrrrrrrrrrrrrrrrrrrrr$$  $$rrrrc
-bbb    $$$$$$$$$    $$$$$$$      ccccccccc ccc      cbb
-cccccccccccccccccccccccccccccc              bbbbbbb bbb
-c                                                 r$rrrb
-c                                                  $$$$$b
-c                                                  $$  b
-c                                                  $  b
-c                                                  $ b
-cg            p                                    $b
-cggccccccccccccccccccc                             $b
-cggg                e    e    e    e    e    e    e$b
-brbrbr  brbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrrrrrr
-r     c  c
-gr    c  c
-ggr  cc  cc
-gggrccc  ccc
-r        bbb
-r        rrrrrrrrrr
-r!ccc    eee      r
-ccccccccccccccccc b
-                cer
-                ceb                                           ccc
-                cer                               $$$$$$$$$$$$$$c
-                ceb                                cggggggggggg$c
-                cer                               cc          $$c
-                ceb                              c           $$$c       rrrrrrrrrrrr
-                ceb                             cc          $$$$c                     $  $      ggggg
-c               cebbb                          ccc             cc             $$$$$r  c  c          g
-c$$$$$$$$$$$$$$$$$$                           cccc            ccc      $rrrrrrrrrrrrrrrrrrrrrrrrrrr r
-cg$$$$$$$$$$$$$$$$$       ! ! ! !    b bbbbbbbbbbb           cccc     $rr                         b b
-ccccccccccccccccccccc c c c c c c  c           bbb         $cccccc   $rrr     cceeee              b b
-eeeeeeeeeeeee        $ $ $ $ $ $ $r b cc    c          c   $cccccc  $rrrr     g ecccc             b b
- bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb $rrrrr     g e    c            b b
-                    e         e     e e e e       $$$$$         e  rrrrrr     g e     c           b b              cccg
-cccc rrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g e      c        rrr rrr              cg
-                        bb                                             cc     $ e       ccc                          cg
-                                                                       c    bbbbebbbb      c      $$$        e    e  cg
-                                                                       c   bb  cec         cccccccccccccccccccccccccccg
-                                                                       crrrrr  $$$       $$$$$$$$$$                   c
-                                                                        r$  bbbbbbb  bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-                                                                        rcccccccc    c    c cccc cccc $$    c    bbbbbbb b bbbb
-                                                                                   $      c cccc cccc       c    bbbbbbb b bbbb
-                                                                        rcccccccccgg      c cccc cccc       c    bbbbbbb b bbbb
-                                                                        rcccccccc    c    c cccc cccc       c    bbbbbbb b bbbb
-                                                                                    ccc
-                                       c cc g g gggg  ggggg ggggg g  $ggggcc   $ccc$$$cccc
-                                       ce$b     gg                 ccccccccc$$cccccccgc
-                                       ce$b                $      cccccccc$$$ccc$    b
-                                       ce$b                g     cccc$$$$$$$ccccc$$$$b
-                                       ce$b                       cccc$$cccccccbbbrrrr
-                                       c$$b                        cccc$             r
-                                       c$$b                         cccc$            r
-                                       c$$b                         ccccc$           r                                       e 
-                                       c$$b                         cccccc$          r                                      ece$                         p
-                                       c$$b                         ccccccc$$$$$$$$$$e          e         eeeee         e e ccee   $$$$$$$$$$$$$$$$$$$$ccb
-                                      ccc                    !        cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc$$c
-                                        gggg                                                                                                       $cc$$c
-                                   cc$$$$$$$$cc                                                                                                    cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                    cc$ec
-                                   cc$$$$$$$$cc                                                                                                   $cceec
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$gg$$$cc                                                                                                   $cce$c
-                                   cc$$$$$$$$cc                                                                                                    cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   ccgg$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$ggcc                                                                                                    cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$gg$$$$cc                                                                                                   $cc$ec
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$gg$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                    cc      cc                                                                                                      cc$$cccc      $$$$$$$
-                              p   e   e   e   e   e  !                                                                                             $cc$$c$ c      $
-                              bbbbbbbbbbbbbbbbbbbbbbbn                                                                                           e  e  $$$ c      b$
-                                                      g$                                                                                         e  e    $ c     bb$$
-                                                       g$                                                                 eccccccccccccccccccccccccccccccc ccc  bbb$$$
-                                                        g$$$                                                               e$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$    ebbbb$$$$
-                                                         ggg     $!                                                    !! errrrrbbbbbccccccccccccccccccccccccccccccbrbrbrbrbr
-                                                            ccccccc                                                    cccc`, 10, 10)
 
         if (storageWorks) {
             function getMods() {
@@ -16106,6 +16152,7 @@ cccc rrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g 
 
                 // Update save stuff and start the game
                 loadSaveUtility()
+                setZone()
                 draw()
             }
 
@@ -16118,6 +16165,7 @@ cccc rrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g 
 
                 // Update save stuff and start the game
                 loadSaveUtility()
+                setZone()
                 draw()
             } else if (window.hideModWarning) {
                 addScripts()
@@ -16130,6 +16178,7 @@ cccc rrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g 
 
             // Update save stuff and start the game
             loadSaveUtility()
+            setZone()
             draw()
         }
 
