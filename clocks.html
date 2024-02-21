@@ -5573,8 +5573,10 @@
                     <hr>
                     <span class="smallish red" id="redcandy"></span>
                     <span class="smallish yellow" id="yellowcandy" data-for="$bigger yellowcandy"></span>
-                    <div class="smallish valuable2" id="healpotions" data-for="healing potion"></div>
-                    <div class="smallish valuable2" id="shieldpotions" data-for="shield potion"></div>
+                    <br>
+                    <span class="smallish valuable2" id="healpotions" data-for="healing potion"></span>
+                    <br>
+                    <span class="smallish valuable2" id="shieldpotions" data-for="shield potion"></span>
                     <div class="small blue">
                         Your attack damage is <b class="pink" id="damage"></b>
                     </div>
@@ -5584,18 +5586,18 @@
                         <br>
                         <span class="mini special burning" id="mixHealth"
                             data-desc="Mix a healing potion! (Healing potions also give +15% healing speed OUTSIDE of battle when unused per potion.)\n{Costs 15 red candies.}">
-                            Mix a healing potion
+                            Mix a <span class="smaller serif red">healing potion</span>
                         </span>
                         <span class="mini special burning2" id="mixShield"
                             data-desc="Mix a shield potion! (Shield potions also give +50 max health when unused.)\n{Costs 25 red candies and 5 yellow candies.}">
-                            Mix a shield potion
+                            Mix a <span class="smaller serif gray">shield potion</span>
                         </span>
                         <br>
                         <i>
                             You are currently <span id="mixInfo" class="small serif orange"></span>
                             (mixing takes time and you'll get the potion when the mixing finishes).
                         </i>
-                        <div class="smallish blue">Mixing time is not affected by crystals!</div>
+                        <div class="smallish pink">Mixing time is not affected by crystals!</div>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -5604,7 +5606,7 @@
                             <label class="hidden" for="difficulty">
                                 Difficulty level requested (defaults to 1)
                             </label>
-                            <input type="range" min="1" max="10" value="0" tabindex="-1" id="difficulty">
+                            <input type="range" min="1" max="12" value="0" tabindex="-1" id="difficulty">
                             <div class="small green">
                                 (Difficulty level of enemies: <b id="difficultyText" class="small lime"></b>)
                             </div>
@@ -5621,7 +5623,7 @@
                         </span>
                         <span class="mini special" data-cost="coins-777" data-show="$damage2" data-earn="$harder"
                             data-fade="$harder"
-                            data-desc="[Costs 777 coins.] Gain the ability to challenge harder enemies!\n{Any time you visit me, I'll give you a custom slider to adjust the difficulty.}">
+                            data-desc="[Costs 777 coins.] Gain the ability to challenge harder enemies!\n{Any time you visit me, I'll give you a custom slider to adjust the difficulty from 1 to 12.}">
                             A challenge
                         </span>
                         <span class="mini special" data-cost="coins-1500" data-earn="$heal" data-fade="$heal"
@@ -5728,10 +5730,25 @@
                             data-desc="[Costs 100.00B coins.] Coin gain is multiplied by 10,000 times. (Stacks with Looting I and Looting II!)">
                             Looting III
                         </span>
-                        <span class="mini special" data-cost="coins-1e11" data-show="$lootingii" data-earn="$lootingiii"
-                            data-fade="$lootingiii"
-                            data-desc="[Costs 100.00B coins.] Coin gain is multiplied by 10,000 times. (Stacks with Looting I and Looting II!)">
-                            Looting III
+                        <span class="mini special" data-cost="coins-1e12" data-show="$lootingiii"
+                            data-earn="$sharpnessi" data-fade="$sharpnessi"
+                            data-desc="[Costs 1.000T coins.] Boost your attack damage by FIVE TIMES!">
+                            Sharpness I
+                        </span>
+                        <span class="mini special" data-cost="coins-1e15" data-show="$lootingiii"
+                            data-earn="$sharpnessii" data-fade="$sharpnessii"
+                            data-desc="[Costs 1.000q coins.] Boost your attack damage by THREE TIMES!">
+                            Sharpness II
+                        </span>
+                        <span class="mini special" data-cost="coins-1e16" data-show="$lootingiii"
+                            data-earn="$sharpnessiii" data-fade="$sharpnessiii"
+                            data-desc="[Costs 10.000q coins.] Boost your attack damage by TWO TIMES!">
+                            Sharpness III
+                        </span>
+                        <span class="mini special" data-cost="coins-2e16" data-show="$lootingiii" data-earn="$challenge"
+                            data-fade="$challenge"
+                            data-desc="[Costs 20.000q coins.] Increase the maximum difficulty from 12 to 20!">
+                            A BIGGER challenge
                         </span>
                         <hr>
                         <span class="mini special2 bland"
@@ -14827,6 +14844,7 @@
                 }
             }
 
+            var damageMultiplier = (hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)
             var boundX = dungeonX - 0.75
             var boundY = dungeonY - 0.75
             if (inBattle >= 0) {
@@ -14876,7 +14894,7 @@
                             healthToRemove = 20
                         }
 
-                        enemyHealth = enemyHealth.sub(healthToRemove * (hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1))
+                        enemyHealth = enemyHealth.sub(healthToRemove * damageMultiplier)
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
                         attackDataY.splice(i, 1)
@@ -14939,7 +14957,7 @@
             }
 
             updateHTML(ID("redcandy"), getAmount("redcandy") + '× <span class="bigger redcandy">')
-            updateId("damage", 25 * (hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) + " for normal clocks and " + 40 * (hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) + " for golden ones")
+            updateHTML(ID("damage"), 40 * damageMultiplier + ' for <span class="small valuable2">golden clocks</span> and ' + 25 * damageMultiplier + " for other attacks")
             updateId("health", formatExpanta(health.max(0), 2) + "/" + formatExpanta(healthCap, 2))
             updateId("enemyHealth", Math.min(Math.max(enemyHealth, 0), enemyCap).toFixed(2) + "/" + enemyCap.toFixed(2))
 
@@ -15352,6 +15370,13 @@
             updateInput("wattSlider", wattUsage)
             updateInput("wageSlider", wageMultiplier.mul(100))
 
+            if (hasResearch("challenge")) {
+                if (ID("difficulty").getAttribute("max") != 20) {
+                    ID("difficulty").setAttribute("max", 20)
+                }
+            } else if (ID("difficulty").getAttribute("max") != 12) {
+                ID("difficulty").setAttribute("max", 12)
+            }
             if (hasResearch("harder")) {
                 ID("difficultyContainer").removeAttribute("style")
             } else if (ID("difficultyContainer").style.display !== "none") {
