@@ -3937,7 +3937,7 @@
         </header>
 
         <div id="properties">
-            goldenpotions|yellowcandy|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -5751,6 +5751,18 @@
                             data-earn="$sharpnessiii" data-fade="$sharpnessiii"
                             data-desc="[Costs 10.000q coins.] Boost your attack damage by TWO TIMES!">
                             Sharpness III
+                        </span>
+                        <span class="mini special" data-cost="coins-1e16" data-show="$lootingi|$lootingii|$lootingiii" data-earn="$health2"
+                            data-fade="$health2" data-desc="[Costs 10.000q coins.] Tetrate your red candy gain by YOUR RED CANDY GAIN ITSELF!">
+                            Healthy eating habits
+                        </span>
+                        <span class="mini special" data-cost="yellowcandy-1250" data-show="$health2" data-earn="$health3"
+                            data-fade="$health3" data-desc="[Costs 1,250 yellow candy.] Make your yellow candy increase your red candy effect!">
+                            Candy mastery
+                        </span>
+                        <span class="mini special" data-cost="goldenpotions-3" data-show="$health3" data-earn="$coins2"
+                            data-fade="$coins2" data-desc="[Costs 3 *GOLDEN* potions.] Make slog(slog(slog(red candy))) multiply coin gain! (Minimum effect is 1× and maximum is 1,000,000,000,000×)">
+                            Healthy coins
                         </span>
                         <span class="mini special" data-cost="coins-2e16" data-show="$lootingi|$lootingii|$lootingiii"
                             data-earn="$challenge" data-fade="$challenge"
@@ -14995,24 +15007,37 @@
                 characterY = startingY
                 enemiesDefeated++
                 enemyHealth = new Hyper2(Infinity)
+
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1))
+
                 if (hasResearch("collector")) {
+                    var redCandyToAdd = null
                     if (isBoss) {
-                        var redCandyToAdd = Hyper2(50 * enemyType).mul(hasResearch("healthful") ? health : 1)
-                        redCandy = redCandy.add(hasResearch("coins") ? redCandyToAdd.tetr(C("coins").add(1).toString()) : redCandyToAdd)
+                        redCandyToAdd = Hyper2(50 * enemyType)
                         rawAdd("yellowcandy", Hyper(40))
                     } else {
                         if (enemyType === 1 || enemyType === 3) {
-                            var redCandyToAdd = Hyper2(enemyType).mul(hasResearch("healthful") ? health : 1)
-                            redCandy = redCandy.add(hasResearch("coins") ? redCandyToAdd.tetr(C("coins").add(1).toString()) : redCandyToAdd)
+                            redCandyToAdd = Hyper2(enemyType)
                         } else if (enemyType === 4) {
-                            var redCandyToAdd = Hyper2(3 * enemyType).mul(hasResearch("healthful") ? health : 1)
-                            redCandy = redCandy.add(hasResearch("coins") ? redCandyToAdd.tetr(C("coins").add(1).toString()) : redCandyToAdd)
+                            redCandyToAdd = Hyper2(3 * enemyType)
                         } else if (enemyType === 5) {
                             rawAdd("yellowcandy", Hyper(2))
                         }
                     }
+                    if (redCandyToAdd !== null) {
+                        redCandyToAdd = redCandyToAdd.mul(hasResearch("healthful") ? health : 1)
+                        if (hasResearch("coins")) {
+                            redCandyToAdd = redCandyToAdd.tetr(C("coins").add(1).toString())
+                        }
+                        if (hasResearch("health2")) {
+                            redCandyToAdd = redCandyToAdd.tetr(redCandyToAdd)
+                        }
+                        if (hasResearch("health3")) {
+                            redCandyToAdd = redCandyToAdd.tetr(Hyper2(10).tetr(Hyper2(10).tetr(C("yellowcandy").mul(48929).add(1).toString())))
+                        }
+                        redCandy = redCandy.add(redCandyToAdd)
+                    }
                 }
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)))
                 isBoss = false
             }
         }
