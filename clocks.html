@@ -3937,7 +3937,7 @@
         </header>
 
         <div id="properties">
-            yellowcandy|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            goldenpotions|yellowcandy|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -4002,6 +4002,7 @@
             coins: Coin (1, Wow, a coin! So cool!)
             healpotions: Healing Potion (10, A special potion)
             shieldpotions: Shield Potion (10, A special potion)
+            goldenpotions: *GOLDEN* Potion (11, A VERY special potion)
             yellowcandy: Yellow Cand$y/ies (8, A weird yellow candy obtained by defeating enemies)
             metabucks: %MetaBuck (2, A funny-looking digital dollar)
             metacoins: %MetaCoin (10, A silly green digital coin)
@@ -5563,7 +5564,7 @@
                     <span class="big redbrick"></span>
                     Discover the power of pixels!
                     <br>
-                    <b class="small">Dungeons are still IN BETA and are new. They're not finished!</b>
+                    <b class="small">Dungeons give boosts like sell value and even GOLDEN CLOCK boosts later on!</b>
                     <i class="smallish">
                         Use your arrow keys, WASD keys, or the buttons below in order to move around the dungeon.
                     </i>
@@ -5577,6 +5578,8 @@
                     <span class="smallish valuable2" id="healpotions" data-for="healing potion"></span>
                     <br>
                     <span class="smallish valuable2" id="shieldpotions" data-for="shield potion"></span>
+                    <br>
+                    <span class="smallish valuable2" id="goldenpotions" data-for="*GOLDEN* potion"></span>
                     <div class="small blue">
                         Your attack damage is <b class="pink" id="damage"></b>
                     </div>
@@ -5585,12 +5588,16 @@
                         You have a basic mixer. Mix candies together for cool potions!
                         <br>
                         <span class="mini special burning" id="mixHealth"
-                            data-desc="Mix a healing potion! (Healing potions also give +15% healing speed OUTSIDE of battle when unused per potion.)\n{Costs 15 red candies.}">
+                            data-desc="Mix a healing potion! (Healing potions give +15% healing speed OUTSIDE of battle when unused per potion.)\n{Costs 15 red candies.}">
                             Mix a <span class="smaller serif red">healing potion</span>
                         </span>
                         <span class="mini special burning2" id="mixShield"
-                            data-desc="Mix a shield potion! (Shield potions also give +50 max health when unused.)\n{Costs 25 red candies and 5 yellow candies.}">
+                            data-desc="Mix a shield potion! (Shield potions give +50 max health when unused.)\n{Costs 25 red candies and 5 yellow candies.}">
                             Mix a <span class="smaller serif gray">shield potion</span>
+                        </span>
+                        <span class="mini special2" id="mixGolden"
+                            data-desc="Mix a *GOLDEN* potion! (Golden potions give +25% coin AND +10% golden clock production when used!)\n{Costs 80 yellow candies and 5.000q coins.}">
+                            <span class="smaller serif rainbow outlined"> Mix a *GOLDEN* potion</span>
                         </span>
                         <br>
                         <i>
@@ -5745,10 +5752,14 @@
                             data-desc="[Costs 10.000q coins.] Boost your attack damage by TWO TIMES!">
                             Sharpness III
                         </span>
-                        <span class="mini special" data-cost="coins-2e16" data-show="$lootingiii" data-earn="$challenge"
-                            data-fade="$challenge"
+                        <span class="mini special" data-cost="coins-2e16" data-show="$lootingi|$lootingii|$lootingiii"
+                            data-earn="$challenge" data-fade="$challenge"
                             data-desc="[Costs 20.000q coins.] Increase the maximum difficulty from 12 to 20!">
                             A BIGGER challenge
+                        </span>
+                        <span class="mini special" data-cost="coins-4e16" data-show="$challenge" data-earn="$mixing2"
+                            data-fade="$mixing2" data-desc="[Costs 40.000q coins.] Unlock {golden} potions!">
+                            *GOLDEN* potions
                         </span>
                         <hr>
                         <span class="mini special2 bland"
@@ -12409,8 +12420,6 @@
                         battleFrame = Number(proceed("ENM_VF"))
                         difficulty = Math.max(proceed("DDD") / 4362, 1)
                         isBoss = proceed("YESTYPE") === "true"
-                        updateInput("difficulty", difficulty)
-                        ID("difficultyText").textContent = difficulty
 
                         mixingType = Number(proceed("RRR"))
                         mixingTime = Number(proceed("RR"))
@@ -12799,6 +12808,13 @@
                         }
                         researches = $$;
                     }
+
+                    // Sneak some difficulty content in
+                    if (hasResearch("challenge")) {
+                        ID("difficulty").setAttribute("max", 20)
+                    }
+                    updateInput("difficulty", difficulty)
+                    ID("difficultyText").textContent = difficulty
 
                     var modObject = {};
                     if (typeof dotIndex !== "number") {
@@ -14272,7 +14288,7 @@
             add("goo", wells.mul(0.000165))
             add("energy", ponds.mul(0.000008))
 
-            multiExchange("gc", jewelerPower.mul(0.003), ["clocks", "money", "gold"], [jewelerPower.mul(0.012), jewelerPower.mul(0.003), jewelerPower.mul(0.003)])
+            multiExchange("gc", jewelerPower.mul(0.003).mul(Hyper(true).add(C("goldenpotions").mul(0.1))), ["clocks", "money", "gold"], [jewelerPower.mul(0.012), jewelerPower.mul(0.003), jewelerPower.mul(0.003)])
             exchange("goldb", barmolders.mul(0.005), "gold", 25)
 
             exchangeLimit(C("bottles"), "naphtha", separators.mul(0.015), "ngas")
@@ -14603,13 +14619,19 @@
 
         var dungeonKey = "brgpc$e!", collisionKey = "brgpc", collectingKey = "$!e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", coinCharacter = "$", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
         function updateDungeon() {
-            ID("mixInfo").textContent = mixingType === 0 ? "not mixing anything" : ("mixing a " + ["healing", "shield"][mixingType - 1] + " potion that will finish in " + (mixingTime > 60 ? (mixingTime / 60).toFixed(2) + " seconds" : "within a second"))
+            ID("mixInfo").textContent = mixingType === 0 ? "not mixing anything" : ("mixing a " + ["healing", "shield", "*GOLDEN*"][mixingType - 1] + " potion that will finish in " + (mixingTime > 60 ? (mixingTime / 60).toFixed(2) + " seconds" : "within a second"))
             if (mixingType !== 0 && mixingTime <= 0) {
-                rawAdd(["healpotions", "shieldpotions"][mixingType - 1], Hyper(1))
+                rawAdd(["healpotions", "shieldpotions", "goldenpotions"][mixingType - 1], Hyper(1))
                 mixingType = 0
                 mixingTime = 0
             }
             mixingTime -= mixingSpeed
+            if (hasResearch("mixing2")) {
+                ID("mixGolden").removeAttribute("style")
+            } else if (ID("mixGolden").style.display !== "none") {
+                ID("mixGolden").style.display = "none"
+            }
+
             if (hasResearch("mixing")) {
                 ID("mixContainer").removeAttribute("style")
             } else if (ID("mixContainer").style.display !== "none") {
@@ -14989,7 +15011,7 @@
                         }
                     }
                 }
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)))
                 isBoss = false
             }
         }
@@ -15092,6 +15114,14 @@
                 mixingTime = 1800
             }
         })
+        attachEvent("mixGolden", function () {
+            if (mixingType === 0 && C("yellowcandy").isMoreOrEqual(80) && rawRemove("coins", Hyper("5e15"))) {
+                rawRemove("yellowcandy", Hyper(80))
+                mixingType = 3
+                mixingTime = 14400
+            }
+        })
+
         attachEvent("moveUp", function () {
             moveCharacter(UP)
         })
