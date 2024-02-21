@@ -419,7 +419,6 @@
         #modPanel,
         #noteBox {
             position: fixed;
-            white-space: pre-wrap;
             background-color: black;
             color: white;
             padding-top: 10px;
@@ -428,6 +427,10 @@
             left: 0;
             width: 100%;
             height: calc(100% - 10px);
+        }
+
+        #noteBox {
+            white-space: pre-wrap;
         }
 
         #note {
@@ -5752,20 +5755,24 @@
                             data-desc="[Costs 10.000q coins.] Boost your attack damage by TWO TIMES!">
                             Sharpness III
                         </span>
-                        <span class="mini special" data-cost="coins-1e16" data-show="$lootingi|$lootingii|$lootingiii" data-earn="$health2"
-                            data-fade="$health2" data-desc="[Costs 10.000q coins.] Tetrate your red candy gain by YOUR RED CANDY GAIN ITSELF!">
+                        <span class="mini special" data-cost="coins-1e16" data-show="$lootingi|$lootingii|$lootingiii"
+                            data-earn="$health2" data-fade="$health2"
+                            data-desc="[Costs 10.000q coins.] Tetrate your red candy gain by YOUR RED CANDY GAIN ITSELF!">
                             Healthy eating habits
                         </span>
-                        <span class="mini special" data-cost="yellowcandy-1250" data-show="$health2" data-earn="$health3"
-                            data-fade="$health3" data-desc="[Costs 1,250 yellow candy.] Make your yellow candy increase your red candy effect!">
+                        <span class="mini special" data-cost="yellowcandy-1250" data-show="$health2"
+                            data-earn="$health3" data-fade="$health3"
+                            data-desc="[Costs 1,250 yellow candy.] Make your yellow candy increase your red candy effect!">
                             Candy mastery
                         </span>
                         <span class="mini special" data-cost="coins-4e31" data-show="$health2" data-earn="$golden"
-                            data-fade="$golden" data-desc="[Costs 40.000N coins.] Multiply your golden potion effect by log10(coins + 10)!">
+                            data-fade="$golden"
+                            data-desc="[Costs 40.000N coins.] Multiply your golden potion effect by log10(coins + 10)!">
                             Golden gains
                         </span>
                         <span class="mini special" data-cost="goldenpotions-4" data-show="$health3" data-earn="$coins2"
-                            data-fade="$coins2" data-desc="[Costs 4 *GOLDEN* potions.] Make slog(slog(slog(red candy))) multiply coin gain! (Minimum effect is 1× and maximum is 1,000,000,000,000×)">
+                            data-fade="$coins2"
+                            data-desc="[Costs 4 *GOLDEN* potions.] Make slog(slog(slog(red candy))) multiply coin gain! (Minimum effect is 1× and maximum is 1,000,000,000,000×)">
                             Healthy coins
                         </span>
                         <span class="mini special" data-cost="coins-2e16" data-show="$lootingi|$lootingii|$lootingiii"
@@ -5779,11 +5786,13 @@
                         </span>
                         <hr>
                         <span class="mini special2 bland"
-                            data-desc="Sorry, young explorer. I don't think you'll ever be ready for that!" data-hide="coins>=1e27">
+                            data-desc="Sorry, young explorer. I don't think you'll ever be ready for that!"
+                            data-hide="coins>=1e27">
                             Unlock Zone II
                         </span>
                         <span class="mini special2"
-                            data-desc="What? You actually want to unlock it? You'll need to speed 100.00N coins!" data-show="coins>=1e27" data-cost="coins-1e32" data-earn="$zone" data-hide="$zone">
+                            data-desc="What? You actually want to unlock it? You'll need to speed 100.00N coins!"
+                            data-show="coins>=1e27" data-cost="coins-1e32" data-earn="$zone" data-hide="$zone">
                             Unlock Zone II
                         </span>
                         <span class="mini warn" data-show="$zone" id="zonei" data-earn=""
@@ -11647,7 +11656,7 @@
         }
 
         function setZone() {
-        setupDungeons([`gS       g
+            setupDungeons([`gS       g
 gggc  cggg
 rrrr  rrrr
 brrr  rrrb
