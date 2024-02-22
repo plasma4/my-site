@@ -3940,7 +3940,7 @@
         </header>
 
         <div id="properties">
-            metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            attackpotions|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -4006,7 +4006,9 @@
             healpotions: Healing Potion (10, A special potion)
             shieldpotions: Shield Potion (10, A special potion)
             goldenpotions: *GOLDEN* Potion (11, A VERY special potion)
+            attackpotions: ATTACK Potion (11, A VERY special potion)
             yellowcandy: Yellow Cand$y/ies (8, A weird yellow candy obtained by defeating enemies)
+            purplecandy: Purple Cand$y/ies (8, A weird purple candy from Zone II)
             metabucks: %MetaBuck (2, A funny-looking digital dollar)
             metacoins: %MetaCoin (10, A silly green digital coin)
             metaholes: %MetaHole (11, A hole made from digital influence)
@@ -5577,12 +5579,15 @@
                     <hr>
                     <span class="smallish red" id="redcandy"></span>
                     <span class="smallish yellow" id="yellowcandy" data-for="$bigger yellowcandy"></span>
+                    <span class="smallish purple" id="purplecandy" data-for="$bigger purplecandy"></span>
                     <br>
                     <span class="smallish valuable2" id="healpotions" data-for="healing potion"></span>
                     <br>
                     <span class="smallish valuable2" id="shieldpotions" data-for="shield potion"></span>
                     <br>
                     <span class="smallish valuable2" id="goldenpotions" data-for="*GOLDEN* potion"></span>
+                    <br>
+                    <span class="smallish valuable2" id="attackpotions" data-for="ATTACK potion"></span>
                     <div class="small blue">
                         Your attack damage is <b class="pink" id="damage"></b>
                     </div>
@@ -5602,6 +5607,10 @@
                         <span class="mini special2" id="mixGolden"
                             data-desc="Mix a *GOLDEN* potion! (Golden potions give +25% coin AND +10% golden clock production while unused!)\n{Costs 80 yellow candies and 5.000q coins.}">
                             <span class="smaller serif rainbow outlined"> Mix a *GOLDEN* potion</span>
+                        </span>
+                        <span class="mini special2" id="mixAttack"
+                            data-desc="Mix an ATTACK potion for a special boost! (ATTACK potions give +48% attack damage when unused.)\n{Costs 800 yellow candies and 8 purple candies.}">
+                            <span class="smaller serif rainbow outlined"> Mix an ATTACK potion</span>
                         </span>
                         <br>
                         <i>
@@ -5668,6 +5677,10 @@
                             data-desc="[Costs 5,000 coins.] Gain a {+0.1% sell multiplier that stacks with other multipliers} for EVERY SINGLE coin that you currently own!\nIt's just that good! (Except that it caps out at +100,000%, anyway.)">
                             Not selling
                         </span>
+                        <span class="mini special" data-cost="coins-5e38" data-show="$coin" data-earn="$yellow" data-fade="$yellow"
+                            data-desc="[Costs 500.00Ud coins.] Yellow candy gain is multiplied by 10.">
+                            Selling hard
+                        </span>
                         <span class="mini special" data-cost="coins-8000" data-earn="$brain" data-fade="$brain"
                             data-desc="[Costs 8,000 coins.] Gain 1 max health for every single enemy you have defeated!">
                             Big brain move
@@ -5708,6 +5721,16 @@
                             data-fade="$collector"
                             data-desc="[Costs 1,000 coins.] Gain red and yellow candies by defeating enemies of similar colors now!\n{You also gain an option to eat all of your red candies to increase your maximum health.}">
                             Candy collector
+                        </span>
+                        <span class="mini special" data-cost="coins-1e34" data-show="$candy3" data-earn="$purple"
+                            data-fade="$purple"
+                            data-desc="[Costs 10.000D coins.] Gain purple candy from defeated TIER 2 ENEMIES ONLY!">
+                            Purple candy
+                        </span>
+                        <span class="mini special" data-cost="purplecandy-5" data-show="$purple" data-earn="$purple2"
+                            data-fade="$purple2"
+                            data-desc="[Costs 5 purple candy.] Unlock a new purple potion.">
+                            Purple candy
                         </span>
                         <span class="mini special" data-cost="coins-7777" data-show="$collector" data-earn="$money"
                             data-fade="$money"
@@ -5795,7 +5818,7 @@
                         </span>
                         <span class="mini special" data-cost="coins-1e38" data-show="$golden" data-earn="$cauldron"
                             data-fade="$cauldron"
-                            data-desc="[Costs 100.000Ud coins.] DOUBLE your cauldron mixing speed!">
+                            data-desc="[Costs 100.00Ud coins.] DOUBLE your cauldron mixing speed!">
                             A good mix
                         </span>
                         <span class="mini special" data-cost="coins-2.5e38" data-show="$cauldron" data-earn="$cauldron2"
@@ -14872,15 +14895,21 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
 
         var dungeonKey = "brgpc$e!", collisionKey = "brgpc", collectingKey = "$!e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", coinCharacter = "$", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
         function updateDungeon() {
-            ID("mixInfo").textContent = mixingType === 0 ? "not mixing anything" : ("mixing a " + ["healing", "shield", "*GOLDEN*"][mixingType - 1] + " potion that will finish in " + (mixingTime > 60 ? (mixingTime / 60).toFixed(2) + " seconds" : "within a second"))
+            ID("mixInfo").textContent = mixingType === 0 ? "not mixing anything" : ("mixing a " + ["healing", "shield", "*GOLDEN*", "ATTACK"][mixingType - 1] + " potion that will finish in " + (mixingTime > 60 ? (mixingTime / 60).toFixed(2) + " seconds" : "within a second"))
             if (mixingType !== 0 && mixingTime <= 0) {
-                rawAdd(["healpotions", "shieldpotions", "goldenpotions"][mixingType - 1], Hyper(1))
+                rawAdd(["healpotions", "shieldpotions", "goldenpotions", "attackpotions"][mixingType - 1], Hyper(1))
                 mixingType = 0
                 mixingTime = 0
             }
             var speedOfMixing = mixingSpeed * (hasResearch("cauldron") ? 2 : 1) * (hasResearch("cauldron2") ? 2 : 1)
             mixingTime -= speedOfMixing
             updateId("cauldronSpeed", formatValue(speedOfMixing, 2) + "×")
+            if (hasResearch("purple2")) {
+                ID("mixAttack").removeAttribute("style")
+            } else if (ID("mixAttack").style.display !== "none") {
+                ID("mixAttack").style.display = "none"
+            }
+
             if (hasResearch("mixing2")) {
                 ID("mixGolden").removeAttribute("style")
             } else if (ID("mixGolden").style.display !== "none") {
@@ -15132,7 +15161,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                 updateHTML(ID("zoneEffect"), "")
             }
 
-            var damageMultiplier = (hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)
+            var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1))
             var boundX = dungeonX - 0.75
             var boundY = dungeonY - 0.75
             if (inBattle >= 0) {
@@ -15182,7 +15211,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                             healthToRemove = 20
                         }
 
-                        enemyHealth = enemyHealth.sub(healthToRemove * damageMultiplier)
+                        enemyHealth = enemyHealth.sub(damageMultiplier.mul(healthToRemove))
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
                         attackDataY.splice(i, 1)
@@ -15245,7 +15274,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
             }
 
             updateHTML(ID("redcandy"), getAmount("redcandy") + '× <span class="bigger redcandy">')
-            updateHTML(ID("damage"), formatValue(40 * damageMultiplier) + ' for <span class="small valuable2">golden clocks</span> and ' + formatValue(25 * damageMultiplier) + " for other attacks")
+            updateHTML(ID("damage"), damageMultiplier.mul(40).format() + ' for <span class="small valuable2">golden clocks</span> and ' + damageMultiplier.mul(25).format() + " for other attacks")
             updateId("health", formatExpanta(health.max(0), 2) + "/" + formatExpanta(healthCap, 2))
             updateId("enemyHealth", Math.min(Math.max(enemyHealth, 0), enemyCap).toFixed(2) + "/" + enemyCap.toFixed(2))
 
@@ -15264,18 +15293,21 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
 
                 rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.sqr().toString() : 1))
 
+                if (zone === 2 && hasResearch("purple")) {
+                    rawAdd("purplecandy", Hyper(true))
+                }
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
                     if (isBoss) {
                         redCandyToAdd = Hyper2(50 * enemyType)
-                        rawAdd("yellowcandy", Hyper(40))
+                        rawAdd("yellowcandy", Hyper(hasResearch("yellow") ? 400 : 40))
                     } else {
                         if (enemyType === 1 || enemyType === 3) {
                             redCandyToAdd = Hyper2(enemyType)
                         } else if (enemyType === 4) {
-                            redCandyToAdd = Hyper2(3 * enemyType)
+                            redCandyToAdd = Hyper2(2)
                         } else if (enemyType === 5) {
-                            rawAdd("yellowcandy", Hyper(2))
+                            rawAdd("yellowcandy", Hyper(hasResearch("yellow") ? 20 : 2))
                         }
                     }
                     if (redCandyToAdd !== null) {
@@ -15403,6 +15435,12 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                 rawRemove("yellowcandy", Hyper(80))
                 mixingType = 3
                 mixingTime = 14400
+            }
+        })
+        attachEvent("mixAttack", function () {
+            if (mixingType === 0 && multiExchange([], [], ["yellowcandy", "purplecandy"], [Hyper(800), Hyper(8)])) {
+                mixingType = 4
+                mixingTime = 18000
             }
         })
 
