@@ -14875,7 +14875,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
             }
             var speedOfMixing = mixingSpeed * (hasResearch("cauldron") ? 2 : 1)
             mixingTime -= speedOfMixing
-            updateId("cauldronSpeed", speedOfMixing + "×")
+            updateId("cauldronSpeed", formatValue(speedOfMixing, 2) + "×")
             if (hasResearch("mixing2")) {
                 ID("mixGolden").removeAttribute("style")
             } else if (ID("mixGolden").style.display !== "none") {
@@ -15257,7 +15257,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                 enemiesDefeated++
                 enemyHealth = new Hyper2(Infinity)
 
-                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(difficultyTier.sqr().toString()))
+                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.sqr().toString() : 1))
 
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
