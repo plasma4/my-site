@@ -5588,7 +5588,8 @@
                     </div>
                     <div id="mixContainer" class="smallish purple" style="display: none">
                         <hr>
-                        You have a basic mixer. Mix candies together for cool potions!
+                        You have a cauldron (at <span id="cauldronSpeed" class="smallish serif red"></span> speed).
+                        Mix candies together in your cauldron for helpful potions!
                         <br>
                         <span class="mini special burning" id="mixHealth"
                             data-desc="Mix a healing potion! (Healing potions give +15% healing speed OUTSIDE of battle when unused per potion.)\n{Costs 15 red candies.}">
@@ -5791,6 +5792,11 @@
                             data-fade="$notbossy"
                             data-desc="[Costs 6.000Ud coins.] The 50× boss boost upgrade is applied to non-bosses as well!\n{Requires Looting I in the first place, however.}">
                             No longer bossy
+                        </span>
+                        <span class="mini special" data-cost="coins-1e38" data-show="$golden" data-earn="$cauldron"
+                            data-fade="$cauldron"
+                            data-desc="[Costs 100.000Ud coins.] DOUBLE your cauldron mixing speed!">
+                            A good mix
                         </span>
                         <span class="mini special" data-cost="goldenpotions-4" data-show="$health3" data-earn="$coins2"
                             data-fade="$coins2"
@@ -14867,7 +14873,9 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                 mixingType = 0
                 mixingTime = 0
             }
-            mixingTime -= mixingSpeed
+            var speedOfMixing = mixingSpeed * (hasResearch("cauldron") ? 2 : 1)
+            mixingTime -= speedOfMixing
+            updateId("cauldronSpeed", speedOfMixing + "×")
             if (hasResearch("mixing2")) {
                 ID("mixGolden").removeAttribute("style")
             } else if (ID("mixGolden").style.display !== "none") {
