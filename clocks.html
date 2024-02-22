@@ -5622,6 +5622,19 @@
                             </div>
                             Difficulty increases gold gain but also increases enemy HP (as well as damage after a bit)!
                         </div>
+                        <div id="tierContainer" class="smallish yellow">
+                            Your difficulty tier is <b id="tierText" class="smallish red"></b>.
+                            <br>
+                            You can increase it from 1 to <b class="smallish">5</b>.
+                            (Difficulty tiers only affect Zone II and beyond!)
+                            <br>
+                            <span class="mini warn" id="tierRemove" data-earn="" data-desc="Minimum of 1.">
+                                Decrease by 1
+                            </span>
+                            <span class="mini warn" id="tierAdd" data-earn="" data-desc="Capped at 5.">
+                                Increase by 1
+                            </span>
+                        </div>
                         <span class="mini special" data-cost="coins-250" data-earn="$damage" data-fade="$damage"
                             data-desc="[Costs 250 coins.] Double your damage output!">
                             Double damage
@@ -5770,10 +5783,14 @@
                             data-desc="[Costs 40.000N coins.] Multiply your golden potion effect by log10(coins + 10)!">
                             Golden gains
                         </span>
-                        <span class="mini special" data-cost="coins-4e31" data-show="$health2" data-earn="$golden"
-                            data-fade="$golden"
-                            data-desc="[Costs 40.000N coins.] Multiply your golden potion effect by log10(coins + 10)!">
-                            Golden gains
+                        <span class="mini special" data-cost="coins-1.2e36" data-show="$golden" data-earn="$tier"
+                            data-fade="$tier" data-desc="[Costs 1.200Ud coins.] Unlock difficulty TIERS!">
+                            Inteirest
+                        </span>
+                        <span class="mini special" data-cost="coins-6e36" data-show="$golden" data-earn="$notbossy"
+                            data-fade="$notbossy"
+                            data-desc="[Costs 6.000Ud coins.] The 50× boss boost upgrade is applied to non-bosses as well!\n{Requires Looting I in the first place, however.}">
+                            No longer bossy
                         </span>
                         <span class="mini special" data-cost="goldenpotions-4" data-show="$health3" data-earn="$coins2"
                             data-fade="$coins2"
@@ -14950,7 +14967,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
 
             var nextToShop = false
             var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][enemiesBattled % 34] : ((enemiesBattled % 6) + 1)
-            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? 1285.9528 : 1)
+            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? 585.9528 : 1)
             enemyHealth = enemyCap.min(enemyHealth)
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "person"]
 
@@ -15011,7 +15028,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                 ID("shop").style.display = "none"
             }
 
-            var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier).toString())
+            var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier.sqr()).toString())
             var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
             var zoneEffect = zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(Math.min(damageCategory, 4))(Hyper2(sceneFrame - Math.min(damageCategory, 3)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1)
             if (inBattle === 0) {
@@ -15232,7 +15249,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                 enemiesDefeated++
                 enemyHealth = new Hyper2(Infinity)
 
-                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : 1) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1))
+                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(difficultyTier.sqr().toString()))
 
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
@@ -15389,6 +15406,13 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                 setZone()
                 resetCharacter()
             }
+        })
+
+        attachEvent("tierAdd", function () {
+            difficultyTier = difficultyTier.add(1).min(5)
+        })
+        attachEvent("tierRemove", function () {
+            difficultyTier = difficultyTier.sub(1).max(1)
         })
 
         attachEvent("moveUp", function () {
@@ -15681,6 +15705,12 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
             } else if (ID("difficultyContainer").style.display !== "none") {
                 ID("difficultyContainer").style.visibility = "hidden"
             }
+            if (hasResearch("tier")) {
+                ID("tierContainer").removeAttribute("style")
+            } else if (ID("tierContainer").style.display !== "none") {
+                ID("tierContainer").style.visibility = "hidden"
+            }
+            updateId("tierText", format(difficultyTier))
 
             var boostElem = ID("turbineBoost")
             if (hasResearch("turbineOverclock")) {
