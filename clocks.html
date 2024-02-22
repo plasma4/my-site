@@ -5600,7 +5600,7 @@
                             Mix a <span class="smaller serif gray">shield potion</span>
                         </span>
                         <span class="mini special2" id="mixGolden"
-                            data-desc="Mix a *GOLDEN* potion! (Golden potions give +25% coin AND +10% golden clock production when used!)\n{Costs 80 yellow candies and 5.000q coins.}">
+                            data-desc="Mix a *GOLDEN* potion! (Golden potions give +25% coin AND +10% golden clock production while unused!)\n{Costs 80 yellow candies and 5.000q coins.}">
                             <span class="smaller serif rainbow outlined"> Mix a *GOLDEN* potion</span>
                         </span>
                         <br>
@@ -5797,6 +5797,11 @@
                             data-fade="$cauldron"
                             data-desc="[Costs 100.000Ud coins.] DOUBLE your cauldron mixing speed!">
                             A good mix
+                        </span>
+                        <span class="mini special" data-cost="coins-2.5e38" data-show="$cauldron" data-earn="$cauldron2"
+                            data-fade="$cauldron2"
+                            data-desc="[Costs 250.000Ud coins.] DOUBLE your cauldron mixing speed {AGAIN}!\nWhat's better than 2? Four! (Not a factorial.)">
+                            An EVEN BETTER MIX
                         </span>
                         <span class="mini special" data-cost="goldenpotions-4" data-show="$health3" data-earn="$coins2"
                             data-fade="$coins2"
@@ -14873,7 +14878,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                 mixingType = 0
                 mixingTime = 0
             }
-            var speedOfMixing = mixingSpeed * (hasResearch("cauldron") ? 2 : 1)
+            var speedOfMixing = mixingSpeed * (hasResearch("cauldron") ? 2 : 1) * (hasResearch("cauldron2") ? 2 : 1)
             mixingTime -= speedOfMixing
             updateId("cauldronSpeed", formatValue(speedOfMixing, 2) + "×")
             if (hasResearch("mixing2")) {
