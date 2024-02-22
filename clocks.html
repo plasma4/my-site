@@ -15240,7 +15240,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
             }
 
             updateHTML(ID("redcandy"), getAmount("redcandy") + '× <span class="bigger redcandy">')
-            updateHTML(ID("damage"), 40 * damageMultiplier + ' for <span class="small valuable2">golden clocks</span> and ' + 25 * damageMultiplier + " for other attacks")
+            updateHTML(ID("damage"), formatValue(40 * damageMultiplier) + ' for <span class="small valuable2">golden clocks</span> and ' + formatValue(25 * damageMultiplier) + " for other attacks")
             updateId("health", formatExpanta(health.max(0), 2) + "/" + formatExpanta(healthCap, 2))
             updateId("enemyHealth", Math.min(Math.max(enemyHealth, 0), enemyCap).toFixed(2) + "/" + enemyCap.toFixed(2))
 
