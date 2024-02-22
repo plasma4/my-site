@@ -12669,7 +12669,7 @@ cccccccccccccccccccccc`][zone - 1], 10, 10)
                         enemiesBattled = Number(proceed("ENM_VYZX")) - 1
                         battleFrame = Number(proceed("ENM_VF"))
                         difficulty = Math.max(proceed("DDD") / 4362, 1)
-                        difficultyTier = Hyper(proceed("DTD"))
+                        difficultyTier = Hyper(proceed("DTD")).max(1)
                         isBoss = proceed("YESTYPE") === "true"
 
                         mixingType = Number(proceed("RRR"))
