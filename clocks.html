@@ -15472,7 +15472,8 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
         })
         attachEvent("mixAttack", function () {
-            if (mixingType === 0 && multiExchange([], [], ["yellowcandy", "purplecandy"], [Hyper(800), Hyper(8)])) {
+            if (mixingType === 0 && C("yellowcandy").isMoreOrEqual(800) && rawRemove("purplecandy", Hyper(8))) {
+                rawRemove("yellowcandy", Hyper(800))
                 mixingType = 4
                 mixingTime = 18000
             }
