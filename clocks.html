@@ -10950,12 +10950,7 @@
                             e.preventDefault()
                             e.stopPropagation()
                         } else if (code === 70) {
-                            if (hasResearch("fireball")) {
-                                attackData.push("fapple")
-                                attackDataX.push(characterX / characterSections + 0.6)
-                                attackDataY.push(characterY / characterSections + 0.1625)
-                                attackID.push(1)
-                            }
+                            shootFireball()
                         }
                     } else if (e.keyCode === 32 || e.keyCode === 13) {
                         if (e.keyCode === 32) {
@@ -15123,12 +15118,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 }
 
                 if (hasResearch("fireaim") && sceneFrame % 30 === 7) {
-                    if (hasResearch("fireball")) {
-                        attackData.push("fapple")
-                        attackDataX.push(characterX / characterSections + 0.6)
-                        attackDataY.push(characterY / characterSections + 0.1625)
-                        attackID.push(1)
-                    }
+                    shootFireball()
                 }
 
                 if (isBoss) {
@@ -15389,8 +15379,8 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
         }
 
         function moveCharacter(direction) {
-            if (inBattle <= 0 && dieFrame < 0 && !characterMoved) {
-                characterMoved = true
+            if (inBattle <= 0 && dieFrame < 0 && !characterActed) {
+                characterActed = true
                 var cx = Math.floor(characterX / characterSections)
                 var cy = Math.floor(characterY / characterSections)
                 if (direction === 0) {
@@ -15431,15 +15421,21 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
         }
 
-        attachEvent("shootFireball", function () {
-            if (hasResearch("fireball")) {
+        function shootFireball() {
+            if (hasResearch("fireball") && characterActed) {
+                characterActed = false
                 attackData.push("fapple")
                 attackDataX.push(characterX / characterSections + 0.6)
                 attackDataY.push(characterY / characterSections + 0.1625)
                 attackID.push(1)
-                if (!noAudio) {
-                    sounds.press.cloneNode().play()
-                }
+                return true
+            }
+            return false
+        }
+
+        attachEvent("shootFireball", function () {
+            if (shootFireball() && !noAudio) {
+                sounds.press.cloneNode().play()
             }
         })
 
@@ -15522,7 +15518,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
         })
 
-        var noItemWarning = true, alreadyClicked = true, characterMoved = false
+        var noItemWarning = true, alreadyClicked = true, characterActed = false
 
         function datesClose(date, month, day, maxDaysBefore) {
             return (date.getMonth() + 1) === month && (date.getDate() + maxDaysBefore) > day && date.getDate() <= day
@@ -16236,7 +16232,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
             // Reset the button click and dungeon update variables
             alreadyClicked = false
-            characterMoved = false
+            characterActed = false
 
             // Update the appearing of the buttons
             updateEffects()
