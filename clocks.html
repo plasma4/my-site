@@ -5740,7 +5740,7 @@
                         </span>
                         <span class="mini special" data-cost="purplecandy-5" data-show="$purple" data-earn="$purple2"
                             data-fade="$purple2" data-desc="[Costs 5 purple candy.] Unlock a new purple potion.">
-                            Purple candy
+                            Purple potions
                         </span>
                         <span class="mini special" data-cost="coins-7777" data-show="$collector" data-earn="$money"
                             data-fade="$money"
@@ -13576,6 +13576,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 startingTime = time
                 redCandy = Hyper2(0)
                 redCandyPower = Hyper2(0)
+                zone = 1
 
                 var crystalImage = ID("crystal")
                 crystalImage.removeAttribute("class")
@@ -15422,7 +15423,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
         }
 
         function shootFireball() {
-            if (hasResearch("fireball") && characterActed) {
+            if (hasResearch("fireball") && !characterActed) {
                 characterActed = true
                 attackData.push("fapple")
                 attackDataX.push(characterX / characterSections + 0.6)
