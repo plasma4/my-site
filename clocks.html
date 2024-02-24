@@ -15733,17 +15733,6 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 crystalImage.className = "crystal" + ((crystalTotal % 3) + 1)
             }
 
-            if (easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "crystal" && easyButton.id !== "autosell" && easyTime <= newTime) {
-                easyButton.click()
-                easyTime = Date.now() + 50
-                alreadyClicked = false
-            }
-
-            if (autoClick && hovered !== null && hovered.id !== "autoClicking" && hovered.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
-                hovered.click()
-                autoTime = Date.now() + 50
-            }
-
             var diff = newTime - time
             if (diff >= 500) {
                 var newFrames = Math.floor(diff * 0.06) - 1
@@ -15755,8 +15744,21 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     offlineFrames = offlineFrames % 54000
                 }
                 updateOfflineTime()
+                easyTime = Math.max(easyTime, newTime + 50)
+                autoTime = Math.max(autoTime, autoTime + 50)
             }
             time = newTime
+
+            if (easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "crystal" && easyButton.id !== "autosell" && easyTime <= newTime) {
+                easyButton.click()
+                easyTime += 50
+                alreadyClicked = false
+            }
+
+            if (autoClick && hovered !== null && hovered.id !== "autoClicking" && hovered.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
+                hovered.click()
+                autoTime += 50
+            }
 
             if (document.activeElement !== activeElement) {
                 activeElement = document.activeElement
