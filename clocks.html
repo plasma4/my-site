@@ -14960,14 +14960,14 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             return Hyper2(100 + (hasResearch("candy") ? 25 : 0) + (hasResearch("candy2") ? 25 : 0) + (hasResearch("candy3") ? 25 : 0) + (hasResearch("brain") ? enemiesDefeated : 0)).add(redCandyPower.pow(1.35)).mul(hasResearch("health") ? new Hyper2(1.03).pow(redCandyPower) : 1).add(C("shieldpotions").mul(50).toString()).ceil()
         }
 
-        var healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
+        var worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
         var dungeonKey = "brgpc$e!P", collisionKey = "brgpc", collectingKey = "P$!e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
         function updateDungeon() {
             if (workerUnloaded) {
                 workerUnloaded = false
                 var blob = new Blob([workerText], { type: "text/javascript" })
 
-                var worker = new Worker(window.URL.createObjectURL(blob))
+                worker = new Worker(window.URL.createObjectURL(blob))
                 worker.addEventListener("message", function (e) {
                     var data = e.data
                     if (data[0] === "A") {
