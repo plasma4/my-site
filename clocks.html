@@ -15017,7 +15017,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
             var spiceGain = C("purplecandy").sqrt()
             spiceGain = spiceGain.mul(spiceGain.sqrt().sqrt())
-            var purpleGain = C("spice").sqrt().sqrt().sqrt()
+            var purpleGain = C("spice").sqrt().sqrt().add(4).sqrt().sub(1)
             updateId("spiceGain", spiceGain.format(2))
             updateId("purpleGain", purpleGain.format(4) + "×")
             add("spice", spiceGain.div(60))
