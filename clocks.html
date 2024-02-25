@@ -8939,7 +8939,18 @@
                 <div id="phoenix" style="display: none">
                     <span class="big feather"></span>
                     Feathers are collected from phoenixes, elusive creatures indeed.
-                    <div class="small">Be sure to collect these little creatures early for your ascensions!</div>
+                    <div class="small">Be sure to collect these little creatures early!</div>
+                    <div class="smallish orange">
+                        Note that blue woodcutters take flying clocks as payment.
+                        Blue wood allows you to get steel mill constructors!
+                    </div>
+                    <div class="smallish yellow">
+                        (Blue woodcutters are found in the materials menu, where you can get miners and diggers.)
+                    </div>
+                    <div class="smallish lime">
+                        If you need a lot of glue at once, you may want to start building radium mills.
+                        Get 200 radium clocks to sacrifice in exchange for 50,000 glue!
+                    </div>
 
                     <button class="bronze"
                         data-desc="You can get a small portion of glue for just one dollar, which will be used to make flying clocks.$glue$"
@@ -15747,6 +15758,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 updateOfflineTime()
                 easyTime = Math.max(easyTime, newTime + 100)
                 autoTime = Math.max(autoTime, newTime + 100)
+                mixingTime -= mixingSpeed * newFrames * (hasResearch("cauldron") ? 2 : 1) * (hasResearch("cauldron2") ? 2 : 1)
             }
             time = newTime
 
