@@ -4036,11 +4036,11 @@
                 let p = bottom < 1000 ? precision2 : 0
                 return "e".repeat(rep) + regularFormat(m, p) + "e" + commaFormat(e)
             }
-            else if (num.lt("10^^1000000")) { // 1F5 ~ F1,000,000
+            else if (num.lt("10^^10000000")) { // 1F5 ~ F10,000,000
                 let pol = polarize(array)
                 return regularFormat(pol.bottom, precision3) + "F" + commaFormat(pol.top)
             }
-            else if (num.lt("10^^^5")) { // F1,000,000 ~ 1G5
+            else if (num.lt("10^^^5")) { // F10,000,000 ~ 1G5
                 let rep = arraySearch(array, 2)
                 if (rep >= 1) {
                     setToZero(array, 2)
@@ -4050,11 +4050,11 @@
                 if (num.gte("10^^" + (n + 1))) n++
                 return "F" + formatExpanta(n, precision)
             }
-            else if (num.lt("10^^^1000000")) { // 1G5 ~ G1,000,000
+            else if (num.lt("10^^^10000000")) { // 1G5 ~ G10,000,000
                 let pol = polarize(array)
                 return regularFormat(pol.bottom, precision3) + "G" + commaFormat(pol.top)
             }
-            else if (num.lt("10^^^^5")) { // G1,000,000 ~ 1H5
+            else if (num.lt("10^^^^5")) { // G10,000,000 ~ 1H5
                 let rep = arraySearch(array, 3)
                 if (rep >= 1) {
                     setToZero(array, 3)
@@ -4064,11 +4064,11 @@
                 if (num.gte("10^^^" + (n + 1))) n++
                 return "G" + formatExpanta(n, precision)
             }
-            else if (num.lt("10^^^^1000000")) { // 1H5 ~ H1,000,000
+            else if (num.lt("10^^^^10000000")) { // 1H5 ~ H10,000,000
                 let pol = polarize(array)
                 return regularFormat(pol.bottom, precision3) + "H" + commaFormat(pol.top)
             }
-            else if (num.lt("10^^^^^5")) { // H1,000,000 ~ 5J4
+            else if (num.lt("10^^^^^5")) { // H10,000,000 ~ 5J4
                 let rep = arraySearch(array, 4)
                 if (rep >= 1) {
                     setToZero(array, 4)
@@ -4078,24 +4078,24 @@
                 if (num.gte("10^^^^" + (n + 1))) n++
                 return "H" + formatExpanta(n, precision)
             }
-            else if (num.lt("J1000000")) { // 5J4 ~ J1,000,000
+            else if (num.lt("J10000000")) { // 5J4 ~ J10,000,000
                 let pol = polarize(array, true)
                 return regularFormat(Math.log10(pol.bottom) + pol.top, precision4) + "J" + commaFormat(pol.height)
             }
-            else if (num.lt("J^4 10")) { // J1,000,000 ~ 1K5
+            else if (num.lt("J^4 10")) { // J10,000,000 ~ 1K5
                 let rep = num.layer
                 if (rep >= 1) return "J".repeat(rep) + formatExpanta(array, precision)
                 let n = array[array.length - 1][0]
                 if (num.gte("J" + (n + 1))) n++
                 return "J" + formatExpanta(n, precision)
             }
-            else if (num.lt("J^999999 10")) { // 1K5 ~ K1,000,000
+            else if (num.lt("J^9999999 10")) { // 1K5 ~ K10,000,000
                 // https://googology.wikia.org/wiki/User_blog:PsiCubed2/Letter_Notation_Part_II
                 // PsiCubed2 defined Jx as Gx for x < 2, resulting in J1 = 10 rather than 10^10, to
                 // prevent issues when defining K and beyond. Therefore, there should be separate
                 // cases for when the "top value" is below 2, and above 2.
                 // ExpantaNum.js considers J1 to be equal to 1e10 rather than 10,
-                // hence num.lt("J^999999 10") rather than num.lt("J^1000000 1").
+                // hence num.lt("J^9999999 10") rather than num.lt("J^10000000 1").
                 let pol = polarize(array, true)
                 let layerLess = new ExpantaNum(array)
                 let layer = num.layer
@@ -4118,7 +4118,7 @@
                 }
                 return regularFormat(topJ, precision4) + "K" + commaFormat(layer)
             }
-            // K1,000,000 and beyond
+            // K10,000,000 and beyond
             let n = num.layer + 1
             if (num.gte("J^" + n + " 10")) n++
             return "K" + formatExpanta(n, precision)
@@ -8602,8 +8602,13 @@
                         </span>
                         <span class="mini special" data-cost="spice-1e19" data-show="$powder3" data-earn="$superspice"
                             data-fade="$superspice"
-                            data-desc="[Costs 10.000Q spice.] Your spice increases your max health!!">
+                            data-desc="[Costs 10.000Q spice.] Your spice increases your max health!!!">
                             Superspice
+                        </span>
+                        <span class="mini special" data-cost="spice-5e23" data-show="$powder3" data-earn="$squarespice"
+                            data-fade="$squarespice"
+                            data-desc="[Costs 500.00s spice.] No, not SQUARESPACE!!!!!!! Improves the formula for spice-based health gain.">
+                            Squarespice
                         </span>
                         <span class="mini special" data-cost="spice-50000" data-earn="$spice" data-hide="$spice"
                             data-desc="[Costs 50,000 spice.] {TRIPLE} your spice gain! (Stacks with other spice upgrades.)">
@@ -8630,7 +8635,7 @@
                         </span>
                         <span class="mini special" data-cost="spice-5e10" data-show="$spicy" data-earn="$powder"
                             data-fade="$powder"
-                            data-desc="[Costs 50.000B spice.] Gain magical powder based on log10(purple candy gain + 1).">
+                            data-desc="[Costs 50.000B spice.] Gain magic powder based on your purple candy multiplier!">
                             Powdered magic
                         </span>
                         <span class="mini special" data-cost="magicpowder-500000" data-show="$spicy"
@@ -15031,7 +15036,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
         function getHealthCap() {
             var cap = Hyper2(100 + (hasResearch("candy") ? 25 : 0) + (hasResearch("candy2") ? 25 : 0) + (hasResearch("candy3") ? 25 : 0) + (hasResearch("brain") ? enemiesDefeated : 0)).add(redCandyPower.pow(1.35)).mul(hasResearch("health") ? Hyper2(1.03).pow(redCandyPower) : 1).add(C("shieldpotions").mul(50).toString()).ceil()
             if (hasResearch("superspice")) {
-                var spicePower = Hyper2(C("spice").add(10).toString()).log10().pow(4.5)
+                var spicePower = Hyper2(C("spice").add(10).toString()).log10().pow(hasResearch("squarespice") ? 9.2 : 4.6)
                 cap = cap.arrow(2)(spicePower.arrow(2)(spicePower.pent(spicePower)))
             }
             return cap
@@ -15099,7 +15104,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             var purpleGain = C("spice").sqrt().sqrt().add(4).sqrt().sub(1)
 
             if (hasResearch("powder")) {
-                add("magicpowder", purpleGain.add(1).log10())
+                add("magicpowder", purpleGain.add(1).log10().div(1.2))
             }
             if (hasResearch("powder2")) {
                 spiceGain = spiceGain.mul(Hyper(true).add(C("magicpowder").mul(0.01)))
