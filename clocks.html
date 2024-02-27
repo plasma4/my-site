@@ -8900,6 +8900,10 @@
                             data-fade="$mixing2" data-desc="[Costs 40.000q coins.] Unlock {golden} potions!">
                             *GOLDEN* potions
                         </span>
+                        <span class="mini special" data-cost="coins-1e43" data-show="$powder3" data-earn="$rich"
+                            data-fade="$rich" data-desc="[Costs 10.000Td coins.] Multiply yellow candy gain from The Candy Zone by 1,000.">
+                            Even richer
+                        </span>
                         <hr>
                         <span class="mini special2 bland"
                             data-desc="Sorry, young explorer. I don't think you'll ever be ready for that!"
@@ -15556,8 +15560,8 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.sqr().toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1))
 
                 if (zone === -1) {
-                    rawAdd("yellowcandy", new Hyper(48983).mul(difficulty))
-                    rawAdd("purplecandy", purpleGain.mul(62))
+                    rawAdd("yellowcandy", new Hyper(hasResearch("rich") ? 20000000 : 20000).mul(difficulty))
+                    rawAdd("purplecandy", purpleGain.mul(50).mul(difficulty))
                 }
 
                 if (zone === 2 && hasResearch("purple")) {
