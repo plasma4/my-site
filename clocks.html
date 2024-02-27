@@ -8901,7 +8901,8 @@
                             *GOLDEN* potions
                         </span>
                         <span class="mini special" data-cost="coins-1e43" data-show="$powder3" data-earn="$rich"
-                            data-fade="$rich" data-desc="[Costs 10.000Td coins.] Multiply yellow candy gain from The Candy Zone by 1,000.">
+                            data-fade="$rich"
+                            data-desc="[Costs 10.000Td coins.] Multiply yellow candy gain from The Candy Zone by 1,000.">
                             Even richer
                         </span>
                         <hr>
@@ -11872,12 +11873,13 @@
 
         function setZone() {
             setupDungeons(zone === -1 ? `pS!          PP
-cccccccccccccccccccccccccccccccccc g
-!!b     b        PPPPP !!!         g
- ggggggggggggggggggggggggggggggggggg
-
-PP  !!!!!      ! !
-bbbbbbbbbbbbbb r r` : [`gS       g
+cccccccccccccccccccccccccccccccccc g        !!!c
+!!b     b        PPPPP !!!         gcccccccccc!c               !!!!!
+ ggggggggggggggggggggggggggggggggggg      bbbb b            !!!rrrrr
+                          ! ! ! ! ! ! ! ! ! ! ! !   $$ PPPPPrrrr
+PP  !!!!!      ! !rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+bbbbbbbbbbbbbb r r
+              ggg` : [`gS       g
 gggc  cggg
 rrrr  rrrr
 brrr  rrrb
@@ -12035,7 +12037,7 @@ cccc rrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g 
                                                             ccccccc                                                    cccc`, `cS$$$$$$$$c
 ggggggggg c
 rrrrrrrrr c
-          r
+bb        r
 p        rr
 cccc cccbbb
    cec
@@ -15259,7 +15261,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
             var nextToShop = false
             var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][enemiesBattled % 34] : ((enemiesBattled % 6) + 1)
-            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? 585.9528 : (zone === -1 ? 17 : 1))
+            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 ? 17 : 1))
             enemyHealth = enemyCap.min(enemyHealth)
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "purplecandy", "person"]
 
@@ -15325,7 +15327,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             if (inBattle === 0) {
                 var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier.sqr()).toString())
                 var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
-                var zoneEffect = zone === -1 ? Hyper2(123).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01)) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1))
+                var zoneEffect = zone === -1 ? Hyper2(1845939492).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).tetr(Math.ceil(sceneFrame * 0.002))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1))
 
                 sceneFrame = Math.min(sceneFrame + 1, 1000000)
                 battleFrame++
@@ -15405,10 +15407,14 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     attackID.push(2.5)
                 }
 
-                if (damageUpdated && previousDamage.neq(healthCap)) {
-                    damageUpdated = false
+                if (damageUpdated && previousDamage.neq(zoneEffect)) {
                     previousDamage = zoneEffect
-                    worker.postMessage("D" + zoneEffect.toString())
+                    if (zoneEffect.lt("10^^^^^5")) {
+                        formattedDamage = zoneEffect.format(3)
+                    } else {
+                        damageUpdated = false
+                        worker.postMessage("D" + zoneEffect.toString())
+                    }
                 }
                 updateId("zoneEffect", formattedDamage + "× damage")
             } else {
@@ -15510,9 +15516,13 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
 
             if (healthUpdated && previousHealthCap.neq(healthCap)) {
-                healthUpdated = false
                 previousHealthCap = healthCap
-                worker.postMessage("A" + healthCap.toString())
+                if (healthCap.lt("10^^^^^5")) {
+                    formattedHealthCap = healthCap.format(2)
+                } else {
+                    healthUpdated = false
+                    worker.postMessage("A" + healthCap.toString())
+                }
             }
 
             if (health.gte(healthCap)) {
@@ -15534,9 +15544,13 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
 
             if (candyUpdated && previousCandy.neq(redCandy)) {
-                candyUpdated = false
                 previousCandy = redCandy
-                worker.postMessage("C" + redCandy.toString())
+                if (redCandy.lt("10^^^^^5")) {
+                    formattedCandy = redCandy.format()
+                } else {
+                    candyUpdated = false
+                    worker.postMessage("C" + redCandy.toString())
+                }
             }
 
             updateHTML(ID("redcandy"), formattedCandy + '× <span class="bigger redcandy">')
@@ -15557,7 +15571,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 enemiesDefeated++
                 enemyHealth = Hyper2(Infinity)
 
-                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.sqr().toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1))
+                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1))
 
                 if (zone === -1) {
                     rawAdd("yellowcandy", new Hyper(hasResearch("rich") ? 20000000 : 20000).mul(difficulty))
