@@ -14777,7 +14777,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             exchangeLimit(C("bottles"), "naphtha", separators.mul(0.015), "ngas")
             exchange("plastic", petroplants.mul(0.05), "naphtha")
 
-            multiExchange("watches", watchmakerPower.mul(0.08), ["money", "silver"], [watchmakerPower.mul(Hyper(2).div(3)), watchmakerPower.mul(0.04)])
+            multiExchange("watches", watchmakerPower.mul(0.1), ["money", "silver"], [watchmakerPower.mul(Hyper(2).div(3)), watchmakerPower.mul(0.05)])
 
             multiExchange("bottles", glassmakers.mul(0.01), ["money", "sand", "sodaash", "limestone"], [glassmakers.mul(0.5), glassmakers.mul(0.007), glassmakers.mul(0.0018), glassmakers.mul(0.0012)])
 
@@ -15056,7 +15056,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
 
             if (watchmakerPower.isPositive()) {
-                newStats += '<br>Silver watch production from watchmakers: <span class="small pink">about ' + watchmakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + watchmakerPower.mul(valueMultiplier).mul(100).format(2) + "</span>)"
+                newStats += '<br>Silver watch production from watchmakers: <span class="small pink">about ' + watchmakerPower.mul(6).format(2) + '</span> every second (worth <span class="small green">$' + watchmakerPower.mul(valueMultiplier).mul(20).format(2) + "</span>)"
             }
 
             if (radiumMakerPower.isPositive()) {
