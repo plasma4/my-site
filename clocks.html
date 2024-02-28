@@ -2805,9 +2805,7 @@
         .yellowcandy,
         .purplecandy,
         .spice,
-        .magicpowder,
-        .cube:before,
-        .cube:after {
+        .magicpowder {
             display: inline-block;
             filter: drop-shadow(2px 2px 1px black);
             pointer-events: none;
@@ -3443,12 +3441,14 @@
         }
 
         .brownbrick,
+        .brownbrick:before,
         .brownbrick:after {
             background-position: -208px -32px;
             filter: none;
         }
 
         .redbrick,
+        .redbrick:before,
         .redbrick:after {
             background-position: -208px -48px;
             filter: none;
@@ -3460,7 +3460,12 @@
             filter: none;
         }
 
+        .grass:before {
+            background: linear-gradient(90deg, #3b4, #163);
+        }
+
         .concrete,
+        .concrete:before,
         .concrete:after {
             background-position: -208px -80px;
             filter: none;
@@ -3477,16 +3482,25 @@
         .cube:after {
             content: "";
             position: absolute;
-            transform-origin: center;
             margin: 0;
         }
 
         .cube:before {
-            transform: rotateY(-90deg);
+            transform: translate(7.5px, -19px) rotateX(90deg);
+            filter: brightness(120%);
         }
 
         .cube:after {
-            transform: rotateY(90deg) translateZ(8px) translate(-7px, -1px);
+            transform: translate(7.5px, -11px) rotateY(90deg) translateZ(8px);
+            filter: brightness(60%);
+        }
+
+        .big.cube {
+            transform: scale(2) rotateX(45deg) rotateY(45deg);
+        }
+
+        .bigger.cube {
+            transform: scale(2) rotateX(45deg) rotateY(45deg);
         }
 
         .exclamation {
@@ -7198,7 +7212,6 @@
                 </div>
 
                 <div class="small" id="tipInfo">
-                    <span class="concrete cube"></span>
                     Tip #<span id="tipNumber" class="small beige"></span>: <span id="tip" class="small"></span>
                     <i class="small green" id="seasonInfo">
                         NOTE: Why is the so-called Clock&trade; not a clock? There is currently a season active!
@@ -8591,7 +8604,15 @@
                 </div>
 
                 <div id="dungeon" style="display: none">
-                    <span class="big redbrick"></span>
+                    <div class="smaller">&nbsp;</div>
+                    <span class="big cube brownbrick"></span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="big cube redbrick"></span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="big cube concrete"></span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="big cube grass"></span>
+                    <br>
                     Discover the power of pixels!
                     <br>
                     <b class="small">Dungeons give boosts like sell value and even GOLDEN CLOCK boosts later on!</b>
@@ -11924,9 +11945,9 @@
         function setZone() {
             setupDungeons(zone === -1 ? `pS!          PP
 cccccccccccccccccccccccccccccccccc g        !!!c
-!!b     b        PPPPP !!!         gcccccccccc!c               !!!!!
- ggggggggggggggggggggggggggggggggggg      bbbb b            !!!rrrrr
-                          ! ! ! ! ! ! ! ! ! ! ! !   $$ PPPPPrrrr
+!!$     $        PPPPP !!!         gcccccccccc!c               !!!!!PPPP
+ ggggggggggggggggggggggggggggggggggg      bbbb b            !!!rrrrrccccccc!  !  !
+                          ! ! ! ! ! ! ! ! ! ! ! !   $$ PPPPPrrrr          bbbbbbbbb
 PP  !!!!!      ! !rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 bbbbbbbbbbbbbb r r
               ggg` : [`gS       g
