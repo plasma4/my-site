@@ -104,6 +104,12 @@
             margin: 4px 0 2px 0;
         }
 
+        #health::selection,
+        #enemyHealth::selection {
+            color: black;
+            background: white;
+        }
+
         #enemyHealth {
             background-color: #9e159e;
         }
@@ -2776,6 +2782,14 @@
         .redbrick,
         .grass,
         .concrete,
+        .brownbrick:before,
+        .redbrick:before,
+        .grass:before,
+        .concrete:before,
+        .brownbrick:after,
+        .redbrick:after,
+        .grass:after,
+        .concrete:after,
         .exclamation,
         .boss,
         .enemy1,
@@ -2791,7 +2805,9 @@
         .yellowcandy,
         .purplecandy,
         .spice,
-        .magicpowder {
+        .magicpowder,
+        .cube:before,
+        .cube:after {
             display: inline-block;
             filter: drop-shadow(2px 2px 1px black);
             pointer-events: none;
@@ -3426,24 +3442,51 @@
             background-position: -144px -96px;
         }
 
-        .brownbrick {
+        .brownbrick,
+        .brownbrick:after {
             background-position: -208px -32px;
             filter: none;
         }
 
-        .redbrick {
+        .redbrick,
+        .redbrick:after {
             background-position: -208px -48px;
             filter: none;
         }
 
-        .grass {
+        .grass,
+        .grass:after {
             background-position: -208px -64px;
             filter: none;
         }
 
-        .concrete {
+        .concrete,
+        .concrete:after {
             background-position: -208px -80px;
             filter: none;
+        }
+
+        .cube {
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(45deg) rotateY(45deg);
+            margin: 0;
+        }
+
+        .cube:before,
+        .cube:after {
+            content: "";
+            position: absolute;
+            transform-origin: center;
+            margin: 0;
+        }
+
+        .cube:before {
+            transform: rotateY(-90deg);
+        }
+
+        .cube:after {
+            transform: rotateY(90deg) translateZ(8px) translate(-7px, -1px);
         }
 
         .exclamation {
@@ -7155,6 +7198,7 @@
                 </div>
 
                 <div class="small" id="tipInfo">
+                    <span class="concrete cube"></span>
                     Tip #<span id="tipNumber" class="small beige"></span>: <span id="tip" class="small"></span>
                     <i class="small green" id="seasonInfo">
                         NOTE: Why is the so-called Clock&trade; not a clock? There is currently a season active!
@@ -8591,7 +8635,7 @@
                             <span class="smaller serif rainbow outlined"> Mix a *GOLDEN* potion</span>
                         </span>
                         <span class="mini special2" id="mixAttack"
-                            data-desc="Mix an ATTACK potion for a special boost! (ATTACK potions give +48% attack damage when unused.)\n{Costs 800 yellow candies and 8 purple candies.}">
+                            data-desc="Mix an ATTACK potion for a special boost! (ATTACK potions give +48% attack damage when unused.)\n{Costs 1200 yellow candies and 16 purple candies.}">
                             <span class="smaller serif rainbow outlined"> Mix an ATTACK potion</span>
                         </span>
                         <br>
@@ -8698,7 +8742,7 @@
                             Your difficulty tier is <b id="tierText" class="red"></b>.
                             <br>
                             You can increase it from 1 to <b>5</b>.
-                            (Difficulty tiers only affect Zone II and beyond!)
+                            (Difficulty tiers only affect Zone II!)
                             <br>
                             <span class="mini warn" id="tierRemove" data-earn="" data-desc="Minimum of 1.">
                                 Decrease by 1
@@ -8790,8 +8834,13 @@
                             Purple candy
                         </span>
                         <span class="mini special" data-cost="purplecandy-5" data-show="$purple" data-earn="$purple2"
-                            data-fade="$purple2" data-desc="[Costs 5 purple candy.] Unlock a new purple potion.">
+                            data-fade="$purple2" data-desc="[Costs 5 purple candy.] Unlock a new special potion!">
                             Purple potions
+                        </span>
+                        <span class="mini special" data-cost="purplecandy-2.5e10" data-show="$purple"
+                            data-earn="$purple4" data-fade="$purple4"
+                            data-desc="[Costs 25.000B purple candy.] Increase magic powder gain by +1,000% for each enemy you have defeated!">
+                            Powdered powder
                         </span>
                         <span class="mini special" data-cost="coins-7777" data-show="$collector" data-earn="$money"
                             data-fade="$money"
@@ -15169,7 +15218,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             var purpleGain = C("spice").sqrt().sqrt().add(4).sqrt().sub(1)
 
             if (hasResearch("powder")) {
-                add("magicpowder", purpleGain.add(1).log10().div(1.2))
+                add("magicpowder", purpleGain.add(1).log10().div(1.2).mul(hasResearch("purple4") ? 1 + 10 * enemiesDefeated : 1))
             }
             if (hasResearch("powder2")) {
                 spiceGain = spiceGain.mul(Hyper(true).add(C("magicpowder").mul(0.01)))
@@ -15340,7 +15389,6 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
                 var zoneEffect = zone === -1 ? Hyper2(1845939492).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).tetr(Math.ceil(sceneFrame * 0.002))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1))
 
-                sceneFrame = Math.min(sceneFrame + 1, 1000000)
                 battleFrame++
                 if (waitBeforeAttack++ === Math.max(45 - fightFrame * (hasResearch("speed") ? 5 : 0), hasResearch("super") ? 5 : 25)) {
                     fightFrame++
@@ -15355,68 +15403,75 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     shootFireball()
                 }
 
-                if (isBoss) {
-                    if (sceneFrame % 8 === 0) {
+                var attackLimit = zone === 2 ? Math.min(difficultyTier.sub(1).max(1).round(true).toString(), 4) : 1
+                var startingFrames = sceneFrame
+                sceneFrame *= attackLimit
+                for (var attacks = 0; attacks < attackLimit; attacks++) {
+                    if (isBoss) {
+                        if (sceneFrame % 8 === 0) {
+                            attackData.push("hammer")
+                            attackDataX.push(7)
+                            attackDataY.push(2.1625)
+                            attackID.push(-1)
+                        }
+                        if (sceneFrame % 25 === 0) {
+                            attackData.push("shard")
+                            attackDataX.push(7)
+                            attackDataY.push(2.1625)
+                            attackID.push(-1)
+                        }
+                        if (enemyType === 2 && sceneFrame % 20 === 0) {
+                            attackData.push("goldbar")
+                            attackDataX.push(7)
+                            attackDataY.push(2.1625)
+                            attackID.push(-1)
+                        }
+                        if (enemyType === 3 && sceneFrame % 3 === 0 && sceneFrame % 60 <= 20) {
+                            attackData.push("binary")
+                            attackDataX.push(7)
+                            attackDataY.push(2.1625)
+                            attackID.push(-1)
+                        }
+                        if (enemyType === 3 && sceneFrame % 10 === 0) {
+                            attackData.push("wonder")
+                            attackDataX.push(7)
+                            attackDataY.push(2.1625)
+                            attackID.push(-0.5)
+                        }
+                    } else if (enemyType === 1 && sceneFrame % 90 === 0) {
                         attackData.push("hammer")
                         attackDataX.push(7)
                         attackDataY.push(2.1625)
                         attackID.push(-1)
-                    }
-                    if (sceneFrame % 25 === 0) {
+                    } else if (enemyType === 2 && (sceneFrame % 40 === 0 || sceneFrame % 40 === 10)) {
+                        attackData.push("radiumbar")
+                        attackDataX.push(7)
+                        attackDataY.push(2.1625)
+                        attackID.push(-1)
+                    } else if (enemyType === 3 && sceneFrame % 60 === 0) {
+                        attackData.push(["hammer", "shovel", "glue", "battery", "coal"][Math.floor((sceneFrame % 300) / 60)])
+                        attackDataX.push(7)
+                        attackDataY.push(2.1625)
+                        attackID.push(-1)
+                    } else if (enemyType === 4 && sceneFrame % 135 < 50 && sceneFrame % 10 === 0) {
+                        attackData.push(["fapple", "sapple", "gapple"][Math.floor((sceneFrame % 405) / 135)])
+                        attackDataX.push(7)
+                        attackDataY.push(2.1625)
+                        attackID.push(-1)
+                    } else if (enemyType === 5 && sceneFrame % 25 === 0) {
+                        attackData.push("bolt")
+                        attackDataX.push(7)
+                        attackDataY.push(2.1625)
+                        attackID.push(-1)
+                    } else if (enemyType === 6 && sceneFrame % 5 === 0 && sceneFrame % 50 < 20) {
                         attackData.push("shard")
-                        attackDataX.push(7)
+                        attackDataX.push(7.5)
                         attackDataY.push(2.1625)
-                        attackID.push(-1)
+                        attackID.push(2.5)
                     }
-                    if (enemyType === 2 && sceneFrame % 20 === 0) {
-                        attackData.push("goldbar")
-                        attackDataX.push(7)
-                        attackDataY.push(2.1625)
-                        attackID.push(-1)
-                    }
-                    if (enemyType === 3 && sceneFrame % 3 === 0 && sceneFrame % 60 <= 20) {
-                        attackData.push("binary")
-                        attackDataX.push(7)
-                        attackDataY.push(2.1625)
-                        attackID.push(-1)
-                    }
-                    if (enemyType === 3 && sceneFrame % 10 === 0) {
-                        attackData.push("wonder")
-                        attackDataX.push(7)
-                        attackDataY.push(2.1625)
-                        attackID.push(-0.5)
-                    }
-                } else if (enemyType === 1 && sceneFrame % 90 === 0) {
-                    attackData.push("hammer")
-                    attackDataX.push(7)
-                    attackDataY.push(2.1625)
-                    attackID.push(-1)
-                } else if (enemyType === 2 && (sceneFrame % 40 === 0 || sceneFrame % 40 === 10)) {
-                    attackData.push("radiumbar")
-                    attackDataX.push(7)
-                    attackDataY.push(2.1625)
-                    attackID.push(-1)
-                } else if (enemyType === 3 && sceneFrame % 60 === 0) {
-                    attackData.push(["hammer", "shovel", "glue", "battery", "coal"][Math.floor((sceneFrame % 300) / 60)])
-                    attackDataX.push(7)
-                    attackDataY.push(2.1625)
-                    attackID.push(-1)
-                } else if (enemyType === 4 && sceneFrame % 135 < 50 && sceneFrame % 10 === 0) {
-                    attackData.push(["fapple", "sapple", "gapple"][Math.floor((sceneFrame % 405) / 135)])
-                    attackDataX.push(7)
-                    attackDataY.push(2.1625)
-                    attackID.push(-1)
-                } else if (enemyType === 5 && sceneFrame % 25 === 0) {
-                    attackData.push("bolt")
-                    attackDataX.push(7)
-                    attackDataY.push(2.1625)
-                    attackID.push(-1)
-                } else if (enemyType === 6 && sceneFrame % 5 === 0 && sceneFrame % 50 < 20) {
-                    attackData.push("shard")
-                    attackDataX.push(7.5)
-                    attackDataY.push(2.1625)
-                    attackID.push(2.5)
+                    sceneFrame++
                 }
+                sceneFrame = startingFrames + 1
 
                 if (damageUpdated && previousDamage.neq(zoneEffect)) {
                     previousDamage = zoneEffect
@@ -15491,7 +15546,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     } else {
                         var additionalCSS = ""
                         if (data === "gc" || data === "radiumbar") {
-                            xData = attackDataX[i] += 0.03 * dungeonSpeed * attackMultiplier
+                            xData = attackDataX[i] += Math.min(zone === 2 ? difficultyTier.toString() : 1, 6) * 0.03 * dungeonSpeed * attackMultiplier
                         } else if (data === "hammer" || data === "shovel") {
                             xData = attackDataX[i] += 0.1 * dungeonSpeed * attackMultiplier
                             if (attackMultiplier === 4) {
@@ -15507,7 +15562,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             additionalCSS = ";transform: rotate(" + (xData * 25) + "deg)"
                         } else {
                             if (data === "shard") {
-                                attackID[i] -= 0.1
+                                attackID[i] -= 0.1 * Math.min(zone === 2 ? difficultyTier.toString() : 1, 6)
                             } else if (data === "wonder") {
                                 attackID[i] -= 0.04
                             }
@@ -15750,8 +15805,8 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
         })
         attachEvent("mixAttack", function () {
-            if (mixingType === 0 && C("yellowcandy").isMoreOrEqual(800) && rawRemove("purplecandy", Hyper(8))) {
-                rawRemove("yellowcandy", Hyper(800))
+            if (mixingType === 0 && C("yellowcandy").isMoreOrEqual(1200) && rawRemove("purplecandy", Hyper(16))) {
+                rawRemove("yellowcandy", Hyper(1200))
                 mixingType = 4
                 mixingTime = new Hyper(18000)
             }
