@@ -8929,6 +8929,16 @@
                             data-desc="[Costs 1.000O spice.] Triple your cauldron mixing speed by upgrading your pot!">
                             Spicy pot
                         </span>
+                        <span class="mini special" data-cost="spice-9.9e31" data-show="$supermix" data-earn="$nonillion"
+                            data-fade="$nonillion"
+                            data-desc="[Costs 99.000N spice.] Multiply spice gain by 999,999,999.">
+                            99 nonillion
+                        </span>
+                        <span class="mini special" data-cost="magicpowder-1.5e11" data-show="$nonillion" data-earn="$healthpowder"
+                            data-fade="$healthpowder"
+                            data-desc="[Costs 150.00B magic powder.] Magic powder now also increases maximum health.">
+                            Healthy powder
+                        </span>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -15355,7 +15365,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
         function getHealthCap() {
             var cap = Hyper2(100 + (hasResearch("candy") ? 25 : 0) + (hasResearch("candy2") ? 25 : 0) + (hasResearch("candy3") ? 25 : 0) + (hasResearch("brain") ? enemiesDefeated : 0)).add(redCandyPower.pow(1.35)).mul(hasResearch("health") ? Hyper2(1.03).pow(redCandyPower) : 1).add(C("shieldpotions").mul(50).toString()).ceil()
             if (hasResearch("superspice")) {
-                var spicePower = Hyper2(C("spice").add(10).toString()).log10().pow(hasResearch("squarespice") ? 9.2 : 4.6)
+                var spicePower = Hyper2(C("spice").add(10).mul(hasResearch("healthpowder") ? C("magicpowder").add(10).log10().log2() : 1).log10().toString()).pow(hasResearch("squarespice") ? 9.2 : 4.6)
                 cap = cap.arrow(2)(spicePower.arrow(2)(spicePower.pent(spicePower)))
             }
             return cap
@@ -15427,6 +15437,9 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
             if (hasResearch("powder2")) {
                 spiceGain = spiceGain.mul(Hyper(true).add(C("magicpowder").mul(0.01)))
+            }
+            if (hasResearch("nonillion")) {
+                spiceGain = spiceGain.mul("999999999")
             }
             if (hasResearch("purple3")) {
                 purpleGain = purpleGain.sqr()
