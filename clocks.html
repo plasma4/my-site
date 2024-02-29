@@ -8929,6 +8929,11 @@
                             data-desc="[Costs 1.000O spice.] Triple your cauldron mixing speed by upgrading your pot!">
                             Spicy pot
                         </span>
+                        <span class="mini special" data-cost="coins-1e49" data-show="$supermix" data-earn="$richer"
+                            data-fade="$richer"
+                            data-desc="[Costs 10.000Qd coins.] Coin gain is now increased by your purple candies!\n{NOTE: The cosmos can only store 10^80 coins unless you research exotic apples and start unlocking the cosmos.}">
+                            The Richer Scale
+                        </span>
                         <span class="mini special" data-cost="spice-9.9e31" data-show="$supermix" data-earn="$nonillion"
                             data-fade="$nonillion"
                             data-desc="[Costs 99.000N spice.] Multiply spice gain by 999,999,999.">
@@ -15855,7 +15860,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 enemiesDefeated++
                 enemyHealth = Hyper2(Infinity)
 
-                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1))
+                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1))
 
                 if (zone === -1) {
                     rawAdd("yellowcandy", new Hyper(hasResearch("rich") ? 20000000 : 20000).mul(difficulty))
