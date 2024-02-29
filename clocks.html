@@ -2232,6 +2232,10 @@
             -webkit-text-fill-color: transparent;
         }
 
+        .blood {
+            color: #6d0817;
+        }
+
         .red {
             color: #f44861;
         }
@@ -7150,7 +7154,7 @@
         </header>
 
         <div id="properties">
-            attackpotions|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             spice|magicpowder|yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -8944,10 +8948,27 @@
                             data-desc="[Costs 150.00B magic powder.] Magic powder now also increases maximum health.">
                             Healthy powder
                         </span>
-                        <span class="mini special" data-cost="coins-3e333" data-show="$nonillion"
-                            data-earn="$superred" data-fade="$superred"
+                        <span class="mini special" data-cost="coins-3e333" data-show="$nonillion" data-earn="$superred"
+                            data-fade="$superred"
                             data-desc="[Costs 3.000e333 coins.] Your red candy gain from The Candy Zone is pentated by 10^14 instead of 10^11.\n{Pentation is repeated tetration, which makes it HUGE.}">
                             Super red
+                        </span>
+                        <br>
+                        <span class="mini warn"
+                            data-cost="healpotions-100|shieldpotions-100|goldenpotions-100|attackpotions-100"
+                            data-show="$superred" data-earn="$redi" data-fade="$redi"
+                            data-desc="[Costs 100 healing potions, 100 attack potions, 100 *GOLDEN* potions, and 100 ATTACK potions.]\nSuper red pentation amount is multiplied by log10(purple candy + 1).">
+                            <span class="bigger outlined blood">Red I</span>
+                        </span>
+                        <span class="mini warn" data-cost="healpotions-1000|yellowcandy-1e10|purplecandy-1e17"
+                            data-show="$superred" data-earn="$redii" data-fade="$redii"
+                            data-desc="[Costs 1,000 healing potions, 10.000B yellow candy, and 100.00q purple candy.]\nSuper red pentation amount is multiplied by sqrt(healing potions + 1).">
+                            <span class="bigger outlined blood">Red II</span>
+                        </span>
+                        <span class="mini warn" data-cost="coins-1e350" data-show="$superred" data-earn="$rediii"
+                            data-fade="$rediii"
+                            data-desc="[Costs 1.000e350 coins.]\nSuper red pentation amount is multiplied by log10(sqrt(coins + 1)">
+                            <span class="bigger outlined blood">Red III</span>
                         </span>
                     </div>
                     <hr>
@@ -15852,7 +15873,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             updateId("health", (health.eq(healthCap) && health.gte("10^^100")) ? formattedHealthCap : (formatExpanta(health.max(0), 2) + "/" + formattedHealthCap))
             updateId("enemyHealth", Math.min(Math.max(enemyHealth, 0), enemyCap).toFixed(2) + "/" + enemyCap.toFixed(2))
 
-            if (enemyHealth <= 0) {
+            if (enemyHealth.lte(0)) {
                 if (hasResearch("money")) {
                     rawAdd("money", cps.mul(300))
                 }
@@ -15903,7 +15924,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             redCandyToAdd = redCandyToAdd.tetr(Hyper2(10).tetr(Hyper2(10).tetr(C("yellowcandy").mul(48929).add(1).toString())))
                         }
                         if (zone === -1) {
-                            redCandyToAdd = redCandyToAdd.pent(hasResearch("superred") ? "1e14" : "1e11")
+                            redCandyToAdd = redCandyToAdd.pent(hasResearch("superred") ? Hyper2("1e14").mul(hasResearch("redi") ? C("purplecandy").add(1).log10().toString() : 1).mul(hasResearch("redii") ? C("healpotions").add(1).sqrt().toString() : 1).mul(hasResearch("rediii") ? C("coins").add(1).sqrt().log10().toString() : 1) : "1e11")
                         }
                         redCandy = redCandy.add(redCandyToAdd)
                     }
