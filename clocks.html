@@ -3613,7 +3613,7 @@
             font-weight: 400;
             margin: 0;
             line-height: 0;
-            animation: wormhole1 2.5s infinite, wormhole 30s;
+            animation: wormhole1 2.5s linear infinite, wormhole 30s linear infinite;
         }
 
         .wormhole:before,
@@ -3710,6 +3710,10 @@
 
             95% {
                 color: white;
+            }
+
+            100% {
+                color: #ed3345;
             }
         }
 
@@ -3907,6 +3911,186 @@
                 transform: none;
                 opacity: 0.25;
                 letter-spacing: 2px;
+            }
+        }
+
+        .important {
+            position: relative;
+            z-index: 4;
+            border: 0;
+        }
+
+        .important:before {
+            content: "";
+            position: absolute;
+            animation: important1 1s linear infinite, borderful 30s linear infinite;
+            border-radius: 5px;
+            z-index: -1;
+        }
+
+        @keyframes important1 {
+            0% {
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border: solid 3px red;
+            }
+
+            30% {
+                top: -5px;
+                left: -5px;
+                right: -5px;
+                bottom: -5px;
+                border: solid -0.1px #f008;
+            }
+
+            40% {
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border: solid 3px red;
+            }
+
+            50% {
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border: solid 3px red;
+            }
+
+            90% {
+                top: -5px;
+                left: -5px;
+                right: -5px;
+                bottom: -5px;
+                border: solid 8px #f008;
+            }
+
+            100% {
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border: solid 3px red;
+            }
+        }
+
+        .important:after {
+            content: "";
+            position: absolute;
+            animation: important2 1s linear infinite, borderful 30s linear infinite;
+            border-radius: 5px;
+            z-index: -1;
+        }
+
+        @keyframes important2 {
+            0% {
+                top: -6px;
+                left: -6px;
+                right: -6px;
+                bottom: -6px;
+                border: solid 3px red;
+            }
+
+            25% {
+                top: -15px;
+                left: -15px;
+                right: -15px;
+                bottom: -15px;
+                border: solid 0.1px #f008;
+            }
+
+            100% {
+                top: -6px;
+                left: -6px;
+                right: -6px;
+                bottom: -6px;
+                border: solid 3px red;
+            }
+        }
+
+        @keyframes borderful {
+            0% {
+                border-color: #ed3345;
+            }
+
+            1% {
+                border-color: white;
+            }
+
+            15% {
+                border-color: #ed3345;
+            }
+
+            15.0001% {
+                border-color: #ef9722;
+            }
+
+            16% {
+                border-color: white;
+            }
+
+            30% {
+                border-color: #ef9722;
+            }
+
+            30.0001% {
+                border-color: #f4fe37;
+            }
+
+            31% {
+                border-color: white;
+            }
+
+            45% {
+                border-color: #f4fe37;
+            }
+
+            45.0001% {
+                border-color: #1ee94d;
+            }
+
+            46% {
+                border-color: white;
+            }
+
+            60% {
+                border-color: #1ee94d;
+            }
+
+            60.0001% {
+                border-color: #30ebee;
+            }
+
+            61% {
+                border-color: white;
+            }
+
+            75% {
+                border-color: #30ebee;
+            }
+
+            75.0001% {
+                border-color: #ee30b2;
+            }
+
+            76% {
+                border-color: white;
+            }
+
+            90% {
+                border-color: #ee30b2;
+            }
+
+            95% {
+                border-color: white;
+            }
+
+            100% {
+                border-color: #ed3345;
             }
         }
     </style>
@@ -7522,7 +7706,7 @@
                         <tt>clocks++</tt>
 
                         <br>
-                        <button data-desc="You're rich!$money$" data-earn="money+1" data-cost="clocks-1"
+                        <button id="sellClock" data-desc="You're rich!$money$" data-earn="money+1" data-cost="clocks-1"
                             data-sound="transaction">
                             Sell 1 <span class="clock" role="img" aria-label="clock"></span>
                             <span class="mini silver" data-earn="money+*1" data-cost="clocks-10%"
@@ -7580,7 +7764,7 @@
                             </span>
                         </button>
 
-                        <button data-earn="clocks+1"
+                        <button data-earn="clocks+1" id="buildClock"
                             data-desc="A lonely clock: cheap but easy to make!\nClocks are the most basic item you can have!$clocks$">
                             Build a <span class="clock" role="img" aria-label="clock"></span>
                         </button>
@@ -15919,6 +16103,19 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                         }
                     }
                 }
+            }
+
+
+            if (C("clocks").isLess(1)) {
+                updateClass(ID("buildClock"), "important")
+            } else {
+                ID("buildClock").removeAttribute("class")
+            }
+
+            if (C("money").isLess(1) && C("clocks").isMoreOrEqual(25)) {
+                updateClass(ID("sellClock"), "important")
+            } else {
+                ID("sellClock").removeAttribute("class")
             }
 
             var seasonElement = ID("seasonInfo")
