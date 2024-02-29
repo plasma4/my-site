@@ -8944,6 +8944,11 @@
                             data-desc="[Costs 150.00B magic powder.] Magic powder now also increases maximum health.">
                             Healthy powder
                         </span>
+                        <span class="mini special" data-cost="coins-3e333" data-show="$nonillion"
+                            data-earn="$superred" data-fade="$superred"
+                            data-desc="[Costs 3.000e333 coins.] You now gain more red candy from defeating enemies.">
+                            Super red
+                        </span>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -15370,7 +15375,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
         function getHealthCap() {
             var cap = Hyper2(100 + (hasResearch("candy") ? 25 : 0) + (hasResearch("candy2") ? 25 : 0) + (hasResearch("candy3") ? 25 : 0) + (hasResearch("brain") ? enemiesDefeated : 0)).add(redCandyPower.pow(1.35)).mul(hasResearch("health") ? Hyper2(1.03).pow(redCandyPower) : 1).add(C("shieldpotions").mul(50).toString()).ceil()
             if (hasResearch("superspice")) {
-                var spicePower = Hyper2(C("spice").add(10).mul(hasResearch("healthpowder") ? C("magicpowder").add(10).log10().log2() : 1).log10().toString()).pow(hasResearch("squarespice") ? 9.2 : 4.6)
+                var spicePower = Hyper2(C("spice").add(10).mul(hasResearch("healthpowder") ? C("magicpowder").add(10).log10().log2().add(1) : 1).log10().toString()).pow(hasResearch("squarespice") ? 9.2 : 4.6)
                 cap = cap.arrow(2)(spicePower.arrow(2)(spicePower.pent(spicePower)))
             }
             return cap
@@ -15785,7 +15790,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             additionalCSS = ";transform: rotate(" + (xData * 25) + "deg)"
                         } else {
                             if (data === "shard") {
-                                attackID[i] -= 0.1 * Math.min(zone === 2 ? difficultyTier.toString() : 1, 6)
+                                attackID[i] -= zone === 2 ? 0.1 * Math.min(difficultyTier.toString(), 4) : 0.1
                             } else if (data === "wonder") {
                                 attackID[i] -= 0.04
                             }
@@ -15898,7 +15903,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             redCandyToAdd = redCandyToAdd.tetr(Hyper2(10).tetr(Hyper2(10).tetr(C("yellowcandy").mul(48929).add(1).toString())))
                         }
                         if (zone === -1) {
-                            redCandyToAdd = redCandyToAdd.pent("1e11")
+                            redCandyToAdd = redCandyToAdd.pent(hasResearch("superred") ? "1e14" : "1e11")
                         }
                         redCandy = redCandy.add(redCandyToAdd)
                     }
