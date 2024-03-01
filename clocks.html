@@ -8950,7 +8950,7 @@
                         </span>
                         <span class="mini special" data-cost="coins-3e333" data-show="$nonillion" data-earn="$superred"
                             data-fade="$superred"
-                            data-desc="[Costs 3.000e333 coins.] Your red candy gain from The Candy Zone is pentated by 1,000 times more.\n{Pentation is repeated tetration, which makes it HUGE.}">
+                            data-desc="[Costs 3.000e333 coins.] Your red candy gain from The Candy Zone is pentated by 1,000 times.\n{Pentation is repeated tetration, which makes it HUGE.}">
                             Super red
                         </span>
                         <br>
@@ -9256,7 +9256,7 @@
                     <span class="mini special nosel" id="moveLeft">LEFT</span>
                     <span class="mini special nosel" id="moveRight">RIGHT</span>
                     <br><br>
-                    <span class="mini warn2" id="die">DIE (reset character)</span>
+                    <span class="mini warn2" id="die">DIE (resets health and position)</span>
                 </div>
 
                 <div id="materials" style="display: none">
@@ -15957,14 +15957,12 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
         }
 
         function resetDungeonData() {
-            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, sceneFrame = 0, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity), dieFrame = 0, collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
             clearAmount(["coins", "yellowcandy", "purplecandy", "spice", "magicpowder", "healpotions", "shieldpotions", "goldenpotions", "attackpotions"], true)
-
-            startingTime = time
             redCandy = Hyper2(0)
             redCandyPower = Hyper2(0)
             zone = 1
             setZone()
+            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, sceneFrame = 0, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity), dieFrame = 0, collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
         }
 
         function moveCharacter(direction) {
