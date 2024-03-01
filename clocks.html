@@ -12068,7 +12068,7 @@
             autoClicker = setInterval(function () {
                 if (document.hasFocus()) {
                     var elem = document.elementFromPoint(mouseX, mouseY)
-                    if (elem !== null && elem.tagName !== "U" && elem.id !== "addMod" && elem.id !== "wipe" && elem.id !== "cheat" && elem.className !== "linky") {
+                    if (!shiftDown && elem !== null && elem.tagName !== "U" && elem.id !== "addMod" && elem.id !== "wipe" && elem.id !== "cheat" && elem.className !== "linky") {
                         elem.click()
                     }
                 }
@@ -16263,13 +16263,13 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
             time = newTime
 
-            if (easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "crystal" && easyButton.id !== "autosell" && easyTime <= newTime) {
+            if (!shiftDown && easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "crystal" && easyButton.id !== "autosell" && easyTime <= newTime) {
                 easyButton.click()
                 easyTime += 50
                 alreadyClicked = false
             }
 
-            if (autoClick && hovered !== null && hovered.id !== "autoClicking" && hovered.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
+            if (!shiftDown && autoClick && hovered !== null && hovered.id !== "autoClicking" && hovered.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
                 hovered.click()
                 autoTime += 50
             }
