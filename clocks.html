@@ -8046,8 +8046,8 @@
                     </button>
 
                     <br>
-                    <button data-earn="metaholes+1" data-cost="influence-1" data-show="influence>=100" class="metabg"
-                        data-desc="Make a MetaHole using your influence!\nUnlocks something new for the next update...$metaholes$">
+                    <button data-earn="metaholes+1" data-cost="influence-1" data-show="influence>=50" class="metabg"
+                        data-desc="Make a MetaHole using your influence!\nUnlocks spinny things...$metaholes$">
                         Make a MetaHole
                     </button>
                     <button data-earn="metadisks+1" data-cost="metaholes-5" data-show="influence>=100" class="metabg"
@@ -8523,7 +8523,7 @@
                         <br>
                         <button class="stripe5" data-show="$timetravel" data-earn="timemachines+1" data-sound="building"
                             data-cost="qcomputers-3"
-                            data-desc="[NOTE: In order to USE a time machine, you'll need {time crystals} that can be crafted, each costing 125,000 qubits and FOURTY purple crystals!]\nBuild a time machine from 3 costly quantum computers each!$timemachines$">
+                            data-desc="[After unlocking your first time machine, you are able to get time shards in the MAGIC menu to increase their production even further!]\n{Each time machine produces 10.000T clocks a SECOND.}\nThere's so many normal clocks in the future that time machines are limited by the amount of matter that they can fit through them.$timemachines$">
                             <u data-desc="This isn't a link...hover OUTSIDE of me already!$timemachines$">
                                 <b class="burning4">Build a time machine</b>
                             </u>
@@ -8746,15 +8746,9 @@
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
                         <br>
-                        <button data-id="reality-bending" data-cooldown="3600" data-earn="" id="timeSpell"
-                            data-cost="timeshards-1|shards-200|crystal3-40" data-show="timemachines>0"
-                            data-desc="Make your time machine increase the amount of all three types of clocks you own by 10%, but at a significant cost!\nIf you have the time machine shard upgrade, you'll gain an additional +5% per time shard you'll own after casting this spell.">
-                            <span class="half timemachineach"></span>
-                            <span class="cooldown" aria-hidden="true"></span>
-                        </button>
                         <button data-id="time-traveling" data-cooldown="10800" data-earn="timeshards+1"
                             data-cost="qubits-125000|crystal3-40" data-show="timemachines>0"
-                            data-desc="Want to use a {TIME MACHINE} thingy? Create a weird {time crystal} to do that!\nCosts 125,000 qubits and 40 purple crystals.$timeshards$">
+                            data-desc="Increase your time machine speed by +25% with this weird crystal!$timeshards$">
                             <span class="half timeshardach"></span>
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
@@ -12476,7 +12470,6 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
                     let isImproveAI = button.id === "improveAI"
                     let isBrainyAI = button.id === "brainyAI"
-                    let isTimeSpell = button.id === "timeSpell"
                     function eventFunction(e) {
                         var multiplier = multiplierAttribute === null ? Hyper(true) : C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
 
@@ -12588,9 +12581,6 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             rawAdd("iq", hasResearch("darkinfo") ? iqGain.pow(Hyper(true).add(C("darktowers"))) : iqGain)
                         } else if (isBrainyAI) {
                             add("iq", Hyper(1e15))
-                        } else if (isTimeSpell) {
-                            var multiplier = Hyper(1.1).add(hasResearch("timeboost") ? C("timeshards").mul(0.05) : 0)
-                            mul("clocks", multiplier)
                         }
 
                         for (t = 0; t < onclicks.length; t++) {
@@ -14972,7 +14962,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.15)
             var clockmakerIncome = clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)
 
-            cpt = cpt.add(electricCPT).add(clockmakerIncome).add(familyIncome)
+            cpt = cpt.add(C("timemachines").mul(Hyper(true).add(C("timeshards"))).mul(1e13).div(60)).add(electricCPT).add(clockmakerIncome).add(familyIncome)
             if (shards.isPositive()) {
                 cpt = cpt.mul(shardPower)
             }
@@ -16793,7 +16783,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                                 cIndex = c.indexOf("-")
                                 text += "and " + getAmount(c.slice(0, cIndex), c.slice(cIndex + 1))
                             }
-                            text += text.charCodeAt(text.length - 1) === 33 ? "}" : ". You currently have "
+                            text += text.charCodeAt(text.length - 1) === 33 ? " You have " : ". You currently have "
 
                             if (len === 1) {
                                 var c = costs[0]
@@ -16813,7 +16803,9 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                                 text += "and " + getAmount(c.slice(0, cIndex))
                             }
 
-                            text += "."
+                            if (text.charCodeAt(text.length - 1) !== 33) {
+                                text += "."
+                            }
                             if (maxClicks !== null) {
                                 text += "<br>You could click on this " + maxClicks.format(3) + " times" + (maxClicks.isLess("1e7") ? " [(including incomplete clicks)] with those items.}" : ".}")
                             }
