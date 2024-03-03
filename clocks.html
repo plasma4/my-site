@@ -9135,7 +9135,7 @@
                         </span>
                         <span class="mini special" data-cost="coins-7777" data-show="$collector" data-earn="$money"
                             data-fade="$money"
-                            data-desc="[Costs 7,777 coins.] Gain 4 minutes worth of production when you defeat an enemy!">
+                            data-desc="[Costs 7,777 coins.] Instantly gain 120 times your CPS of money when you defeat an enemy!">
                             The Money Touch
                         </span>
                         <span class="mini special" data-cost="coins-9777" data-show="$collector" data-earn="$coinboost"
@@ -16093,7 +16093,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
             if (enemyHealth.lte(0)) {
                 if (hasResearch("money")) {
-                    rawAdd("money", cps.mul(300))
+                    rawAdd("money", cps.mul(120))
                 }
                 waitBeforeAttack = 0
                 sceneFrame = 0
