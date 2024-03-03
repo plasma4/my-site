@@ -570,11 +570,13 @@
         }
 
         #left,
+        #warpItems,
         #items,
         #more {
             display: table-row;
         }
 
+        #warpItems,
         #items,
         #more {
             border-radius: 15px;
@@ -588,6 +590,7 @@
             width: 100%;
         }
 
+        #warpItems,
         #items {
             transition: background-color 200ms, min-width 1s;
             background-color: #1116;
@@ -602,9 +605,19 @@
             background-color: #0008;
         }
 
+        #warpItems:hover {
+            background-color: #c62ff077;
+        }
+
+        #warpItems:active {
+            background-color: #f685c588;
+        }
+
         #items,
+        #warpItems,
         #more,
         #items>div,
+        #warpItems>div,
         #more>div {
             text-align: center;
             line-height: 120%;
@@ -764,8 +777,10 @@
             }
 
             #items,
+            #warpItems,
             #more,
             #items>div,
+            #warpItems>div,
             #more>div {
                 font-size: 16px;
             }
@@ -789,6 +804,7 @@
             }
 
             #left,
+            #warpItems,
             #items,
             #more {
                 display: table-cell;
@@ -809,8 +825,10 @@
             }
 
             #items,
+            #warpItems,
             #more,
             #items>div,
+            #warpItems>div,
             #more>div {
                 font-size: 18px;
             }
@@ -885,6 +903,10 @@
             .grid>* {
                 width: 200px;
             }
+
+            #warpItems {
+                min-width: 300px;
+            }
         }
 
         @media (min-width: 1500px) {
@@ -898,6 +920,11 @@
 
             .small {
                 font-size: 22px;
+            }
+
+            #warpItems,
+            #warpItems>div {
+                font-size: 20px;
             }
         }
 
@@ -3086,16 +3113,20 @@
         }
 
         .graystal {
-            transition: filter 400ms;
+            pointer-events: auto;
+            opacity: 0.4;
+            transition: filter 400ms, opacity 1s;
             filter: none;
             background-position: -48px -48px;
         }
 
         .graystal:hover {
+            opacity: 0.7;
             filter: drop-shadow(0 0 1.5px #fff);
         }
 
         .graystal:active {
+            opacity: 0.8;
             filter: drop-shadow(0 0 2.5px #fff);
         }
 
@@ -7157,7 +7188,7 @@
             metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
-            spice|magicpowder|yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
+            francium|warpcubes|spice|magicpowder|yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
         </div>
         <div id="rocketParts">
             rocketbody|rocketfins|rocketcone
@@ -7166,6 +7197,11 @@
             metaresets|wscience|bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium
         </div>
         <div id="wikiData">
+            stablefrancium: Picogram$ of Stabilized Francium/s of Stabilized Francium (9, A portion of stable francium)
+            francium: Francium Atom (8, Why does uranium get all the glory?)
+            franciummakers: Francium Maker (9, Someone who makes francium)
+            warpcubes: Warp Cube (11, A mysterious warping and pulsing cube)
+            cubemakers: Cubemaker (11, Someone who makes warp cubes)
             wormholes: Wormhole (12, A...wormhole to another dimension)
             qubits: Qubit (11, A qubit that is used for quantum computing)
             sandwiches: Metal-Insulator-Metal Plate (8, Used for a quantum computer)
@@ -7733,7 +7769,7 @@
                                 data-desc="Increase the percent of clocks you are AUTO-selling.">+</span>
                         </button>
                         <button class="special" id="autoClicking" data-show="family>0"
-                            data-desc="Autoclicking clicks 20 times a second on a button automatically.\n{(If you are pressing the Space/Enter key, or if you are pressing down on a button, it will also autoclick at the same rate.\nAutoclicking and pressing down doubles the speed of this effect.)}">
+                            data-desc="Autoclicking clicks 20 times a second on a button automatically, unless...it's a secret.\n{(If you are pressing the Space/Enter key, or if you are pressing down on a button, it will also autoclick at the same rate.)}">
                             Toggle autoclicker
                         </button>
 
@@ -7929,14 +7965,14 @@
                             aria-label="Money to spend on a party (at least $10.000q)">
                     </label>
                     <button class="upper special" data-show="$parties" id="startParty" data-earn=""
-                        data-desc="Note that clicking on this button again will simply reset the party time left to one hour.">
+                        data-desc="Note that clicking on this button again will simply reset the party time left to one hour.\n[Parties only affect workers that receive money as payment.]">
                         Spend that much on a <span class="outlined rainbow">party</span>
                     </button>
 
                     <div class="smallish valuable">
                         NOTE: You need the "Overdone parties" research to start one!
                     </div>
-                    <div class="glow2 small">
+                    <div class="pink small">
                         Current party time left: <span id="partyLeft"></span>
                         <br>
                         Give your workers a party to increase their effectiveness for one hour! (Caps out at 100.0000×)
@@ -8059,6 +8095,16 @@
                         data-desc="Create a MetaDisk using 100 MetaHoles and 25 MetaDisks.\nMetaTori spin so quickly that they generate MetaSpin AND MetaHoles slowly over time!$metatorus$">
                         Make a MetaTorus
                     </button>
+                    <br>
+                    <button data-earn="$warp" data-hide="$warp" data-cost="metatorus-2" data-show="metatorus>0"
+                        class="pure"
+                        data-desc="Unlock THE WARP PORTAL by spending 2 MetaTori: a portal to another dimension!">
+                        Unlock The Warp Portal
+                    </button>
+                    <button id="enterWarp" data-show="$warp" class="pure"
+                        data-desc="Nothing like entering a mysterious blue portal and stepping into it, eh?">
+                        <span class="outlined blue">Enter The Warp Portal</span>
+                    </button>
 
                     <hr>
                     <div class="small yellow">
@@ -8108,19 +8154,19 @@
                             </div>
                             <div id="f2" class="red"
                                 data-desc="This is your Level 2 [fiery power], which produces normal [fiery power]."
-                                data-for="#FP #2">
+                                data-for="#× FP #2">
                             </div>
                             <div id="f3" class="orange"
                                 data-desc="This is your Level 3 [fiery power], which produces level 2 [fiery power]."
-                                data-for="#FP #3">
+                                data-for="#× FP #3">
                             </div>
                             <div id="f4" class="yellow"
                                 data-desc="This is your Level 4 [fiery power], which produces level 3 [fiery power]."
-                                data-for="#FP #4">
+                                data-for="#× FP #4">
                             </div>
                             <div id="f5" class="green"
                                 data-desc="This is your Level 5 [fiery power], which produces level 4 [fiery power]."
-                                data-for="#FP #5">
+                                data-for="#× FP #5">
                             </div>
                             <div id="fierywood" class="brown"
                                 data-desc="Fiery wood is obtained when sacrificing fire progress and gives a furnace production boost!"
@@ -8278,19 +8324,19 @@
                             </div>
                             <div id="s2" class="red"
                                 data-desc="This is your Level 2 silver power, which produces normal silver power."
-                                data-for="#SP #2">
+                                data-for="#× SP #2">
                             </div>
                             <div id="s3" class="orange"
                                 data-desc="This is your Level 3 silver power, which produces level 2 silver power."
-                                data-for="#SP #3">
+                                data-for="#× SP #3">
                             </div>
                             <div id="s4" class="yellow"
                                 data-desc="This is your Level 4 silver power, which produces level 3 silver power."
-                                data-for="#SP #4">
+                                data-for="#× SP #4">
                             </div>
                             <div id="s5" class="green"
                                 data-desc="This is your Level 5 silver power, which produces level 4 silver power."
-                                data-for="#SP #5">
+                                data-for="#× SP #5">
                             </div>
                             <div id="silverwood" class="gray"
                                 data-desc="Silver wood is obtained when sacrificing ALL your silvery and shiny progress!"
@@ -9277,7 +9323,7 @@
                     <br>
                     <button data-earn="coalminers+1" data-cost="steel-5e6|miners-5" data-show="$coal"
                         data-sound="building"
-                        data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!]\nGet a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 200,000 watts.$coalminers$"
+                        data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they receive electricity!]\nGet a giant machine that automatically mines coal by getting 5 million steel and 5 miners.\nThese work a lot faster than normal miners!\nUses 200,000 watts.$coalminers$"
                         class="orangebg">
                         Get a coal miner machine <span class="coal"></span>
                         <span class="mini stripe1" data-earn="coalminers+1" data-cost="steel-5e6|miners-5"
@@ -9751,7 +9797,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="$turbines" data-cost="1e12" data-research="coal"
-                            data-desc="Machines can make lots of clocks, so why not give them the ability to mine coal commercially?\n(Unlocks coal mining machines in the materials menu, which produce over 100,000 coal a second!)\n[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!\nThey are powered by default, but you can disable them in the electricity menu.]">
+                            data-desc="Machines can make lots of clocks, so why not give them the ability to mine coal commercially?\n(Unlocks coal mining machines in the materials menu, which produce over 100,000 coal a second!)\n[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they receive electricity!\nThey are powered by default, but you can disable them in the electricity menu.]">
                             Coal mining machines: <span class="green">$1,000,000,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -9925,7 +9971,7 @@
 
                     <br>
                     <label for="coalMachinesOn"
-                        data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they recieve electricity!]\nToggle the powering of coal mining machines.">
+                        data-desc="[IMPORTANT: Coal mining machines still work WITHOUT POWER! However, they are twice as effective when they receive electricity!]\nToggle the powering of coal mining machines.">
                         <input type="checkbox" id="coalMachinesOn" checked>
                         Power Coal Mining Machines
                     </label>
@@ -10105,6 +10151,101 @@
                     </button>
                 </div>
 
+                <div id="warp" style="display: none">
+                    <div class="mini special" id="exitWarp">
+                        <span class="outlined small blood">EXIT THE WARP ZONE</span>
+                    </div>
+
+                    <div class="small red">
+                        Improve your autoclicking/easy click speed by finding out the magic of cubes! No, really.
+                    </div>
+                    <div class="small orange">While in the warp zone, ALL normal production stops.</div>
+                    <div class="small yellow">While in the normal zone, ALL warp production stops.</div>
+                    <div class="small green">While using francium, please make sure you are safe! Thanks!</div>
+                    <button class="special" id="autoClicking2" data-show="family>0"
+                        data-desc="Autoclicking clicks 20 times a second on a button automatically, unless...\n{(If you are pressing the Space/Enter key, or if you are pressing down on a button, it will also autoclick at the same rate.\nAutoclicking and pressing down doubles the speed of this effect.)}">
+                        Toggle autoclicker
+                    </button>
+                    <button data-earn="franciummakers+1" data-cost="money-1e16" data-show="$francium"
+                        data-desc="Get a worker specifically to produce francium atoms within a well-controlled laboratory.\n[Note that francium has a short half-life, so your francium production rate will gradually slow down.]$franciummakers$"
+                        class="stripe3">
+                        Get a francium maker
+                        <span class="mini stripe3" data-earn="franciummakers+1" data-cost="money-1e16"
+                            data-show="$spamcium" data-desc="Get more francium makers at once!$franciummakers$"
+                            data-francibuy></span>
+                    </button>
+                    <button data-earn="stablefrancium+100" data-cost="francium-1.701e11" data-show="$fancium"
+                        data-desc="Process 100 picograms of francium (which is 170.10B atoms of it) and keep it stable.$stablefrancium$"
+                        class="stripe3">
+                        Stabilize francium
+                        <span class="mini stripe3" data-earn="stablefrancium+*5e-10" data-cost="francium-all"
+                            data-show="stablefrancium>0"
+                            data-desc="Process ALL your francium at once!\n[This is less efficient than processing 100 picograms at a time: this will instead take 200.00B atoms of francium for 100 picograms!]$stablefrancium$">ALL</span>
+                    </button>
+                    <br>
+                    <button data-earn="warpcubes+1" data-cost="stablefrancium-500000" data-show="$wildwarp"
+                        data-desc="[Just producing your first cube disables francium decay! Warp cubes also increase the speed multiplier by a LOT while in The Warp Zone.]\nTurn some stable francium into a tiny, microscopic warp cube!\nEach one is almost perfectly smooth, and is mysteriously shiny.$warpcubes$"
+                        class="stripe4">
+                        Make a warp cube!
+                    </button>
+                    <button data-earn="cubemakers+1" data-cost="stablefrancium-1e12" data-show="warpcubes>=100"
+                        data-desc="Get someone to make an INSANE amount of cubes a second (who is affected by the speed multiplier)!\nYou'll need to entice them with an entire GRAM's worth of francium though.$cubemakers$"
+                        class="stripe4">
+                        Get a cubemaker
+                    </button>
+                    <br>
+                    <span class="mini stripe4" data-cost="warpcubes-ee1000" data-show="cubemakers>0"
+                        data-earn="$autoclicker" data-fade="$autoclicker"
+                        data-desc="It'll cost you e1e1000 warp cubes to increase DOUBLE the autoclicker and easy click speed!">
+                        Increase autoclicker speed
+                    </span>
+                    <br>
+                    <span class="mini stripe3" data-cost="francium-2.5e10|money-3.2e18" data-show="$francium"
+                        data-earn="$halflife" data-hide="$halflife"
+                        data-desc="Take [25.000B francium atoms] and [$3.200Q] to do some experiments on the properties of Francium!\nFigure out how to decrease francium's decay speed, which decreases the speed of francium decay.">
+                        Experiment #1 with francium
+                    </span>
+                    <span class="mini stripe3" data-cost="stablefrancium-200000|money-2.5e19"
+                        data-show="$halflife|$fancium" data-earn="$halflife2" data-hide="$halflife2"
+                        data-desc="Take [200,000pg (or 200ng) of stablized francium] and [$25.000Q] of funding and do a much more advanced test with a larger quantity.\n{Decrease the decay rate of francium even further.}">
+                        Experiment #2 with francium
+                    </span>
+
+                    <div id="warpsearch" class="study">
+                        <div data-cost="1.3e19" data-research="wildwarp" data-show="$fastium"
+                            data-desc="Unlock warp cubes...">
+                            The Wild Warp: <span class="glow">$13.000Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="8e18" data-research="fastium" data-show="$halflife2"
+                            data-desc="Get larger machines in order to produce more francium!\nThis increases your francium gain by 12×.">
+                            Fast-francium: <span class="glow">$8.000Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="5e18" data-research="fancium" data-show="$halflife"
+                            data-desc="Unlock francium processing, which takes a very small chunk of francium and keeps it stable.\nFuture projects will involve this!">
+                            Fancium: <span class="glow">$5.000Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="2e18" data-research="spamcium2" data-show="franciummakers>1e6"
+                            data-desc="Francium makers increase their own production speed.">
+                            Spamcium 2: <span class="glow">$2.000Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e18" data-research="spamcium" data-show="francium>1e8"
+                            data-desc="Gain the ability to hire more francium makers at once (based on the number of francium workers you have).">
+                            Spamcium: <span class="glow">$1.000Q</span>
+                            <span class="big money"></span>
+                        </div>
+                        <div data-cost="1e18" data-research="francium"
+                            data-desc="Radium isn't EVERYTHING...\n[Unlocks a new type of worker]">
+                            Francium: <span class="glow">$1.000Q</span>
+                            <span class="big money"></span>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
                 <div id="boosting" style="display: none">
                     <span class="big crystal1"></span><span class="big crystal2"></span><span
                         class="big crystal3"></span>
@@ -10164,7 +10305,7 @@
                     <br><br>
                     <button class="special" id="noBoosts"
                         data-desc="Clear ALL active crystal boosts.\nThis will refund the crystals spent, but crystals that have only been partially used are gone forever.">
-                        Clear ALL crystal boosts <span class="graystal"></span>
+                        Clear ALL crystal boosts <span class="bigger graystal"></span>
                     </button>
                 </div>
 
@@ -10411,24 +10552,23 @@
 
                         <br><br>
                         Mods allow you to customize the game. Scripts should be in JavaScript.
-                        <br>
-                        You can use <i>the comments in the source code</i> to guide you.
                         The mod program will automatically save!
                         <br>
-                        To modify add CSS, change the <tt>extraCSS</tt> variable.
+                        You can use <i>the comments in the source code</i> to guide you.
+                        To add or override CSS, change the <tt>extraCSS</tt> variable.
                         (Note that the CSS code added is added AFTER the game's own style sheet.)
                         <br>
-                        To detect whenever the game updates everything, call <tt>Game.addEventListener("save",
-                            f)</tt>.
+                        To detect whenever the game updates everything, call
+                        <tt>Game.addEventListener("save", f)</tt>.
                         Replace the variable <tt>f</tt> with a function.
                         <br>
                         Make sure that the <tt>"save"</tt> event function returns an array with two strings:
-                        <tt>[string, string]</tt>. The first string should be the ID of your save data (make it
-                        unique).
+                        <tt>[string, string]</tt>. The first string should be the ID of your save data
+                        (make sure that it is unique).
                         The second string should be the save to add.
                         This save data is automatically converted to Base64.
                         Although you can have multiple save data identifiers,
-                        you should only have one single function for each.
+                        you should only have a single function for each to read the data!
                         <br><br>
                         To modify what happens when the save loads, call <tt>Game.addEventListener("load", f)</tt>.
                         <br>
@@ -10722,6 +10862,16 @@
                 </div>
             </div>
 
+
+            <div id="warpItems">
+                <div id="francium" class="lime" data-desc="Why should radium get all the glory?"
+                    data-for="francium atom"></div>
+                <div id="stablefrancium" class="green" data-desc="Stable francium is actually...stable."
+                    data-for="#? of stabilized francium"></div>
+                <div id="warpcubes" class="move4" data-desc="Warp cubes grant mysterious warping effects!"
+                    data-for="warp cube"></div>
+            </div>
+
             <div id="items">
                 <!-- ??? -->
                 <div class="rainbow2" data-desc="???">
@@ -11002,7 +11152,7 @@
         /**
          * Triggers an event that has to do with the game. To add event listeners, call Garden.addEventListener() instead.
          * @param {"save" | "load" | "draw"} name The name of the event.
-         * @param {object[]} The event data that each listener recieves.
+         * @param {object[]} The event data that each listener receives.
          */
         Game.triggerEventListeners = function (name, data) {
             var items = Game.events[name]
@@ -11502,7 +11652,16 @@
             }
         })
 
+        attachEvent("enterWarp", function (elem) {
+            showTab("warp")
+        })
+
+        attachEvent("exitWarp", function (elem) {
+            showTab("metaclock")
+        })
+
         var researches = []
+        attachEvent("warpsearch", researchClick)
         attachEvent("research", researchClick)
         attachEvent("wormsearch", researchClick)
 
@@ -11772,6 +11931,12 @@
 
         var autoClick = false
         ID("autoClicking").addEventListener("click", function () {
+            autoClick = !autoClick
+            if (!noAudio) {
+                sounds.press.cloneNode().play()
+            }
+        })
+        ID("autoClicking2").addEventListener("click", function () {
             autoClick = !autoClick
             if (!noAudio) {
                 sounds.press.cloneNode().play()
@@ -12129,7 +12294,7 @@
 
         // Setup the tab IDs to use from the attribute given and set the display
         function setupTabs() {
-            tabs = ["setup", "devlog", "tips", "wiki", "resources", "cheats"]
+            tabs = ["warp", "setup", "devlog", "tips", "wiki", "resources", "cheats"]
             var tabChildren = ID("navigation").children
             for (var i = 0; i < tabChildren.length; i++) {
                 var element = tabChildren[i]
@@ -12427,6 +12592,8 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                         multiplierAttribute = "megamanagers"
                     } else if (button.hasAttribute("data-multibuy")) {
                         multiplierAttribute = "managers"
+                    } else if (button.hasAttribute("data-francibuy")) {
+                        multiplierAttribute = "franciummakers"
                     } else if (button.hasAttribute("data-multibuild")) {
                         multiplierAttribute = "cmanagers"
                     } else if (button.hasAttribute("data-multialum")) {
@@ -12472,6 +12639,9 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     let isBrainyAI = button.id === "brainyAI"
                     function eventFunction(e) {
                         var multiplier = multiplierAttribute === null ? Hyper(true) : C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
+                        if (multiplierAttribute === "franciummakers") {
+                            multiplier = multiplier.sqrt()
+                        }
 
                         if (e !== true) {
                             // Prevent the button being clicked multiple times during the same frame
@@ -12571,7 +12741,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             e.stopPropagation()
                         }
 
-                        if (!(buttonPower.isEqual(1)) && isNotBase) {
+                        if (!buttonPower.isEqual(1) && isNotBase) {
                             multiplier = multiplier.mul(buttonPower)
                         }
 
@@ -12624,9 +12794,9 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                                             console.warn("A normal item should use a '+' or '*' or '^' sign. Note that only '^' is supported for exponents currently. A rocket part ID should start with a '$' and can use either the '-' or '+' sign.")
                                             continue
                                         }
-                                        pow(action.slice(0, sign), Hyper(action.slice(sign + 1)))
+                                        pow(action.slice(0, sign), new Hyper(action.slice(sign + 1)))
                                     } else {
-                                        mul(action.slice(0, sign), Hyper(action.slice(sign + 1)))
+                                        mul(action.slice(0, sign), new Hyper(action.slice(sign + 1)))
                                     }
                                 }
                                 continue
@@ -12714,14 +12884,14 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             'Impressive! You\'ve managed to get so much fiery wood that the game is forced to switch formats. You currently have a total of at least 10^10^50 fiery wood, which is e1.000e50. (The little "e" means that the number of DIGITS of fiery wood you have is over 10^50!)',
             "Wormholes unlock...a special surprise. But you'll need to research some more!",
             "Unlock the cosmos for FREE to increase the matter limit to eeee50!",
-            "Just because you've unlocked the cosmos doesn't mean the game is over. In fact, the omniverse ITSELF may be bigger than you think!"
+            "Wow, you've unlocked the cosmos! That's impressive, I have to say. How did you get this far?"
         ]
 
         const LEFT = 0, UP = 1, RIGHT = 2, DOWN = 3
         var spinAnimation = 0, spinSpeed = 1, epilepsy = 0, workerUnloaded = true, zone = 1, sceneFrame = 0, characterX = characterSections, characterY = 0, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity)
         var stuff, stuffTotals, frame, offlineFrames
         var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, stripedButtons = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
-        var newsOptions = [generateEverySprite(240, 112), "1000 999 998 997 996 995 994 993 992 991 990 989 i'm lazy no more typing 3 2 1...HAPPY NEW YEAR", "new game when?", '<u onclick="epilepsy=60">Click get epilepsy</u>', '<u onclick="spinAnimation=360,spinSpeed=20">Click for a fast spinny</u>', '<u onclick="spinAnimation=360,spinSpeed=2.5">Click for a spinny</u>', "The time since you started/your last shard reset was $TIMEAFTER$ seconds.", "So, if I remove this news ticker, will there be less content?", "There are " + progressNotes.length + " tips in the game (currently, of course).", "Why is it called a news TICKER? Is it ticking?", "[pretend this has a bad dad joke here]", "\u2014From someone", "What is NaN, you ask? Why don't you Bing it up? (Sorry, I had to say it.)", firefoxZero === 0 ? "You are using Firefox!" : "You are NOT using Firefox.", "How bad do your clocks have to be to be worth ONE DOLLAR?", "Hear me out: I never update the devlog because you likely haven't even seen it yet.", "You have just read news ticker $NEWSID$. Congrats!", "This news ticker was seeded using math. Isn't that weird? This is also news message $NEWSID$.", "Did you know digital clocks used to be a part of the game? They used 3D printers (and were NOT very good).", "What are MegaClocks filled with? Who knows?", "Listen, this is an incremental game, not an RPG. Don't get too excited.", "Please observe the next news message carefully. It could affect you in many ways!", "Modern clocks are mass-produced, and a common material is clock brass.", "News tickers were added in 0.2.0. The current version is " + version + ".", "Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "what? i fight in an old dungeon? for what? coins? candy? CANDY? WHTA DA HUH? WHY? WHAT DOES THIS HAVE TO DO WITH? WHAT?", "You have been in dungeon battles for a total of $BATTLEFRAME$ frames!", "The news tickers that you get are based on how long the game has been actively running on your device. (Or other devices with exporting.)", "Don't even try to use base64 tools on the save file!", "You know zooming out on the news ticker won't help you?", "ARE YOU BORD?", "Purple, green, then BLUE!!???? Why are the colors out of order!!!!??????? Come oneeee!!!!!!!!!", "did you know that many people think Google's AI (Gemini) is better than ChatGPT 3.5?", "Flipper Zeroes likely won't work on your car because they use an advanced method that prevents signal data from being reused. (Somewhat well, anyway.)", "To open inspector, press...                               Ctrl+Shift+Q+Q on a Chromium laptop. Much effect! WAIT! DON'T ACTUALLY DO IT!", "Modding the game is an idea you could have: the tools are already in place!", "The CSS code is over 3,333 lines long! It's even over 3,335 lines long!", window.location.href, "Moose code: " + "- .... .. ... / .. ... / .- / -.-. .- -".replace(/ /g, '<span class="rc"></span>').replace(/\./g, "moose").replace(/-/g, "mooose"), "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomo-row's yesterday. Bob, of course, nose this.", "Do you get all the references? Because this one's meta (but NOT omega)", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ seconds. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Then, there you go!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1 me bored true=valid', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select the icons on the page? Well, that's a shame.", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?            <<<not formal", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8! (No, not a factorial. Sorry.)", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Listen, just imagine that you actually had 1e1,000 golden nuggets. What would you do with them? Oh wait, the multiverse died.", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
+        var newsOptions = ["Francium only one atomic number behind radium...and it decays faster!", generateEverySprite(240, 112), "1000 999 998 997 996 995 994 993 992 991 990 989 i'm lazy no more typing 3 2 1...HAPPY NEW YEAR", "new game when?", '<u onclick="epilepsy=60">Click get epilepsy</u>', '<u onclick="spinAnimation=360,spinSpeed=20">Click for a fast spinny</u>', '<u onclick="spinAnimation=360,spinSpeed=2.5">Click for a spinny</u>', "The time since you started/your last shard reset was $TIMEAFTER$ seconds.", "So, if I remove this news ticker, will there be less content?", "There are " + progressNotes.length + " tips in the game (currently, of course).", "Why is it called a news TICKER? Is it ticking?", "[pretend this has a bad dad joke here]", "\u2014From someone", "What is NaN, you ask? Why don't you Bing it up? (Sorry, I had to say it.)", firefoxZero === 0 ? "You are using Firefox!" : "You are NOT using Firefox.", "How bad do your clocks have to be to be worth ONE DOLLAR?", "Hear me out: I never update the devlog because you likely haven't even seen it yet.", "You have just read news ticker $NEWSID$. Congrats!", "This news ticker was seeded using math. Isn't that weird? This is also news message $NEWSID$.", "Did you know digital clocks used to be a part of the game? They used 3D printers (and were NOT very good).", "What are MegaClocks filled with? Who knows?", "Listen, this is an incremental game, not an RPG. Don't get too excited.", "Please observe the next news message carefully. It could affect you in many ways!", "Modern clocks are mass-produced, and a common material is clock brass.", "News tickers were added in 0.2.0. The current version is " + version + ".", "Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "what? i fight in an old dungeon? for what? coins? candy? CANDY? WHTA DA HUH? WHY? WHAT DOES THIS HAVE TO DO WITH? WHAT?", "You have been in dungeon battles for a total of $BATTLEFRAME$ frames!", "The news tickers that you get are based on how long the game has been actively running on your device. (Or other devices with exporting.)", "Don't even try to use base64 tools on the save file!", "You know zooming out on the news ticker won't help you?", "ARE YOU BORD?", "Purple, green, then BLUE!!???? Why are the colors out of order!!!!??????? Come oneeee!!!!!!!!!", "did you know that many people think Google's AI (Gemini) is better than ChatGPT 3.5?", "Flipper Zeroes likely won't work on your car because they use an advanced method that prevents signal data from being reused. (Somewhat well, anyway.)", "To open inspector, press...                               Ctrl+Shift+Q+Q on a Chromium laptop. Much effect! WAIT! DON'T ACTUALLY DO IT!", "Modding the game is an idea you could have: the tools are already in place!", "The CSS code is over 3,333 lines long! It's even over 3,335 lines long!", window.location.href, "Moose code: " + "- .... .. ... / .. ... / .- / -.-. .- -".replace(/ /g, '<span class="rc"></span>').replace(/\./g, "moose").replace(/-/g, "mooose"), "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomo-row's yesterday. Bob, of course, nose this.", "Do you get all the references? Because this one's meta (but NOT omega)", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ seconds. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Then, there you go!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1 me bored true=valid', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select the icons on the page? Well, that's a shame.", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?            <<<not formal", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8! (No, not a factorial. Sorry.)", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Listen, just imagine that you actually had 1e1,000 golden nuggets. What would you do with them? Oh wait, the multiverse died.", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
         newsOptions.unshift("Including this news ticker, there are currently " + (newsOptions.length + 1) + " unique tickers. Now, next up...")
 
         function generateEverySprite(width, height) {
@@ -13377,6 +13547,14 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             }
                         }
 
+                        researchElements = ID("warpsearch").children
+                        for (k = 0; k < researchElements.length; k++) {
+                            var element = researchElements[k]
+                            if (researches.includes(element.getAttribute("data-research"))) {
+                                element.className = "researched"
+                            }
+                        }
+
                         offlineFrames = Number(lotsOfStuff[2])
                         updateOfflineTime()
                         time = Number(lotsOfStuff[3])
@@ -13860,6 +14038,14 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     hovered = button
                 }
             }
+
+            scienceButtons = ID("warpsearch").children
+            for (var i = 0; i < scienceButtons.length; i++) {
+                let button = scienceButtons[i]
+                button.onfocus = function () {
+                    hovered = button
+                }
+            }
         }
 
         // Enable drag for wattage elements
@@ -13979,16 +14165,12 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 if (button.parentElement.style.display !== "none") {
                     button.style.opacity = fadeFrame > 60 ? (fadeFrame % 20 < 10 ? 1 : 0) : Math.sqrt(fadeFrame / 60).toFixed(6)
                     if (fadeFrame === 180) {
-                        button.removeAttribute("disabled")
                         // Don't increment i, as the current position is now at new elements in the arrays
                         fadeTimes.splice(i, 1)
                         fadeButtons.splice(i, 1)
                         len--
                     } else {
                         // Update the time and increment the counter
-                        if (fadeFrame <= 60) {
-                            button.setAttribute("disabled", true)
-                        }
                         fadeTimes[i] = fadeFrame
                         i++
                     }
@@ -14098,6 +14280,15 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 }
 
                 children = ID("wormsearch").children
+                for (i = 0; i < children.length; i++) {
+                    var child = children[i]
+                    if (child.tagName === "DIV" && !child.hasAttribute("tabindex")) {
+                        child.setAttribute("tabindex", 0)
+                    }
+                    child.removeAttribute("class")
+                }
+
+                children = ID("warpsearch").children
                 for (i = 0; i < children.length; i++) {
                     var child = children[i]
                     if (child.tagName === "DIV" && !child.hasAttribute("tabindex")) {
@@ -14688,704 +14879,736 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
         function updateGame() {
-            var issue = "This occured while trying to update properties."
-
-            var digitCap = "80"
-            if (hasResearch("cosmos")) {
-                digitCap = "eee50"
-            } else if (hasResearch("multiverse10")) {
-                digitCap = "1e25"
-            } else if (hasResearch("multiverse9")) {
-                digitCap = "1e18"
-            } else if (hasResearch("multiverse8")) {
-                digitCap = "1e13"
-            } else if (hasResearch("multiverse7")) {
-                digitCap = "1e10"
-            } else if (hasResearch("multiverse6")) {
-                digitCap = "1e7"
-            } else if (hasResearch("multiverse5")) {
-                digitCap = "1e6"
-            } else if (hasResearch("multiverse4")) {
-                digitCap = "100000"
-            } else if (hasResearch("multiverse3")) {
-                digitCap = "10000"
-            } else if (hasResearch("multiverse2")) {
-                digitCap = "5000"
-            } else if (hasResearch("multiverse1")) {
-                digitCap = "1000"
-            }
-            var matterLimit = new Hyper("e" + digitCap)
-            updateId("cap", Hyper(digitCap).format(2))
-
-            var oldMoney = new Hyper(C("money"))
-
-            var shards = C("shards")
-            var shardPower = shards.isZero() ? Hyper(true) : shards.mul(10000).sqrt(true).sqrt(true)
-            if (hasResearch("polish")) {
-                shardPower = shardPower.add(10)
-            }
-
-            if (hasResearch("polish2")) {
-                shardPower = shardPower.sqr()
-            }
-
-            var shardInfoElement = ID("shardInfo")
-            if (shards.isZero()) {
-                if (shardInfoElement.style.display !== "none") {
-                    shardInfoElement.style.display = "none"
-                }
-            } else {
-                updateId("shardCount", format(shards))
-                updateId("shardStat", format(shardPower) + "×")
-                updateId("clickPower", format(shards.mul(1e8).sqrt(true).sqrt(true)))
-                shardInfoElement.removeAttribute("style")
-            }
-
             // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
             speed = speed.mul(frame + 1).floor(true).subOrFalse(speed.mul(frame).floor(true))
-            partyTime = partyTime.sub(speed)
-            if (speed.isZero()) {
-                return
-            } else if (partyTime.isPositive()) {
-                var divided = partySpending.div("1.1e16")
-                var partyBoost = divided.sqrt().sqrt(true).sqrt(true).mul(2.852).add(divided.sqrt().mul(0.2).min(8)).subOrFalse(2).min(100)
-                wageBuff = wageBoost.mul(partyBoost).mul(10)
-                updateId("partyLeft", partyTime.max(0).div(60).format(speed.isLess(100) ? null : 2) + " seconds (a " + partyBoost.format(4) + "× boost)")
-                updateClass(ID("partyLeft"), "small serif orange")
-            } else {
-                wageBuff = wageBoost
-                updateId("partyLeft", "no party active")
-                updateClass(ID("partyLeft"), "small serif red")
-            }
-            if (!partyTime.isPositive() && ID("partyInput").hasAttribute("disabled")) {
-                ID("partyInput").removeAttribute("disabled")
-            }
 
-            addUpTo("rocketbody", Hyper(C("Rocketbody")).div(216000000), 100)
-            addUpTo("rocketfins", Hyper(C("Rocketfins")).div(21600000), 100)
-            addUpTo("rocketcone", Hyper(C("Rocketcone")).div(10800000), 100)
+            if (currentTab === "warp") {
+                speed = speed.mul(C("warpcubes").add(1).sqr())
+                ID("warpItems").removeAttribute("style")
+                ID("items").style.display = "none"
+                ID("more").style.display = "none"
+                ID("navigation").style.display = "none"
+                ID("boosting").removeAttribute("style")
+                updateHTML(ID("stats"), "")
 
-            var trees = C("trees")
-
-            var silverfruitMultiplier = C("silverfruit").add(1)
-            var fWoodWizardCost = C("fwoodwizards").mul(0.01)
-            var fWoodWizardPower = fWoodWizardCost.mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 4 : 1)
-
-            if (hasResearch("silverwood")) {
-                fWoodWizardPower = fWoodWizardPower.mul(Hyper(2).pow(C("silverwood")))
-            }
-            var firewizardPower = C("firewizards").div(300)
-            var firetowns = C("firetowns")
-            var firetownPower = firetowns.isLess(1) ? Hyper(true) : firetowns.sqr().add(firetowns.mul(25)).subOrFalse(25).mul(777).add(1)
-            if (C("fierypower").isLess(1)) {
-                stuff.fierypower = Hyper(true)
-                stuffTotals.fierypower = Hyper(true)
-            }
-
-            var silverfarms = C("silverfarms")
-            var silvertownPower = C("silvertowns").mul(777).add(1)
-            if (C("silverpower").isLess(1)) {
-                stuff.silverpower = Hyper(true)
-                stuffTotals.silverpower = Hyper(true)
-            }
-
-            var darkTowers = C("darktowers")
-            var copperTowers = C("coppertowers")
-            var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
-            var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
-            var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
-
-            var fcMakers = C("fcmakers")
-            var labs = C("labs")
-
-            var goldFurnacePower = C("gfurnaces").mul(hasResearch("goldensci") ? 25000 : 2500)
-
-            var furnaceCost = C("furnaces").mul(0.045678987654)
-            var millCost = Hyper(hasResearch("steelwork") ? 4 : 1)
-            var millPower = Hyper(hasResearch("steelwork") ? 2.5 : 1).mul(hasResearch("steel") ? 1.25 : 1)
-
-            var kilns = C("kilns")
-            var ovenPower = C("cokeovens").mul(hasResearch("schedule") ? 2 : 1).mul(hasResearch("coke3") ? 3 : 1).mul(hasResearch("coke2") ? 2 : 1).mul(hasResearch("coke") ? 1.5 : 1)
-
-            var steelMills = C("steelmills")
-            var steelPower = steelMills.mul(millPower)
-            var millMakers = C("millmakers")
-
-            var radiumMills = C("radiummills")
-            var radiumMakers = C("radiummakers")
-            var radiumMakerPower = radiumMakers.mul(0.0005)
-
-            var miners = C("miners")
-            var miningPower = miners.mul(hasResearch("mining") ? 1.5 : 1)
-            var diggers = C("diggers")
-
-            var woodcutters = C("woodcutters")
-            var woodPower = woodcutters.mul(hasResearch("saws2") ? 5 : 1).mul(hasResearch("saws") ? 3 : 1).mul(hasResearch("axes") ? 0.125 : 0.05)
-            if (hasResearch("call")) {
-                woodPower = woodPower.mul(Hyper(true).add(woodcutters.mul(0.01)))
-            }
-
-            var bluecutters = C("bluecutters")
-            var bluePower = bluecutters.mul(hasResearch("morebwood") ? 25 : 1).mul(hasResearch("blue") ? 0.0062 : 0.00155)
-
-            var constructors = C("constructors")
-
-            var watchmakerPower = C("watchmakers").mul(hasResearch("watches") ? 1.5 : 1)
-            var clockmakers = C("clockmakers")
-
-            var molders = C("molders")
-            var barmolders = C("barmolds")
-            var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 4 : 1).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1)
-
-            var managers = C("managers")
-            var managerPower = managers.mul(0.006 - 0.006 * Math.exp(-0.04 * managers))
-            var scientists = C("scientists")
-
-            var glassmakers = C("glassmakers")
-
-            var maxWattSeconds = C("batteries").mul(600000).add(C("megabatteries").mul(600000000)).add(C("bluebatteries").mul(150000000000))
-
-            var separators = C("separators")
-            var petroplants = C("petroplants")
-
-            var turbineOverclock = (hasResearch("turbines6") && overclocked) ? 5 : 1
-            var turbineMultiplier = Hyper(hasResearch("turbines") ? 2 : 1).mul(hasResearch("turbines2") ? 2 : 1).mul(hasResearch("turbines3") ? 2 : 1).mul(hasResearch("turbine4") ? 2 : 1).mul(hasResearch("turbines5") ? 2 : 1).mul(hasResearch("turbines6") ? 2 : 1).mul(turbineOverclock === 5 ? 2 : 1)
-            var turbinePower = C("turbines").mul(turbineMultiplier)
-            var megaTurbinePower = C("megaturbines").mul(turbineMultiplier)
-
-            var aluminum1Power = C("aluminum1").mul(0.05)
-            var aluminum2Power = C("aluminum2").mul(0.05)
-            var aluminum3Power = C("aluminum3").mul(0.05)
-            var aluminum4Power = C("aluminum4").mul(0.05)
-
-            var wells = C("wells")
-            var ponds = C("ponds")
-
-            var wattUse = new Hyper()
-            function requestWatts(property, multiplier) {
-                var amount = C(property)
-                var wattsWanted = amount.mul(multiplier)
-                wattUse = wattUse.add(wattsWanted)
-                var subtracted = watts.subOrFalse(wattsWanted)
-                if (subtracted !== false) {
-                    watts = subtracted
-                    return amount
-                }
-
-                multiplier = Hyper(multiplier)
-                var avaliable = watts.div(multiplier).floor(true)
-                watts = watts.subOrFalse(avaliable.mul(multiplier))
-                if (watts === false) {
-                    return new Hyper()
-                }
-                var avaliable2 = C("wattseconds").div(multiplier).floor(true).min(amount.subOrFalse(avaliable))
-
-                if (remove("wattseconds", avaliable2.mul(multiplier))) {
-                    return avaliable.add(avaliable2)
-                }
-
-                return avaliable
-            }
-
-            var watts = C("wormgenerators").mul("5e11").mul(hasResearch("firepower") ? Hyper(true).add(C("firebars").mul(0.00001)) : 1)
-            // Update all the values in the game, starting with wattage
-            if (remove("money", new Hyper(wattUsage / 600))) {
-                watts = watts.add(new Hyper(wattUsage))
-            }
-
-            if (turbinesEnabled) {
-                if (remove("coal", turbinePower.mul(turbineOverclock).mul(5))) {
-                    watts = watts.add(turbinePower.mul(5000))
-                }
-
-                if (remove("coal", megaTurbinePower.mul(turbineOverclock).mul(600))) {
-                    watts = watts.add(megaTurbinePower.mul(500000))
-                }
-            }
-
-            // Show how the watts are being used
-            var formattedWatts = format(watts)
-            updateId("wattage", formattedWatts)
-            updateId("wattagePlural", formattedWatts === "1" ? "" : "s")
-
-            var startingWatts = new Hyper(watts)
-
-            stuff.watts = watts
-            cpt = new Hyper()
-
-            stuffTotals.watts = getTotals("watts").add(watts)
-
-            // Calculate clocks-per-tick and update clock amount
-            wattStuff = {}
-            useableData = {}
-            var electricCPT = new Hyper()
-            for (var t = 0; t < wattageOrder.length; t++) {
-                var wattageKey = wattageOrder[t]
-                var itemData = machineConsumption[wattageKey]
-                if (typeof itemData === "number") {
-                    useableData[wattageKey] = requestWatts(wattageKey, itemData)
+                var franciumAmount = C("franciummakers").mul(hasResearch("spamcium2") ? C("franciummakers").add(32).log2() : 5).div(hasResearch("fastium") ? 0.5 : 6)
+                if (getTotals("warpcubes").isPositive()) {
+                    updateId("cps", "a very warpy vibe")
+                    add("francium", franciumAmount)
                 } else {
-                    var itemToAdd
-                    if (wattageKey === "factories" && factoriesOverclocked) {
-                        itemToAdd = requestWatts(wattageKey, itemData[0] * 3).mul(itemData[1] * 1.5)
-                    } else if ((factoriesEnabled || wattageKey !== "factories") && (armsEnabled || wattageKey !== "arms")) {
-                        itemToAdd = requestWatts(wattageKey, itemData[0]).mul(itemData[1])
+                    updateId("cps", "some warpy feelings")
+                    for (var i = 0; i < speed; i++) {
+                        rawAdd("francium", franciumAmount)
+                        mul("francium", Hyper(hasResearch("halflife") ? hasResearch("halflife2") ? "0.9999" : "0.99975" : "0.99947"))
+                    }
+                }
+                add("warpcubes", C("cubemakers").div(0.06))
+
+                updateId("potential", "warping away")
+                updateClass(ID("cps"), "purple")
+                Game.triggerEventListeners("draw", { inWarp: true })
+            } else {
+                ID("warpItems").style.display = "none"
+                ID("items").removeAttribute("style")
+                ID("more").removeAttribute("style")
+                ID("navigation").removeAttribute("style")
+                var issue = "This occured while trying to update properties."
+
+                var digitCap = "80"
+                if (hasResearch("cosmos")) {
+                    digitCap = "eee50"
+                } else if (hasResearch("multiverse10")) {
+                    digitCap = "1e25"
+                } else if (hasResearch("multiverse9")) {
+                    digitCap = "1e18"
+                } else if (hasResearch("multiverse8")) {
+                    digitCap = "1e13"
+                } else if (hasResearch("multiverse7")) {
+                    digitCap = "1e10"
+                } else if (hasResearch("multiverse6")) {
+                    digitCap = "1e7"
+                } else if (hasResearch("multiverse5")) {
+                    digitCap = "1e6"
+                } else if (hasResearch("multiverse4")) {
+                    digitCap = "100000"
+                } else if (hasResearch("multiverse3")) {
+                    digitCap = "10000"
+                } else if (hasResearch("multiverse2")) {
+                    digitCap = "5000"
+                } else if (hasResearch("multiverse1")) {
+                    digitCap = "1000"
+                }
+                var matterLimit = new Hyper("e" + digitCap)
+                updateId("cap", Hyper(digitCap).format(2))
+
+                var oldMoney = new Hyper(C("money"))
+
+                var shards = C("shards")
+                var shardPower = shards.isZero() ? Hyper(true) : shards.mul(10000).sqrt(true).sqrt(true)
+                if (hasResearch("polish")) {
+                    shardPower = shardPower.add(10)
+                }
+
+                if (hasResearch("polish2")) {
+                    shardPower = shardPower.sqr()
+                }
+
+                var shardInfoElement = ID("shardInfo")
+                if (shards.isZero()) {
+                    if (shardInfoElement.style.display !== "none") {
+                        shardInfoElement.style.display = "none"
+                    }
+                } else {
+                    updateId("shardCount", format(shards))
+                    updateId("shardStat", format(shardPower) + "×")
+                    updateId("clickPower", format(shards.mul(1e8).sqrt(true).sqrt(true)))
+                    shardInfoElement.removeAttribute("style")
+                }
+
+                partyTime = partyTime.sub(speed)
+                if (speed.isZero()) {
+                    return
+                } else if (partyTime.isPositive()) {
+                    var divided = partySpending.div("1.1e16")
+                    var partyBoost = divided.sqrt().sqrt(true).sqrt(true).mul(2.852).add(divided.sqrt().mul(0.2).min(8)).subOrFalse(2).min(100)
+                    wageBuff = wageBoost.mul(partyBoost).mul(10)
+                    updateId("partyLeft", partyTime.max(0).div(60).format(speed.isLess(100) ? null : 2) + " seconds (a " + partyBoost.format(4) + "× boost)")
+                    updateClass(ID("partyLeft"), "small serif orange")
+                } else {
+                    wageBuff = wageBoost
+                    updateId("partyLeft", "no party active")
+                    updateClass(ID("partyLeft"), "small serif red")
+                }
+                if (!partyTime.isPositive() && ID("partyInput").hasAttribute("disabled")) {
+                    ID("partyInput").removeAttribute("disabled")
+                }
+
+                addUpTo("rocketbody", Hyper(C("Rocketbody")).div(216000000), 100)
+                addUpTo("rocketfins", Hyper(C("Rocketfins")).div(21600000), 100)
+                addUpTo("rocketcone", Hyper(C("Rocketcone")).div(10800000), 100)
+
+                var trees = C("trees")
+
+                var silverfruitMultiplier = C("silverfruit").add(1)
+                var fWoodWizardCost = C("fwoodwizards").mul(0.01)
+                var fWoodWizardPower = fWoodWizardCost.mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 4 : 1)
+
+                if (hasResearch("silverwood")) {
+                    fWoodWizardPower = fWoodWizardPower.mul(Hyper(2).pow(C("silverwood")))
+                }
+                var firewizardPower = C("firewizards").div(300)
+                var firetowns = C("firetowns")
+                var firetownPower = firetowns.isLess(1) ? Hyper(true) : firetowns.sqr().add(firetowns.mul(25)).subOrFalse(25).mul(777).add(1)
+                if (C("fierypower").isLess(1)) {
+                    stuff.fierypower = Hyper(true)
+                    stuffTotals.fierypower = Hyper(true)
+                }
+
+                var silverfarms = C("silverfarms")
+                var silvertownPower = C("silvertowns").mul(777).add(1)
+                if (C("silverpower").isLess(1)) {
+                    stuff.silverpower = Hyper(true)
+                    stuffTotals.silverpower = Hyper(true)
+                }
+
+                var darkTowers = C("darktowers")
+                var copperTowers = C("coppertowers")
+                var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
+                var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
+                var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
+
+                var fcMakers = C("fcmakers")
+                var labs = C("labs")
+
+                var goldFurnacePower = C("gfurnaces").mul(hasResearch("goldensci") ? 25000 : 2500)
+
+                var furnaceCost = C("furnaces").mul(0.045678987654)
+                var millCost = Hyper(hasResearch("steelwork") ? 4 : 1)
+                var millPower = Hyper(hasResearch("steelwork") ? 2.5 : 1).mul(hasResearch("steel") ? 1.25 : 1)
+
+                var kilns = C("kilns")
+                var ovenPower = C("cokeovens").mul(hasResearch("schedule") ? 2 : 1).mul(hasResearch("coke3") ? 3 : 1).mul(hasResearch("coke2") ? 2 : 1).mul(hasResearch("coke") ? 1.5 : 1)
+
+                var steelMills = C("steelmills")
+                var steelPower = steelMills.mul(millPower)
+                var millMakers = C("millmakers")
+
+                var radiumMills = C("radiummills")
+                var radiumMakers = C("radiummakers")
+                var radiumMakerPower = radiumMakers.mul(0.0005)
+
+                var miners = C("miners")
+                var miningPower = miners.mul(hasResearch("mining") ? 1.5 : 1)
+                var diggers = C("diggers")
+
+                var woodcutters = C("woodcutters")
+                var woodPower = woodcutters.mul(hasResearch("saws2") ? 5 : 1).mul(hasResearch("saws") ? 3 : 1).mul(hasResearch("axes") ? 0.125 : 0.05)
+                if (hasResearch("call")) {
+                    woodPower = woodPower.mul(Hyper(true).add(woodcutters.mul(0.01)))
+                }
+
+                var bluecutters = C("bluecutters")
+                var bluePower = bluecutters.mul(hasResearch("morebwood") ? 25 : 1).mul(hasResearch("blue") ? 0.0062 : 0.00155)
+
+                var constructors = C("constructors")
+
+                var watchmakerPower = C("watchmakers").mul(hasResearch("watches") ? 1.5 : 1)
+                var clockmakers = C("clockmakers")
+
+                var molders = C("molders")
+                var barmolders = C("barmolds")
+                var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 4 : 1).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1)
+
+                var managers = C("managers")
+                var managerPower = managers.mul(0.006 - 0.006 * Math.exp(-0.04 * managers))
+                var scientists = C("scientists")
+
+                var glassmakers = C("glassmakers")
+
+                var maxWattSeconds = C("batteries").mul(600000).add(C("megabatteries").mul(600000000)).add(C("bluebatteries").mul(150000000000))
+
+                var separators = C("separators")
+                var petroplants = C("petroplants")
+
+                var turbineOverclock = (hasResearch("turbines6") && overclocked) ? 5 : 1
+                var turbineMultiplier = Hyper(hasResearch("turbines") ? 2 : 1).mul(hasResearch("turbines2") ? 2 : 1).mul(hasResearch("turbines3") ? 2 : 1).mul(hasResearch("turbine4") ? 2 : 1).mul(hasResearch("turbines5") ? 2 : 1).mul(hasResearch("turbines6") ? 2 : 1).mul(turbineOverclock === 5 ? 2 : 1)
+                var turbinePower = C("turbines").mul(turbineMultiplier)
+                var megaTurbinePower = C("megaturbines").mul(turbineMultiplier)
+
+                var aluminum1Power = C("aluminum1").mul(0.05)
+                var aluminum2Power = C("aluminum2").mul(0.05)
+                var aluminum3Power = C("aluminum3").mul(0.05)
+                var aluminum4Power = C("aluminum4").mul(0.05)
+
+                var wells = C("wells")
+                var ponds = C("ponds")
+
+                var wattUse = new Hyper()
+                function requestWatts(property, multiplier) {
+                    var amount = C(property)
+                    var wattsWanted = amount.mul(multiplier)
+                    wattUse = wattUse.add(wattsWanted)
+                    var subtracted = watts.subOrFalse(wattsWanted)
+                    if (subtracted !== false) {
+                        watts = subtracted
+                        return amount
                     }
 
-                    if ((wattageKey === "arms" || wattageKey === "factories") && hasResearch("autofix")) {
-                        itemToAdd = itemToAdd.mul(1.5)
+                    multiplier = Hyper(multiplier)
+                    var avaliable = watts.div(multiplier).floor(true)
+                    watts = watts.subOrFalse(avaliable.mul(multiplier))
+                    if (watts === false) {
+                        return new Hyper()
                     }
-                    electricCPT = electricCPT.add(itemToAdd)
+                    var avaliable2 = C("wattseconds").div(multiplier).floor(true).min(amount.subOrFalse(avaliable))
+
+                    if (remove("wattseconds", avaliable2.mul(multiplier))) {
+                        return avaliable.add(avaliable2)
+                    }
+
+                    return avaliable
                 }
-            }
 
-            if (coalMachinesEnabled) {
-                add("coal", useableData.coalminers.mul(1750).add(C("coalminers").mul(1750)).mul(hasResearch("coal2") ? 2.5 : 1))
-            } else {
-                add("coal", C("coalminers").mul(1750).mul(hasResearch("coal2") ? 2.5 : 1))
-            }
-
-            if (computersEnabled && hasResearch("ai")) {
-                var iq = C("iq")
-                var iqGain = C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1)
-                if (hasResearch("tetrate")) {
-                    iqGain = iqGain.mul(iq.pow10Repeat(speed.add(speed).mul(hasResearch("genius") ? Hyper(true).add(C("qcomputers").sqr()) : 1)))
+                var watts = C("wormgenerators").mul("5e11").mul(hasResearch("firepower") ? Hyper(true).add(C("firebars").mul(0.00001)) : 1)
+                // Update all the values in the game, starting with wattage
+                if (remove("money", new Hyper(wattUsage / 600))) {
+                    watts = watts.add(new Hyper(wattUsage))
                 }
-                if (hasResearch("singularity")) {
-                    iqGain = iq.add(1).pow(Hyper.pow(3, speed))
+
+                if (turbinesEnabled) {
+                    if (remove("coal", turbinePower.mul(turbineOverclock).mul(5))) {
+                        watts = watts.add(turbinePower.mul(5000))
+                    }
+
+                    if (remove("coal", megaTurbinePower.mul(turbineOverclock).mul(600))) {
+                        watts = watts.add(megaTurbinePower.mul(500000))
+                    }
                 }
-                add("iq", hasResearch("darkinfo") ? iqGain.pow(Hyper(true).add(C("darktowers"))) : iqGain)
-            }
 
-            // Update the amount of clocks that you have
-            var familySqrt = C("family").sqrt()
-            var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.15)
-            var clockmakerIncome = clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)
+                // Show how the watts are being used
+                var formattedWatts = format(watts)
+                updateId("wattage", formattedWatts)
+                updateId("wattagePlural", formattedWatts === "1" ? "" : "s")
 
-            cpt = cpt.add(C("timemachines").mul(Hyper(true).add(C("timeshards"))).mul(1e13).div(60)).add(electricCPT).add(clockmakerIncome).add(familyIncome)
-            if (shards.isPositive()) {
-                cpt = cpt.mul(shardPower)
-            }
+                var startingWatts = new Hyper(watts)
 
-            add("clocks", cpt)
-            if (autosellOn) {
-                var quantity = cpt.mul(sellPercent).mul(speed).mul(0.01)
-                rawAdd("money", quantity.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : new Hyper(true)).mul(hasResearch("aiselling") ? C("iq").add(1).log10().add(1).log10().add(1).log10() : Hyper(true)).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001).min(1000)) : 1))
-                rawRemove("clocks", quantity)
-            }
+                stuff.watts = watts
+                cpt = new Hyper()
 
-            multiExchange(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore"], [miningPower.mul(0.0145), miningPower.mul(0.065), miningPower.mul(0.04), miningPower.mul(0.01825), miningPower.mul(0.003), miningPower.mul(0.0025), miningPower.mul(0.0175), miningPower.mul(0.0075), miningPower.mul(0.00325), miningPower.mul(0.0025), miningPower.mul(0.0002), miningPower.mul(0.0000027725)], "money", miners.mul(0.1))
+                stuffTotals.watts = getTotals("watts").add(watts)
 
-            var furnacePower = furnaceCost.mul(Hyper(1).add(C("fierywood").mul(0.25)))
-            exchange("radium", radiumMills.mul(0.001), "radiumore")
-            exchange("copper", furnacePower, "copperore", furnaceCost, 1)
-            exchange("silver", furnacePower, "silverore", furnaceCost, 1)
-            exchange("gold", furnacePower, "goldore", furnaceCost, 1)
-            exchange("gold", goldFurnacePower, "goldore", furnaceCost, 1)
-            exchange("platinum", furnacePower, "platinumore", furnaceCost, 1)
+                // Calculate clocks-per-tick and update clock amount
+                wattStuff = {}
+                useableData = {}
+                var electricCPT = new Hyper()
+                for (var t = 0; t < wattageOrder.length; t++) {
+                    var wattageKey = wattageOrder[t]
+                    var itemData = machineConsumption[wattageKey]
+                    if (typeof itemData === "number") {
+                        useableData[wattageKey] = requestWatts(wattageKey, itemData)
+                    } else {
+                        var itemToAdd
+                        if (wattageKey === "factories" && factoriesOverclocked) {
+                            itemToAdd = requestWatts(wattageKey, itemData[0] * 3).mul(itemData[1] * 1.5)
+                        } else if ((factoriesEnabled || wattageKey !== "factories") && (armsEnabled || wattageKey !== "arms")) {
+                            itemToAdd = requestWatts(wattageKey, itemData[0]).mul(itemData[1])
+                        }
 
-            exchange("cbauxite", aluminum1Power, "bauxite")
-            exchange("aluminumc", aluminum2Power, "cbauxite")
-            exchange("aluminumo", aluminum3Power, "aluminumc")
-            exchange("aluminum", aluminum4Power, "aluminumo")
+                        if ((wattageKey === "arms" || wattageKey === "factories") && hasResearch("autofix")) {
+                            itemToAdd = itemToAdd.mul(1.5)
+                        }
+                        electricCPT = electricCPT.add(itemToAdd)
+                    }
+                }
 
-            multiExchange(["rc", "rwatches"], [radiumMakerPower, radiumMakerPower], ["radium", "silver"], [radiumMakerPower.mul(4), radiumMakerPower.mul(2)])
-
-            add("feathers", C("phoenixes").mul(hasResearch("pillows") ? 1.1 : 1).mul(hasResearch("gear") ? 1.125 : 1).mul(hasResearch("drink") ? 1.2 : 1).mul(hasResearch("food") ? 0.0005 : 0.00025))
-            add("nests", labs.mul(0.0000333222111))
-            add("pens", C("nests").mul(0.000054321))
-            add("phoenixes", C("pens").mul(0.0001))
-
-            multiExchange(["clay", "sand"], [diggers.mul(0.035), diggers.mul(0.05)], "money", diggers.div(6))
-            exchange("wood", woodPower, "money", woodcutters.mul(0.25), true)
-            exchange("bwood", bluePower, "fc", bluecutters.mul(0.006), true)
-            add("rubber", trees.mul(0.0004))
-
-            multiExchange("fierywood", hasResearch("firebars") ? fWoodWizardPower.mul(Hyper(2).pow(C("firebars"))) : fWoodWizardPower, ["bwood", "firetrees"], [fWoodWizardCost.mul(500), fWoodWizardCost.mul(1e9)])
-            add("firefarms", firewizardPower)
-
-            var firefarms = C("firefarms")
-            add("firefields", firefarms.mul(0.1))
-            add("f5", firefarms.mul(firetownPower))
-            add("f4", C("f5").mul(firetownPower))
-            add("f3", C("f4").mul(firetownPower))
-            add("f2", C("f3").mul(firetownPower))
-            add("fierypower", C("f2").mul(firetownPower))
-
-            var firefields = C("firefields")
-            add("fierypower", firefields.mul(0.005))
-            add("firetrees", firefields.mul(0.00123456789).mul(hasResearch("moreftrees") ? 2 : 1))
-            add("firefruit", C("firetrees").mul(C("fierypower")).mul(hasResearch("fertilizer2") ? 2 : 1).mul(hasResearch("fertilizer") ? 0.000325 : 0.0001625))
-
-            add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? Hyper(100).div(60) : 0))
-
-            add("firebars", fireBarPower)
-            add("fire", copperTowerPower.mul(Hyper(1.1).pow(C("firebars"))))
-            add("burnt", C("fire").mul(Hyper(1).div(60)))
-
-            var basePointGain = C("wormholeteams")
-            var researchPoints = C("wscience")
-            var wormholeExtra = (hasResearch("wormy4") ? Hyper(true).add(C("clocks").mul("1e-15")) : Hyper(true)).mul(hasResearch("wormy2") ? 2 : 1).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60))
-            add("wscience", (hasResearch("wormy8") ? basePointGain.sqr() : basePointGain).mul(wormholeBoost).mul(hasResearch("wormy6") ? Hyper(true).add(researchPoints.sqrt()) : 1).mul(hasResearch("wormy5") ? Hyper(true).add(researchPoints.sqrt().sqrt()) : 1).mul(wormholeExtra))
-
-            add("s5", silverfarms.mul(silvertownPower))
-            add("s4", C("s5").mul(silvertownPower))
-            add("s3", C("s4").mul(silvertownPower))
-            add("s2", C("s3").mul(silvertownPower))
-            add("silverpower", C("s2").mul(silvertownPower))
-
-            var silverfields = C("silverfields")
-            add("silverpower", silverfields.mul(0.005))
-            add("silvertrees", silverfields.mul(0.00123456789))
-            add("silverfruit", C("silvertrees").mul(C("silverpower")).mul(hasResearch("silvertrees") ? 100 : 1).mul(hasResearch("fertilizer2") ? 2 : 1).mul(hasResearch("fertilizer") ? 0.000325 : 0.0001625))
-
-            add("creativity", managerPower)
-
-            var computerScience = (hasResearch("madgpt") ? Hyper(true).add(useableData.computers.mul(10)) : Hyper(true)).mul(hasResearch("bingol") ? Hyper(true).add(useableData.computers.mul(0.5)) : Hyper(true)).mul(hasResearch("shardsci2") ? 25 : 1)
-            multiExchange(["science", "creativity"], [scientists.mul(computerScience).mul(hasResearch("smart") ? 0.0006 : 0.0003), scientists.mul(computerScience).mul(hasResearch("creative") ? 0.000375 : 0.000125)], "money", scientists.mul(2))
-
-            multiExchange("fc", fcMakers.mul(0.008), ["feathers", "gc", "glue"], [fcMakers.mul(0.016), fcMakers.mul(0.008), fcMakers.mul(0.0002)])
-
-            exchange("arms", constructors.mul(0.0000888777), "steel", 125)
-            if (hasResearch("factories")) {
-                exchange("factories", constructors.mul(0.00000175251505), "arms", 100)
-            }
-
-            multiExchange(["steel", "slag"], [steelPower.mul(0.012), steelPower.mul(0.003)], ["money", "ironore", "coke", "limestone"], [millCost.mul(steelMills), steelPower.mul(0.015), steelPower.mul(0.005), steelPower.mul(0.0025)])
-            if (hasResearch("slag")) {
-                multiExchange("steel", steelPower.mul(0.004), "slag", steelPower.mul(0.004))
-            }
-
-            multiExchange("steelmills", millMakers.mul(0.000325), ["steel", "platinum", "bwood"], [millMakers.mul(2.5), millMakers, millMakers.mul(0.01)])
-
-            add("goo", wells.mul(0.000165))
-            add("energy", ponds.mul(0.000008))
-
-            multiExchange("gc", jewelerPower.mul(0.003).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.1) : 0.1))), ["clocks", "money", "gold"], [jewelerPower.mul(0.012), jewelerPower.mul(0.003), jewelerPower.mul(0.003)])
-            exchange("goldb", barmolders.mul(0.005), "gold", 25)
-
-            exchangeLimit(C("bottles"), "naphtha", separators.mul(0.015), "ngas")
-            exchange("plastic", petroplants.mul(0.05), "naphtha")
-
-            multiExchange("watches", watchmakerPower.mul(0.1), ["money", "silver"], [watchmakerPower.mul(Hyper(2).div(3)), watchmakerPower.mul(0.05)])
-
-            multiExchange("bottles", glassmakers.mul(0.01), ["money", "sand", "sodaash", "limestone"], [glassmakers.mul(0.5), glassmakers.mul(0.007), glassmakers.mul(0.0018), glassmakers.mul(0.0012)])
-
-            multiExchange("coke", ovenPower.mul(0.04), ["money", "coal"], [ovenPower.mul(0.25), ovenPower.mul(0.04)])
-            multiExchange("molds", molders.mul(0.15), ["money", "clay"], [molders.mul(".083333333333333333333333333333333333333333333333333"), molders.mul(0.15)])
-            multiExchange("bricks", kilns.mul(0.025), ["molds", "wood"], [kilns.mul(0.025), kilns.mul(0.02)])
-
-            addUpTo("ngas", C("gasdrills").mul(0.02), C("gastanks").mul(4000))
-
-            addUpTo("wattseconds", watts, maxWattSeconds)
-
-            updateId("constructorTotal", format(C("cmanagers")))
-            updateId("constructorsUsed", format(cManagersUsed))
-
-            add("metac", C("metaclickers").div(6))
-            add("metaclickers", C("metamachines").div(600).add(C("metafactories").div(6)).add(C("metamegafactories").div(0.06)))
-            add("metafactories", C("meta2factories").mul(C("metac").sqrt()).div(60000000))
-            add("meta2factories", C("metabuilders").mul(50).mul(Hyper(true).add(C("metacoins").pow(6))).div(60))
-            mul("metacloners", Hyper(1.0002).pow(speed))
-            add("metabuilders", C("metacloners").div(100))
-            var metaTorus = C("metatorus")
-            add("metaspin", C("metadisks").mul(0.0001).add(metaTorus.div(60)))
-            add("metaholes", metaTorus.mul(0.0001))
-
-            var limitedProperties = properties.slice(0)
-            limitedProperties.splice(limitedProperties.indexOf("iq"), 1)
-            limitedProperties.splice(limitedProperties.indexOf("science"), 1)
-            limitedProperties.splice(limitedProperties.indexOf("wscience"), 1)
-            limitedProperties.splice(limitedProperties.indexOf("creativity"), 1)
-            limitedProperties.splice(limitedProperties.indexOf("yellowcandy"), 1)
-            limitedProperties.splice(limitedProperties.indexOf("purplecandy"), 1)
-            var metaLimited = [], newLimited = []
-            for (var i = 0; i < limitedProperties.length; i++) {
-                var limitedProperty = limitedProperties[i]
-                if (limitedProperty.slice(0, 4) === "meta") {
-                    metaLimited.push(limitedProperty)
+                if (coalMachinesEnabled) {
+                    add("coal", useableData.coalminers.mul(1750).add(C("coalminers").mul(1750)).mul(hasResearch("coal2") ? 2.5 : 1))
                 } else {
-                    newLimited.push(limitedProperty)
+                    add("coal", C("coalminers").mul(1750).mul(hasResearch("coal2") ? 2.5 : 1))
                 }
-            }
-            limit(newLimited, matterLimit)
 
-            var metaCap = Hyper(2).pow(C("influence").mul(5).add(1024))
-            limit(metaLimited, metaCap)
-            updateId("metaLimit", metaCap.format())
-            updateId("spinAmount", C("metaspin").format(2))
-            updateId("metaSell", C("metaspin").add(10).log10().add(1.5).format(4) + "×")
-
-            var negativeElement = ID("wattsNegative")
-            var subtracted = startingWatts.subOrFalse(wattUse)
-            var sign = 1
-            if (subtracted === false) {
-                sign = -1
-                subtracted = wattUse.subOrFalse(startingWatts)
-                updateId("wattsLeft", "-" + format(subtracted, "watt"))
-                negativeElement.removeAttribute("style")
-            } else {
-                if (subtracted.isZero()) {
-                    sign = 0
+                if (computersEnabled && hasResearch("ai")) {
+                    var iq = C("iq")
+                    var iqGain = C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1)
+                    if (hasResearch("tetrate")) {
+                        iqGain = iqGain.mul(iq.pow10Repeat(speed.add(speed).mul(hasResearch("genius") ? Hyper(true).add(C("qcomputers").sqr()) : 1)))
+                    }
+                    if (hasResearch("singularity")) {
+                        iqGain = iq.add(1).pow(Hyper.pow(3, speed))
+                    }
+                    add("iq", hasResearch("darkinfo") ? iqGain.pow(Hyper(true).add(C("darktowers"))) : iqGain)
                 }
-                updateId("wattsLeft", format(subtracted, "watt"))
-                negativeElement.style.visibility = "hidden"
-            }
 
-            var ws = format(C("wattseconds").div(60))
-            updateId("backup", ws)
-            updateId("backupPlural", ws === "1" ? "" : "s")
+                // Update the amount of clocks that you have
+                var familySqrt = C("family").sqrt()
+                var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.15)
+                var clockmakerIncome = clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)
 
-            updateId("constructorPlural", C("cmanagers").isPlural() ? "s" : "")
+                cpt = cpt.add(C("timemachines").mul(Hyper(true).add(C("timeshards"))).mul(1e13).div(60)).add(electricCPT).add(clockmakerIncome).add(familyIncome)
+                if (shards.isPositive()) {
+                    cpt = cpt.mul(shardPower)
+                }
 
-            var firefruitDigits = C("firefruit").log10()
-            var silverfruitDigits = C("silverfruit").log10()
+                add("clocks", cpt)
+                if (autosellOn) {
+                    var quantity = cpt.mul(sellPercent).mul(speed).mul(0.01)
+                    rawAdd("money", quantity.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : new Hyper(true)).mul(hasResearch("aiselling") ? C("iq").add(1).log10().add(1).log10().add(1).log10() : Hyper(true)).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001).min(1000)) : 1))
+                    rawRemove("clocks", quantity)
+                }
 
-            if (firefruitDigits !== false && firefruitDigits.isMoreOrEqual(40)) {
-                updateId("fireReset", "Gain " + format(firefruitDigits.mul(0.9).subOrFalse(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 1.6 : 0.4)) + " fiery wood")
-            } else {
-                updateHTML(ID("fireReset"), "")
-            }
+                multiExchange(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore"], [miningPower.mul(0.0145), miningPower.mul(0.065), miningPower.mul(0.04), miningPower.mul(0.01825), miningPower.mul(0.003), miningPower.mul(0.0025), miningPower.mul(0.0175), miningPower.mul(0.0075), miningPower.mul(0.00325), miningPower.mul(0.0025), miningPower.mul(0.0002), miningPower.mul(0.0000027725)], "money", miners.mul(0.1))
 
-            if (silverfruitDigits !== false && silverfruitDigits.isMoreOrEqual(20)) {
-                var silverGain = silverfruitDigits.subOrFalse(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
-                updateId("silverReset", "Gain " + format(hasResearch("silversquare") ? silverGain.sqr() : silverGain) + " silver wood")
-            } else {
-                updateHTML(ID("silverReset"), "")
-            }
+                var furnacePower = furnaceCost.mul(Hyper(1).add(C("fierywood").mul(0.25)))
+                exchange("radium", radiumMills.mul(0.001), "radiumore")
+                exchange("copper", furnacePower, "copperore", furnaceCost, 1)
+                exchange("silver", furnacePower, "silverore", furnaceCost, 1)
+                exchange("gold", furnacePower, "goldore", furnaceCost, 1)
+                exchange("gold", goldFurnacePower, "goldore", furnaceCost, 1)
+                exchange("platinum", furnacePower, "platinumore", furnaceCost, 1)
 
-            updateId("burntAmount", C("burnt").format(2) + " grams")
-            updateId("researchPoints", C("wscience").format(2))
+                exchange("cbauxite", aluminum1Power, "bauxite")
+                exchange("aluminumc", aluminum2Power, "cbauxite")
+                exchange("aluminumo", aluminum3Power, "aluminumc")
+                exchange("aluminum", aluminum4Power, "aluminumo")
 
-            // Update the CPS element and change the color by modifying the class
-            cps = cpt.mul(speed).mul(60)
-            var cpsElem = ID("cps")
-            var cpsText = (cps.isLess(1) ? "no " : ((cps.isLess(10) ? "only " : "") + format(cps))) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))
-            update(cpsElem, ((cps.isLess(1) || cps.isMoreOrEqual(2) ? cpsText + "s" : cpsText) + " a second (CPS)"))
-            if (cps.isMoreOrEqual(1e33)) {
-                updateClass(cpsElem, "move5")
-            } else if (cps.isMoreOrEqual(1e30)) {
-                updateClass(cpsElem, "repeat5")
-            } else if (cps.isMoreOrEqual(1e27)) {
-                updateClass(cpsElem, "move4")
-            } else if (cps.isMoreOrEqual(1e24)) {
-                updateClass(cpsElem, "repeat4")
-            } else if (cps.isMoreOrEqual(1e21)) {
-                updateClass(cpsElem, "burning4")
-            } else if (cps.isMoreOrEqual(1e18)) {
-                updateClass(cpsElem, "burning3")
-            } else if (cps.isMoreOrEqual(1e15)) {
-                updateClass(cpsElem, "burning2")
-            } else if (cps.isMoreOrEqual(1e12)) {
-                updateClass(cpsElem, "burning")
-            } else if (cps.isMoreOrEqual(1e11)) {
-                updateClass(cpsElem, "move3")
-            } else if (cps.isMoreOrEqual(1e10)) {
-                updateClass(cpsElem, "move2")
-            } else if (cps.isMoreOrEqual(1e9)) {
-                updateClass(cpsElem, "move1")
-            } else if (cps.isMoreOrEqual(1e8)) {
-                updateClass(cpsElem, "repeat3")
-            } else if (cps.isMoreOrEqual(1e7)) {
-                updateClass(cpsElem, "repeat2")
-            } else if (cps.isMoreOrEqual(1e6)) {
-                updateClass(cpsElem, "repeat1")
-            } else if (cps.isMoreOrEqual(100000)) {
-                updateClass(cpsElem, "wow")
-            } else if (cps.isMoreOrEqual(10000)) {
-                updateClass(cpsElem, "rainbow2")
-            } else if (cps.isMoreOrEqual(1000)) {
-                updateClass(cpsElem, "rainbow")
-            } else if (cps.isMoreOrEqual(100)) {
-                updateClass(cpsElem, "shiny")
-            } else if (cps.isMoreOrEqual(10)) {
-                updateClass(cpsElem, "orange")
-            } else {
-                updateClass(cpsElem, "red")
-            }
+                multiExchange(["rc", "rwatches"], [radiumMakerPower, radiumMakerPower], ["radium", "silver"], [radiumMakerPower.mul(4), radiumMakerPower.mul(2)])
 
-            // Yeah, there's a lot of things the game can say!
-            if (cps.isMore("ee1000")) {
-                updateId("potential", "...how about A WHOLE LOT")
-            } else if (cps.isMore("ee100")) {
-                updateId("potential", "...well uh how about A LOT")
-            } else if (cps.isMore("ee10")) {
-                updateHTML(ID("potential"), "...items<sub>5</sub>")
-            } else if (cps.isMore("ee9")) {
-                updateHTML(ID("potential"), "...items<sub>4</sub>")
-            } else if (cps.isMore("ee8")) {
-                updateHTML(ID("potential"), "...items<sub>3</sub>")
-            } else if (cps.isMore("ee7")) {
-                updateHTML(ID("potential"), "...items<sub>2</sub>")
-            } else if (cps.isMore("ee6")) {
-                updateId("potential", "...items")
-            } else if (cps.isMore("1e50000")) {
-                updateId("potential", "...many, many things indeed")
-            } else if (cps.isMore("1e25000")) {
-                updateId("potential", "...many things indeed")
-            } else if (cps.isMore("1e10000")) {
-                updateId("potential", "...many things")
-            } else if (cps.isMore("1e5000")) {
-                updateId("potential", "...things")
-            } else if (cps.isMore("1e4000")) {
-                updateId("potential", "...way too much stuff")
-            } else if (cps.isMore("1e3000")) {
-                updateId("potential", "...plenty of stuff")
-            } else if (cps.isMore("1e2000")) {
-                updateId("potential", "...some amount of stuff")
-            } else if (cps.isMore("1e1000")) {
-                updateId("potential", "...more than a bit of stuff")
-            } else if (cps.isMore("1e900")) {
-                updateId("potential", "...a bit of stuff")
-            } else if (cps.isMore("1e800")) {
-                updateId("potential", "...tons of clocks, I guess")
-            } else if (cps.isMore("1e700")) {
-                updateId("potential", "...lots and lots of clocks")
-            } else if (cps.isMore("1e600")) {
-                updateId("potential", "...many, many clocks, I guess")
-            } else if (cps.isMore("1e500")) {
-                updateId("potential", "...many clocks, I guess")
-            } else if (cps.isMore("1e400")) {
-                updateId("potential", "...some clocks, I guess")
-            } else if (cps.isMore("1e300")) {
-                updateId("potential", "...a few clocks, I guess")
-            } else if (cps.isMore("1e200")) {
-                updateId("potential", " WAY TOO MUCH potential")
-            } else if (cps.isMore("1e100")) {
-                updateId("potential", " maybe a bit too much potential")
-            } else if (cps.isMore("1e50")) {
-                updateId("potential", " ABSOLUTELY RiDcUlOuS potential")
-            } else if (cps.isMore("1e40")) {
-                updateId("potential", " RiDcUlOuS potential")
-            } else if (cps.isMore("1e30")) {
-                updateId("potential", " EXTREMELY INSANE potential")
-            } else if (cps.isMore("1e20")) {
-                updateId("potential", " LOTS OF INSANE potential")
-            } else if (cps.isMore("1e19")) {
-                updateHTML(ID("potential"), " INSANE<sub>10</sub> potential")
-            } else if (cps.isMore("1e18")) {
-                updateHTML(ID("potential"), " INSANE<sub>9</sub> potential")
-            } else if (cps.isMore("1e17")) {
-                updateHTML(ID("potential"), " INSANE<sub>8</sub> potential")
-            } else if (cps.isMore("1e16")) {
-                updateHTML(ID("potential"), " INSANE<sub>7</sub> potential")
-            } else if (cps.isMore("1e15")) {
-                updateHTML(ID("potential"), " INSANE<sub>6</sub> potential")
-            } else if (cps.isMore("1e14")) {
-                updateHTML(ID("potential"), " INSANE<sub>5</sub> potential")
-            } else if (cps.isMore("1e13")) {
-                updateHTML(ID("potential"), " INSANE<sub>4</sub> potential")
-            } else if (cps.isMore("1e12")) {
-                updateHTML(ID("potential"), " INSANE<sub>3</sub> potential")
-            } else if (cps.isMore("1e11")) {
-                updateHTML(ID("potential"), " INSANE<sub>2</sub> potential")
-            } else if (cps.isMore("1e10")) {
-                updateHTML(ID("potential"), " INSANE potential")
-            } else if (cps.isMore("1e9")) {
-                updateId("potential", " SUPER DUPER CRAZY potential")
-            } else if (cps.isMore("1e8")) {
-                updateId("potential", " LOTS AND LOTS of potential")
-            } else if (cps.isMore("1e7")) {
-                updateId("potential", " LOTS of potential")
-            } else if (cps.isMore("1e6")) {
-                updateId("potential", " significant potential")
-            } else if (cps.isMore("1e5")) {
-                updateId("potential", " some potential")
-            } else if (cps.isMore("1e4")) {
-                updateId("potential", " earning many clocks")
-            } else if (cps.isMore("1e3")) {
-                updateId("potential", " earning some clocks")
-            } else if (cps.isMore("1")) {
-                updateId("potential", " a start")
-            } else {
-                updateId("potential", " not much else")
+                add("feathers", C("phoenixes").mul(hasResearch("pillows") ? 1.1 : 1).mul(hasResearch("gear") ? 1.125 : 1).mul(hasResearch("drink") ? 1.2 : 1).mul(hasResearch("food") ? 0.0005 : 0.00025))
+                add("nests", labs.mul(0.0000333222111))
+                add("pens", C("nests").mul(0.000054321))
+                add("phoenixes", C("pens").mul(0.0001))
+
+                multiExchange(["clay", "sand"], [diggers.mul(0.035), diggers.mul(0.05)], "money", diggers.div(6))
+                exchange("wood", woodPower, "money", woodcutters.mul(0.25), true)
+                exchange("bwood", bluePower, "fc", bluecutters.mul(0.006), true)
+                add("rubber", trees.mul(0.0004))
+
+                multiExchange("fierywood", hasResearch("firebars") ? fWoodWizardPower.mul(Hyper(2).pow(C("firebars"))) : fWoodWizardPower, ["bwood", "firetrees"], [fWoodWizardCost.mul(500), fWoodWizardCost.mul(1e9)])
+                add("firefarms", firewizardPower)
+
+                var firefarms = C("firefarms")
+                add("firefields", firefarms.mul(0.1))
+                add("f5", firefarms.mul(firetownPower))
+                add("f4", C("f5").mul(firetownPower))
+                add("f3", C("f4").mul(firetownPower))
+                add("f2", C("f3").mul(firetownPower))
+                add("fierypower", C("f2").mul(firetownPower))
+
+                var firefields = C("firefields")
+                add("fierypower", firefields.mul(0.005))
+                add("firetrees", firefields.mul(0.00123456789).mul(hasResearch("moreftrees") ? 2 : 1))
+                add("firefruit", C("firetrees").mul(C("fierypower")).mul(hasResearch("fertilizer2") ? 2 : 1).mul(hasResearch("fertilizer") ? 0.000325 : 0.0001625))
+
+                add("silverfields", silverfarms.mul(0.1).add(hasResearch("silverfield") ? Hyper(100).div(60) : 0))
+
+                add("firebars", fireBarPower)
+                add("fire", copperTowerPower.mul(Hyper(1.1).pow(C("firebars"))))
+                add("burnt", C("fire").mul(Hyper(1).div(60)))
+
+                var basePointGain = C("wormholeteams")
+                var researchPoints = C("wscience")
+                var wormholeExtra = (hasResearch("wormy4") ? Hyper(true).add(C("clocks").mul("1e-15")) : Hyper(true)).mul(hasResearch("wormy2") ? 2 : 1).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60))
+                add("wscience", (hasResearch("wormy8") ? basePointGain.sqr() : basePointGain).mul(wormholeBoost).mul(hasResearch("wormy6") ? Hyper(true).add(researchPoints.sqrt()) : 1).mul(hasResearch("wormy5") ? Hyper(true).add(researchPoints.sqrt().sqrt()) : 1).mul(wormholeExtra))
+
+                add("s5", silverfarms.mul(silvertownPower))
+                add("s4", C("s5").mul(silvertownPower))
+                add("s3", C("s4").mul(silvertownPower))
+                add("s2", C("s3").mul(silvertownPower))
+                add("silverpower", C("s2").mul(silvertownPower))
+
+                var silverfields = C("silverfields")
+                add("silverpower", silverfields.mul(0.005))
+                add("silvertrees", silverfields.mul(0.00123456789))
+                add("silverfruit", C("silvertrees").mul(C("silverpower")).mul(hasResearch("silvertrees") ? 100 : 1).mul(hasResearch("fertilizer2") ? 2 : 1).mul(hasResearch("fertilizer") ? 0.000325 : 0.0001625))
+
+                add("creativity", managerPower)
+
+                var computerScience = (hasResearch("madgpt") ? Hyper(true).add(useableData.computers.mul(10)) : Hyper(true)).mul(hasResearch("bingol") ? Hyper(true).add(useableData.computers.mul(0.5)) : Hyper(true)).mul(hasResearch("shardsci2") ? 25 : 1)
+                multiExchange(["science", "creativity"], [scientists.mul(computerScience).mul(hasResearch("smart") ? 0.0006 : 0.0003), scientists.mul(computerScience).mul(hasResearch("creative") ? 0.000375 : 0.000125)], "money", scientists.mul(2))
+
+                multiExchange("fc", fcMakers.mul(0.008), ["feathers", "gc", "glue"], [fcMakers.mul(0.016), fcMakers.mul(0.008), fcMakers.mul(0.0002)])
+
+                exchange("arms", constructors.mul(0.0000888777), "steel", 125)
+                if (hasResearch("factories")) {
+                    exchange("factories", constructors.mul(0.00000175251505), "arms", 100)
+                }
+
+                multiExchange(["steel", "slag"], [steelPower.mul(0.012), steelPower.mul(0.003)], ["money", "ironore", "coke", "limestone"], [millCost.mul(steelMills), steelPower.mul(0.015), steelPower.mul(0.005), steelPower.mul(0.0025)])
+                if (hasResearch("slag")) {
+                    multiExchange("steel", steelPower.mul(0.004), "slag", steelPower.mul(0.004))
+                }
+
+                multiExchange("steelmills", millMakers.mul(0.000325), ["steel", "platinum", "bwood"], [millMakers.mul(2.5), millMakers, millMakers.mul(0.01)])
+
+                add("goo", wells.mul(0.000165))
+                add("energy", ponds.mul(0.000008))
+
+                multiExchange("gc", jewelerPower.mul(0.003).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.1) : 0.1))), ["clocks", "money", "gold"], [jewelerPower.mul(0.012), jewelerPower.mul(0.003), jewelerPower.mul(0.003)])
+                exchange("goldb", barmolders.mul(0.005), "gold", 25)
+
+                exchangeLimit(C("bottles"), "naphtha", separators.mul(0.015), "ngas")
+                exchange("plastic", petroplants.mul(0.05), "naphtha")
+
+                multiExchange("watches", watchmakerPower.mul(0.1), ["money", "silver"], [watchmakerPower.mul(Hyper(2).div(3)), watchmakerPower.mul(0.05)])
+
+                multiExchange("bottles", glassmakers.mul(0.01), ["money", "sand", "sodaash", "limestone"], [glassmakers.mul(0.5), glassmakers.mul(0.007), glassmakers.mul(0.0018), glassmakers.mul(0.0012)])
+
+                multiExchange("coke", ovenPower.mul(0.04), ["money", "coal"], [ovenPower.mul(0.25), ovenPower.mul(0.04)])
+                multiExchange("molds", molders.mul(0.15), ["money", "clay"], [molders.mul(".083333333333333333333333333333333333333333333333333"), molders.mul(0.15)])
+                multiExchange("bricks", kilns.mul(0.025), ["molds", "wood"], [kilns.mul(0.025), kilns.mul(0.02)])
+
+                addUpTo("ngas", C("gasdrills").mul(0.02), C("gastanks").mul(4000))
+
+                addUpTo("wattseconds", watts, maxWattSeconds)
+
+                updateId("constructorTotal", format(C("cmanagers")))
+                updateId("constructorsUsed", format(cManagersUsed))
+
+                add("metac", C("metaclickers").div(6))
+                add("metaclickers", C("metamachines").div(600).add(C("metafactories").div(6)).add(C("metamegafactories").div(0.06)))
+                add("metafactories", C("meta2factories").mul(C("metac").sqrt()).div(60000000))
+                add("meta2factories", C("metabuilders").mul(50).mul(Hyper(true).add(C("metacoins").pow(6))).div(60))
+                mul("metacloners", Hyper(1.0002).pow(speed))
+                add("metabuilders", C("metacloners").div(100))
+                var metaTorus = C("metatorus")
+                add("metaspin", C("metadisks").mul(0.0001).add(metaTorus.div(60)))
+                add("metaholes", metaTorus.mul(0.0001))
+
+                var limitedProperties = properties.slice(0)
+                limitedProperties.splice(limitedProperties.indexOf("iq"), 1)
+                limitedProperties.splice(limitedProperties.indexOf("science"), 1)
+                limitedProperties.splice(limitedProperties.indexOf("wscience"), 1)
+                limitedProperties.splice(limitedProperties.indexOf("creativity"), 1)
+                limitedProperties.splice(limitedProperties.indexOf("yellowcandy"), 1)
+                limitedProperties.splice(limitedProperties.indexOf("purplecandy"), 1)
+                var metaLimited = [], newLimited = []
+                for (var i = 0; i < limitedProperties.length; i++) {
+                    var limitedProperty = limitedProperties[i]
+                    if (limitedProperty.slice(0, 4) === "meta") {
+                        metaLimited.push(limitedProperty)
+                    } else {
+                        newLimited.push(limitedProperty)
+                    }
+                }
+                limit(newLimited, matterLimit)
+
+                var metaCap = Hyper(2).pow(C("influence").mul(5).add(1024))
+                limit(metaLimited, metaCap)
+                updateId("metaLimit", metaCap.format())
+                updateId("spinAmount", C("metaspin").format(2))
+                updateId("metaSell", C("metaspin").add(10).log10().add(1.5).format(4) + "×")
+
+                var negativeElement = ID("wattsNegative")
+                var subtracted = startingWatts.subOrFalse(wattUse)
+                var sign = 1
+                if (subtracted === false) {
+                    sign = -1
+                    subtracted = wattUse.subOrFalse(startingWatts)
+                    updateId("wattsLeft", "-" + format(subtracted, "watt"))
+                    negativeElement.removeAttribute("style")
+                } else {
+                    if (subtracted.isZero()) {
+                        sign = 0
+                    }
+                    updateId("wattsLeft", format(subtracted, "watt"))
+                    negativeElement.style.visibility = "hidden"
+                }
+
+                var ws = format(C("wattseconds").div(60))
+                updateId("backup", ws)
+                updateId("backupPlural", ws === "1" ? "" : "s")
+
+                updateId("constructorPlural", C("cmanagers").isPlural() ? "s" : "")
+
+                var firefruitDigits = C("firefruit").log10()
+                var silverfruitDigits = C("silverfruit").log10()
+
+                if (firefruitDigits !== false && firefruitDigits.isMoreOrEqual(40)) {
+                    updateId("fireReset", "Gain " + format(firefruitDigits.mul(0.9).subOrFalse(30).mul(silverfruitMultiplier).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 1.6 : 0.4)) + " fiery wood")
+                } else {
+                    updateHTML(ID("fireReset"), "")
+                }
+
+                if (silverfruitDigits !== false && silverfruitDigits.isMoreOrEqual(20)) {
+                    var silverGain = silverfruitDigits.subOrFalse(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
+                    updateId("silverReset", "Gain " + format(hasResearch("silversquare") ? silverGain.sqr() : silverGain) + " silver wood")
+                } else {
+                    updateHTML(ID("silverReset"), "")
+                }
+
+                updateId("burntAmount", C("burnt").format(2) + " grams")
+                updateId("researchPoints", C("wscience").format(2))
+
+                // Update the CPS element and change the color by modifying the class
+                cps = cpt.mul(speed).mul(60)
+                var cpsElem = ID("cps")
+                var cpsText = (cps.isLess(1) ? "no " : ((cps.isLess(10) ? "only " : "") + format(cps))) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))
+                update(cpsElem, ((cps.isLess(1) || cps.isMoreOrEqual(2) ? cpsText + "s" : cpsText) + " a second (CPS)"))
+                if (cps.isMoreOrEqual(1e33)) {
+                    updateClass(cpsElem, "move5")
+                } else if (cps.isMoreOrEqual(1e30)) {
+                    updateClass(cpsElem, "repeat5")
+                } else if (cps.isMoreOrEqual(1e27)) {
+                    updateClass(cpsElem, "move4")
+                } else if (cps.isMoreOrEqual(1e24)) {
+                    updateClass(cpsElem, "repeat4")
+                } else if (cps.isMoreOrEqual(1e21)) {
+                    updateClass(cpsElem, "burning4")
+                } else if (cps.isMoreOrEqual(1e18)) {
+                    updateClass(cpsElem, "burning3")
+                } else if (cps.isMoreOrEqual(1e15)) {
+                    updateClass(cpsElem, "burning2")
+                } else if (cps.isMoreOrEqual(1e12)) {
+                    updateClass(cpsElem, "burning")
+                } else if (cps.isMoreOrEqual(1e11)) {
+                    updateClass(cpsElem, "move3")
+                } else if (cps.isMoreOrEqual(1e10)) {
+                    updateClass(cpsElem, "move2")
+                } else if (cps.isMoreOrEqual(1e9)) {
+                    updateClass(cpsElem, "move1")
+                } else if (cps.isMoreOrEqual(1e8)) {
+                    updateClass(cpsElem, "repeat3")
+                } else if (cps.isMoreOrEqual(1e7)) {
+                    updateClass(cpsElem, "repeat2")
+                } else if (cps.isMoreOrEqual(1e6)) {
+                    updateClass(cpsElem, "repeat1")
+                } else if (cps.isMoreOrEqual(100000)) {
+                    updateClass(cpsElem, "wow")
+                } else if (cps.isMoreOrEqual(10000)) {
+                    updateClass(cpsElem, "rainbow2")
+                } else if (cps.isMoreOrEqual(1000)) {
+                    updateClass(cpsElem, "rainbow")
+                } else if (cps.isMoreOrEqual(100)) {
+                    updateClass(cpsElem, "shiny")
+                } else if (cps.isMoreOrEqual(10)) {
+                    updateClass(cpsElem, "orange")
+                } else {
+                    updateClass(cpsElem, "red")
+                }
+
+                // Yeah, there's a lot of things the game can say!
+                if (cps.isMore("ee1000")) {
+                    updateId("potential", "...how about A WHOLE LOT")
+                } else if (cps.isMore("ee100")) {
+                    updateId("potential", "...well uh how about A LOT")
+                } else if (cps.isMore("ee10")) {
+                    updateHTML(ID("potential"), "...items<sub>5</sub>")
+                } else if (cps.isMore("ee9")) {
+                    updateHTML(ID("potential"), "...items<sub>4</sub>")
+                } else if (cps.isMore("ee8")) {
+                    updateHTML(ID("potential"), "...items<sub>3</sub>")
+                } else if (cps.isMore("ee7")) {
+                    updateHTML(ID("potential"), "...items<sub>2</sub>")
+                } else if (cps.isMore("ee6")) {
+                    updateId("potential", "...items")
+                } else if (cps.isMore("1e50000")) {
+                    updateId("potential", "...many, many things indeed")
+                } else if (cps.isMore("1e25000")) {
+                    updateId("potential", "...many things indeed")
+                } else if (cps.isMore("1e10000")) {
+                    updateId("potential", "...many things")
+                } else if (cps.isMore("1e5000")) {
+                    updateId("potential", "...things")
+                } else if (cps.isMore("1e4000")) {
+                    updateId("potential", "...way too much stuff")
+                } else if (cps.isMore("1e3000")) {
+                    updateId("potential", "...plenty of stuff")
+                } else if (cps.isMore("1e2000")) {
+                    updateId("potential", "...some amount of stuff")
+                } else if (cps.isMore("1e1000")) {
+                    updateId("potential", "...more than a bit of stuff")
+                } else if (cps.isMore("1e900")) {
+                    updateId("potential", "...a bit of stuff")
+                } else if (cps.isMore("1e800")) {
+                    updateId("potential", "...tons of clocks, I guess")
+                } else if (cps.isMore("1e700")) {
+                    updateId("potential", "...lots and lots of clocks")
+                } else if (cps.isMore("1e600")) {
+                    updateId("potential", "...many, many clocks, I guess")
+                } else if (cps.isMore("1e500")) {
+                    updateId("potential", "...many clocks, I guess")
+                } else if (cps.isMore("1e400")) {
+                    updateId("potential", "...some clocks, I guess")
+                } else if (cps.isMore("1e300")) {
+                    updateId("potential", "...a few clocks, I guess")
+                } else if (cps.isMore("1e200")) {
+                    updateId("potential", " WAY TOO MUCH potential")
+                } else if (cps.isMore("1e100")) {
+                    updateId("potential", " maybe a bit too much potential")
+                } else if (cps.isMore("1e50")) {
+                    updateId("potential", " ABSOLUTELY RiDcUlOuS potential")
+                } else if (cps.isMore("1e40")) {
+                    updateId("potential", " RiDcUlOuS potential")
+                } else if (cps.isMore("1e30")) {
+                    updateId("potential", " EXTREMELY INSANE potential")
+                } else if (cps.isMore("1e20")) {
+                    updateId("potential", " LOTS OF INSANE potential")
+                } else if (cps.isMore("1e19")) {
+                    updateHTML(ID("potential"), " INSANE<sub>10</sub> potential")
+                } else if (cps.isMore("1e18")) {
+                    updateHTML(ID("potential"), " INSANE<sub>9</sub> potential")
+                } else if (cps.isMore("1e17")) {
+                    updateHTML(ID("potential"), " INSANE<sub>8</sub> potential")
+                } else if (cps.isMore("1e16")) {
+                    updateHTML(ID("potential"), " INSANE<sub>7</sub> potential")
+                } else if (cps.isMore("1e15")) {
+                    updateHTML(ID("potential"), " INSANE<sub>6</sub> potential")
+                } else if (cps.isMore("1e14")) {
+                    updateHTML(ID("potential"), " INSANE<sub>5</sub> potential")
+                } else if (cps.isMore("1e13")) {
+                    updateHTML(ID("potential"), " INSANE<sub>4</sub> potential")
+                } else if (cps.isMore("1e12")) {
+                    updateHTML(ID("potential"), " INSANE<sub>3</sub> potential")
+                } else if (cps.isMore("1e11")) {
+                    updateHTML(ID("potential"), " INSANE<sub>2</sub> potential")
+                } else if (cps.isMore("1e10")) {
+                    updateHTML(ID("potential"), " INSANE potential")
+                } else if (cps.isMore("1e9")) {
+                    updateId("potential", " SUPER DUPER CRAZY potential")
+                } else if (cps.isMore("1e8")) {
+                    updateId("potential", " LOTS AND LOTS of potential")
+                } else if (cps.isMore("1e7")) {
+                    updateId("potential", " LOTS of potential")
+                } else if (cps.isMore("1e6")) {
+                    updateId("potential", " significant potential")
+                } else if (cps.isMore("1e5")) {
+                    updateId("potential", " some potential")
+                } else if (cps.isMore("1e4")) {
+                    updateId("potential", " earning many clocks")
+                } else if (cps.isMore("1e3")) {
+                    updateId("potential", " earning some clocks")
+                } else if (cps.isMore("1")) {
+                    updateId("potential", " a start")
+                } else {
+                    updateId("potential", " not much else")
+                }
+
+                // Update all of the magic spells
+                var len = spellFunctions.length
+                var divSpeed = speed.div(60)
+                for (var i = 0; i < len;) {
+                    if (spellFunctions[i](divSpeed, i)) {
+                        spellFunctions.splice(i, 1)
+                        cooldownTimes.splice(i, 1)
+                        cooldownNames.splice(i, 1)
+                        len--
+                    } else {
+                        i++
+                    }
+                }
+
+                var newMoney = C("money")
+                var moneyLoss = oldMoney.sub(newMoney)
+                var newStats = moneyLoss.isLess("eee100") ? moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")) : ""
+
+                var valueMultiplier = Hyper(true).add(C("influence").mul(0.01).min(C("metaspin").add(10).log10().add(1.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001).min(1000)) : 1)
+
+                if (hasResearch("aiselling")) {
+                    valueMultiplier = valueMultiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
+                }
+
+                if (valueMultiplier.isMore(1)) {
+                    newStats = 'Sell multiplier: <span class="small blue">' + valueMultiplier.format(5) + (hasResearch("aiselling") ? '×</span> <span class="serif small purple">(with the AI selling research)</span>' : "×</span>") + (newStats.length === 0 ? "" : ("<br>" + newStats))
+                }
+
+                valueMultiplier = valueMultiplier.mul(speed).mul(60)
+
+                if (familyIncome.isPositive()) {
+                    newStats += '<br>Family member clock value: <span class="small green">$' + familyIncome.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
+                }
+
+                if (clockmakerIncome.isPositive()) {
+                    newStats += '<br>Clockmaker clock value: <span class="small green">$' + clockmakerIncome.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
+                }
+
+                if (electricCPT.isPositive()) {
+                    newStats += '<br>Clock value from machine production: <span class="small green">$' + electricCPT.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
+                }
+
+                if (watchmakerPower.isPositive()) {
+                    newStats += '<br>Silver watch production from watchmakers: <span class="small pink">about ' + watchmakerPower.mul(6).format(2) + '</span> every second (worth <span class="small green">$' + watchmakerPower.mul(valueMultiplier).mul(20).format(2) + "</span>)"
+                }
+
+                if (radiumMakerPower.isPositive()) {
+                    newStats += '<br><span class="small dangerous">RADIOACTIVE</span> watch production from radium workers: <span class="small pink">about ' + radiumMakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + radiumMakerPower.mul(valueMultiplier).mul(1e6).format(2) + "</span>)"
+                }
+
+                updateHTML(ID("stats"), newStats)
+                if (currentTab === "resources") {
+                    var allData = []
+                    for (var i = 0; i < properties.length; i++) {
+                        var key = properties[i]
+                        if (getTotals(key).isPositive() && !hiddenWikiItems.includes(key)) {
+                            if ((key !== "fierypower" && key !== "silverpower") || !C(key).isEqual(1)) {
+                                allData.push((i & 1 ? '<span class="small purple">' : '<span class="small pink">') + getAmount(key) + (key === "clocks" ? " (oh, that thing!)</span>" : "</span>"))
+                            }
+                        }
+                    }
+
+                    var length = allData.length
+                    updateHTML(ID("resourceData"), length === 0 ? "Oh...wait. Nothing, actually! Maybe you should...build a clock or something?" : (length <= 2 ? (length === 2 ? allData[0] + "\r\nand " + allData[1] : allData[0]) : (allData.slice(0, length - 1).join(",\r\n") + ",\r\nand " + allData[length - 1])))
+                }
+
+                var achievementElements = ID("ach").children
+                var achieveCount = 0
+                for (var i = 0; i < achievementElements.length; i++) {
+                    var achievement = achievementElements[i]
+                    var conditions = achievement.getAttribute("data-unlock")
+                    if (conditions === null) {
+                        console.warn("An achievement should have a 'data-unlock' attribute.")
+                    } else if (meetsRequirements(conditions)) {
+                        achievement.style.display = "block"
+                        achieveCount++
+                    } else {
+                        achievement.style.display = "none"
+                    }
+                }
+                updateId("achievementAmount", ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
+
+                Game.triggerEventListeners("draw", { inWarp: false, startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
             }
 
             updateTip()
-
-            // Update all of the magic spells
-            var len = spellFunctions.length
-            var divSpeed = speed.div(60)
-            for (var i = 0; i < len;) {
-                if (spellFunctions[i](divSpeed, i)) {
-                    spellFunctions.splice(i, 1)
-                    cooldownTimes.splice(i, 1)
-                    cooldownNames.splice(i, 1)
-                    len--
-                } else {
-                    i++
-                }
-            }
-
-            var newMoney = C("money")
-            var moneyLoss = oldMoney.sub(newMoney)
-            var newStats = moneyLoss.isLess("eee100") ? moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")) : ""
-
-            var valueMultiplier = Hyper(true).add(C("influence").mul(0.01).min(C("metaspin").add(10).log10().add(1.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001).min(1000)) : 1)
-
-            if (hasResearch("aiselling")) {
-                valueMultiplier = valueMultiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
-            }
-
-            if (valueMultiplier.isMore(1)) {
-                newStats = 'Sell multiplier: <span class="small blue">' + valueMultiplier.format(5) + (hasResearch("aiselling") ? '×</span> <span class="serif small purple">(with the AI selling research)</span>' : "×</span>") + (newStats.length === 0 ? "" : ("<br>" + newStats))
-            }
-
-            valueMultiplier = valueMultiplier.mul(speed).mul(60)
-
-            if (familyIncome.isPositive()) {
-                newStats += '<br>Family member clock value: <span class="small green">$' + familyIncome.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
-            }
-
-            if (clockmakerIncome.isPositive()) {
-                newStats += '<br>Clockmaker clock value: <span class="small green">$' + clockmakerIncome.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
-            }
-
-            if (electricCPT.isPositive()) {
-                newStats += '<br>Clock value from machine production: <span class="small green">$' + electricCPT.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
-            }
-
-            if (watchmakerPower.isPositive()) {
-                newStats += '<br>Silver watch production from watchmakers: <span class="small pink">about ' + watchmakerPower.mul(6).format(2) + '</span> every second (worth <span class="small green">$' + watchmakerPower.mul(valueMultiplier).mul(20).format(2) + "</span>)"
-            }
-
-            if (radiumMakerPower.isPositive()) {
-                newStats += '<br><span class="small dangerous">RADIOACTIVE</span> watch production from radium workers: <span class="small pink">about ' + radiumMakerPower.mul(60).format(2) + '</span> every second (worth <span class="small green">$' + radiumMakerPower.mul(valueMultiplier).mul(1e6).format(2) + "</span>)"
-            }
-
-            updateHTML(ID("stats"), newStats)
-            if (currentTab === "resources") {
-                var allData = []
-                for (var i = 0; i < properties.length; i++) {
-                    var key = properties[i]
-                    if (getTotals(key).isPositive() && !hiddenWikiItems.includes(key)) {
-                        if ((key !== "fierypower" && key !== "silverpower") || !C(key).isEqual(1)) {
-                            allData.push((i & 1 ? '<span class="small purple">' : '<span class="small pink">') + getAmount(key) + (key === "clocks" ? " (oh, that thing!)</span>" : "</span>"))
-                        }
-                    }
-                }
-
-                var length = allData.length
-                updateHTML(ID("resourceData"), length === 0 ? "Oh...wait. Nothing, actually! Maybe you should...build a clock or something?" : (length <= 2 ? (length === 2 ? allData[0] + "\r\nand " + allData[1] : allData[0]) : (allData.slice(0, length - 1).join(",\r\n") + ",\r\nand " + allData[length - 1])))
-            }
-
-            var achievementElements = ID("ach").children
-            var achieveCount = 0
-            for (var i = 0; i < achievementElements.length; i++) {
-                var achievement = achievementElements[i]
-                var conditions = achievement.getAttribute("data-unlock")
-                if (conditions === null) {
-                    console.warn("An achievement should have a 'data-unlock' attribute.")
-                } else if (meetsRequirements(conditions)) {
-                    achievement.style.display = "block"
-                    achieveCount++
-                } else {
-                    achievement.style.display = "none"
-                }
-            }
-            updateId("achievementAmount", ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
-
-            Game.triggerEventListeners("draw", { startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
         }
 
         function getHealthCap() {
@@ -16255,13 +16478,13 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
             if (!shiftDown && easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "crystal" && easyButton.id !== "autosell" && easyTime <= newTime) {
                 easyButton.click()
-                easyTime += 50
+                easyTime += hasResearch("autoclicker") ? 25 : 50
                 alreadyClicked = false
             }
 
-            if (!shiftDown && autoClick && hovered !== null && hovered.id !== "autoClicking" && hovered.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
+            if (!shiftDown && autoClick && hovered !== null && hovered.id.slice(0, 12) !== "autoClicking" && hovered.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
                 hovered.click()
-                autoTime += 50
+                autoTime += hasResearch("autoclicker") ? 25 : 50
             }
 
             if (document.activeElement !== activeElement) {
@@ -16326,7 +16549,32 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             } else if (firstChar === 37) {
                                 update(elem, formatted + " " + name.slice(1))
                             } else if (firstChar === 35) {
-                                update(elem, formatted + "× " + name.slice(1))
+                                if (name.charCodeAt(1) === 63) {
+                                    if (amount.isMoreOrEqual("1e18")) {
+                                        formatted = amount.div("1e15").format()
+                                        name = " kilos" + name.slice(2)
+                                    } else if (amount.isMoreOrEqual("1e15")) {
+                                        formatted = amount.div("1e15").format(3)
+                                        name = "kg" + name.slice(2)
+                                    } else if (amount.isMoreOrEqual("1e12")) {
+                                        formatted = amount.div("1e12").format(3)
+                                        name = "g" + name.slice(2)
+                                    } else if (amount.isMoreOrEqual("1e9")) {
+                                        formatted = amount.div("1e9").format(3)
+                                        name = "mg" + name.slice(2)
+                                    } else if (amount.isMoreOrEqual("1e6")) {
+                                        formatted = amount.div("1e6").format(3)
+                                        name = "\u03bcg" + name.slice(2)
+                                    } else if (amount.isMoreOrEqual("1e3")) {
+                                        formatted = amount.div("1e3").format(3)
+                                        name = "ng" + name.slice(2)
+                                    } else {
+                                        name = "pg" + name.slice(2)
+                                    }
+                                } else {
+                                    name = name.slice(1)
+                                }
+                                update(elem, formatted + name)
                             } else {
                                 var dollarIndex = name.indexOf("$")
                                 var slashIndex = name.indexOf("/")
@@ -16454,14 +16702,14 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 noBoosts.removeAttribute("style")
             }
 
+            // Update all the values that are within the game
+            updateGame()
+
             if (speed.isEqual(1)) {
                 updateHTML(speedElements[0], "")
             } else {
                 update(speedElements[0], "Speed multiplier: " + speed.format(speed.isLess(100) ? 2 : 0) + "×")
             }
-
-            // Update all the values that are within the game
-            updateGame()
 
             // Update dungeons (and also not dragons, oops)
             if (hasResearch("dungeon")) {
@@ -16575,6 +16823,35 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 researchElem.removeAttribute("style")
             }
 
+            researchElem = ID("warpsearch")
+            if (C("scientists").isPositive()) {
+                if (!researchElem.hasAttribute("style")) {
+                    researchElem.style.display = "block"
+                }
+
+                var options = researchElem.children
+                for (var i = 0; i < options.length; i++) {
+                    var option = options[i]
+                    if (hasResearch(option.getAttribute("data-research"))) {
+                        if (!option.hasAttribute("style")) {
+                            option.className = "researched"
+                            option.removeAttribute("tabindex")
+                        }
+                    } else {
+                        var conditions = option.getAttribute("data-show")
+                        if (conditions === null || meetsRequirements(conditions)) {
+                            option.removeAttribute("style")
+                        } else {
+                            if (!option.hasAttribute("style")) {
+                                option.style.display = "none"
+                            }
+                        }
+                    }
+                }
+            } else {
+                researchElem.removeAttribute("style")
+            }
+
             // Update button text and appearance
             for (i = 0; i < buttons.length; i++) {
                 var button = buttons[i]
@@ -16617,6 +16894,8 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             multiplierAttribute = "megamanagers"
                         } else if (button.hasAttribute("data-multibuy")) {
                             multiplierAttribute = "managers"
+                        } else if (button.hasAttribute("data-francibuy")) {
+                            multiplierAttribute = "franciummakers"
                         } else if (button.hasAttribute("data-multibuild")) {
                             multiplierAttribute = "cmanagers"
                         } else if (button.hasAttribute("data-multialum")) {
@@ -16624,7 +16903,8 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                         }
 
                         if (multiplierAttribute !== null) {
-                            update(button, format(C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)) + "×")
+                            var multiplierAmount = C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
+                            update(button, format(multiplierAttribute === "franciummakers" ? multiplierAmount.sqrt() : multiplierAmount) + "×")
                         }
                     } else {
                         var requirements = button.getAttribute("data-show")
@@ -16727,8 +17007,10 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                         }
                     } else if (hovered.id === "autosell" || hovered.id === "addAutosell" || hovered.id === "minusAutosell") {
                         text += "<br>[Autosell is currently " + (autosellOn ? "ENABLED and sells " + sellPercent + "% of clocks you make" : "DISABLED") + "]"
-                    } else if (hovered.id === "autoClicking") {
+                    } else if (hovered.id.slice(0, 12) === "autoClicking") {
                         text += autoClick ? "<br>[Autoclicking is currently ENABLED. (Autoclicking on this button is disabled by default!)]" : "<br>[Autoclicking is currently DISABLED.]"
+                    } else if (hovered.id === "cps" && currentTab === "warp") {
+                        text = "[Look, this isn't CPS text anymore. Stop staring at me!]"
                     } else if (hovered.id === "shardAscend") {
                         var newShards = C("gc").mul(1e-9)
                         if (hasResearch("shardboost")) {
