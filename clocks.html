@@ -10194,10 +10194,15 @@
                         Get a cubemaker
                     </button>
                     <br>
-                    <span class="mini stripe4" data-cost="warpcubes-ee1000" data-show="cubemakers>0"
+                    <span class="mini stripe4" data-cost="warpcubes-25" data-show="cubemakers>0"
                         data-earn="$autoclicker" data-fade="$autoclicker"
-                        data-desc="It'll cost you e1e1000 warp cubes to increase DOUBLE the autoclicker and easy click speed!">
+                        data-desc="It'll cost you 25 warp cubes to increase your autoclicker speed by +5/sec (a total of 25/sec).">
                         Increase autoclicker speed
+                    </span>
+                    <span class="mini stripe4" data-cost="warpcubes-ee40000" data-show="$autoclicker"
+                        data-earn="$autoclicker2" data-fade="$autoclicker2"
+                        data-desc="It'll cost you e1e40,000 warp cubes to increase the autoclicker speed by an additional +15/sec (a total of 40/sec).">
+                        Increase autoclicker speed AGAIN
                     </span>
                     <br>
                     <span class="mini stripe3" data-cost="francium-2.5e10|money-3.2e18" data-show="$francium"
@@ -15115,14 +15120,22 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     watts = watts.add(new Hyper(wattUsage))
                 }
 
+                var totalCoalCost = megaTurbinePower.mul(turbineOverclock).mul(600).add(turbinePower.mul(turbineOverclock).mul(5))
+                var status = 1
                 if (turbinesEnabled) {
                     if (remove("coal", turbinePower.mul(turbineOverclock).mul(5))) {
                         watts = watts.add(turbinePower.mul(5000))
+                    } else {
+                        status = 0
                     }
 
                     if (remove("coal", megaTurbinePower.mul(turbineOverclock).mul(600))) {
                         watts = watts.add(megaTurbinePower.mul(500000))
+                    } else {
+                        status = 0
                     }
+                } else {
+                    status = -1
                 }
 
                 // Show how the watts are being used
@@ -15545,6 +15558,10 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
                 if (hasResearch("aiselling")) {
                     valueMultiplier = valueMultiplier.mul(C("iq").add(1).log10().add(1).log10().add(1).log10())
+                }
+
+                if (status !== -1) {
+                    newStats = (status === 1 ? '<b class="green">Power grid: Stable</b><br>' : '<b class="red">Power grid: UNSTABLE</b><br>') + newStats
                 }
 
                 if (valueMultiplier.isMore(1)) {
@@ -16478,13 +16495,13 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
             if (!shiftDown && easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "crystal" && easyButton.id !== "autosell" && easyTime <= newTime) {
                 easyButton.click()
-                easyTime += hasResearch("autoclicker") ? 25 : 50
+                easyTime += hasResearch("autoclicker2") ? 25 : (hasResearch("autoclicker") ? 40 : 50)
                 alreadyClicked = false
             }
 
             if (!shiftDown && autoClick && hovered !== null && hovered.id.slice(0, 12) !== "autoClicking" && hovered.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
                 hovered.click()
-                autoTime += hasResearch("autoclicker") ? 25 : 50
+                autoTime += hasResearch("autoclicker2") ? 25 : (hasResearch("autoclicker") ? 40 : 50)
             }
 
             if (document.activeElement !== activeElement) {
