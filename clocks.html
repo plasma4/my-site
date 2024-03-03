@@ -15122,7 +15122,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
                 var totalCoalCost = megaTurbinePower.mul(turbineOverclock).mul(600).add(turbinePower.mul(turbineOverclock).mul(5))
                 var status = 1
-                if (turbinesEnabled) {
+                if (turbinesEnabled && (turbinePower.isPositive() || megaTurbinePower.isPositive())) {
                     if (remove("coal", turbinePower.mul(turbineOverclock).mul(5))) {
                         watts = watts.add(turbinePower.mul(5000))
                     } else {
