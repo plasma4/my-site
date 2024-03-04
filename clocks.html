@@ -9724,7 +9724,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="computers>0" data-cost="2.5e7" data-research="ai"
-                            data-desc="You get your smartest employees (and family members) together to discuss how to continue.\nAI seems to be the only solution! Note that to get more effective AI, you need lots of science.\n(Finally gives you digital knowledge!)">
+                            data-desc="You get your smartest employees (and family members) together to discuss how to continue.\nAI seems to be the only solution! Note that to get more effective AI, you need lots of science.\n(This allows you to unlock newer AI researches.)">
                             Research basic AI: <span class="green">$25,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -14416,7 +14416,6 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 }
 
                 if (value.isPositive()) {
-                    value = value
                     stuff[name] = stuff[name].add(value)
                     if (!noStuffTotals) {
                         stuffTotals[name] = stuffTotals[name].add(value)
@@ -14902,9 +14901,10 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     add("francium", franciumAmount)
                 } else {
                     updateId("cps", "some warpy feelings")
+                    var franciumDecay = Hyper(hasResearch("halflife") ? hasResearch("halflife2") ? "0.9999" : "0.99975" : "0.99947")
                     for (var i = 0; i < speed; i++) {
                         rawAdd("francium", franciumAmount)
-                        mul("francium", Hyper(hasResearch("halflife") ? hasResearch("halflife2") ? "0.9999" : "0.99975" : "0.99947"))
+                        mul("francium", franciumDecay)
                     }
                 }
                 add("warpcubes", C("cubemakers").div(0.06))
@@ -15180,7 +15180,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     add("coal", C("coalminers").mul(1750).mul(hasResearch("coal2") ? 2.5 : 1))
                 }
 
-                if (computersEnabled && hasResearch("ai")) {
+                if (computersEnabled) {
                     var iq = C("iq")
                     var iqGain = C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1)
                     if (hasResearch("tetrate")) {
