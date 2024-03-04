@@ -7201,6 +7201,7 @@
             francium: Francium Atom (8, Why does uranium get all the glory?)
             franciummakers: Francium Maker (9, Someone who makes francium)
             warpcubes: Warp Cube (11, A mysterious warping and pulsing cube)
+            hypercubes: %HyperCube (12, A cube that increases the speed of EVERYTHING)
             cubemakers: Cubemaker (11, Someone who makes warp cubes)
             wormholes: Wormhole (12, A...wormhole to another dimension)
             qubits: Qubit (11, A qubit that is used for quantum computing)
@@ -9724,7 +9725,7 @@
                             <span class="money"></span>
                         </div>
                         <div data-show="computers>0" data-cost="2.5e7" data-research="ai"
-                            data-desc="You get your smartest employees (and family members) together to discuss how to continue.\nAI seems to be the only solution! Note that to get more effective AI, you need lots of science.\n(This allows you to unlock newer AI researches.)">
+                            data-desc="You get your smartest employees (and family members) together to discuss how to continue.\nAI seems to be the only solution! Note that to get more effective AI, you need lots of science.\n(This allows you to unlock better AI researches.)">
                             Research basic AI: <span class="green">$25,000,000</span>
                             <span class="money"></span>
                         </div>
@@ -10184,7 +10185,7 @@
                     </button>
                     <br>
                     <button data-earn="warpcubes+1" data-cost="stablefrancium-500000" data-show="$wildwarp"
-                        data-desc="[Just producing your first cube disables francium decay! Warp cubes also increase the speed multiplier by a LOT while in The Warp Zone.]\nTurn some stable francium into a tiny, microscopic warp cube!\nEach one is almost perfectly smooth, and is mysteriously shiny.$warpcubes$"
+                        data-desc="[Just producing a single cube disables francium decay! Warp cubes also increase the speed multiplier by a whole LOT while in The Warp Zone.]\nTurn some stable francium into a tiny, microscopic warp cube!\nEach one is almost perfectly smooth, and is mysteriously shiny.$warpcubes$"
                         class="stripe4">
                         Make a warp cube!
                     </button>
@@ -10203,6 +10204,11 @@
                         data-earn="$autoclicker2" data-fade="$autoclicker2"
                         data-desc="It'll cost you e1e40,000 warp cubes to increase the autoclicker speed by an additional +15/sec (a total of 40/sec).">
                         Increase autoclicker speed AGAIN
+                    </span>
+                    <span class="mini stripe4" data-show="warpcubes>=ee25000"
+                        data-earn="warpcubes*0|cubemakers*0|hypercubes+1" id="hyperCube"
+                        data-desc="Reset ALL warp cubes and warpy workers for 1 HyperCube.\nEach HyperCube increases both warp and non-warp speed by +1% per cube.$hypercubes$">
+                        Gain a HyperCube
                     </span>
                     <br>
                     <span class="mini stripe3" data-cost="francium-2.5e10|money-3.2e18" data-show="$francium"
@@ -10875,6 +10881,8 @@
                     data-for="#? of stabilized francium"></div>
                 <div id="warpcubes" class="move4" data-desc="Warp cubes grant mysterious warping effects!"
                     data-for="warp cube"></div>
+                <div id="hypercubes" class="move4" data-desc="Mysterious cubes with a higher power."
+                    data-for="HyperCube"></div>
             </div>
 
             <div id="items">
@@ -14501,7 +14509,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     value = new Hyper(value)
                 }
 
-                if (value.isPositive()) {
+                if (value.isPositiveOrZero()) {
                     var amount = stuff[name]
                     stuffTotals[name] = stuffTotals[name].add(amount.mul(value.subOrFalse(1)))
                     stuff[name] = amount.mul(value)
@@ -16710,7 +16718,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
 
             timeBonus = Hyper(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0)
-            speed = speed.max(timeBonus).mul(baseSpeed)
+            speed = speed.max(timeBonus).mul(baseSpeed).mul(Hyper(true).add(C("hypercubes").mul(0.01)))
 
             var noBoosts = ID("noBoosts")
             if (speed.isEqual(timeBonus.mul(baseSpeed))) {
