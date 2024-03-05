@@ -7213,6 +7213,7 @@
             hypercubes: %HyperCube (12, A cube that increases the speed of EVERYTHING)
             cubemakers: Cubemaker (11, Someone who makes warp cubes)
             wormholes: Wormhole (12, A...wormhole to another dimension)
+            qubitmachines: Qubit Machine (12, A special machine to produce qubits)
             qubits: Qubit (11, A qubit that is used for quantum computing)
             sandwiches: Metal-Insulator-Metal Plate (8, Used for a quantum computer)
             qcomputers: QUANTUM Computer$!!!/s!!! (8, Used for a quantum computer)
@@ -7441,7 +7442,7 @@
         <div id="content">
             <div id="left">
                 <div id="speedData">
-                    <span data-desc="The speed multiplier for your entire game" class="smallish"></span>
+                    <span data-desc="The speed multiplier for your entire game..." class="smallish"></span>
                     <span role="presentation"></span><span role="presentation"></span><span role="presentation"></span>
                 </div>
 
@@ -8552,7 +8553,7 @@
                         </button>
                         <button class="insane" data-show="wormholes>0" data-earn="wormholeteams+1"
                             data-cost="scientists-5000"
-                            data-desc="Wormhole research teams consist of 5,000 scientists each as they try to research the wormhole and desperately hope it doesn't end the world.\nOn the bright side, they're so excited about their work you don't have to give them a single paycheck!$wormholeteams$">
+                            data-desc="Wormhole research teams consist of 5,000 scientists each as they try to research the WORMHOLE and desperately hope it doesn't end the world.\nOn the bright side, they're so excited about their work you don't have to give them a single paycheck!$wormholeteams$">
                             Make a <span class="wormhole">WORMHOLE</span> team
                         </button>
 
@@ -8574,6 +8575,11 @@
                             data-sound="building" data-cost="qubits-100000|sandwiches-100|foil-5"
                             data-desc="Build a basic quantum computer from 100,000 qubits, 100 metal sandwiches, and 5 pieces of gold foil.\n[Effectiveness: 1,000,000,000× as much as a classical computer!]$qcomputers$">
                             <span class="white">Build a QUANTUM COMPUTER</span>
+                        </button>
+                        <button class="pure" data-earn="qubitmachines+1" data-cost="aluminumarms-2.5e8"
+                            data-show="qcomputers>0" data-sound="building"
+                            data-desc="Qubit machines will cost you 250 MILLION aluminum robot arms each.\nThey produce 1 qubit every two seconds.$qubitmachines$">
+                            Get a qubit machine
                         </button>
 
                         <br>
@@ -8630,12 +8636,12 @@
                             </div>
                             <div data-cost="eee100" data-rp="1e250" data-iq="F7654321" data-show="$aliens"
                                 data-research="timetravel"
-                                data-desc="[You need 1.000e250 wormhole research points AS WELL AS 1F7,654,321 digital knowledge to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!">
+                                data-desc="[You need 1.000e250 wormhole research points AS WELL AS 1F7,654,321 digital knowledge to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!\n{This also doubles qubit production, as an extra bonus.}">
                                 <span class="move4">Time travel</span>: <span class="glow">$ee1.000e100</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="eee12" data-iq="1e1234F1234" data-show="$aliens" data-research="tetrate"
-                                data-desc="[You need 1e1,234F1,234 digital knowledge to purchase this research!]\nWhat? That big number isn't big enough? STILL!!?\n(Increase digital knowledge gain by itself automatically, {EVERY SINGLE FRAME})">
+                            <div data-cost="eee12" data-iq="F1234" data-show="$aliens" data-research="tetrate"
+                                data-desc="[You need F1,234 digital knowledge to purchase this research!]\nWhat? That big number isn't big enough? STILL!!?\n(Increase digital knowledge gain by itself automatically, {EVERY SINGLE FRAME})">
                                 <span class="move4">Tetrated AI</span>: <span class="glow">$e1.000e1.000T</span>
                                 <span class="big money"></span>
                             </div>
@@ -10219,7 +10225,7 @@
                     </span>
                     <span class="mini stripe4" data-show="warpcubes>=ee25000"
                         data-earn="warpcubes*0|cubemakers*0|hypercubes+1" id="hyperCube"
-                        data-desc="Reset ALL warp cubes and warpy workers for 1 HyperCube.\nEach HyperCube increases both warp and non-warp speed by +1% per cube.$hypercubes$">
+                        data-desc="[IMPORTANT: If your speed is flashing while in The Warp Zone, that's because the speed is automatically rounded.]Reset ALL warp cubes and warpy workers for 1 HyperCube.\nEach HyperCube increases both warp and non-warp speed by +1% per cube.$hypercubes$">
                         Gain a HyperCube
                     </span>
                     <br>
@@ -14903,11 +14909,9 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
         function updateGame() {
-            // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
-            speed = speed.mul(frame + 1).floor(true).subOrFalse(speed.mul(frame).floor(true))
-
             if (currentTab === "warp") {
-                speed = speed.mul(C("warpcubes").add(1).sqr())
+                // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
+                speed = speed.mul(C("warpcubes").add(1).sqr()).mul(frame + 1).floor(true).subOrFalse(speed.mul(frame).floor(true))
                 ID("warpItems").removeAttribute("style")
                 ID("items").style.display = "none"
                 ID("more").style.display = "none"
@@ -15041,6 +15045,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
                 var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
                 var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
+                var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120)
 
                 var fcMakers = C("fcmakers")
                 var labs = C("labs")
@@ -15282,6 +15287,8 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 var researchPoints = C("wscience")
                 var wormholeExtra = (hasResearch("wormy4") ? Hyper(true).add(C("clocks").mul("1e-15")) : Hyper(true)).mul(hasResearch("wormy2") ? 2 : 1).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60))
                 add("wscience", (hasResearch("wormy8") ? basePointGain.sqr() : basePointGain).mul(wormholeBoost).mul(hasResearch("wormy6") ? Hyper(true).add(researchPoints.sqrt()) : 1).mul(hasResearch("wormy5") ? Hyper(true).add(researchPoints.sqrt().sqrt()) : 1).mul(wormholeExtra))
+
+                add("qubits", qubitProduction)
 
                 add("s5", silverfarms.mul(silvertownPower))
                 add("s4", C("s5").mul(silvertownPower))
@@ -17134,7 +17141,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                     text = text.replace(/clock/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "tree" : "clock"))
                     var formattedText = text.replace(/\{/g, "<i>").replace(/\}|\]/g, "</i>").replace(/\[/g, '<i class="orange inherit">')
                     if (!sleekMode) {
-                        formattedText = formattedText.replace(/wormholes/ig, '<span class="small wormhole">WORMHOLES</span>').replace(/wormhole(?!"|<)/ig, '<span class="small wormhole">WORMHOLE</span>')
+                        formattedText = formattedText.replace(/WORMHOLES/g, '<span class="small wormhole">WORMHOLES</span>').replace(/WORMHOLE(?!"|<)/g, '<span class="small wormhole">WORMHOLE</span>')
                     }
                     text = formattedText.replace(/<br>/g, " ").replace(/<.+?>/g, "")
 
