@@ -10274,7 +10274,7 @@
                     </span>
                     <span class="mini stripe4" data-show="warpcubes>=ee25000"
                         data-earn="warpcubes*0|cubemakers*0|hypercubes+1" id="hyperCube"
-                        data-desc="[IMPORTANT: If your speed is flashing while in The Warp Zone, that's because the speed is automatically rounded.]Reset ALL warp cubes and warpy workers for 1 HyperCube.\nEach HyperCube increases both warp and non-warp speed by +1% per cube.$hypercubes$">
+                        data-desc="[IMPORTANT: If your speed multiplier is flashing upon getting a HyperCube, that's because the speed is automatically rounded to the nearest integer.]Reset ALL warp cubes and warpy workers for 1 HyperCube.\nEach HyperCube increases both warp and non-warp speed by +1% per cube.$hypercubes$">
                         Gain a HyperCube
                     </span>
                     <br>
@@ -12416,10 +12416,16 @@
 cccccccccccccccccccccccccccccccccc g        !!!c
 !!$     $        PPPPP !!!         gcccccccccc!c               !!!!!PPPP
  ggggggggggggggggggggggggggggggggggg      bbbb b            !!!rrrrrccccccc!  !  !
-                          ! ! ! ! ! ! ! ! ! ! ! !   $$ PPPPPrrrr          bbbbbbbbb
-PP  !!!!!      ! !rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-bbbbbbbbbbbbbb r r
-              ggg` : [`gS       g
+                          ! ! ! ! ! ! ! ! ! ! ! !   $$ PPPPPrrrr    $    bbbbbbbbbrrrrrrr
+PP  !!!!!      ! !rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr       g                      !!!                   $$
+bbbbbbbbbbbbbb r r!!     !! PP $$           !                      !ggg                   ccccc             cc c c  Pbbb
+             cgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg      Pcc  c   bbb
+                                    P                  ccc              ggggggg      bbb   $$$     g  ccc$cc ! cbbbbb
+                               $$$ccc !!        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$c    $b
+                               $$$  ccccccc       Pc     !     !     !     !     !     !     !     !     !    $$b
+                               $$$        grrrrrbbbbbbggbbbbbbbbbbgbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccc
+                            !        !        !        ! !!!!!!   !   !! PPP !
+                            rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr` : [`gS       g
 gggc  cggg
 rrrr  rrrr
 brrr  rrrb
@@ -12450,12 +12456,12 @@ bb rb rbbb
 bbbr  rbbr
 bbbr  rrrr
 brbr  rbrr
-bbbr  rbbr
-bbbr  rbbb           $
-bbbr  rbbb          eee
-b br  rb     e     ccccc
-b br  rbrb e g    ccccccc
-br r       g   ccccccccccc
+bbbr  rbbr             cccccccccccccc
+bbbr  rbbb           $            $cc
+bbbr  rbbb          eee      e    ccc
+b br  rb     e     ccccc    ccc  ccccggg
+b br  rbrb e g    ccccccc              g
+br r       g   ccccccccccccccccggggggggg
 bbbr rrbbbg gggg
 bbbr  rbbb  rrrr
 bbbr  rbbr  r  r
@@ -12618,7 +12624,17 @@ gggccccccccccccccccccc$c
 b              $$$$$$$
 b              $PP  $$           !!!    !!!    !     rrrrrr
 b              $cc  cc  cccccccccggccccccccccccccccccccggcc
-c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
+c   c   c  cggggggggggggggg
+b$$$$$$$$$$$$$$$$$$$$$$$$$$
+b$$$$$$$$$$$$$$$$$$$$$$$$$$
+b$$$$$$$$$$$$$$$$$$$$$$$$$$
+c$$$$$$$$$$$$$$$$$$$$$$$$$$                  !
+c$$$$$$$$$e$e$e$$$$$$$$$$$$PeeeP             c
+cPccccccccccccccccccccccccccccc e  e  e    ccc
+cP               e  e  e eegggggggggggggccccccccc
+ccccccccccccccccccccccccc$$cc            cc      $
+                                 gggggg       PPrrr
+gggggggggggggggggggggggggggggggggggggggggggggggggrrrr`][zone - 1], 10, 10)
         }
 
         // Formats a Hyper
@@ -14986,6 +15002,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 updateClass(ID("cps"), "purple")
                 Game.triggerEventListeners("draw", { inWarp: true })
             } else {
+                speed = speed.mul(frame + 1).floor(true).subOrFalse(speed.mul(frame).floor(true))
                 ID("warpItems").style.display = "none"
                 ID("items").removeAttribute("style")
                 ID("more").removeAttribute("style")
