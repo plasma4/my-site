@@ -15456,12 +15456,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrr`][zone - 1], 10, 10)
 
                 var negativeElement = ID("wattsNegative")
                 var subtracted = startingWatts.sub(wattUse)
+                updateId("wattsLeft", format(subtracted, "watt"))
                 if (subtracted.isNegative()) {
                     status = 1
-                    updateId("wattsLeft", format(subtracted, "watt"))
                     negativeElement.removeAttribute("style")
                 } else {
-                    updateId("wattsLeft", format(subtracted, "watt"))
                     negativeElement.style.visibility = "hidden"
                 }
 
@@ -16481,7 +16480,6 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrr`][zone - 1], 10, 10)
                     }
                 }
             }
-
 
             if (C("clocks").isLess(1)) {
                 updateClass(ID("buildClock"), "important")
