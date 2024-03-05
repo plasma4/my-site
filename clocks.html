@@ -15222,7 +15222,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrr`][zone - 1], 10, 10)
                 }
 
                 var totalCoalCost = megaTurbinePower.mul(turbineOverclock).mul(600).add(turbinePower.mul(turbineOverclock).mul(5))
-                var status = 1
+                var status = 2
                 if (turbinesEnabled && (turbinePower.isPositive() || megaTurbinePower.isPositive())) {
                     if (remove("coal", turbinePower.mul(turbineOverclock).mul(5))) {
                         watts = watts.add(turbinePower.mul(5000))
@@ -15455,17 +15455,12 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrr`][zone - 1], 10, 10)
                 updateId("metaSell", C("metaspin").add(10).log10().add(1.5).format(4) + "×")
 
                 var negativeElement = ID("wattsNegative")
-                var subtracted = startingWatts.subOrFalse(wattUse)
-                var sign = 1
-                if (subtracted === false) {
-                    sign = -1
-                    subtracted = wattUse.subOrFalse(startingWatts)
-                    updateId("wattsLeft", "-" + format(subtracted, "watt"))
+                var subtracted = startingWatts.sub(wattUse)
+                if (subtracted.isNegative()) {
+                    status = 1
+                    updateId("wattsLeft", format(subtracted, "watt"))
                     negativeElement.removeAttribute("style")
                 } else {
-                    if (subtracted.isZero()) {
-                        sign = 0
-                    }
                     updateId("wattsLeft", format(subtracted, "watt"))
                     negativeElement.style.visibility = "hidden"
                 }
@@ -15664,7 +15659,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrr`][zone - 1], 10, 10)
                 }
 
                 if (status !== -1) {
-                    newStats = (status === 1 ? '<b class="green">Power grid: Stable</b><br>' : '<b class="red">Power grid: UNSTABLE</b><br>') + newStats
+                    newStats = ['<b class="red">Power grid: UNSTABLE</b><br>', '<b class="orange">Power grid: NOT FULLY POWERED</b><br>', '<b class="green">Power grid: Stable</b><br>'][status] + newStats
                 }
 
                 if (valueMultiplier.isMore(1)) {
@@ -15725,7 +15720,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrr`][zone - 1], 10, 10)
                 }
                 updateId("achievementAmount", ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
 
-                Game.triggerEventListeners("draw", { inWarp: false, startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted, remainingWattsSign: sign })
+                Game.triggerEventListeners("draw", { inWarp: false, startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted })
             }
 
             updateTip()
