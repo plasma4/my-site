@@ -7404,6 +7404,9 @@
             <span data-tab="wages" title="Wages menu" data-show="$wages"><span class="money"></span></span>
             <span data-tab="metaclock" title="MetaClock menu" data-show="$meta"><span class="metac"></span></span>
             <span data-tab="appley" title="Exotic apple menu" data-show="$apples"><span class="gapple"></span></span>
+            <span data-tab="timetravel" title="Time travel menu" data-show="$timetravel">
+                <span class="hue gc"></span><span class="hue gc"></span><span class="hue gc"></span>
+            </span>
             <span data-tab="magic" title="*MAGICAL* menu" data-show="$magic"><span class="wand"></span></span>
             <span data-tab="dungeon" title="Dungeon menu" data-show="$dungeon"><span class="brownbrick"></span></span>
             <span data-tab="materials" title="Materials menu" data-show="family>1"><span class="brick"></span></span>
@@ -8582,15 +8585,6 @@
                             Get a qubit machine
                         </button>
 
-                        <br>
-                        <button class="stripe5" data-show="$timetravel" data-earn="timemachines+1" data-sound="building"
-                            data-cost="qcomputers-3"
-                            data-desc="[After unlocking your first time machine, you are able to get time shards in the MAGIC menu to increase their production even further!]\n{Each time machine produces 10.000T clocks a SECOND.}\nThere's so many normal clocks in the future that time machines are limited by the amount of matter that they can fit through them.$timemachines$">
-                            <u data-desc="This isn't a link...hover OUTSIDE of me already!$timemachines$">
-                                <b class="burning4">Build a time machine</b>
-                            </u>
-                        </button>
-
                         <button class="diamond" data-earn="wormgenerators+1" data-cost="steel-1e12|wormholes-1"
                             data-sound="building" data-show="$wormpower"
                             data-desc="{Each wormhole power generator costs an insurmountable 1 TRILLION steel as well as a wormhole but grants you 500 BILLION watts at no additional cost!}\nEach wormhole seems to contain almost an ENDLESS amount of power within them. Start making wormhole power generators and see the magic happen!$wormgenerators$">
@@ -8636,7 +8630,7 @@
                             </div>
                             <div data-cost="eee100" data-rp="1e250" data-iq="F7654321" data-show="$aliens"
                                 data-research="timetravel"
-                                data-desc="[You need 1.000e250 wormhole research points AS WELL AS 1F7,654,321 digital knowledge to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!\n{This also doubles qubit production, as an extra bonus.}">
+                                data-desc="[You need 1.000e250 wormhole research points AS WELL AS F7,654,321 digital knowledge to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!\n[You will see a new menu pop up.] {This also doubles qubit production, as an extra bonus.}">
                                 <span class="move4">Time travel</span>: <span class="glow">$ee1.000e100</span>
                                 <span class="big money"></span>
                             </div>
@@ -8768,6 +8762,60 @@
                             <b class="small">This means exponential growth!</b>
                         </div>
                     </div>
+                </div>
+
+                <div id="timetravel" style="display: none">
+                    <span class="big hue gc"></span>
+                    Time travel? In a clock game? No way!
+                    <br>
+                    <span class="timemachineach" role="img" alt="A time machine in a meadow!"></span>
+                    <br>
+                    <button class="stripe5" data-earn="timemachines+1" data-sound="building" data-cost="qcomputers-3"
+                        data-desc="[After unlocking your first time machine, you are able to get time shards in the MAGIC menu to increase their production even further!]\n{Each time machine produces 10.000T clocks a SECOND.}\nThere's so many normal clocks in the future that time machines are limited by the amount of matter that they can fit through them.$timemachines$">
+                        <u data-desc="This isn't a link...hover OUTSIDE of me already!$timemachines$">
+                            <b class="burning4">Build a time machine</b>
+                        </u>
+                    </button>
+                    <br>
+                    <span class="mini stripe4" data-cost="clocks-2.5e24" data-show="qubitmachines>0" data-earn="$time1"
+                        data-hide="$time1"
+                        data-desc="[Costs 2.500S clocks.] Double time machine production rate by making your time machines a bit bigger!">
+                        Make time machines larger
+                    </span>
+                    <span class="mini stripe4" data-cost="clocks-4e25" data-show="qubitmachines>0" data-earn="$time2"
+                        data-hide="$time2"
+                        data-desc="[Costs 40.000S clocks.] Double time machine production rate one more time by making time machines even BIGGER!">
+                        Make time machines larger++
+                    </span>
+
+                    <hr>
+                    <button class="pure" data-show="coppertowers>0" data-earn="wormholes+1" data-cost="burnt-1e100"
+                        data-desc="Oooh, a wormhole to another dimension!\nCosts 1e100 grams of burnt dark matter though.\nEach wormhole is larger than the biggest superclusters of the multiverse.$wormholes$">
+                        Construct a <span class="wormhole">WORMHOLE</span>
+                    </button>
+                    <button class="pure" data-earn="qubits+100" data-cost="wormholes-1" data-show="$quantum"
+                        data-sound="building"
+                        data-desc="Deconstructing a wormhole gives you 100 qubits, which are used for your quantum computers!$qubits$">
+                        Deconstruct a wormhole <span class="bigger binary"></span>
+                    </button>
+                    <button class="pure" data-show="qubits>0" data-earn="sandwiches+1" data-cost="money-4000"
+                        data-desc="No, they don't taste good (but they cost you $4,000).\nInstead, you use them for quantum technology!$sandwiches$">
+                        Purchase a <span class="burning2">metal</span> sandwich
+                    </button>
+                    <button class="pure" data-show="qubits>=1000" data-earn="foil+1" data-cost="money-199950"
+                        data-desc="Getting your hands on just 1 piece of high-quality gold foil will set you back $199,950, which is likely a scam, but that's no problem, right?$foil$">
+                        Purchase gold foil
+                    </button>
+                    <button class="stripe4" data-show="sandwiches>0|foil>0" data-earn="qcomputers+1"
+                        data-sound="building" data-cost="qubits-100000|sandwiches-100|foil-5"
+                        data-desc="Build a basic quantum computer from 100,000 qubits, 100 metal sandwiches, and 5 pieces of gold foil.\n[Effectiveness: 1,000,000,000× as much as a classical computer!]$qcomputers$">
+                        <span class="white">Build a QUANTUM COMPUTER</span>
+                    </button>
+                    <button class="pure" data-earn="qubitmachines+1" data-cost="aluminumarms-2.5e8"
+                        data-show="qcomputers>0" data-sound="building"
+                        data-desc="Qubit machines will cost you 250 MILLION aluminum robot arms each.\nThey produce 1 qubit every two seconds.$qubitmachines$">
+                        Get a qubit machine
+                    </button>
                 </div>
 
                 <div id="magic" style="display: none">
@@ -9290,7 +9338,7 @@
                             Travel to Zone II
                         </span>
                         <span class="mini crystal" data-show="$candyzone" id="candyzone" data-earn=""
-                            data-desc="{mmm t}[a]{s}[t]{y}\nThe Candy Zone gives you TONS of red candy, yellow candy, and purple candy.">
+                            data-desc="{mmm} t[a]s[t]{yyyy}\nThe Candy Zone gives you TONS of red candy, yellow candy, and purple candy.">
                             Travel to The Candy Zone
                             <span class="redcandy"></span><span class="yellowcandy"></span><span
                                 class="purplecandy"></span>
@@ -15222,7 +15270,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                 var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.15)
                 var clockmakerIncome = clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)
 
-                cpt = cpt.add(C("timemachines").mul(Hyper(true).add(C("timeshards"))).mul(1e13).div(60)).add(electricCPT).add(clockmakerIncome).add(familyIncome)
+                cpt = cpt.add(C("timemachines").mul(Hyper(true).add(C("timeshards"))).mul(hasResearch("time1") ? "2e13" : "1e13").div(hasResearch("time2") ? 30 : 60)).add(electricCPT).add(clockmakerIncome).add(familyIncome)
                 if (shards.isPositive()) {
                     cpt = cpt.mul(shardPower)
                 }
