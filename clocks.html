@@ -1866,11 +1866,19 @@
             transition: text-shadow 250ms;
         }
 
-        .outlined:hover {
+        .outlined2 {
+            text-shadow: 0 0 1px white, 0 0 1px white, 0 0 1px white, 0 0 1px white, 0 0 1px white;
+            color: inherit;
+            transition: text-shadow 250ms;
+        }
+
+        .outlined:hover,
+        .outlined2:hover {
             text-shadow: 3px 3px 2px black;
         }
 
-        .outlined:active {
+        .outlined:active,
+        .outlined2:active {
             text-shadow: 4px 4px 2px white, 4px 4px 1px white;
         }
 
@@ -10157,7 +10165,7 @@
 
                 <div id="warp" style="display: none">
                     <div class="mini special" id="exitWarp">
-                        <span class="outlined small blood">EXIT THE WARP ZONE</span>
+                        <span class="outlined2 small blood">EXIT THE WARP ZONE</span>
                     </div>
 
                     <div class="small red">
@@ -16740,7 +16748,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
             }
 
             // Update dungeons (and also not dragons, oops)
-            if (hasResearch("dungeon")) {
+            if (currentTab !== "warp" && hasResearch("dungeon")) {
                 updateDungeon()
             }
 
