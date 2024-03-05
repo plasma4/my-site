@@ -496,6 +496,7 @@
         }
 
         #navigation {
+            user-select: none;
             font-size: 12px;
             text-align: center;
         }
@@ -17180,7 +17181,7 @@ c   c   c  cggggggggggggggg`][zone - 1], 10, 10)
                             if (text.charCodeAt(text.length - 1) !== 33) {
                                 text += "."
                             }
-                            if (maxClicks !== null) {
+                            if (maxClicks !== null && maxClicks.isLess("1e50")) {
                                 text += "<br>You could click on this " + maxClicks.format(3) + " times" + (maxClicks.isLess("1e7") ? " [(including incomplete clicks)] with those items.}" : ".}")
                             }
                         }
