@@ -11688,7 +11688,16 @@
 
         attachEvent("skip", function () {
             setTimeout(function () {
-                ID(currentTab).getElementsByTagName("button")[0].focus()
+                if (ID("crystal").hasAttribute("style")) {
+                    ID("crystal").focus()
+                } else {
+                    var buttons = ID(currentTab).getElementsByTagName("button")
+                    if (buttons.length !== 0) {
+                        buttons[0].focus()
+                    } else {
+                        ID("viewDevlog").focus()
+                    }
+                }
             }, 5)
         })
 
@@ -12274,7 +12283,7 @@
         })
 
         var crystalTotal = 0, crystalTime = -1, crystalSpeed = 30000
-        ID("crystal").addEventListener("click", function () {
+        attachEvent("crystal", function () {
             if (alreadyClicked) {
                 return
             }
