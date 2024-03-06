@@ -15162,7 +15162,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrr`][zone - 1], 10, 10)
 
                 var molders = C("molders")
                 var barmolders = C("barmolds")
-                var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 4 : 1).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1)
+                var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 0.012 : 0.003).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.1) : 0.1)))
 
                 var managers = C("managers")
                 var managerPower = managers.mul(0.006 - 0.006 * Math.exp(-0.04 * managers))
@@ -15398,7 +15398,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrr`][zone - 1], 10, 10)
                 add("goo", wells.mul(0.000165))
                 add("energy", ponds.mul(0.000008))
 
-                multiExchange("gc", jewelerPower.mul(0.003).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.1) : 0.1))), ["clocks", "money", "gold"], [jewelerPower.mul(0.012), jewelerPower.mul(0.003), jewelerPower.mul(0.003)])
+                multiExchange("gc", jewelerPower, ["clocks", "money", "gold"], [jewelerPower.mul(4), jewelerPower, jewelerPower])
                 exchange("goldb", barmolders.mul(0.005), "gold", 25)
 
                 exchangeLimit(C("bottles"), "naphtha", separators.mul(0.015), "ngas")
