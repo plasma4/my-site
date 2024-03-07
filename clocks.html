@@ -7256,7 +7256,7 @@
             metaresets|wscience|bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium
         </div>
         <div id="wikiData">
-            hyperclocks: HyperClock (11, A weird and strange clock)
+            hyperclocks: %HyperClock (11, A weird and strange clock)
             stablefrancium: Picogram$ of Stabilized Francium/s of Stabilized Francium (9, A portion of stable francium)
             francium: Francium Atom (8, Why does uranium get all the glory?)
             franciummakers: Francium Maker (9, Someone who makes francium)
@@ -8868,6 +8868,11 @@
                         data-hide="$time3"
                         data-desc="[Costs 100.00S clocks.] Allow golden shards to increase time machine production!">
                         Shardy
+                    </span>
+                    <span class="mini stripe4" data-cost="clocks-2e26" data-show="$time3" data-earn="$shardy"
+                        data-hide="$shardy"
+                        data-desc="[Costs 200.00S clocks.] Increase qubit production based on the amount of golden shards you own!">
+                        Quantum shardy
                     </span>
 
                     <hr>
@@ -15216,7 +15221,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
                 var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
                 var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
-                var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3))
+                var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1)
 
                 var fcMakers = C("fcmakers")
                 var labs = C("labs")
