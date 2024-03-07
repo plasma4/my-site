@@ -8853,6 +8853,11 @@
                         data-desc="[Costs 1.000S clocks.] Allow you to make strange scientific advancements using, you guessed it, CLOCKS.">
                         Clocks are everything
                     </span>
+                    <span class="mini stripe4" data-cost="hyperclocks-2500" data-show="qubitmachines>0"
+                        data-earn="$production" data-hide="$production"
+                        data-desc="[Costs 2,500 HyperClocks.] Triple golden shard generation speed.">
+                        Hyperproduction
+                    </span>
                     <span class="mini stripe4" data-cost="clocks-2.5e24" data-show="qubitmachines>0" data-earn="$time1"
                         data-hide="$time1"
                         data-desc="[Costs 2.500S clocks.] Double time machine production rate by making your time machines a bit bigger!">
@@ -15152,7 +15157,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var oldMoney = new Hyper(C("money"))
 
-                add("shards", C("hyperclocks").div(12))
+                add("shards", C("hyperclocks").div(hasResearch("production") ? 4 : 12))
                 var shards = C("shards")
                 var shardPower = shards.isZero() ? Hyper(true) : shards.mul(10000).sqrt(true).sqrt(true)
                 if (hasResearch("polish")) {
@@ -16910,7 +16915,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
 
             timeBonus = Hyper(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0).mul(Hyper(true).add(C("hypercubes").mul(0.01)))
-            speed = speed.max(timeBonus).mul(baseSpeed)
+            speed = speed.mul(Hyper(true).add(C("hypercubes").mul(0.01))).max(timeBonus).mul(baseSpeed)
 
             var noBoosts = ID("noBoosts")
             if (speed.isEqual(timeBonus.mul(baseSpeed))) {
