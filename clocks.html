@@ -5643,9 +5643,10 @@
                         power.$[2] = BigInt(power.$[2])
                     } else {
                         var category = power.$[1]
-                        if (category === LIMITMINUSONE) {
-                            throw new RangeError("The resulting value is too large!")
-                        }
+                        // Ignore the limit
+                        // if (category === LIMITMINUSONE) {
+                        //     throw new RangeError("The resulting value is too large!")
+                        // }
                         power.$[1]++
                     }
                     return power
@@ -6256,13 +6257,13 @@
                 var category = this.$[1]
                 if (category >= 2) {
                     if (category >= 1e7) {
-                        return (this.$[0] === 1 ? "" : "-") + "F" + formatValue(++category)
+                        return sign + "F" + formatValue(category + (typeof category === "bigint" ? 2n : 2))
                     }
                     var part1 = this.$[2]
                     var part2 = this.$[3].toString()
                     if (category >= 5) {
                         var finalPart
-                        if (part1 < 1000n && category < 1000) {
+                        if (part1 < 1000n) {
                             var hyperData = new Hyper(part2)
                             hyperData.$[2] -= 49
                             hyperData = hyperData.log10(true).add(part1)
@@ -6275,7 +6276,7 @@
                         } else {
                             finalPart = formatValue(part1)
                         }
-                        return sign + finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",")
+                        return sign + finalPart + "|F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",")
                     } else {
                         return sign + ("e".repeat(--category) + part2[0] + "." + part2.slice(1, 4) + "e" + formatValue(part1))
                     }
@@ -6337,9 +6338,10 @@
                     value = HyperPower(TEN, value)
                 }
                 var newCategory = BigInt(value.$[1]) + i
-                if (newCategory >= BIGLIMIT) {
-                    throw new RangeError("The resulting value is too large!")
-                }
+                // Ignore the limit
+                // if (newCategory >= BIGLIMIT) {
+                //     throw new RangeError("The resulting value is too large!")
+                // }
                 value.$[1] = newCategory < 9007199254740992n ? Number(newCategory) : newCategory
                 return value
             }
@@ -6368,9 +6370,10 @@
                     value = HyperPower(TEN, value)
                 }
                 var newCategory = BigInt(value.$[1]) + i
-                if (newCategory >= BIGLIMIT) {
-                    throw new RangeError("The resulting value is too large!")
-                }
+                // Ignore the limit
+                // if (newCategory >= BIGLIMIT) {
+                //     throw new RangeError("The resulting value is too large!")
+                // }
                 value.$[1] = newCategory < 9007199254740992n ? Number(newCategory) : newCategory
                 return value
             }
@@ -8619,20 +8622,25 @@
                         </button>
                         <button class="cherrybg" id="improveAI" data-show="$improve" data-earn="" data-cost="money-5e22"
                             data-sound="transaction"
-                            data-desc="Improve your AI further!\nNOTE: Confused about why there's an [F] in your number? The value after that represents the number of [e] values, so F5 equals eeeee1, or eeee10. This means that the number gets significantly bigger!$iq$">
+                            data-desc="Improve your AI further!\nNOTE: Confused about why there's an [F] in your number? The value after that represents the number of [e] values, so 3|F5 equals eeeee3, or eeee1,000. This means that the number gets significantly bigger!$iq$">
                             Improve AI (MORE)
                         </button>
 
                         <div id="wormsearch" class="study">
-                            <div data-cost="eee1000" data-iq="F25000000" data-show="$tetrate" data-research="genius"
-                                data-desc="[You need F25.000M digital knowledge to purchase this research!]\nQuantum computers are pretty powerful, right?\nThe more quantum computers you have, the faster the tetrational growth is.">
+                            <div data-cost="eee1000" data-iq="F100000000" data-show="$tetrate" data-research="genius"
+                                data-desc="[You need F100.00M digital knowledge to purchase this research!]\nQuantum computers are pretty powerful, right?\nThe more quantum computers you have, the faster the tetrational growth is.">
                                 <span class="move4">Quantum genius</span>: <span class="glow">$ee1.000e1,000</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="eee100" data-rp="1e250" data-iq="F7654321" data-show="$aliens"
+                            <div data-cost="eee100" data-rp="1e250" data-iq="F76543210" data-show="$aliens"
                                 data-research="timetravel"
-                                data-desc="[You need 1.000e250 wormhole research points AS WELL AS F7,654,321 digital knowledge to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!\n[You will see a new menu pop up.] {This also doubles qubit production, as an extra bonus.}">
+                                data-desc="[You need 1.000e250 wormhole research points AS WELL AS F76,543,210 digital knowledge to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!\n[You will see a new menu pop up.] {This also doubles qubit production, as an extra bonus.}">
                                 <span class="move4">Time travel</span>: <span class="glow">$ee1.000e100</span>
+                                <span class="big money"></span>
+                            </div>
+                            <div data-cost="eee12" data-iq="F10000" data-show="$aliens" data-research="superbrain"
+                                data-desc="[You need F10,000 digital knowledge to purchase this research!]\nYour digital knowledge increases faster, based on your wormhole research points.">
+                                <span class="move4">Super brainy</span>: <span class="glow">$e1.000e1.000T</span>
                                 <span class="big money"></span>
                             </div>
                             <div data-cost="eee12" data-iq="F1234" data-show="$aliens" data-research="tetrate"
@@ -8645,8 +8653,8 @@
                                 <span class="move4">AI improvement</span>: <span class="glow">$50.000S</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="4e24" data-iq="e1e5000000" data-show="$aliens" data-research="aiselling"
-                                data-desc="[You need e1.000e5,000,000 digital knowledge to purchase this research!]\nEven a professional seller sells compared to one of these!\n{This upgrade DOES NOT stay upon resetting.}\n(Increase clock sell value somewhat depending on your digital knowledge!)">
+                            <div data-cost="4e24" data-iq="e1e2200000" data-show="$aliens" data-research="aiselling"
+                                data-desc="[You need e1.000e2,200,000 digital knowledge to purchase this research!]\nEven a professional seller sells compared to one of these!\n{This upgrade DOES NOT stay upon resetting.}\n(Increase clock sell value somewhat depending on your digital knowledge!)">
                                 <span class="rainbow">AI selling</span>: <span class="glow">$4.000S</span>
                                 <span class="big money"></span>
                             </div>
@@ -11518,13 +11526,11 @@
         function cheat() {
             if (doubleCheck("Actually cheat?")) {
                 if (doubleCheck("Actually, truly cheat?")) {
-                    if (doubleCheck("Actually, TRULY cheat? THIS IS YOUR LAST CHANCE TO SAVE UNCHEATED PROGRESS!")) {
+                    if (doubleCheck("Actually, TRULY cheat? THIS IS YOUR LAST CHANCE TO KEEP UNCHEATED PROGRESS!")) {
                         var value = Hyper("1e80")
                         for (var i = 0; i < properties.length; i++) {
                             var name = properties[i]
-                            if (name === "qcomputers") {
-                                add(name, Hyper("1e8"))
-                            } else if (name !== "bonus1" && name !== "bonus2" && name !== "bonus3") {
+                            if (name !== "bonus1" && name !== "bonus2" && name !== "bonus3") {
                                 add(name, value)
                             }
                         }
@@ -15301,7 +15307,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     var iq = C("iq")
                     var iqGain = C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1)
                     if (hasResearch("tetrate")) {
-                        iqGain = iqGain.mul(iq.pow10Repeat(speed.add(speed).mul(hasResearch("genius") ? Hyper(true).add(C("qcomputers").sqr()) : 1)))
+                        iqGain = iqGain.mul(iq.pow10Repeat(speed.add(speed).mul(hasResearch("genius") ? Hyper(true).add(C("qcomputers").sqr()) : 1).mul(hasResearch("superbrain") ? C("wscience").add(1).log2().add(1).log10().add(1) : 1)))
                     }
                     if (hasResearch("singularity")) {
                         iqGain = iq.add(1).pow(Hyper.pow(3, speed))
