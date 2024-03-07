@@ -7268,6 +7268,7 @@
             warpcubes: Warp Cube (11, A mysterious warping and pulsing cube)
             hypercubes: %HyperCube (12, A cube that increases the speed of EVERYTHING)
             cubemakers: Cubemaker (11, Someone who makes warp cubes)
+            supermakers: SUPER Cubemaker (11, A special type of cubemaker)
             wormholes: Wormhole (12, A...wormhole to another dimension)
             qubitmachines: Qubit Machine (12, A special machine to produce qubits)
             supercoolers: Supercooler (12, A machine that is really good at making qubits)
@@ -10351,6 +10352,12 @@
                         class="stripe4">
                         Get a cubemaker
                     </button>
+                    <button data-earn="supermakers+1" data-cost="stablefrancium-EXPsupermakers,e1500"
+                        data-show="warpcubes>=100"
+                        data-desc="Increase cubemaker production speed with these SUPER workers.$supermakers$"
+                        class="stripe5">
+                        Get a SUPER cubemaker
+                    </button>
                     <br>
                     <span class="mini stripe4" data-cost="warpcubes-25" data-show="cubemakers>0"
                         data-earn="$autoclicker" data-fade="$autoclicker"
@@ -10362,7 +10369,7 @@
                         data-desc="It'll cost you e1e40,000 warp cubes to increase the autoclicker speed by an additional +15/sec (a total of 40/sec).">
                         Increase autoclicker speed AGAIN
                     </span>
-                    <span class="mini stripe4" data-show="warpcubes>=ee25000"
+                    <span class="mini stripe4" data-show="!warpcubes>=ee25000"
                         data-earn="warpcubes*0|cubemakers*0|hypercubes+1" id="hyperCube"
                         data-desc="[IMPORTANT: If your speed multiplier is flashing upon getting a HyperCube, that's because the speed is automatically rounded to the nearest integer.]Reset ALL warp cubes and warpy workers for 1 HyperCube.\nEach HyperCube increases both warp and non-warp speed by +1% per cube.$hypercubes$">
                         Gain a HyperCube
@@ -10769,6 +10776,28 @@
                         Made by Leo Zhang. All rights reserved!
                     </strong>
 
+                    <br>
+                    Features:
+                    <ul>
+                        <li class="rainbow">built-in autoclicker <span class="check"></span></li>
+                        <li class="rainbow">custom themes <span class="check"></span></li>
+                        <li class="rainbow">HOURS of gameplay</li>
+                        <li>Unlocking the MULTIVERSE! <span class="check"></span></li>
+                        <li>Time travel (no, really...well, sort of not really) <span class="check"></span></li>
+                        <li>clicky sound effects <span class="check"></span></li>
+                        <li>ASCENSION!!! <span class="check"></span></li>
+                        <li>Exotic wood types (yes, PLURAL!!!) <span class="check"></span></li>
+                        <li>Clock types <span class="check"></span></li>
+                        <li>Clockmakers, robot arms and factories <span class="check"></span></li>
+                        <li>Phoenixes <span class="check"></span></li>
+                        <li>The electric age <span class="check"></span></li>
+                        <li>Mining and smelting <span class="check"></span></li>
+                        <li>Research and science (over 100 of them!) <span class="check"></span></li>
+                    </ul>
+                    <div class="smallish purple">
+                        Version <b>0.2.2</b>: HyperCubes from The Warp Portal are finally FINISHED!
+                    </div>
+                    <br>
                     <div class="small red">
                         Febuary 25, 2024: Added spices to dungeons!
                     </div>
@@ -10896,62 +10925,6 @@
                         And...NEW Ascensions exist! Get an omega-manager and reset for golden shards!
                         <span class="shard"></span><span class="shard"></span><span class="shard"></span>
                     </b>
-
-                    <br><br><br>
-                    FUTURE Plans:
-                    <ul>
-                        <li>
-                            <b>
-                                Make golden shards have a LOT more uses and tie it in to researches
-                                (golden shard users, yes, there <i>could</i> be more!)
-                            </b>
-                        </li>
-                        <li>
-                            <del>
-                                Going to merge rocket construction with ascending soon and...
-                                hopefully that won't take 200 forevers (thanks for your support!!!)
-                            </del>
-                            <ins>Finished!</ins>
-                        </li>
-                        <li>
-                            <del>More computer technologies and fun stuff!!!</del>
-                            <ins>Finished!</ins>
-                        </li>
-                    </ul>
-
-                    <ul>
-                        <li><del>How about I add more when the game is better?</del></li>
-                        <li><del>oh wait programming doesn't work like that</del></li>
-                    </ul>
-
-                    Future plans for magic:
-                    <ul>
-                        <li><del>Add magical stuff back in</del> <ins>DONE!</ins> <span class="check"></span></li>
-                        <li>
-                            More magical spells and special <span class="serif smaller pink">MAGICAL</span>
-                            researches
-                            <span class="cross"></span>
-                        </li>
-                        <li>A weird magical marketplace connected to ALIENS <span class="cross"></span></li>
-                    </ul>
-
-                    Features:
-                    <ul>
-                        <li>HOURS of <del>pain</del> <ins>I mean fun...fun</ins></li>
-                        <li class="rainbow">themes <span class="check"></span></li>
-                        <li>Unlocking the MULTIVERSE! <span class="check"></span></li>
-                        <li>Time travel (no, really...well, sort of not really) <span class="check"></span></li>
-                        <li>ascension again!!! <span class="check"></span></li>
-                        <li>ASCENSION!!! <span class="check"></span></li>
-                        <li>Exotic wood types (yes, PLURAL!!!) <span class="check"></span></li>
-                        <li>Buttons <span class="check"></span></li>
-                        <li>Clock types <span class="check"></span></li>
-                        <li>Clockmakers, robot arms and factories <span class="check"></span></li>
-                        <li>Mining and smelting <span class="check"></span></li>
-                        <li>The electric age <span class="check"></span></li>
-                        <li>Research and science (over FIFTY of them!) <span class="check"></span></li>
-                        <li>Phoenixes <span class="check"></span></li>
-                    </ul>
 
                     <br>
                     <div class="small orange">
@@ -11264,7 +11237,7 @@
         ID("script").remove()
 
         // Set the version
-        const version = "0.2.1"
+        const version = "0.2.2"
 
         var Hyper2 = ExpantaNum
         Hyper2.prototype.isPlural = function () {
@@ -13554,7 +13527,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     if (loaded) {
                         reset(true);
                     }
-                    if (version === "0.0.5.1" || version === "0.1.0" || version === "0.1.1" || version === "0.2.0" || version === "0.2.1") {
+                    if (version === "0.0.5.1" || version === "0.1.0" || version === "0.1.1" || version === "0.2.0" || version === "0.2.1" || version === "0.2.2") {
                         // I minimized the saving code and lost the non-compressed version, so only this part makes much sense. Oops!
                         function proceed(endingString) {
                             var index = $.indexOf(endingString)
@@ -13575,7 +13548,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                         autosellOn = proceed("AX") === "t"
                         autoClick = proceed("\n") === "OX"
-                        if (version === "0.2.0" || version === "0.2.1") {
+                        if (version === "0.2.0" || version === "0.2.1" || version === "0.2.2") {
                             collectedX = proceed("\n").split(" ")
                             collectedY = proceed("\n").split(" ")
                             for (var c = 0; c < collectedX.length; c++) {
@@ -13798,6 +13771,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             stuff2[properties[t]] = new Hyper()
                         }
                         stuffTotals = Object.assign(stuff2, parseCompact(T[1], compactedData))
+                        if (version !== "0.2.2") {
+                            clearAmount("hypercubes", 1)
+                        }
                     } else {
                         if (version === "0.0.4.1" || version === "0.0.4.2" || version === "0.0.5") {
                             w = $.indexOf("Wb");
@@ -14909,13 +14885,18 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             break
                         }
                     } else {
+                        var notTotal = false
+                        if (condition.charCodeAt(0) === 33) {
+                            notTotal = true
+                            condition = condition.slice(1)
+                        }
                         var index = condition.indexOf(">")
                         if (index === -1) {
                             console.warn("Conditions without a '>' or '>=' sign are ignored.")
                             continue
                         }
                         var name = condition.slice(0, index)
-                        var itemAmount = new Hyper(stuffTotals[name]).floor(true)
+                        var itemAmount = (notTotal ? C(name) : getTotals(name)).floor()
                         // Test for an equals sign right after it (which is ">=")
                         if (condition.charCodeAt(index + 1) === 61) {
                             if (itemAmount.isLess(condition.slice(index + 2))) {
@@ -15115,7 +15096,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         mul("francium", franciumDecay)
                     }
                 }
-                add("warpcubes", C("cubemakers").div(0.06))
+                rawAdd("warpcubes", C("cubemakers").mul(speed).pow(Hyper(2).pow(C("supermakers"))).div(0.06))
 
                 updateId("potential", "warping away")
                 updateClass(ID("cps"), "purple")
@@ -16329,7 +16310,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 enemiesDefeated++
                 enemyHealth = Hyper2(Infinity)
 
-                rawAdd("coins", new Hyper(((21 + enemyType * 6.3) * difficulty) * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).floor(true))
 
                 if (zone === 2 && hasResearch("purple")) {
                     rawAdd("purplecandy", purpleGain)
