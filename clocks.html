@@ -5530,18 +5530,13 @@
                     var oldDigits = value.$[2]
                     var newDigits = oldDigits << 1n
                     if (multiplied >= DOUBLELIMIT) {
-                        newDigits++
-                        if (newDigits >= BIGLIMIT) {
+                        if (++newDigits >= BIGLIMIT) {
                             value.$ = [1, 2, BIGDIGITS, oldDigits / 10n]
                             return value
                         }
                         value.$[3] = multiplied / BIGLIMIT
                     } else {
                         value.$[3] = multiplied / BIGONE
-                        if (newDigits >= BIGLIMIT) {
-                            value.$ = [1, 2, BIGDIGITS, oldDigits / 10n]
-                            return value
-                        }
                     }
                     value.$[2] = newDigits
                 } else if (category === 2) {
@@ -7249,7 +7244,7 @@
         </header>
 
         <div id="properties">
-            metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            hypercubes|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             francium|warpcubes|spice|magicpowder|yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -10352,8 +10347,8 @@
                         class="stripe4">
                         Get a cubemaker
                     </button>
-                    <button data-earn="supermakers+1" data-cost="stablefrancium-EXPsupermakers,e1500"
-                        data-show="warpcubes>=100"
+                    <button data-earn="supermakers+1" data-cost="stablefrancium-EXPsupermakers,e5000"
+                        data-show="warpcubes>=ee1000"
                         data-desc="Increase cubemaker production speed with these SUPER workers.$supermakers$"
                         class="stripe5">
                         Get a SUPER cubemaker
@@ -10369,9 +10364,8 @@
                         data-desc="It'll cost you e1e40,000 warp cubes to increase the autoclicker speed by an additional +15/sec (a total of 40/sec).">
                         Increase autoclicker speed AGAIN
                     </span>
-                    <span class="mini stripe4" data-show="!warpcubes>=ee25000"
-                        data-earn="supermakers*0|warpcubes*0|cubemakers*0|hypercubes+1" id="hyperCube"
-                        data-desc="[IMPORTANT: If your speed multiplier is flashing upon getting a HyperCube, that's because the speed is automatically rounded to the nearest integer.]Reset ALL warp cubes and warpy workers for 1 HyperCube.\nEach HyperCube increases both warp and non-warp speed by +1% per cube.$hypercubes$">
+                    <span class="mini stripe4" data-show="warpcubes>=ee25000" data-earn="" id="hyperReset"
+                        data-desc="[IMPORTANT: If your speed multiplier is flashing upon getting a HyperCube, that's because the speed is automatically rounded to the nearest integer.]\nReset ALL warp cubes and warpy workers for 1 HyperCube.\nEach HyperCube increases both warp and non-warp speed by +1% per cube.$hypercubes$">
                         Gain a HyperCube
                     </span>
                     <br>
@@ -12343,6 +12337,12 @@
                     setup(true)
                 }
             }
+        })
+
+        ID("hyperReset").addEventListener("click", function () {
+            clearAmount(["warpcubes", "cubemakers", "supermakers", "francium", "stablefrancium"], true)
+            add("hypercubes", Hyper(true))
+            ID("hyperReset").removeAttribute("style")
         })
 
         var crystalTotal = 0, crystalTime = -1, crystalSpeed = 30000
@@ -15076,7 +15076,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         function updateGame() {
             if (currentTab === "warp") {
                 // If the speed ends up not being an integer, this allows it to simulate it being one anyway (for example, if the result was 1.5, then every other frame would double and other frames would not)
-                speed = speed.mul(C("warpcubes").add(1).sqr()).mul(frame + 1).floor(true).subOrFalse(speed.mul(frame).floor(true))
+                speed = speed.mul(C("warpcubes").add(1).sqr())
+                if (speed.isLess("1e50")) {
+                    speed = speed.mul(frame + 1).floor(true).subOrFalse(speed.mul(frame).floor(true))
+                }
                 ID("warpItems").removeAttribute("style")
                 ID("items").style.display = "none"
                 ID("more").style.display = "none"
@@ -15096,7 +15099,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         mul("francium", franciumDecay)
                     }
                 }
-                rawAdd("warpcubes", C("cubemakers").mul(speed).pow(Hyper(2).pow(C("supermakers"))).div(0.06))
+                add("warpcubes", C("cubemakers").div(0.6))
+                pow("warpcubes", Hyper(2).pow(Hyper(2).pow(C("supermakers"))))
 
                 updateId("potential", "warping away")
                 updateClass(ID("cps"), "purple")
