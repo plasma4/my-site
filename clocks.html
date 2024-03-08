@@ -1457,6 +1457,10 @@
             color: black !important;
         }
 
+        .pure2 {
+            border-color: #df1ff1 !important;
+        }
+
         .insane {
             text-shadow: 0 0 5px white, 0 0 5px white, 0 0 5px white, 0 0 5px white, 0 0 5px white;
             box-shadow: 0 0 5px white, 0 0 2px black;
@@ -2892,7 +2896,8 @@
         }
 
         .big,
-        .hyperclock {
+        .hyperclock,
+        .question {
             margin-left: 8px;
             margin-right: 8px;
             transform: scale(2);
@@ -3082,23 +3087,23 @@
             filter: drop-shadow(1.5px 1.5px 1.5px #311d);
         }
 
-        @keyframes floating {
-            0% {
-                transform: translateY(2.5px);
-            }
-
-            60% {
-                transform: translateY(-2.5px);
-            }
-
-            100% {
-                transform: translateY(2.5px);
-            }
-        }
-
         .question {
             animation: floating 2s ease-in-out infinite;
             background-position: -32px -16px;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: scale(2) translateY(2.5px);
+            }
+
+            60% {
+                transform: scale(2) translateY(-2.5px);
+            }
+
+            100% {
+                transform: scale(2) translateY(2.5px);
+            }
         }
 
         .person {
@@ -5677,9 +5682,10 @@
             }
 
             function HyperPower(start, exponent) {
-                var power = new Hyper(exponent), recip = false
+                var power = new Hyper(exponent)
                 if (power.$[0] !== 1) {
-                    recip = true
+                    power.$[0] = 1
+                    return HyperPower(start, power).recip(true)
                 }
                 if (power.$[2] >= HDIGITS) {
                     power = power.mul(start.log10())
@@ -5704,9 +5710,8 @@
                     return fastExp(start, exponent)
                 }
 
-                var power = new Hyper(exponent)
                 var result = fastExp(start, power.$[3] / (10n ** (BIGDIGITSMINUSONE - BigInt(power.$[2]))))
-                return recip ? result.recip() : result
+                return result
             }
 
             function HyperLog10(start, noClone, divAmount) {
@@ -7256,6 +7261,7 @@
             metaresets|wscience|bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium
         </div>
         <div id="wikiData">
+            quantumlabs: %Quantum Lab (11, A unique lab that makes quantum computers)
             hyperclocks: %HyperClock (11, A weird and strange clock)
             stablefrancium: Picogram$ of Stabilized Francium/s of Stabilized Francium (9, A portion of stable francium)
             francium: Francium Atom (8, Why does uranium get all the glory?)
@@ -8842,6 +8848,11 @@
                     <button data-earn="hyperclocks+1" data-cost="clocks-1e22" data-show="$everything"
                         data-desc="A HyperClock is almost pure energy and generates 5 golden shards a second!$hyperclocks$">
                         Build a <span class="hyperclock" role="img" aria-label="HyperClock"></span>
+                        <span class="mini pure2" data-earn="hyperclocks+100"
+                            data-desc="Gain 100 HyperClocks at once (which costs 1.000S clocks)!$hyperclocks$"
+                            data-cost="clocks-1e24" data-show="$hyperquantum2">
+                            100×
+                        </span>
                     </button>
                     <br>
                     <span class="mini stripe4" data-cost="clocks-1e24" data-show="qubitmachines>0"
@@ -8874,6 +8885,28 @@
                         data-desc="[Costs 200.00S clocks.] Increase qubit production based on the amount of golden shards you own!">
                         Quantum shardy
                     </span>
+                    <span class="mini stripe4" data-cost="clocks-1e27" data-show="$production" data-earn="$qlabs"
+                        data-hide="$qlabs"
+                        data-desc="[Costs 1.000O clocks.] Create quantum labs that use 100,000 qubits to create quantum computers.\nThey don't require gold foil or metal sandwiches because the lab's funding allows them to not have to deal with it!">
+                        Quantum labs
+                    </span>
+                    <span class="mini stripe4" data-cost="clocks-1.725e27" data-show="quantumlabs>0"
+                        data-earn="$hyperquantum" data-hide="$hyperquantum"
+                        data-desc="[Costs 1.725O clocks.] Increase your quantum lab speed by +1% for every HyperClock you own, capped at a +5,000% boost.">
+                        HyperQuantum.exe
+                    </span>
+                    <span class="mini stripe4" data-cost="clocks-1e29" data-show="quantumlabs>0"
+                        data-earn="$hyperquantum2" data-hide="$hyperquantum2"
+                        data-desc="[Costs 100.00O clocks.] You can now get 100 HyperClocks in one click.">
+                        HyperQuantum2.exe
+                    </span>
+
+                    <br>
+                    <button class="stripe4 pure2" data-show="$qlabs" data-earn="quantumlabs+1"
+                        data-cost="clocks-5e26|money-1e1000"
+                        data-desc="Make a quantum lab at a hefty cost that automatically produces quantum computers by gradually consuming qubits!$quantumlabs$">
+                        Construct a QUANTUM LAB
+                    </button>
 
                     <hr>
                     <button class="pure" data-show="coppertowers>0" data-earn="wormholes+1" data-cost="burnt-1e100"
@@ -9039,7 +9072,7 @@
                             Mix a <span class="smaller serif gray">shield potion</span>
                         </span>
                         <span class="mini special2" id="mixGolden"
-                            data-desc="Mix a *GOLDEN* potion! (Golden potions give +25% coin AND +10% golden clock production while unused!)\n{Costs 80 yellow candies and 5.000q coins.}">
+                            data-desc="Mix a *GOLDEN* potion! (Golden potions give +25% coin AND +3% golden clock production while unused!)\n{Costs 80 yellow candies and 5.000q coins.}">
                             <span class="smaller serif rainbow outlined"> Mix a *GOLDEN* potion</span>
                         </span>
                         <span class="mini special2" id="mixAttack"
@@ -10776,7 +10809,7 @@
                     </strong>
 
                     <br>
-                    Features:
+                    Features <span class="question"></span><span class="question"></span>:
                     <ul>
                         <li class="rainbow">built-in autoclicker <span class="check"></span></li>
                         <li class="rainbow">custom themes <span class="check"></span></li>
@@ -10793,10 +10826,24 @@
                         <li>Mining and smelting <span class="check"></span></li>
                         <li>Research and science (over 100 of them!) <span class="check"></span></li>
                     </ul>
+
+                    <div class="pink">Version <b>0.2.2</b>: <i>HyperCubes and more time travel!</i></div>
                     <div class="smallish purple">
-                        Version <b>0.2.2</b>: HyperCubes from The Warp Portal are finally FINISHED!
+                        (Added on March 7, 2024)
+                        HyperCubes from The Warp Portal are finally FINISHED!
+                        <br>
+                        Also, there's more <b class="move4">QUANTUM</b> to time travel than ever before...
+                        <span class="hyperclock"></span><span class="hyperclock"></span><span
+                            class="hyperclock"></span><span class="hyperclock"></span><span
+                            class="hyperclock"></span><span class="hyperclock"></span><span
+                            class="hyperclock"></span><span class="hyperclock"></span><span
+                            class="hyperclock"></span><span class="hyperclock"></span><span
+                            class="hyperclock"></span><span class="hyperclock"></span><span
+                            class="hyperclock"></span><span class="hyperclock"></span><span
+                            class="hyperclock"></span><span class="hyperclock"></span><span
+                            class="hyperclock"></span><span class="hyperclock"></span><span class="hyperclock"></span>
                     </div>
-                    <br>
+                    <hr>
                     <div class="small red">
                         Febuary 25, 2024: Added spices to dungeons!
                     </div>
@@ -10804,7 +10851,7 @@
                     <div class="smaller purple">There are over 40 unlocks possible! (Added on Febuary 22, 2024)</div>
                     <hr>
                     <div class="large pink">Version <b>0.2.0</b>: <i>dungeon beta + news!</i> :)</div>
-                    <div class="small purple">Explore your way in mysterious dungeons!</div>
+                    <div class="small purple">Explore your way in mysterious dungeons! (Or the news ticker...)</div>
                     <div class="small rainbow">Also, news tickers! (Released on Febuary 12, 2024)</div>
                     <hr>
                     <div class="small orange">
@@ -10939,10 +10986,10 @@
                     Version <b>0.0.3</b>: <span class="small rainbow">stuff</span>!
                     <span class="question"></span><span class="question"></span><span class="question"></span>
                     <br>
-                    uh not much to see here
+                    uh not much to see here: secret version
 
                     <br>
-                    <button id="secret" class="stripe4">access super secret menu</button>
+                    <span class="mini stripe4" id="secret">access super secret menu</span>
                 </div>
 
                 <div id="tips" style="display: none"></div>
@@ -15222,6 +15269,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
                 var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
                 var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1)
+                var quantumLabPower = C("quantumlabs").mul(0.00001).mul(hasResearch("hyperquantum") ? Hyper(true).add(C("hyperclocks").mul(0.01).min(50)) : 1)
+                var qubitCost = quantumLabPower.mul(100000)
 
                 var fcMakers = C("fcmakers")
                 var labs = C("labs")
@@ -15263,7 +15312,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var molders = C("molders")
                 var barmolders = C("barmolds")
-                var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 0.012 : 0.003).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.1) : 0.1)))
+                var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 0.012 : 0.003).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1).mul(hasResearch("golden") ? Hyper(true).add(C("coins").add(10).log10().mul(0.03)) : 1)
 
                 var managers = C("managers")
                 var managerPower = managers.mul(0.006 - 0.006 * Math.exp(-0.04 * managers))
@@ -15465,6 +15514,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 add("wscience", (hasResearch("wormy8") ? basePointGain.sqr() : basePointGain).mul(wormholeBoost).mul(hasResearch("wormy6") ? Hyper(true).add(researchPoints.sqrt()) : 1).mul(hasResearch("wormy5") ? Hyper(true).add(researchPoints.sqrt().sqrt()) : 1).mul(wormholeExtra))
 
                 add("qubits", qubitProduction)
+                exchange("qcomputers", quantumLabPower, "qubits", qubitCost, 1)
 
                 add("s5", silverfarms.mul(silvertownPower))
                 add("s4", C("s5").mul(silvertownPower))
@@ -16688,13 +16738,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
             time = newTime
 
-            if (!shiftDown && easyButton !== null && easyButton.id !== "autoClicking" && easyButton.id !== "crystal" && easyButton.id !== "autosell" && easyTime <= newTime) {
+            if (!shiftDown && easyButton !== null && easyButton.id !== "autoClicking" && !(["crystal", "secret", "autosell"]).includes(easyButton.id) && easyTime <= newTime) {
                 easyButton.click()
                 easyTime += hasResearch("autoclicker2") ? 25 : (hasResearch("autoclicker") ? 40 : 50)
                 alreadyClicked = false
             }
 
-            if (!shiftDown && autoClick && hovered !== null && hovered.id.slice(0, 12) !== "autoClicking" && hovered.id !== "crystal" && hovered.id !== "autosell" && autoTime <= newTime) {
+            if (!shiftDown && autoClick && hovered !== null && hovered.id.slice(0, 12) !== "autoClicking" && (["crystal", "secret", "autosell"]).includes(hovered.id) && autoTime <= newTime) {
                 hovered.click()
                 autoTime += hasResearch("autoclicker2") ? 25 : (hasResearch("autoclicker") ? 40 : 50)
             }
