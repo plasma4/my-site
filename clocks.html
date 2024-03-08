@@ -8909,15 +8909,19 @@
                         You are now able to TRADE with aliens for a larger stake of the omniverse.
                     </b>
                     <div id="trading" class="smallish red">
-                        View the trades below:
-                        <br>
-                        <span class="mini stripe4" data-cost="clocks-1e30" data-show="$unipower" data-earn="$unitrade"
-                            data-hide="$unitrade"
+                        <span class="mini stripe3" data-cost="clocks-1e30" data-show="$unipower" data-earn="$unitrade"
+                            data-fade="$unitrade"
                             data-desc="[Costs 1.000N clocks.] The GPAOA (Galactic Property and Ownership Association) requires payment to join.\nLuckily, they are interested in clocks and are willing to accept a payment of 1.000N clocks.">
                             Universal Trade
                         </span>
+                        <span class="mini stripe3" data-cost="money-eeee500" data-show="$unitrade" data-earn="$richest"
+                            data-fade="$richest"
+                            data-desc="[Costs $eee1.000e500.] Increase your clock production based on your money!">
+                            The richest clocks
+                        </span>
                         <br>
-
+                        View the trades below:
+                        <br>
                         <b id="tradeOptions" class="smallish yellow">
                             Increase your <span class="valuable2">shards</span> for better trades!
                             <br>
@@ -15519,6 +15523,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 cpt = cpt.add(C("timemachines").mul(Hyper(true).add(C("timeshards"))).mul(hasResearch("time1") ? "2e13" : "1e13").mul(hasResearch("time3") ? Hyper(true).add(C("shards").sqrt().sqrt().sqrt().sqrt()) : 1).div(hasResearch("time2") ? 30 : 60)).add(electricCPT).add(clockmakerIncome).add(familyIncome)
                 if (shards.isPositive()) {
                     cpt = cpt.mul(shardPower)
+                }
+                if (hasResearch("richest")) {
+                    cpt = cpt.mul(C("money").add(1).log10().add(1).log10().add(1).log10().add(1).log2().add(1))
                 }
 
                 add("clocks", cpt)
