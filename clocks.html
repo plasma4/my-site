@@ -432,6 +432,7 @@
         #modPanel,
         #noteBox {
             position: fixed;
+            z-index: 999;
             background-color: black;
             color: white;
             padding-top: 10px;
@@ -2813,7 +2814,7 @@
         .goldcoin,
         .firecoin,
         .metacoin,
-        .meta2coin,
+        .portal,
         .firebar,
         .pond,
         .gwand,
@@ -3484,7 +3485,7 @@
             filter: drop-shadow(0 0 2.5px #08b3d9);
         }
 
-        .meta2coin {
+        .portal {
             background-position: -208px -16px;
             filter: drop-shadow(0 0 2.5px #9e3cd4);
         }
@@ -8060,7 +8061,7 @@
                     <br>
                     <b class="smallish red">
                         Use your digital clocks to gain INFLUENCE!
-                        <span class="bigger metacoin"></span><span class="bigger meta2coin"></span>
+                        <span class="bigger metacoin"></span>
                     </b>
                     <br>
                     <div class="grid">
@@ -10896,6 +10897,9 @@
                         <li>Research and science (over 100 of them!) <span class="check"></span></li>
                     </ul>
 
+                    <div class="small red">
+                        0.2.2.1 (March 8, 2024) Added portals in dungeons
+                    </div>
                     <div class="pink">Version <b>0.2.2</b>: <i>HyperCubes and more time travel!</i></div>
                     <div class="smallish purple">
                         (Added on March 7, 2024)
@@ -11352,7 +11356,7 @@
         ID("script").remove()
 
         // Set the version
-        const version = "0.2.2"
+        const version = "0.2.2.1"
 
         var Hyper2 = ExpantaNum
         Hyper2.prototype.isPlural = function () {
@@ -12616,8 +12620,8 @@ bbbbbbbbbbbbbb r r!!     !! PP $$           !                      !ggg         
                                $$$ccc !!        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$c    $b                  bbPbb
                                $$$  ccccccc       P$     !     !     !     !     !     !     !     !     !    $$b   !!             b$$$b
                                $$$        grrrrrbbbbbbggbbbbbbbbbbgbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccc  $  ccccccccccc
- ?                      ?   !        !        !        ! !!!!!!   !   !! PPP !                              PP           bbb
-                        ccccrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr                          gggggggggggggggggggggggggggggggg
+ ?                      ?   !        !        !        ! !!!!!!   !   !! PPP !                              PP           bbb      $$        $$$$        $$$$    !!! ? !!!
+                        ccccrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr                          gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
                   !!bbbbbbbrrrrrrrrrrrrr                                                           PPPPP
                 ggggggggggrrrrrrrrrr                                                          ?   ccccc$$
 cPcccccccccccccc                                                                              cccccccccccccccccccccc
@@ -12629,21 +12633,24 @@ g                              ?$ccc!    !    ?     bb
 ggggggggggggggggggggggggggggggggggggg   ccc  cccbb  bb
                         !        !!    !    !       bb
                 !   ! $ g   ccPPcccccccccccccccccccccc
-                c c ggggggggggggggggg` : [`gS       g
+            !  !c c ggggggggggggggggg
+    !!!! ?  ccccccccccccc
+g??ggggggggggggggggg
+ccccccccc` : [`gS       g
 gggc  cggg
 rrrr  rrrr
 brrr  rrrb
 bbrr  rrbb
 bbbe$ rbbb
 bbbrb rbbb
-bbbr  rbbb
+bbbr  rb b
 bbbr  rbb 
 bbbr  rbbb
 bbbr  rbbb                          bbbbbbbbb
 bbbr  ebbb                                $
 bbbr bbbbb                           !cccc c
 bbbr  rbbb                          ccc  ccc
-bbbr  rb b                  ccccccccccc
+bbbr  rb b$                 ccccccccccc
 bbbr                    g      $$$$ e c
 bbbr   rr rrrrgggggggcgcgcgggggcccccccc
 bbbr  c$$$$  r
@@ -12663,25 +12670,25 @@ brbr  rbrr
 bbbr  rbbr             cccccccccccccc
 bbbr  rbbb           $            $cc
 bbbr  rbbb          eee      e    ccc
-b br  rb     e     ccccc    ccc  ccccggg
-b br  rbrb e g    ccccccc              g
-br r       g   ccccccccccccccccggggggggg
-bbbr rrbbbg gggg
-bbbr  rbbb  rrrr
-bbbr  rbbr  r  r
-bbbr  rbrr  rrrr
-bbbr  rbbb  r  r
-rbbr  rbbb  rrrr          r
-bbbr  rbbbbbbrbrbrbr      r
-rrp     $$$  e e e   c       $$$$$$$$
+b br  rb     e     ccccc    ccc  ccccggg      bbbbbbbbbb
+b br  rbrb e g    ccccccc                  $$$ e ee    c
+br r       g   ccccccccccccccccgggggggggccccccccccccb$$c
+bbbr rrbbbg gggg                                ccccceeccccc
+bbbr  rbbb  rrrr                              ccc
+bbbr  rbbr  r  r                                ccce
+b  r  rbrr  rrrr                                  ccc$
+bbbr  rbbb  r  r                                    ccce
+rbbr  rbbb  rrrr          r                           ccc$
+bbbr  rbbbbbbrbrbrbr      r                             ccce
+rrp     $$$  e e e   c       $$$$$$$$                   ccccccccccccc
 ccccccccccccccccccccccccc b  b   b  b
-b        rrbrr    rrbr    r
-rr         b              r
-rrr      bbbbb                                     $       eee       $            $$$                                                       $             $$$$$$$$$$$$$$
-rrrr      bbb             rbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccbbbbbrrrrbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  b$$$b$$b$b b b$b   ee
+b$       rrbrr    rrbr    r
+rr$        b              r
+rrr$     bbbbb                                     $       eee       $            $$$                                                       $             $$$$$$$$$$$$$$
+rrrr$     bbb             rbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccbbbbbrrrrbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  b$$$b$$b$b b b$b   ee
 rrrrr      b              r                         c                      c                                                                                                                                                             cccccccccccccccccccccccccccccccccc
 bbbbbbbgggeeegggrrrbbbbbbbb
-
+        ccc            $$$$$$$  !
                                       bb
       p            e    e    e      geec
 ggggggggggggg  ggggggggggggggggggggggggg
@@ -12700,11 +12707,11 @@ c                                                 r$rrrb
 c                                                  $$$$$b
 c                                                  $$  b
 c                                                  $  b
-c                                                  $ b
-cg            p                                    $b
-cggccccccccccccccccccc                             $b
-cggg                e    e    e    e    e    e    e$b
-brbrbr  brbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrrrrrr
+c$                           $$$$                  $ b
+cg   e        p                         $$$$$$     $b
+cggccccccc  cccccccccc                             $                $$$eee
+cggg      ee        e    e    e    e    e    e    e$b       ccccccccccccce
+brbrbr  brbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 r     c  c
 gr    c  c
 ggr  cc  cc
@@ -12766,9 +12773,9 @@ cccc rrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g 
                                    cc$$$$$$$$cc                                                                                                    cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
-                                   cc$$$$$$$$cc                                                                                                   $cc$$c
+                                   cc$$$cc$$$cc                                                                                                   $cc$$c
+                                   cc$$$$$cc$cc                                                                                                   $cc$$c
+                                   cc$cc$$$$$cc                                                                                                   $cc$$c
                                    ccgg$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$$$ggcc                                                                                                    cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
@@ -12777,14 +12784,18 @@ cccc rrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr     g 
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
                                    cc$$$$gg$$cc                                                                                                   $cc$$c
                                    cc$$$$$$$$cc                                                                                                   $cc$$c
-                                    cc      cc                                                                                                      cc$$cccc      $$$$$$$
+                         1          cc      cc                                                                                                      cc$$cccc      $$$$$$$
                               p   e   e   e   e   e  !                                                                                             $cc$$c$ c      $
-                              bbbbbbbbbbbbbbbbbbbbbbbn                                                                                           e  e  $$$ c      b$
-                                                      g$                                                                                         e  e    $ c     bb$$
-                                                       g$                                                                 eccccccccccccccccccccccccccccccc ccc  bbb$$$
-                                                        g$$$                                                               e$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$    ebbbb$$$$
-                                                         ggg     $!                                                    !! errrrrbbbbbccccccccccccccccccccccccccccccbrbrbrbrbrccccccc
-                                                            ccccccc                                                    cccc`, `cS$$$$$$$$c
+                            ggbbbbbbbbbbbbbbbbbbbbbbbn                                                                                           e  e  $$$ c      b$
+                           $gg                        g$                                                                                         e  e    $ c     bb$$
+                          $$gg                         g$                                                                 eccccccccccccccccccccccccccccccc ccc  bbb$$$
+                         $$$                            g$$$                                                               e$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$    ebbbb$$$$        1
+                        $$$$                             ggg     $!                                                    !! errrrrbbbbbccccccccccccccccccccccccccccccbrbrbrbrbrccccccc
+                       $$$$$eee!                     $$       ccccc                 eee          ee                    cccc
+                       brbrbrbrb                    rrrrrrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr  rrrrrrrrrrrrrrrrrrrr
+                                                                           $$e                              cccccc $$$$$$!
+                                                                          cccc        eeeee                 bbbbbbbbbbbbbbbbbcceee
+                                                                        bbbbbbbbbbbbbbbbbbbbbbb                               cccccc`, `cS$$$$$$$$c
 ggggggggg c
 rrrrrrrrr c
 bb        r
@@ -12816,7 +12827,7 @@ gggccccccccccccccccccc$c
                                                                     !  !
                                                                     !  !
                                                             $$   e  e  e  e  e  ePPe   PPPP$
-                                                           eccccccccccccccccccccccccgggccccc
+                                                           ecccccccccc ccccccgccccccgggccccc
                                                           eccccccccccccccccccccccccccccccccc
                                                          ecccccccccccccccccccccccccccccccccc
                                                         eccccccccccccccccccccccccccccccccccc
@@ -12837,16 +12848,19 @@ c$$$$$$$$$e$e$e$$$$$$$$$$$$PeeeP             c
 cPccccccccccccccccccccccccccccc e  e  e    ccc
 cP               e  e  e eegggggggggggggccccccccc
 ccccccccccccccccccccccccc$$cc            cc      $            ccc
-                                 gggggg       PPrrr    $$$$$$$$ec
+    eeee            $            gggggg       PPrrr    $$$$$$$$ec
 gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                                             bbb b
                                                             ccc c
                                                             rrrPr
                                                             bbb b
                                                             cccPc
-                                                            rrr reeeeeecc           e   e   e     g     e$$$$$$$$$$$$$$
-                                               e    gg             ccccccccccccccc  g   g   g    ggg   ccccccccc  brbrbrbrbrbrbrbr
-                                            gggggggggggggggggggggggggggg`][zone - 1], 10, 10)
+                                                            rrr reeeeeecc           e   e   e     g     e$$$$$$$$$$$$$$   eeeeeeee                                       1   $$$$??!!
+                                               e    gg             ccccccccccccccc  g   g   g    ggg   ccccccccc  brbrbrbrbrbrbrbrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+                                        eeee gggggggggggggggggggggggggggg
+                                    $$$$cccccccccccccccccccccccccccccc$$
+                            1  eee  rrrrrrrr
+                            cccccccccc`][zone - 1], 10, 10)
         }
 
         // Formats a Hyper
@@ -13648,7 +13662,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     if (loaded) {
                         reset(true);
                     }
-                    if (version === "0.0.5.1" || version === "0.1.0" || version === "0.1.1" || version === "0.2.0" || version === "0.2.1" || version === "0.2.2") {
+                    if (version === "0.0.5.1" || version === "0.1.0" || version === "0.1.1" || version === "0.2.0" || version === "0.2.1" || version === "0.2.2" || version === "0.2.2.1") {
                         // I minimized the saving code and lost the non-compressed version, so only this part makes much sense. Oops!
                         function proceed(endingString) {
                             var index = $.indexOf(endingString)
@@ -13668,15 +13682,31 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         updateId("wageAmount", wageBoost.format(4) + "×")
 
                         autosellOn = proceed("AX") === "t"
-                        autoClick = proceed("\n") === "OX"
-                        if (version === "0.2.0" || version === "0.2.1" || version === "0.2.2") {
+                        if (version === "0.2.0" || version === "0.2.1" || version === "0.2.2" || version === "0.2.2.1") {
+                            autoClick = proceed("\n") === "OX"
+                            if (version === "0.2.2.1") {
+                                var str = proceed("\n")
+                                collectedPortals = str.length === 0 ? [] : str.split(" ")
+                            }
                             collectedX = proceed("\n").split(" ")
                             collectedY = proceed("\n").split(" ")
-                            for (var c = 0; c < collectedX.length; c++) {
-                                collectedX[c] = parseInt(collectedX[c])
+                            for (var c = 0; c < collectedX.length;) {
+                                var value = parseInt(collectedX[c])
+                                if (isFinite(value)) {
+                                    collectedX[c] = value
+                                    c++
+                                } else {
+                                    collectedX.splice(c, 1)
+                                }
                             }
-                            for (c = 0; c < collectedY.length; c++) {
-                                collectedY[c] = parseInt(collectedY[c])
+                            for (c = 0; c < collectedY.length;) {
+                                var value = parseInt(collectedY[c])
+                                if (isFinite(value)) {
+                                    collectedY[c] = value
+                                    c++
+                                } else {
+                                    collectedY.splice(c, 1)
+                                }
                             }
                         }
                         characterX = proceed("A")
@@ -13892,7 +13922,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             stuff2[properties[t]] = new Hyper()
                         }
                         stuffTotals = Object.assign(stuff2, parseCompact(T[1], compactedData))
-                        if (version !== "0.2.2") {
+                        if (version !== "0.2.2" || version !== "0.2.2.1") {
                             clearAmount("hypercubes", 1)
                         }
                     } else {
@@ -14126,10 +14156,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 return !1
             }
-
             save = function () {
+
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -15964,10 +15994,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 cap = cap.arrow(2)(spicePower.arrow(2)(spicePower.pent(spicePower)))
             }
             return cap
-        }
 
+        }
         var worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
-        var dungeonKey = "brgpc$e!?P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
+        var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
         function updateDungeon() {
             if (workerUnloaded) {
                 workerUnloaded = false
@@ -16136,44 +16166,60 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][enemiesBattled % 34] : ((enemiesBattled % 6) + 1)
             var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 ? 17 : 1)).mul(isWonder ? 11.11 : 1)
             enemyHealth = enemyCap.min(enemyHealth)
-            var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "wonder2", "purplecandy", "person"]
-
+            var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "wonder2", "portal", "purplecandy", "person"]
+            var newX = null
+            var newY = null
             for (var i = 0; i < tileAmount; i++) {
                 var x = i % dungeonX + extraX
                 var y = Math.floor(i / dungeonX) + extraY
                 var hideItem = false
                 var type = -1
                 var item = y < depth ? tileData[y][x] : -1
+                var isDigit = (typeof item === "string") && item.charCodeAt(0) >= 48 && item.charCodeAt(0) <= 57
                 if (x === cx && y === cy) {
-                    type = 10
-                    if ((inBattle >= 30 || inBattle < 0) && collectingKey.includes(item)) {
-                        for (var t = 0; t < collectedX.length; t++) {
-                            if (collectedX[t] === x && collectedY[t] === y) {
-                                hideItem = true
-                                break
+                    type = 11
+                    if ((inBattle >= 30 || inBattle < 0) && (collectingKey.includes(item) || isDigit)) {
+                        if (isDigit) {
+                            if (!collectedPortals.includes(item)) {
+                                collectedPortals.push(item)
+                                for (var t = 0; t < depth; t++) {
+                                    var index = tileData[t].indexOf(item)
+                                    if (index !== -1 && (x !== index || y !== t)) {
+                                        newX = index
+                                        newY = t
+                                        break
+                                    }
+                                }
                             }
-                        }
-                        if (!hideItem) {
-                            if (item === coinCharacter) {
-                                rawAdd("coins", Hyper(true))
-                            } else if (item === candyCharacter) {
-                                rawAdd("purplecandy", purpleGain)
-                            } else if (item === battleCharacter || item === extremeBattleCharacter || item === wonderBattleCharacter) {
-                                isBoss = item !== battleCharacter
-                                isWonder = item === wonderBattleCharacter
-                                inBattle = 60
-                                enemiesBattled++
-                                enemyHealth = Hyper2(Infinity)
-                                startingX = characterX
-                                startingY = characterY
+                        } else {
+                            for (var t = 0; t < collectedX.length; t++) {
+                                if (collectedX[t] === x && collectedY[t] === y) {
+                                    hideItem = true
+                                    break
+                                }
                             }
-                            collectedX.push(x)
-                            collectedY.push(y)
+                            if (!hideItem) {
+                                if (item === coinCharacter) {
+                                    rawAdd("coins", Hyper(true))
+                                } else if (item === candyCharacter) {
+                                    rawAdd("purplecandy", purpleGain)
+                                } else if (item === battleCharacter || item === extremeBattleCharacter || item === wonderBattleCharacter) {
+                                    isBoss = item !== battleCharacter
+                                    isWonder = item === wonderBattleCharacter
+                                    inBattle = 60
+                                    enemiesBattled++
+                                    enemyHealth = Hyper2(Infinity)
+                                    startingX = characterX
+                                    startingY = characterY
+                                }
+                                collectedX.push(x)
+                                collectedY.push(y)
+                            }
                         }
                     }
                 } else if (item === shopCharacter && ((x - 1) === cx || (x + 1) === cx) && y === cy) {
                     nextToShop = true
-                    type = 10
+                    type = 11
                 } else if (item !== -1) {
                     if (inBattle >= 30 || inBattle < 0) {
                         for (var t = 0; t < collectedX.length; t++) {
@@ -16186,6 +16232,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             updateClass(tiles[i], "big blank")
                             continue
                         }
+                    }
+                    if (isDigit) {
+                        item = portalCharacter
                     }
                     type = dungeonKey.indexOf(item)
                 }
@@ -16494,6 +16543,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 isBoss = false
             }
+
+            if (newX !== null) {
+                characterX = newX * characterSections
+                characterY = newY * characterSections
+            }
         }
 
         function resetCharacter() {
@@ -16505,9 +16559,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             ID("health").style.width = "0px"
             ID("enemyHealth").style.width = "316px"
             health = getHealthCap()
-            enemyHealth = Hyper2(Infinity)
             dieFrame = 50
+            enemyHealth = Hyper2(Infinity)
             fallSpeed = 0
+            collectedPortals = []
             collectedX = []
             collectedY = []
             characterX = spawnX * characterSections
@@ -16517,10 +16572,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         function resetDungeonData() {
             clearAmount(["coins", "yellowcandy", "purplecandy", "spice", "magicpowder", "healpotions", "shieldpotions", "goldenpotions", "attackpotions"], true)
             redCandy = Hyper2(0)
-            redCandyPower = Hyper2(0)
             zone = 1
+            redCandyPower = Hyper2(0)
             setZone()
-            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, sceneFrame = 0, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity), dieFrame = 0, collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
+            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, sceneFrame = 0, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity), dieFrame = 0, collectedPortals = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
         }
 
         function moveCharacter(direction) {
