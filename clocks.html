@@ -9566,7 +9566,7 @@
 
                     <br>
                     <button class="bronze" data-earn="diggers+1" data-cost="money-35000"
-                        data-desc="You're going to need $40,000 for a single digger, and each digger will need to be paid $10 a second!\nYeah, they're going 2 need a hefty payment for doing something that mundane.$diggers$">
+                        data-desc="You're going to need $35,000 for a single digger, and each digger will need to be paid $10 a second!\nYeah, they're going 2 need a hefty payment for doing something that mundane.$diggers$">
                         Get a digger <span class="big shovel"></span>
                         <span class="mini stripe2" data-earn="diggers+1" data-cost="money-35000"
                             data-desc="You can get more MEGA-managers to buy diggers faster.$diggers$"
@@ -16820,13 +16820,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
             time = newTime
 
-            if (!shiftDown && easyButton !== null && easyButton.id !== "autoClicking" && !(["crystal", "secret", "autosell"]).includes(easyButton.id) && easyTime <= newTime) {
+            if (!shiftDown && easyButton !== null && easyButton.id !== "autoClicking" && !(["crystal", "secret", "autosell"].includes(easyButton.id)) && easyTime <= newTime) {
                 easyButton.click()
                 easyTime += hasResearch("autoclicker2") ? 25 : (hasResearch("autoclicker") ? 40 : 50)
                 alreadyClicked = false
             }
 
-            if (!shiftDown && autoClick && hovered !== null && hovered.id.slice(0, 12) !== "autoClicking" && (["crystal", "secret", "autosell"]).includes(hovered.id) && autoTime <= newTime) {
+            if (!shiftDown && autoClick && hovered !== null && hovered.id.slice(0, 12) !== "autoClicking" && !(["crystal", "secret", "autosell"].includes(hovered.id)) && autoTime <= newTime) {
                 hovered.click()
                 autoTime += hasResearch("autoclicker2") ? 25 : (hasResearch("autoclicker") ? 40 : 50)
             }
