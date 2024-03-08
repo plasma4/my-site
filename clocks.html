@@ -6404,7 +6404,7 @@
              */
             Hyper.prototype.pow10Repeat = function (iterations) {
                 if (typeof iterations === "number") {
-                    iterations = BigInt(exponent)
+                    iterations = BigInt(iterations)
                 } else if (typeof iterations !== "bigint") {
                     var repeats = new Hyper(iterations)
                     var digits = repeats.$[2]
@@ -8900,6 +8900,56 @@
                         data-desc="[Costs 100.00O clocks.] You can now get 100 HyperClocks in one click.">
                         HyperQuantum2.exe
                     </span>
+                    <span class="mini stripe4" data-cost="shards-1e11" data-show="quantumlabs>0" data-earn="$unipower"
+                        data-hide="$unipower"
+                        data-desc="[Costs 100.00B shards.] Begin investment in the Universal Trading Center.">
+                        Universal Power
+                    </span>
+                    <b class="mini stripe4" data-earn="" data-show="$unitrade" data-fade="$unitrade">
+                        You are now able to TRADE with aliens for a larger stake of the omniverse.
+                    </b>
+                    <div id="trading" class="smallish red">
+                        View the trades below:
+                        <br>
+                        <span class="mini stripe4" data-cost="clocks-1e30" data-show="$unipower" data-earn="$unitrade"
+                            data-hide="$unitrade"
+                            data-desc="[Costs 1.000N clocks.] The GPAOA (Galactic Property and Ownership Association) requires payment to join.\nLuckily, they are interested in clocks and are willing to accept a payment of 1.000N clocks.">
+                            Universal Trade
+                        </span>
+                        <br>
+
+                        <b id="tradeOptions" class="smallish yellow">
+                            Increase your <span class="valuable2">shards</span> for better trades!
+                            <br>
+                            <span class="mini stripe1" data-show="$unitrade" data-cost="shards-1e10"
+                                data-earn="$property" data-hide="$property"
+                                data-desc="[Costs 10.000B golden shards.] Property increases the maximum amount of resources you can have! (More money...)">
+                                Property trade 1
+                            </span>
+                            <span class="mini stripe1" data-show="$property" data-cost="shards-5e9"
+                                data-earn="$property2" data-hide="$property2"
+                                data-desc="[Costs 5.000B golden shards.] Property increases the maximum amount of resources you can have!">
+                                Property trade 2
+                            </span>
+                            <span class="mini stripe1" data-show="$property|shards>4e11" data-cost="shards-4.5e11"
+                                data-earn="$property3" data-hide="$property3"
+                                data-desc="[Costs 450.00B golden shards.] Property increases the maximum amount of resources you can have!">
+                                Property trade 3
+                            </span>
+                            <br>
+                            <span class="mini stripe2" data-show="$property|shards>2e11" data-cost="money-eeee125"
+                                data-earn="$dimension" data-hide="$dimension"
+                                data-desc="[Costs $eee1.000e125.] Unlock a new dimension, which increase your maximum matter even FURTHER.">
+                                Dimension trade 1
+                            </span>
+                            <span class="mini stripe2" data-show="$property|shards>2e11" data-cost="money-eeee140"
+                                data-earn="$dimension2" data-hide="$dimension2"
+                                data-desc="[Costs $eee1.000e140.] Unlock a new dimension, which increase your maximum matter even FURTHER.">
+                                Dimension trade 2
+                            </span>
+                        </b>
+                        <hr>
+                    </div>
 
                     <br>
                     <button class="stripe4 pure2" data-show="$qlabs" data-earn="quantumlabs+1"
@@ -15189,7 +15239,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 } else if (hasResearch("multiverse1")) {
                     digitCap = "1000"
                 }
+                var propertyLevel = (hasResearch("property3") ? 1 : 0) + (hasResearch("property2") ? 1 : 0) + (hasResearch("property") ? 1 : 0) + (hasResearch("dimension") ? 8 : 0) * (hasResearch("dimension2") ? 8 : 1)
                 var matterLimit = new Hyper("e" + digitCap)
+                if (propertyLevel !== 0) {
+                    matterLimit = matterLimit.pow(new Hyper(propertyLevel + 1).mul("5225").pow(3).add(1).pow(10).mul(6.3).pow10Repeat(2))
+                }
                 updateId("cap", Hyper(digitCap).format(2))
 
                 var oldMoney = new Hyper(C("money"))
@@ -15638,6 +15692,12 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 updateId("burntAmount", C("burnt").format(2) + " grams")
                 updateId("researchPoints", C("wscience").format(2))
+
+                if (hasResearch("unipower")) {
+                    ID("trading").removeAttribute("style")
+                } else if (ID("trading").style.display !== "none") {
+                    ID("trading").style.display = "none"
+                }
 
                 // Update the CPS element and change the color by modifying the class
                 cps = cpt.mul(speed).mul(60)
