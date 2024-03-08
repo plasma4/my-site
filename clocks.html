@@ -8936,6 +8936,16 @@
                                 data-desc="[Costs 450.00B golden shards.] Property increases the maximum amount of resources you can have!">
                                 Property trade 3
                             </span>
+                            <span class="mini stripe1" data-show="$property|shards>7e11" data-cost="shards-1e12"
+                                data-earn="$property4" data-hide="$property4"
+                                data-desc="[Costs 1.000T golden shards.] Property increases the maximum amount of resources you can have!">
+                                Property trade 4
+                            </span>
+                            <span class="mini stripe1" data-show="$property|shards>9.2e11" data-cost="shards-2.6e12"
+                                data-earn="$property5" data-hide="$property5"
+                                data-desc="[Costs 2.600T golden shards.] Property increases the maximum amount of resources you can have!">
+                                Property trade 5
+                            </span>
                             <br>
                             <span class="mini stripe2" data-show="$property|shards>2e11" data-cost="money-eeee125"
                                 data-earn="$dimension" data-hide="$dimension"
@@ -8946,6 +8956,11 @@
                                 data-earn="$dimension2" data-hide="$dimension2"
                                 data-desc="[Costs $eee1.000e140.] Unlock a new dimension, which increase your maximum matter even FURTHER.">
                                 Dimension trade 2
+                            </span>
+                            <span class="mini stripe2" data-show="$property|shards>1e12" data-cost="money-eee2e222"
+                                data-earn="$dimension3" data-hide="$dimension3"
+                                data-desc="[Costs $eee2.000e222.] Unlock a new dimension, which increase your maximum matter even FURTHER.">
+                                Dimension trade 3
                             </span>
                         </b>
                         <hr>
@@ -15239,7 +15254,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 } else if (hasResearch("multiverse1")) {
                     digitCap = "1000"
                 }
-                var propertyLevel = (hasResearch("property3") ? 1 : 0) + (hasResearch("property2") ? 1 : 0) + (hasResearch("property") ? 1 : 0) + (hasResearch("dimension") ? 8 : 0) * (hasResearch("dimension2") ? 8 : 1)
+                var propertyLevel = (hasResearch("property5") ? 5000 : 0) + (hasResearch("property4") ? 523 : 0) + (hasResearch("property3") ? 4 : 0) + (hasResearch("property2") ? 1 : 0) + (hasResearch("property") ? 1 : 0) + Math.pow((hasResearch("dimension") ? 8 : 0) * (hasResearch("dimension2") ? 8 : 1), hasResearch("dimension3") ? 10 : 1)
                 var matterLimit = new Hyper("e" + digitCap)
                 if (propertyLevel !== 0) {
                     matterLimit = matterLimit.pow(new Hyper(propertyLevel + 1).mul("5225").pow(3).add(1).pow(10).mul(6.3).pow10Repeat(2))
