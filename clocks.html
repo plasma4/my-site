@@ -29,7 +29,10 @@
             cursor: default;
         }
 
-        .nosel {
+        .nosel,
+        .mini,
+        button,
+        #navigation {
             -webkit-user-select: none;
             user-select: none;
         }
@@ -10762,6 +10765,11 @@
                     </button>
 
                     <br>
+                    <b id="ohMySafariWhyAreYouSoDarnSlow" class="smallish red">
+                        By default, audio is not on in Safari due to performance reasons.
+                        You can turn it on, but it's really slow!
+                    </b>
+                    <br>
                     <label for="enableAudio">
                         <input type="checkbox" class="check3" id="enableAudio">
                         Enable audio
@@ -11580,6 +11588,11 @@
         }
 
         const firefoxZero = window.InternalError ? 0 : 1
+        const notSafari = !window.GestureEvent
+
+        if (notSafari) {
+            ID("ohMySafariWhyAreYouSoDarnSlow").remove()
+        }
 
         console.error = function (message) {
             oldError.apply(console, arguments)
@@ -13750,7 +13763,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             ID("partyInput").disabled = true
                         }
                         updateInput("partyInput", "$" + partySpending.format())
-                        noAudio = proceed("FX") === "true"
+                        noAudio = proceed("FX")
+                        noAudio = noAudio === "trueee" || (!notSafari || noAudio === "trueee")
                         stripedButtons = proceed("DDDX") === "V"
                         sleekMode = proceed("EX") === "["
                         seasonsEnabled = proceed("fX") === "true"
@@ -14159,7 +14173,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             save = function () {
 
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + noAudio + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? "truee" : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -14592,6 +14606,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 stripedButtons = false
                 mainColor = "#333"
                 backColor = "d"
+
+                if (!notSafari) {
+                    noAudio = true
+                }
 
                 // Reset all property values
                 stuff = {}
