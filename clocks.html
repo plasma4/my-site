@@ -15236,7 +15236,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             return (0.2126 * ((base16 >> 16) & 0xff) + 0.7152 * ((base16 >> 8) & 0xff) + 0.0722 * (base16 & 0xff)) > 65
         }
 
-        var wattStuff, useableData, shardPower
+        var wattStuff, useableData, shardPower, digitCap, metaCap
         var timeBonus = Hyper(true)
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
@@ -15280,35 +15280,6 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 ID("navigation").removeAttribute("style")
                 var issue = "This occured while trying to update properties."
 
-                var digitCap = "80"
-                if (hasResearch("cosmos")) {
-                    digitCap = "eee50"
-                } else if (hasResearch("multiverse10")) {
-                    digitCap = "1e25"
-                } else if (hasResearch("multiverse9")) {
-                    digitCap = "1e18"
-                } else if (hasResearch("multiverse8")) {
-                    digitCap = "1e13"
-                } else if (hasResearch("multiverse7")) {
-                    digitCap = "1e10"
-                } else if (hasResearch("multiverse6")) {
-                    digitCap = "1e7"
-                } else if (hasResearch("multiverse5")) {
-                    digitCap = "1e6"
-                } else if (hasResearch("multiverse4")) {
-                    digitCap = "100000"
-                } else if (hasResearch("multiverse3")) {
-                    digitCap = "10000"
-                } else if (hasResearch("multiverse2")) {
-                    digitCap = "5000"
-                } else if (hasResearch("multiverse1")) {
-                    digitCap = "1000"
-                }
-                var propertyLevel = (hasResearch("property5") ? 5000 : 0) + (hasResearch("property4") ? 523 : 0) + (hasResearch("property3") ? 4 : 0) + (hasResearch("property2") ? 1 : 0) + (hasResearch("property") ? 1 : 0) + Math.pow((hasResearch("dimension") ? 8 : 0) * (hasResearch("dimension2") ? 8 : 1), hasResearch("dimension3") ? 10 : 1)
-                var matterLimit = new Hyper("e" + digitCap)
-                if (propertyLevel !== 0) {
-                    matterLimit = matterLimit.pow(new Hyper(propertyLevel + 1).mul("5225").pow(3).add(1).pow(10).mul(6.3).pow10Repeat(2))
-                }
                 updateId("cap", Hyper(digitCap).format(2))
 
                 var oldMoney = new Hyper(C("money"))
@@ -15702,26 +15673,6 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 add("metaspin", C("metadisks").mul(0.0001).add(metaTorus.div(60)))
                 add("metaholes", metaTorus.mul(0.0001))
 
-                var limitedProperties = properties.slice(0)
-                limitedProperties.splice(limitedProperties.indexOf("iq"), 1)
-                limitedProperties.splice(limitedProperties.indexOf("science"), 1)
-                limitedProperties.splice(limitedProperties.indexOf("wscience"), 1)
-                limitedProperties.splice(limitedProperties.indexOf("creativity"), 1)
-                limitedProperties.splice(limitedProperties.indexOf("yellowcandy"), 1)
-                limitedProperties.splice(limitedProperties.indexOf("purplecandy"), 1)
-                var metaLimited = [], newLimited = []
-                for (var i = 0; i < limitedProperties.length; i++) {
-                    var limitedProperty = limitedProperties[i]
-                    if (limitedProperty.slice(0, 4) === "meta") {
-                        metaLimited.push(limitedProperty)
-                    } else {
-                        newLimited.push(limitedProperty)
-                    }
-                }
-                limit(newLimited, matterLimit)
-
-                var metaCap = Hyper(2).pow(C("influence").mul(5).add(1024))
-                limit(metaLimited, metaCap)
                 updateId("metaLimit", metaCap.format())
                 updateId("spinAmount", C("metaspin").format(2))
                 updateId("metaSell", C("metaspin").add(10).log10().add(1.5).format(4) + "×")
@@ -16010,8 +15961,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 cap = cap.arrow(2)(spicePower.arrow(2)(spicePower.pent(spicePower)))
             }
             return cap
-
         }
+
         var worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
         var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
         function updateDungeon() {
@@ -16918,6 +16869,59 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     i++
                 }
             }
+
+            // Update the matter limit before updating elements
+            digitCap = "80"
+            if (hasResearch("cosmos")) {
+                digitCap = "eee50"
+            } else if (hasResearch("multiverse10")) {
+                digitCap = "1e25"
+            } else if (hasResearch("multiverse9")) {
+                digitCap = "1e18"
+            } else if (hasResearch("multiverse8")) {
+                digitCap = "1e13"
+            } else if (hasResearch("multiverse7")) {
+                digitCap = "1e10"
+            } else if (hasResearch("multiverse6")) {
+                digitCap = "1e7"
+            } else if (hasResearch("multiverse5")) {
+                digitCap = "1e6"
+            } else if (hasResearch("multiverse4")) {
+                digitCap = "100000"
+            } else if (hasResearch("multiverse3")) {
+                digitCap = "10000"
+            } else if (hasResearch("multiverse2")) {
+                digitCap = "5000"
+            } else if (hasResearch("multiverse1")) {
+                digitCap = "1000"
+            }
+            var propertyLevel = (hasResearch("property5") ? 5000 : 0) + (hasResearch("property4") ? 523 : 0) + (hasResearch("property3") ? 4 : 0) + (hasResearch("property2") ? 1 : 0) + (hasResearch("property") ? 1 : 0) + Math.pow((hasResearch("dimension") ? 8 : 0) * (hasResearch("dimension2") ? 8 : 1), hasResearch("dimension3") ? 10 : 1)
+            var matterLimit = new Hyper("e" + digitCap)
+            if (propertyLevel !== 0) {
+                matterLimit = matterLimit.pow(new Hyper(propertyLevel + 1).mul("5225").pow(3).add(1).pow(10).mul(6.3).pow10Repeat(2))
+            }
+
+            var limitedProperties = properties.slice(0)
+            limitedProperties.splice(limitedProperties.indexOf("iq"), 1)
+            limitedProperties.splice(limitedProperties.indexOf("science"), 1)
+            limitedProperties.splice(limitedProperties.indexOf("wscience"), 1)
+            limitedProperties.splice(limitedProperties.indexOf("creativity"), 1)
+            limitedProperties.splice(limitedProperties.indexOf("yellowcandy"), 1)
+            limitedProperties.splice(limitedProperties.indexOf("purplecandy"), 1)
+            var metaLimited = [], newLimited = []
+            for (var i = 0; i < limitedProperties.length; i++) {
+                var limitedProperty = limitedProperties[i]
+                if (limitedProperty.slice(0, 4) === "meta") {
+                    metaLimited.push(limitedProperty)
+                } else {
+                    newLimited.push(limitedProperty)
+                }
+            }
+            limit(newLimited, matterLimit)
+
+            // Also update the meta item caps
+            metaCap = Hyper(2).pow(C("influence").mul(5).add(1024))
+            limit(metaLimited, metaCap)
 
             var money = C("money", "This happened while updating the amount of money that you have.")
             updateId("money", money.isLess(0.01) ? "no money" : ("$" + money.format(2)))
