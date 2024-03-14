@@ -7578,11 +7578,20 @@
 
                         <button class="silver" data-earn="steelmills+1" data-cost="furnaces-5|money-1e6"
                             data-show="$mills" data-sound="building"
-                            data-desc="Steel mills convert your iron to steel, with iron ore, coke, and limestone.\nYou need to repurpose five furnaces and $1,000,000 to constuct such a masterpiece!\nThe five or six workers there get paid $60 in total every second.$steelmills$">
+                            data-desc="[You NEED coke from coke ovens to produce steel!]\nSteel mills convert your iron to steel, with iron ore, coke, and limestone.\nYou need to repurpose five furnaces and $1,000,000 to constuct such a masterpiece!\nThe five or six workers there get paid $60 in total every second.$steelmills$">
                             Build a steel mill <span class="steel"></span>
                             <span class="mini stripe1" data-earn="steelmills+1" data-cost="furnaces-5|money-1e6"
                                 data-show="platinum>=1e7" data-sound="building"
                                 data-desc="You can get more steel mills at once by getting more construction managers!$steelmills$"
+                                data-multibuild></span>
+                        </button>
+                        <button class="bronze" data-earn="cokeovens+1" data-cost="bricks-5000" data-show="bricks>=4000"
+                            data-sound="building"
+                            data-desc="[Coke ovens require coal and will NOT work without them.]\nThese tiny coke ovens are made using 5,000 bricks, and help convert coal into coke: a COOLER fuel.\n(Requires a pay of $15 a second)$cokeovens$">
+                            Get a coke oven
+                            <span class="mini stripe1" data-earn="cokeovens+1" data-cost="bricks-5000"
+                                data-show="platinum>=1e7" data-sound="building"
+                                data-desc="You can get more coke ovens at once by getting more construction managers!$cokeovens$"
                                 data-multibuild></span>
                         </button>
 
@@ -9594,17 +9603,6 @@
                         <span class="mini stripe1" data-earn="coalminers+1" data-cost="steel-5e6|miners-5"
                             data-show="platinum>=1e7" data-sound="building"
                             data-desc="You can get more coal miner machines at once by increasing the amount of construction managers you have!$coalminers$"
-                            data-multibuild></span>
-                    </button>
-
-                    <br>
-                    <button class="bronze" data-earn="cokeovens+1" data-cost="bricks-5000" data-show="bricks>=4000"
-                        data-sound="building"
-                        data-desc="These tiny coke ovens are made using 5,000 bricks, and help convert coal into coke: a COOLER fuel.\n(Requires a pay of $15 a second)$cokeovens$">
-                        Get a coke oven
-                        <span class="mini stripe1" data-earn="cokeovens+1" data-cost="bricks-5000"
-                            data-show="platinum>=1e7" data-sound="building"
-                            data-desc="You can get more coke ovens at once by getting more construction managers!$cokeovens$"
                             data-multibuild></span>
                     </button>
 
