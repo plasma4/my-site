@@ -12514,12 +12514,16 @@
             autoClicker = setInterval(function () {
                 if (document.hasFocus()) {
                     var elem = document.elementFromPoint(mouseX, mouseY)
-                    if (!shiftDown && elem !== null && elem.tagName !== "U" && elem.id !== "addMod" && elem.id !== "wipe" && elem.id !== "cheat" && elem.className !== "linky") {
+                    if (shouldAutoClick(elem)) {
                         elem.click()
                     }
                 }
             }, ms)
             console.info("An autoclicker has been activated.")
+        }
+
+        function shouldAutoClick(elem) {
+            return !shiftDown && elem !== null && elem.tagName !== "U" && elem.id.slice(0, 12) !== "autoClicking" && !(["removeButton", "addMod", "wipe", "crystal", "secret", "cheat", "autosell"].includes(elem.id))
         }
 
         var currentTab = "main"
@@ -15236,7 +15240,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             return (0.2126 * ((base16 >> 16) & 0xff) + 0.7152 * ((base16 >> 8) & 0xff) + 0.0722 * (base16 & 0xff)) > 65
         }
 
-        var wattStuff, useableData, shardPower, digitCap, metaCap
+        var wattStuff, useableData, shardPower, digitCap, metaCap, matterLimit
         var timeBonus = Hyper(true)
 
         // This function updates all properties in the game (like wood). This function can be modified if you wish!
@@ -15282,7 +15286,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 updateId("cap", Hyper(digitCap).format(2))
 
-                var oldMoney = new Hyper(C("money"))
+                var oldMoney = new Hyper(C("money")).min(matterLimit)
 
                 add("shards", C("hyperclocks").div(hasResearch("production") ? 4 : 12))
                 var shards = C("shards")
@@ -15876,7 +15880,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     }
                 }
 
-                var newMoney = C("money")
+                var newMoney = C("money").min(matterLimit)
                 var moneyLoss = oldMoney.sub(newMoney)
                 var newStats = moneyLoss.isLess("eee100") ? moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")) : ""
 
@@ -16842,13 +16846,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
             time = newTime
 
-            if (!shiftDown && easyButton !== null && easyButton.id !== "autoClicking" && !(["crystal", "secret", "autosell"].includes(easyButton.id)) && easyTime <= newTime) {
+            if (!shiftDown && easyButton !== null && shouldAutoClick(easyButton) && easyTime <= newTime) {
                 easyButton.click()
                 easyTime += hasResearch("autoclicker2") ? 25 : (hasResearch("autoclicker") ? 40 : 50)
                 alreadyClicked = false
             }
 
-            if (!shiftDown && autoClick && hovered !== null && hovered.id.slice(0, 12) !== "autoClicking" && !(["crystal", "secret", "autosell"].includes(hovered.id)) && autoTime <= newTime) {
+            if (!shiftDown && autoClick && hovered !== null && shouldAutoClick(hovered) && autoTime <= newTime) {
                 hovered.click()
                 autoTime += hasResearch("autoclicker2") ? 25 : (hasResearch("autoclicker") ? 40 : 50)
             }
@@ -16896,7 +16900,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 digitCap = "1000"
             }
             var propertyLevel = (hasResearch("property5") ? 5000 : 0) + (hasResearch("property4") ? 523 : 0) + (hasResearch("property3") ? 4 : 0) + (hasResearch("property2") ? 1 : 0) + (hasResearch("property") ? 1 : 0) + Math.pow((hasResearch("dimension") ? 8 : 0) * (hasResearch("dimension2") ? 8 : 1), hasResearch("dimension3") ? 10 : 1)
-            var matterLimit = new Hyper("e" + digitCap)
+            matterLimit = new Hyper("e" + digitCap)
             if (propertyLevel !== 0) {
                 matterLimit = matterLimit.pow(new Hyper(propertyLevel + 1).mul("5225").pow(3).add(1).pow(10).mul(6.3).pow10Repeat(2))
             }
