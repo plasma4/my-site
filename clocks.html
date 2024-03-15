@@ -8932,6 +8932,11 @@
                             data-desc="[Costs $eee1.000e500.] Increase your clock production based on your money!">
                             The richest clocks
                         </span>
+                        <span class="mini stripe3" data-cost="clocks-1e34" data-show="$unitrade" data-earn="$shiny"
+                            data-fade="$shiny"
+                            data-desc="[Costs 10.000D clocks.] Increase your golden shard production based on clocks!">
+                            Shiny clocks
+                        </span>
                         <br>
                         View the trades below:
                         <br>
@@ -8941,43 +8946,48 @@
                             <span class="mini stripe1" data-show="$unitrade" data-cost="shards-1e10"
                                 data-earn="$property" data-hide="$property"
                                 data-desc="[Costs 10.000B golden shards.] Property increases the maximum amount of resources you can have! (More money...)">
-                                Property trade 1
+                                Property trade 1 (HyperSale Distribution)
                             </span>
                             <span class="mini stripe1" data-show="$property" data-cost="shards-5e9"
                                 data-earn="$property2" data-hide="$property2"
                                 data-desc="[Costs 5.000B golden shards.] Property increases the maximum amount of resources you can have!">
-                                Property trade 2
+                                Property trade 2 (HyperSale Distribution)
                             </span>
                             <span class="mini stripe1" data-show="$property|shards>4e11" data-cost="shards-4.5e11"
                                 data-earn="$property3" data-hide="$property3"
                                 data-desc="[Costs 450.00B golden shards.] Property increases the maximum amount of resources you can have!">
-                                Property trade 3
+                                Property trade 3 (Galactic Brokers Association)
                             </span>
                             <span class="mini stripe1" data-show="$property|shards>7e11" data-cost="shards-1e12"
                                 data-earn="$property4" data-hide="$property4"
                                 data-desc="[Costs 1.000T golden shards.] Property increases the maximum amount of resources you can have!">
-                                Property trade 4
+                                Property trade 4 (SimpleSense.interworld)
                             </span>
                             <span class="mini stripe1" data-show="$property|shards>9.2e11" data-cost="shards-2.6e12"
                                 data-earn="$property5" data-hide="$property5"
                                 data-desc="[Costs 2.600T golden shards.] Property increases the maximum amount of resources you can have!">
-                                Property trade 5
+                                Property trade 5 (HyperSale Distribution)
                             </span>
                             <br>
                             <span class="mini stripe2" data-show="$property|shards>2e11" data-cost="money-eeee125"
                                 data-earn="$dimension" data-hide="$dimension"
                                 data-desc="[Costs $eee1.000e125.] Unlock a new dimension, which increase your maximum matter even FURTHER.">
-                                Dimension trade 1
+                                Dimension trade 1 (DimensionCompanies.galactical)
                             </span>
                             <span class="mini stripe2" data-show="$property|shards>2e11" data-cost="money-eeee140"
                                 data-earn="$dimension2" data-hide="$dimension2"
                                 data-desc="[Costs $eee1.000e140.] Unlock a new dimension, which increase your maximum matter even FURTHER.">
-                                Dimension trade 2
+                                Dimension trade 2 (DimensionCompanies.galactical)
                             </span>
                             <span class="mini stripe2" data-show="$property|shards>1e12" data-cost="money-eee2e222"
                                 data-earn="$dimension3" data-hide="$dimension3"
                                 data-desc="[Costs $eee2.000e222.] Unlock a new dimension, which increase your maximum matter even FURTHER.">
-                                Dimension trade 3
+                                Dimension trade 3 (DimensionCompanies.galactical)
+                            </span>
+                            <span class="mini stripe2" data-show="shards>4e12" data-cost="shards-4e13|qcomputers-250000"
+                                data-earn="$dimension4" data-hide="$dimension4"
+                                data-desc="[Costs 40.000T shards and 250,000 quantum computers.] Unlock a new dimension, which increase your maximum matter even FURTHER.">
+                                Dimension trade 4 (EZDistributedProperty)
                             </span>
                         </b>
                         <hr>
@@ -15288,7 +15298,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var oldMoney = new Hyper(C("money")).min(matterLimit)
 
-                add("shards", C("hyperclocks").div(hasResearch("production") ? 4 : 12))
+                add("shards", C("hyperclocks").mul(hasResearch("shiny") ? C("clocks").add(1).ln().add(1).sqr() : 1).div(hasResearch("production") ? 4 : 12))
                 var shards = C("shards")
                 var shardPower = shards.isZero() ? Hyper(true) : shards.mul(10000).sqrt(true).sqrt(true)
                 if (hasResearch("polish")) {
@@ -16899,10 +16909,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             } else if (hasResearch("multiverse1")) {
                 digitCap = "1000"
             }
-            var propertyLevel = (hasResearch("property5") ? 5000 : 0) + (hasResearch("property4") ? 523 : 0) + (hasResearch("property3") ? 4 : 0) + (hasResearch("property2") ? 1 : 0) + (hasResearch("property") ? 1 : 0) + Math.pow((hasResearch("dimension") ? 8 : 0) * (hasResearch("dimension2") ? 8 : 1), hasResearch("dimension3") ? 10 : 1)
+            var propertyLevel = (hasResearch("property5") ? 5000 : 0) + (hasResearch("property4") ? 523 : 0) + (hasResearch("property3") ? 4 : 0) + (hasResearch("property2") ? 1 : 0) + (hasResearch("property") ? 1 : 0) + Math.pow((hasResearch("dimension") ? 8 : 0) * (hasResearch("dimension2") ? 8 : 1), hasResearch("dimension3") ? 8 : 1)
+            propertyLevel = new Hyper(propertyLevel).pow(hasResearch("dimension4") ? 8 : 1)
             matterLimit = new Hyper("e" + digitCap)
-            if (propertyLevel !== 0) {
-                matterLimit = matterLimit.pow(new Hyper(propertyLevel + 1).mul("5225").pow(3).add(1).pow(10).mul(6.3).pow10Repeat(2))
+            if (propertyLevel.isPositive()) {
+                matterLimit = matterLimit.pow(propertyLevel.add(1).mul("5225").pow(3).add(1).pow(10).mul(6.3).pow10Repeat(2))
             }
 
             var limitedProperties = properties.slice(0)
