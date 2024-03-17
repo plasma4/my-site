@@ -2749,6 +2749,10 @@
         .crystal1,
         .crystal2,
         .crystal3,
+        .crystal4,
+        .apple,
+        .carrot,
+        .gcarrot,
         .ticket,
         .brick,
         .mold,
@@ -3186,6 +3190,22 @@
         .crystal3 {
             filter: drop-shadow(0px 0px 3px #ae62e1);
             background-position: -48px 0px;
+        }
+
+        .crystal4 {
+            background-position: -240px -16px;
+        }
+
+        .apple {
+            background-position: -240px -32px;
+        }
+
+        .carrot {
+            background-position: -224px -80px;
+        }
+
+        .gcarrot {
+            background-position: -224px -96px;
         }
 
         .ticket {
@@ -7227,7 +7247,7 @@
         </header>
 
         <div id="properties">
-            hypercubes|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            carrots|gcarrots|hypercubes|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             francium|warpcubes|spice|magicpowder|yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -7309,6 +7329,8 @@
             attackpotions: ATTACK Potion (11, A VERY special potion)
             yellowcandy: Yellow Cand$y/ies (8, A weird yellow candy obtained by defeating enemies)
             purplecandy: Purple Cand$y/ies (8, A weird purple candy from Zone II)
+            carrots: Carrot (10, Simply a mysterious vegetable)
+            gcarrots: Golden Carrot (11, The golden version of the mysterious carrot)
             metabucks: %MetaBuck (2, A funny-looking digital dollar)
             metacoins: %MetaCoin (10, A silly green digital coin)
             metaholes: %MetaHole (11, A hole made from digital influence)
@@ -8919,7 +8941,7 @@
                         <span class="mini stripe3" data-cost="clocks-1e36" data-show="$unitrade" data-earn="$power"
                             data-fade="$power"
                             data-desc="[Costs 1.000Ud clocks.] Gain the ability to earn max HyperClocks now!">
-                            Hyper power
+                            Powerful hype
                         </span>
                         <br>
                         View the trades below:
@@ -9277,6 +9299,11 @@
                             data-desc="[Costs 1.400e55 spice.]\nSuper red pentation is simply multiplied by 4.">
                             <span class="bigger outlined blood">Red IV</span>
                         </span>
+                        <span class="mini warn" data-cost="spice-1e50" data-show="$rediv" data-earn="$carrot"
+                            data-fade="$carrot"
+                            data-desc="[Costs 1.000e50 spice.]\nUnlock [carrots] that you gain from killing enemies in Zone II!\nCarrots increase the effect of red candy on health.">
+                            <span class="bigger outlined blood">Carrotene</span>
+                        </span>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -9545,6 +9572,8 @@
                     <span class="smallish red" id="redcandy"></span>
                     <span class="smallish yellow" id="yellowcandy" data-for="$bigger yellowcandy"></span>
                     <span class="smallish purple" id="purplecandy" data-for="$bigger purplecandy"></span>
+                    <span class="smallish orange" id="carrots" data-for="$bigger carrot"></span>
+                    <span class="smallish orange" id="gcarrots" data-for="$bigger gcarrot"></span>
 
                     <div id="underground"></div>
                     <div id="zoneEffect" class="small serif"></div>
@@ -15973,6 +16002,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var spicePower = Hyper2(C("spice").add(10).mul(hasResearch("healthpowder") ? C("magicpowder").add(10).log10().log2().add(1) : 1).log10().toString()).pow(hasResearch("squarespice") ? 9.2 : 4.6)
                 cap = cap.arrow(2)(spicePower.arrow(2)(spicePower.pent(spicePower)))
             }
+            var carrots = C("carrots")
+            if (carrots.isPositive()) {
+                cap = cap.arrow(3)(Hyper2(carrots.add(2).toString()).pow(10000))
+            }
             return cap
         }
 
@@ -16479,6 +16512,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 characterY = startingY
                 enemiesDefeated++
                 enemyHealth = Hyper2(Infinity)
+
+                if (zone === 2 && hasResearch("carrot")) {
+                    rawAdd("carrots", Hyper(1))
+                }
 
                 rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).floor(true))
 
