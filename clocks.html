@@ -12196,11 +12196,20 @@
             backColor = ID("backColor").value
         })
 
+        function playPress() {
+            if (firefoxZero === 0) {
+                sounds.press.cloneNode().play()
+            } else {
+                sounds.press.currentTime = 0
+                sounds.press.play()
+            }
+        }
+
         var sellPercent = 100
         ID("autosell").addEventListener("click", function () {
             autosellOn = !autosellOn
             if (!noAudio) {
-                sounds.press.cloneNode().play()
+                playPress()
             }
         })
 
@@ -12208,13 +12217,13 @@
         ID("autoClicking").addEventListener("click", function () {
             autoClick = !autoClick
             if (!noAudio) {
-                sounds.press.cloneNode().play()
+                playPress()
             }
         })
         ID("autoClicking2").addEventListener("click", function () {
             autoClick = !autoClick
             if (!noAudio) {
-                sounds.press.cloneNode().play()
+                playPress()
             }
         })
 
@@ -12491,7 +12500,7 @@
             crystalTime = Date.now() + crystalSpeed * (Math.floor(++crystalTotal / 3) + 1)
 
             if (!noAudio) {
-                sounds.press.cloneNode().play()
+                playPress()
             }
         })
 
@@ -13062,7 +13071,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             }
 
                             if (!noAudio) {
-                                sound.cloneNode().play()
+                                if (sound === sounds.press) {
+                                    playPress()
+                                } else {
+                                    sound.cloneNode().play()
+                                }
                             }
 
                             if (containsSpell) {
@@ -16602,7 +16615,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
         attachEvent("shootFireball", function () {
             if (shootFireball() && !noAudio) {
-                sounds.press.cloneNode().play()
+                playPress()
             }
         })
 
