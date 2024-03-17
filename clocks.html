@@ -16986,6 +16986,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var money = C("money", "This happened while updating the amount of money that you have.")
             updateId("money", money.isLess(0.01) ? "no money" : ("$" + money.format(2)))
+            updateClass(ID("money"), money.isLess("eeee1000") ? "green" : "move3")
 
             // Items without references in buttons are ignored!
             for (i = 0; i < properties.length; i++) {
