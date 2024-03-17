@@ -5201,7 +5201,7 @@
                         sum = start.$[3] + b.$[3] / (10n ** diff)
                     } else {
                         if (d2 - d1 > DIGITSMINUSONE) {
-                            return num
+                            return b
                         }
                         sum = start.$[3] / (10n ** -diff) + b.$[3]
                     }
@@ -5356,7 +5356,7 @@
                         sum = start.$[3] - b.$[3] / (10n ** diff)
                     } else {
                         if (d2 - d1 > DIGITSMINUSONE) {
-                            return num
+                            return b
                         }
                         sum = start.$[3] / (10n ** -diff) - b.$[3]
                     }
@@ -8941,7 +8941,17 @@
                         <span class="mini stripe3" data-cost="clocks-1e36" data-show="$unitrade" data-earn="$power"
                             data-fade="$power"
                             data-desc="[Costs 1.000Ud clocks.] Gain the ability to earn max HyperClocks now!">
-                            Powerful hype
+                            EZHype
+                        </span>
+                        <span class="mini stripe3" data-cost="clocks-4.5e45" data-show="$unitrade" data-earn="$power2"
+                            data-fade="$power2"
+                            data-desc="[Costs 4.500qd clocks.] The number of qubits you have increases the HyperClock effect!">
+                            Hypertech
+                        </span>
+                        <span class="mini stripe3" data-cost="clocks-4.8e48" data-show="$unitrade" data-earn="$power3"
+                            data-fade="$power3"
+                            data-desc="[Costs 4.800Qd clocks.] The number of quantum computers you have increases the HyperClock effect as well!">
+                            Hypertech^Quantum
                         </span>
                         <br>
                         View the trades below:
@@ -11116,7 +11126,7 @@
                 <div id="wiki" style="display: none">
                     <button id="toWiki1" class="special" style="display: none">Sort by Alphabet</button>
                     <button id="toWiki2" class="special">Sort by Tier</button>
-                    <br>
+                    <div class="small red">(Hey, where did red candy go?)</div>
                     Everything:
                     <div id="wiki1"></div>
                     <div id="wiki2" style="display: none"></div>
@@ -15324,7 +15334,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var oldMoney = new Hyper(C("money")).min(matterLimit)
 
-                add("shards", C("hyperclocks").mul(hasResearch("shiny") ? C("clocks").add(1).ln().add(1).sqr() : 1).div(hasResearch("production") ? 4 : 12))
+                add("shards", C("hyperclocks").mul(hasResearch("power3") ? C("qcomputers").add(4).log2().sub(1) : 1).mul(hasResearch("power2") ? C("qubits").add(2).log2().log10().add(1) : 1).mul(hasResearch("shiny") ? C("clocks").add(1).ln().add(1).sqr() : 1).div(hasResearch("production") ? 4 : 12))
                 var shards = C("shards")
                 var shardPower = shards.isZero() ? Hyper(true) : shards.mul(10000).sqrt(true).sqrt(true)
                 if (hasResearch("polish")) {
