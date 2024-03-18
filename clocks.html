@@ -8954,6 +8954,11 @@
                             data-desc="[Costs 4.500qd clocks.] The number of qubits you have increases the HyperClock effect!">
                             Hypertech
                         </span>
+                        <span class="mini stripe3" data-cost="clocks-2.5e46" data-show="$unitrade"
+                            data-earn="$hyperqubit" data-fade="$hyperqubit"
+                            data-desc="[Costs 25.000qd clocks.] You earn 100× more qubits.">
+                            Hyperqubit
+                        </span>
                         <span class="mini stripe3" data-cost="clocks-4.8e48" data-show="$unitrade" data-earn="$power3"
                             data-fade="$power3"
                             data-desc="[Costs 4.800Qd clocks.] The number of quantum computers you have increases the HyperClock effect as well!">
@@ -15461,7 +15466,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
                 var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
                 var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
-                var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1)
+                var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1).mul(hasResearch("hyperqubit") ? 100 : 1)
                 var quantumLabPower = C("quantumlabs").mul(0.00001).mul(hasResearch("hyperquantum") ? Hyper(true).add(C("hyperclocks").mul(0.01).min(50)) : 1)
                 var qubitCost = quantumLabPower.mul(100000)
 
