@@ -10797,8 +10797,8 @@
 
                     <br>
                     <b id="ohMySafariWhyAreYouSoDarnSlow" class="smallish red">
-                        By default, audio is not on in Safari due to performance reasons.
-                        You can turn it on, but it's really slow!
+                        By default, audio in Safari and other Webkit browsers will play differently.
+                        Other parts of the game will still work properly!
                     </b>
                     <br>
                     <label for="enableAudio">
@@ -11672,6 +11672,7 @@
 
                 if (target.getAttribute) {
                     if (target.getAttribute("type") === "range" && !noAudio) {
+                        sounds.press.currentTime = 0
                         sounds.press.play()
                     }
                     hovered = target
@@ -13112,8 +13113,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             if (!noAudio) {
                                 if (sound === sounds.press) {
                                     playPress()
-                                } else {
+                                } else if (notSafari) {
                                     sound.cloneNode().play()
+                                } else {
+                                    sound.currentTime = 0
+                                    sound.play()
                                 }
                             }
 
@@ -13812,7 +13816,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         }
                         updateInput("partyInput", "$" + partySpending.format())
                         noAudio = proceed("FX")
-                        noAudio = noAudio === "truee" || !notSafari
+                        noAudio = noAudio === "trueee" || noAudio === "tru"
                         stripedButtons = proceed("DDDX") === "V"
                         sleekMode = proceed("EX") === "["
                         seasonsEnabled = proceed("fX") === "true"
@@ -14221,7 +14225,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             save = function () {
 
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? "truee" : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "devlog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru"][frame % 3] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -14654,10 +14658,6 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 stripedButtons = false
                 mainColor = "#333"
                 backColor = "d"
-
-                if (!notSafari) {
-                    noAudio = true
-                }
 
                 // Reset all property values
                 stuff = {}
@@ -16671,7 +16671,12 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 redCandyPower = redCandyPower.add(redCandy)
                 redCandy = Hyper2(0)
                 if (!noAudio) {
-                    sounds.transaction.cloneNode().play()
+                    if (notSafari) {
+                        sounds.transaction.cloneNode().play()
+                    } else {
+                        sounds.transaction.currentTime = 0
+                        sounds.transaction.play()
+                    }
                 }
             }
         })
