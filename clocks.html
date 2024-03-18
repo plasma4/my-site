@@ -9332,13 +9332,23 @@
                         </span>
                         <span class="mini warn" data-cost="gcarrots-2" data-show="$carrot" data-earn="$carrot3"
                             data-fade="$carrot3"
-                            data-desc="[Costs 2 golden carrots.]\nGolden carrot costs now exponentiate 3 instead of 10, and carrot gain is multiplied by 3×.">
+                            data-desc="[Costs 2 golden carrots.]\nGolden carrots costs less and carrot gain is multiplied by 3×.">
                             <span class="bigger outlined rainbow2">Triple Carrotene</span>
                         </span>
-                        <span class="mini warn" data-cost="gcarrots-5" data-show="$carrot" data-earn="$carrot4"
-                            data-fade="$carrot4"
-                            data-desc="[Costs 5 golden carrots.]\nEach golden carrot DOUBLES carrot gain.">
+                        <span class="mini warn" data-cost="gcarrots-4|carrots-44" data-show="$carrot"
+                            data-earn="$carrot4" data-fade="$carrot4"
+                            data-desc="[Costs 4 golden carrots and 44 carrots.]\nEach golden carrot DOUBLES carrot gain.">
                             <span class="bigger outlined rainbow2">2× Carrotene</span>
+                        </span>
+                        <span class="mini warn" data-cost="gcarrots-7" data-show="$carrot" data-earn="$carrot5"
+                            data-fade="$carrot5"
+                            data-desc="[Costs 7 golden carrots.]\nYour carrot gain is increased by the number of carrots you have.">
+                            <span class="bigger outlined rainbow2">Superjuice</span>
+                        </span>
+                        <span class="mini warn" data-cost="gcarrots-10" data-show="$carrot" data-earn="$carrot6"
+                            data-fade="$carrot6"
+                            data-desc="[Costs 10 golden carrots.]\nThe power of superjuice is exponentiated by 6.">
+                            <span class="bigger outlined rainbow2">Superjuice^6</span>
                         </span>
                     </div>
                     <hr>
@@ -9614,7 +9624,7 @@
                         Get a <span class="big gcarrot" role="img" aria-label="golden carrot"></span>
                     </button>
                     <button class="special" data-cost="gcarrots-24" data-show="$carrot4" data-earn="carrotgold+1"
-                        data-desc="Obtain a 24-Karrot bar by getting 24 golden carrots. Each bar increases clock production by +2.4%.">
+                        data-desc="Obtain a 24-Karrot bar by getting 24 golden carrots. Each bar increases clock production by +2.4%.$carrotgold$">
                         Get a 24-Karrot Gold Bar <span class="bigger carrotgold"></span>
                     </button>
                     <br><br>
@@ -9624,6 +9634,8 @@
                     <span class="smallish purple" id="purplecandy" data-for="$bigger purplecandy"></span>
                     <span class="smallish orange" id="carrots" data-for="$bigger carrot"></span>
                     <span class="smallish yellow" id="gcarrots" data-for="$bigger gcarrot"></span>
+                    <br>
+                    <span class="smallish valuable2" id="carrotgold" data-for="$bigger carrotgold"></span>
 
                     <div id="underground"></div>
                     <div id="zoneEffect" class="small serif"></div>
@@ -16572,7 +16584,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 enemyHealth = Hyper2(Infinity)
 
                 if (zone === 2 && hasResearch("carrot")) {
-                    rawAdd("carrots", Hyper(hasResearch("carrot3") ? 3 : 1).mul(hasResearch("carrot4") ? Hyper(2).pow(C("gcarrots")) : 1))
+                    rawAdd("carrots", Hyper(hasResearch("carrot3") ? 3 : 1).mul(hasResearch("carrot4") ? Hyper(2).pow(C("gcarrots")) : 1).mul(hasResearch("carrot5") ? C("carrots").add(1).log2().add(1).pow(hasResearch("carrot6") ? 6 : 1) : 1).floor(true))
                 }
 
                 rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).floor(true))
