@@ -7247,7 +7247,7 @@
         </header>
 
         <div id="properties">
-            carrots|gcarrots|hypercubes|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            hypercubes|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             francium|warpcubes|spice|magicpowder|yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -9312,7 +9312,17 @@
                         <span class="mini warn" data-cost="spice-1e50" data-show="$rediv" data-earn="$carrot"
                             data-fade="$carrot"
                             data-desc="[Costs 1.000e50 spice.]\nUnlock [carrots] that you gain from killing enemies in Zone II!\nCarrots increase the effect of red candy on health.">
-                            <span class="bigger outlined blood">Carrotene</span>
+                            <span class="bigger outlined rainbow2">Carrotene</span>
+                        </span>
+                        <span class="mini warn" data-cost="gcarrots-1" data-show="$carrot" data-earn="$gcarrot"
+                            data-fade="$gcarrot"
+                            data-desc="[Costs 1 golden carrot.]\nGolden carrots are more powerful!">
+                            <span class="bigger outlined rainbow2">Golden Carrotene</span>
+                        </span>
+                        <span class="mini warn" data-cost="carrots-50" data-show="$carrot" data-earn="$carrot2"
+                            data-fade="$carrot2"
+                            data-desc="[Costs 50 carrots.]\nCarrots increase golden carrot effect.">
+                            <span class="bigger outlined rainbow2">Double Carrotene</span>
                         </span>
                     </div>
                     <hr>
@@ -9578,12 +9588,17 @@
                         <br><br>
                     </div>
 
+
+                    <button class="special" data-cost="carrots-EXPgcarrots,1" data-show="carrots>0"
+                        data-earn="gcarrots+1" data-desc="Get a {golden carrot} that increases your health further!">
+                        Get a <span class="gcarrot" role="img" aria-label="golden carrot"></span>
+                    </button>
                     <div id="coins" class="valuable" data-desc="Yay! A coin!" data-for="$bigger coin"></div>
                     <span class="smallish red" id="redcandy"></span>
                     <span class="smallish yellow" id="yellowcandy" data-for="$bigger yellowcandy"></span>
                     <span class="smallish purple" id="purplecandy" data-for="$bigger purplecandy"></span>
                     <span class="smallish orange" id="carrots" data-for="$bigger carrot"></span>
-                    <span class="smallish orange" id="gcarrots" data-for="$bigger gcarrot"></span>
+                    <span class="smallish yellow" id="gcarrots" data-for="$bigger gcarrot"></span>
 
                     <div id="underground"></div>
                     <div id="zoneEffect" class="small serif"></div>
@@ -16012,9 +16027,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var spicePower = Hyper2(C("spice").add(10).mul(hasResearch("healthpowder") ? C("magicpowder").add(10).log10().log2().add(1) : 1).log10().toString()).pow(hasResearch("squarespice") ? 9.2 : 4.6)
                 cap = cap.arrow(2)(spicePower.arrow(2)(spicePower.pent(spicePower)))
             }
-            var carrots = C("carrots")
-            if (carrots.isPositive()) {
-                cap = cap.arrow(3)(Hyper2(carrots.add(2).toString()).pow(10000))
+            var carrotPower = C("carrots").pow(C("gcarrots").add(1).pow(Hyper(hasResearch("carrot2") ? C("carrots").add(1).pow(9) : 1).mul(hasResearch("gcarrot") ? "15253545" : 14)))
+            if (carrotPower.isPositive()) {
+                cap = cap.arrow(3)(Hyper2(carrotPower.add(2).toString()).pow(10000))
             }
             return cap
         }
@@ -16273,7 +16288,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             if (inBattle === 0) {
                 var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier.sqr()).toString())
                 var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
-                var zoneEffect = zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1))
+                var zoneEffect = zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1))
 
                 battleFrame++
                 if (waitBeforeAttack++ === Math.max(45 - fightFrame * (hasResearch("speed") ? 5 : 0), hasResearch("super") ? 5 : 25)) {
