@@ -9588,11 +9588,11 @@
                         <br><br>
                     </div>
 
-
                     <button class="special" data-cost="carrots-EXPgcarrots,1" data-show="carrots>0"
                         data-earn="gcarrots+1" data-desc="Get a {golden carrot} that increases your health further!">
                         Get a <span class="gcarrot" role="img" aria-label="golden carrot"></span>
                     </button>
+                    <br><br>
                     <div id="coins" class="valuable" data-desc="Yay! A coin!" data-for="$bigger coin"></div>
                     <span class="smallish red" id="redcandy"></span>
                     <span class="smallish yellow" id="yellowcandy" data-for="$bigger yellowcandy"></span>
@@ -15833,9 +15833,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
 
                 // Yeah, there's a lot of things the game can say!
-                if (cps.isMore("ee1000")) {
-                    updateId("potential", "...how about A WHOLE LOT")
+                if (cps.isMore("ee100")) {
+                    updateId("potential", "...crazy ability")
                 } else if (cps.isMore("ee100")) {
+                    updateId("potential", "...how about A WHOLE LOT")
+                } else if (cps.isMore("ee12")) {
+                    updateId("potential", "...cool production")
+                } else if (cps.isMore("ee11")) {
                     updateId("potential", "...well uh how about A LOT")
                 } else if (cps.isMore("ee10")) {
                     updateHTML(ID("potential"), "...items<sub>5</sub>")
@@ -15879,13 +15883,15 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     updateId("potential", "...a few clocks, I guess")
                 } else if (cps.isMore("1e200")) {
                     updateId("potential", " WAY TOO MUCH potential")
-                } else if (cps.isMore("1e100")) {
-                    updateId("potential", " maybe a bit too much potential")
-                } else if (cps.isMore("1e50")) {
-                    updateId("potential", " ABSOLUTELY RiDcUlOuS potential")
+                } else if (cps.isMore("1e200")) {
+                    updateId("potential", " BIG potential")
                 } else if (cps.isMore("1e40")) {
-                    updateId("potential", " RiDcUlOuS potential")
+                    updateId("potential", " maybe a bit too much potential")
+                } else if (cps.isMore("1e35")) {
+                    updateId("potential", " ABSOLUTELY RiDcUlOuS potential")
                 } else if (cps.isMore("1e30")) {
+                    updateId("potential", " InSaNe potential")
+                } else if (cps.isMore("1e25")) {
                     updateId("potential", " EXTREMELY INSANE potential")
                 } else if (cps.isMore("1e20")) {
                     updateId("potential", " LOTS OF INSANE potential")
