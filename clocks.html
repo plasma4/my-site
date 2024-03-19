@@ -9411,10 +9411,15 @@
                             data-desc="[Requires you to trade 42 bunnies away.]\nDecrease golden carrot cost growth further.">
                             Golden bunnies
                         </span>
-                        <span class="mini special" data-cost="gcarrots-250" data-show="$bunnies4" data-earn="$bunnies5"
+                        <span class="mini special" data-cost="gcarrots-400" data-show="$bunnies4" data-earn="$bunnies5"
                             data-fade="$bunnies5"
-                            data-desc="[Requires you to trade 250 golden carrots.]\nBunnies increase your carrot's effect on health!">
+                            data-desc="[Requires you to trade 400 golden carrots.]\nBunnies increase your carrot's effect on health!">
                             Healthy bunny
+                        </span>
+                        <span class="mini special" data-cost="carrots-1e250" data-show="$bunnies5" data-earn="$bunnies6"
+                            data-fade="$bunnies6"
+                            data-desc="[Requires you to trade 1.000e250 carrots.]\nYour health is increased further based on the number of bunnies you have.">
+                            Healthier bunny
                         </span>
                     </div>
                     <hr>
@@ -16150,7 +16155,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var spicePower = Hyper2(C("spice").add(10).mul(hasResearch("healthpowder") ? C("magicpowder").add(10).log10().log2().add(1) : 1).log10().toString()).pow(hasResearch("squarespice") ? 9.2 : 4.6)
                 cap = cap.arrow(2)(spicePower.arrow(2)(spicePower.pent(spicePower)))
             }
-            var carrotPower = C("carrots").pow(hasResearch("bunnies5") ? Hyper(C("bunnies")).pow(C("bunnies").add(1).pow("550")) : 1).pow(C("gcarrots").add(1).pow(Hyper(hasResearch("carrot2") ? C("carrots").add(1).pow(9) : 1).mul(hasResearch("gcarrot") ? "15253545" : 14)))
+            var carrotPower = C("carrots").pow(hasResearch("bunnies5") ? Hyper(C("bunnies")).pow(C("bunnies").add(1).pow(hasResearch("bunnies6") ? "15550" : "550")) : 1).pow(C("gcarrots").add(1).pow(Hyper(hasResearch("carrot2") ? C("carrots").add(1).pow(9) : 1).mul(hasResearch("gcarrot") ? "15253545" : 14)))
             if (carrotPower.isPositive()) {
                 cap = cap.arrow(3)(Hyper2(carrotPower.add(2).toString()).pow(10000))
             }
