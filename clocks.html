@@ -4283,7 +4283,7 @@
 
         var i = 0
         function commaFormat(num, precision) {
-            if (num === null || num === undefined) return "NaN"
+            if (num === null || num === undefined) return "???"
             let zeroCheck = num.array ? num.array[0][1] : num
             if (zeroCheck < 0.001) return (0).toFixed(precision)
             let init = num.toString()
@@ -4293,7 +4293,7 @@
         }
 
         function regularFormat(num, precision) {
-            if (isNaN(num)) return "NaN"
+            if (isNaN(num)) return "???"
             let zeroCheck = num.array ? num.array[0][1] : num
             if (zeroCheck < 0.001) return (0).toFixed(precision)
             let fmt = num.toString()
@@ -4391,7 +4391,7 @@
         }
 
         function formatExpanta(num, precision = 2, small = false) {
-            if (ExpantaNum.isNaN(num)) return "NaN"
+            if (ExpantaNum.isNaN(num)) return "???"
             let precision2 = Math.max(3, precision) // for e
             let precision3 = Math.max(4, precision) // for F, G, H
             let precision4 = Math.max(6, precision) // for J, K
@@ -4403,7 +4403,7 @@
             if (num.lt("1e50")) { return formatValue(num.toNumber(), precision) }
             else if (num.lt(1)) return regularFormat(num, precision + (small ? 2 : 0))
             else if (num.lt(1000)) return regularFormat(num, precision)
-            else if (num.lt(1e9)) return commaFormat(num)
+            else if (num.lt(1e7)) return commaFormat(num)
             else if (num.lt("10^^5")) { // 1e9 ~ 1F5
                 let bottom = arraySearch(array, 0)
                 let rep = arraySearch(array, 1) - 1
@@ -9404,7 +9404,12 @@
                         <span class="mini special" data-cost="bunnies-40|carrotgold-100" data-show="$bunnies2"
                             data-earn="$bunnies3" data-fade="$bunnies3"
                             data-desc="[Requires you to trade 40 bunnies away and 100 24-Karrot Gold Bars.]\nIncrease the maximum difficulty up to 25.">
-                            Damaging bunnies
+                            Intense bunnies
+                        </span>
+                        <span class="mini special" data-cost="bunnies-42" data-show="$bunnies3" data-earn="$bunnies4"
+                            data-fade="$bunnies4"
+                            data-desc="[Requires you to trade 42 bunnies away.]\nDecrease golden carrot cost growth further.">
+                            Golden bunnies
                         </span>
                     </div>
                     <hr>
@@ -9674,9 +9679,14 @@
                         data-earn="gcarrots+1" data-desc="Get a {golden carrot} that increases your health further!">
                         Get a <span class="big gcarrot" role="img" aria-label="golden carrot"></span>
                     </button>
-                    <button class="special" data-cost="carrots-EX3gcarrots,1" data-show="$carrot3"
+                    <button class="special" data-cost="carrots-EX3gcarrots,1" data-show="$carrot3" data-hide="$bunnies4"
                         data-earn="gcarrots+1"
                         data-desc="Get a {golden carrot} that increases your health further!\n{(The cost is decreased because of Triple Carrotene.)}">
+                        Get a <span class="big gcarrot" role="img" aria-label="golden carrot"></span>
+                    </button>
+                    <button class="special" data-cost="carrots-EX3gcarrots,0.5" data-show="$bunnies4"
+                        data-earn="gcarrots+1"
+                        data-desc="Get a {golden carrot} that increases your health further!\n{(The cost is decreased because of a bunny upgrade.)}">
                         Get a <span class="big gcarrot" role="img" aria-label="golden carrot"></span>
                     </button>
                     <button class="special" data-cost="gcarrots-24" data-show="$carrot4" data-earn="carrotgold+1"
@@ -13193,7 +13203,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                             if (expPart === "EXP" || expPart === "EX3") {
                                                 var comma = str.indexOf(",")
                                                 var property = str.slice(3, comma)
-                                                amount = Hyper(expPart === "EX3" ? 3 : 110).pow(Hyper(str.slice(comma + 1)).mul(C(property, "This happened while calculating button costs.").add(1).floor(true)))
+                                                amount = Hyper(expPart === "EX3" ? 3 : 10).pow(Hyper(str.slice(comma + 1)).mul(C(property, "This happened while calculating button costs.").add(1).floor(true)))
                                             } else {
                                                 amount = new Hyper(str)
                                             }
