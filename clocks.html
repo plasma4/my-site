@@ -9390,7 +9390,7 @@
                             data-desc="Get a bunny that increases clock gain by +25% per bunny! You can have a maximum of 100 bunnies.$bunnies$">
                             Get a bunny <span class="bunny1"></span>
                         </button>
-                        <button class="pure" data-show="bunnies>=100" data-earn="bunnies+1" data-fade="bunnies>=25"
+                        <button class="pure" data-show="bunnies>=100" data-earn="bunnies+1" data-fade="bunnies>=100"
                             data-desc="[You already have maximum bunnies!]">
                             Get a bunny <span class="bunny1"></span>
                         </button>
@@ -9668,7 +9668,7 @@
                         Get a <span class="big gcarrot" role="img" aria-label="golden carrot"></span>
                     </button>
                     <button class="special" data-cost="gcarrots-24" data-show="$carrot4" data-earn="carrotgold+1"
-                        data-desc="Obtain a 24-Karrot bar by getting 24 golden carrots. Each bar increases clock production by +2.4%.$carrotgold$">
+                        data-desc="Obtain a 24-Karrot bar by getting 24 golden carrots. Each bar increases golden shard CPS effect by +2.4%.$carrotgold$">
                         Get a 24-Karrot Gold Bar <span class="bigger carrotgold"></span>
                     </button>
                     <br><br>
@@ -15442,6 +15442,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     shardPower = shardPower.sqr()
                 }
 
+                shardPower = shardPower.mul(Hyper(true).add(Hyper(0.024).mul(C("carrotgold"))))
+
                 var shardInfoElement = ID("shardInfo")
                 if (shards.isZero()) {
                     if (shardInfoElement.style.display !== "none") {
@@ -15691,7 +15693,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 if (hasResearch("richest")) {
                     cpt = cpt.mul(C("money").add(1).log10().add(1).log10().add(1).log10().add(1).log2().add(1))
                 }
-                cpt = cpt.mul(Hyper(true).add(Hyper(0.024).mul(C("carrotgold")))).mul(Hyper(true).add(Hyper(0.25).mul(C("bunnies"))))
+                cpt = cpt.mul(Hyper(true).add(Hyper(0.25).mul(C("bunnies"))))
 
                 add("clocks", cpt)
                 if (autosellOn) {
