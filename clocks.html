@@ -7539,7 +7539,7 @@
                 </div>
 
                 You have <span id="money" class="green"></span> <span class="money"></span> and
-                <span id="potential" class="wow2"></span>!
+                <span id="potential"></span>!
 
                 <br>
                 You're earning
@@ -9395,6 +9395,17 @@
                             data-desc="[You already have maximum bunnies!]">
                             Get a bunny <span class="bunny1"></span>
                         </button>
+                        <br>
+                        <span class="mini special" data-cost="bunnies-40" data-show="bunnies>=10" data-earn="$bunnies2"
+                            data-fade="$bunnies2"
+                            data-desc="[Requires you to trade 40 bunnies away.]\nBunnies increase your total damage output by +10% per bunny.">
+                            Damaging bunnies
+                        </span>
+                        <span class="mini special" data-cost="bunnies-40|carrotgold-100" data-show="$bunnies2"
+                            data-earn="$bunnies3" data-fade="$bunnies3"
+                            data-desc="[Requires you to trade 40 bunnies away and 100 24-Karrot Gold Bars.]\nIncrease the maximum difficulty up to 25.">
+                            Damaging bunnies
+                        </span>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -14294,7 +14305,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     }
 
                     // Sneak some dungeon updating in at the bottom
-                    if (hasResearch("challenge")) {
+                    if (hasResearch("bunnies3")) {
+                        ID("difficulty").setAttribute("max", 25)
+                    } else if (hasResearch("challenge")) {
                         ID("difficulty").setAttribute("max", 20)
                     }
                     updateInput("difficulty", difficulty)
@@ -15419,6 +15432,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 updateId("potential", "warping away")
                 updateClass(ID("cps"), "purple")
+                updateClass(ID("potential"), "wow2")
                 Game.triggerEventListeners("draw", { inWarp: true })
             } else {
                 speed = speed.mul(frame + 1).floor(true).subOrFalse(speed.mul(frame).floor(true))
@@ -16021,6 +16035,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     updateId("potential", " not much else")
                 }
 
+                updateClass(ID("potential"), cpt.isMore("1e12") ? "wow2" : "wow")
+
                 // Update all of the magic spells
                 var len = spellFunctions.length
                 var divSpeed = speed.div(60)
@@ -16486,7 +16502,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 updateHTML(ID("zoneEffect"), "")
             }
 
-            var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1))
+            var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)).mul(hasResearch("bunnies2") ? Hyper(true).add(C("bunnies").mul(0.1)).toString() : 1)
             var boundX = dungeonX - 0.75
             var boundY = dungeonY - 0.75
             if (inBattle >= 0) {
@@ -17225,7 +17241,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateInput("wattSlider", wattUsage)
             updateInput("wageSlider", wageMultiplier.mul(100))
 
-            if (hasResearch("challenge")) {
+            if (hasResearch("bunnies3")) {
+                if (ID("difficulty").getAttribute("max") != 25) {
+                    ID("difficulty").setAttribute("max", 25)
+                }
+            } else if (hasResearch("challenge")) {
                 if (ID("difficulty").getAttribute("max") != 20) {
                     ID("difficulty").setAttribute("max", 20)
                 }
