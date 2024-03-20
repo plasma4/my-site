@@ -9447,6 +9447,11 @@
                             data-desc="[Requires you to trade 10,000 golden carrots.]\nCarrot gain is increased even more.">
                             Carrots...again^2
                         </span>
+                        <span class="mini special" data-cost="carrots-e1.25e6" data-show="$cringe" data-earn="$cringe2"
+                            data-fade="$cringe2"
+                            data-desc="[Requires you to trade 1e1,250,000 carrots.]\nCarrots increase your cringe gain!">
+                            Carrots...again^3
+                        </span>
                         <div class="bluey" id="cringe" data-for="%cringe"></div>
                     </div>
                     <hr>
@@ -9549,8 +9554,8 @@
                         </span>
                         <span class="mini special" data-cost="coins-1000" data-show="$candy3" data-earn="$collector"
                             data-fade="$collector"
-                            data-desc="[Costs 1,000 coins.] Gain red and yellow candies by defeating enemies of similar colors now!\n{You also gain an option to eat all of your red candies to increase your maximum health.}">
-                            Candy collector
+                            data-desc="[Costs 1,000 coins.] Gain red and yellow candies by defeating enemies of similar colors now!\n{You also gain an option to eat all of your red candies to increase your maximum health.}\n[The candy vault also gives you access to unlimited red candy storage!]">
+                            Candy vault
                         </span>
                         <span class="mini special" data-cost="coins-1e34" data-show="$candy3" data-earn="$purple"
                             data-fade="$purple"
@@ -9628,7 +9633,7 @@
                         </span>
                         <span class="mini special" data-cost="coins-1e16" data-show="$lootingi|$lootingii|$lootingiii"
                             data-earn="$health2" data-fade="$health2"
-                            data-desc="[Costs 10.000q coins.] Tetrate your red candy gain by YOUR RED CANDY GAIN ITSELF!">
+                            data-desc="[Costs 10.000q coins.] {Tetrate} your red candy gain by YOUR RED CANDY GAIN ITSELF!">
                             Healthy eating habits
                         </span>
                         <span class="mini special" data-cost="yellowcandy-1250" data-show="$health2"
@@ -16292,7 +16297,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateId("purpleGain", purpleGain.format(4) + "×")
             rawAdd("spice", spiceGain.div(60))
             if (hasResearch("cringe")) {
-                add("cringe", C("bunnies").div(60))
+                add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").log10().log2().sqr() : 1).div(60))
             }
             limit("gcarrots", Hyper(10000))
 
