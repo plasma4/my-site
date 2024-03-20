@@ -7268,7 +7268,7 @@
         </header>
 
         <div id="properties">
-            hypercubes|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            cringe|hypercubes|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             francium|warpcubes|spice|magicpowder|yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -7280,6 +7280,7 @@
             metaresets|wscience|bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium
         </div>
         <div id="wikiData">
+            cringe: Cringe (10, Uh oh)
             quantumlabs: %Quantum Lab (11, A unique lab that makes quantum computers)
             hyperclocks: %HyperClock (11, A weird and strange clock)
             stablefrancium: Picogram$ of Stabilized Francium/s of Stabilized Francium (9, A portion of stable francium)
@@ -9431,6 +9432,12 @@
                             data-desc="[Requires you to trade 2,000 golden carrots.]\nEach bunny DOUBLES your gold gain.">
                             Rick bunnies
                         </span>
+                        <span class="mini special" data-cost="carrots-2e2000" data-show="$bunnies8" data-earn="$cringe"
+                            data-fade="$cringe"
+                            data-desc="[Requires you to trade 2.000e2,000 carrots.]\n{Each bunny generates 1 cringe per second.}\nCringe increases your attack damage.">
+                            Rickroll bunnies
+                        </span>
+                        <div class="bluey" id="cringe" data-for="%cringe"></div>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -16272,6 +16279,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateId("spiceGain", spiceGain.format(2))
             updateId("purpleGain", purpleGain.format(4) + "×")
             rawAdd("spice", spiceGain.div(60))
+            if (hasResearch("cringe")) {
+                add("cringe", C("bunnies").div(60))
+            }
 
             if (hasResearch("fireball")) {
                 ID("shootFireball").removeAttribute("style")
@@ -16550,7 +16560,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 updateHTML(ID("zoneEffect"), "")
             }
 
-            var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)).mul(hasResearch("bunnies2") ? Hyper(true).add(C("bunnies").mul(0.1)).toString() : 1)
+            var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)).mul(hasResearch("bunnies2") ? Hyper(true).add(C("bunnies").mul(0.1)).toString() : 1).mul(C("cringe").add(1).ln().add(1).toString())
             var boundX = dungeonX - 0.75
             var boundY = dungeonY - 0.75
             if (inBattle >= 0) {
