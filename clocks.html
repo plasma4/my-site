@@ -9437,6 +9437,16 @@
                             data-desc="[Requires you to trade 2.000e2,000 carrots.]\n{Each bunny generates 1 cringe per second.}\nCringe increases your attack damage.">
                             Rickroll bunnies
                         </span>
+                        <span class="mini special" data-cost="carrots-2.5e2500" data-show="$cringe" data-earn="$carrot7"
+                            data-fade="$carrot7"
+                            data-desc="[Requires you to trade 2.500e2,500 carrots.]\nIncrease carrot gain further.">
+                            Carrots...again
+                        </span>
+                        <span class="mini special" data-cost="gcarrots-10000" data-show="$cringe" data-earn="$carrot8"
+                            data-fade="$carrot8"
+                            data-desc="[Requires you to trade 10,000 golden carrots.]\nCarrot gain is increased even more.">
+                            Carrots...again^2
+                        </span>
                         <div class="bluey" id="cringe" data-for="%cringe"></div>
                     </div>
                     <hr>
@@ -9730,10 +9740,12 @@
                     <span class="smallish red" id="redcandy"></span>
                     <span class="smallish yellow" id="yellowcandy" data-for="$bigger yellowcandy"></span>
                     <span class="smallish purple" id="purplecandy" data-for="$bigger purplecandy"></span>
-                    <span class="smallish orange" id="carrots" data-for="$bigger carrot"></span>
-                    <span class="smallish yellow" id="gcarrots" data-for="$bigger gcarrot"></span>
                     <br>
-                    <span class="smallish valuable2" id="carrotgold" data-for="$bigger carrotgold"></span>
+                    <i class="smallish orange" id="carrots" data-for="$bigger carrot"></i>
+                    <i class="smallish valuable" id="gcarrots" data-for="$bigger gcarrot"></i>
+                    <i class="smallish valuable">(capped at 10,000 golden carrots)</i>
+                    <br>
+                    <i class="smallish valuable2" id="carrotgold" data-for="$bigger carrotgold"></i>
 
                     <div id="underground"></div>
                     <div id="zoneEffect" class="small serif"></div>
@@ -16282,6 +16294,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             if (hasResearch("cringe")) {
                 add("cringe", C("bunnies").div(60))
             }
+            limit("gcarrots", Hyper(10000))
 
             if (hasResearch("fireball")) {
                 ID("shootFireball").removeAttribute("style")
@@ -16563,6 +16576,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)).mul(hasResearch("bunnies2") ? Hyper(true).add(C("bunnies").mul(0.1)).toString() : 1).mul(C("cringe").add(1).ln().add(1).toString())
             var boundX = dungeonX - 0.75
             var boundY = dungeonY - 0.75
+            var collideKey = collisionKey.replace("e", "")
             if (inBattle >= 0) {
                 var attackHTML = ""
                 var doubleX = characterX * 2 / characterSections
@@ -16573,7 +16587,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     var xData = attackDataX[i]
                     var yData = attackDataY[i]
                     var attackMultiplier = attackID[i]
-                    if (xData >= boundX || xData <= -0.25 || yData >= boundY || yData <= -0.25 || collisionKey.includes(tileData[Math.floor(xData), Math.floor(yData)])) {
+                    if (xData >= boundX || xData <= -0.25 || yData >= boundY || yData <= -0.25 || collideKey.includes(tileData[Math.floor(yData)][Math.floor(xData)])) {
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
                         attackDataY.splice(i, 1)
@@ -16711,7 +16725,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 enemyHealth = Hyper2(Infinity)
 
                 if (zone === 2 && hasResearch("carrot")) {
-                    rawAdd("carrots", Hyper(hasResearch("carrot3") ? 3 : 1).mul(hasResearch("carrot4") ? Hyper(2).pow(C("gcarrots")) : 1).mul(hasResearch("carrot5") ? C("carrots").add(1).log2().add(1).pow(hasResearch("carrot6") ? 6 : 1) : 1).floor(true))
+                    rawAdd("carrots", Hyper(hasResearch("carrot3") ? 3 : 1).mul(hasResearch("carrot4") ? Hyper(2).pow(C("gcarrots")) : 1).mul(hasResearch("carrot5") ? C("carrots").add(1).log2().add(1).pow(hasResearch("carrot6") ? 6 : 1) : 1).floor(true).pow(hasResearch("carrot7") ? 9 : 1).pow(hasResearch("carrot8") ? 50 : 1))
                 }
 
                 rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true))
