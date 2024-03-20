@@ -15731,7 +15731,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     if (typeof itemData === "number") {
                         useableData[wattageKey] = requestWatts(wattageKey, itemData)
                     } else {
-                        var itemToAdd
+                        var itemToAdd = new Hyper()
                         if (wattageKey === "factories" && factoriesOverclocked) {
                             itemToAdd = requestWatts(wattageKey, itemData[0] * 3).mul(itemData[1] * 1.5)
                         } else if ((factoriesEnabled || wattageKey !== "factories") && (armsEnabled || wattageKey !== "arms")) {
@@ -16236,7 +16236,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             if (mixingType !== 0 && mixingTime <= 0) {
                 rawAdd(["healpotions", "shieldpotions", "goldenpotions", "attackpotions"][mixingType - 1], Hyper(1))
                 mixingType = 0
-                mixingTime = new Hyper(0)
+                mixingTime = new Hyper()
             }
             var speedOfMixing = (hasResearch("supermix") ? C("spice").log10().mul(0.3362) : new Hyper(true)).mul(mixingSpeed * (hasResearch("cauldron") ? 2 : 1) * (hasResearch("cauldron2") ? 2 : 1)).mul(hasResearch("pot") ? 3 : 1)
             mixingTime = mixingTime.sub(speedOfMixing)
