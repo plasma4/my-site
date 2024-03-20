@@ -9853,8 +9853,14 @@
                     </button>
                     <button class="diamond"
                         data-desc="Sacrifice 100,000 feathers and 200 radioactive clocks for 50,000 glue.$glue$"
-                        data-cost="feathers-100000|rc-200" data-earn="glue+50000" data-show="feathers>=100000">
+                        data-cost="feathers-100000|rc-200" data-earn="glue+50000" data-show="feathers>=55555"
+                        data-hide="$feathery">
                         Sacrifice for 50,000× <span class="glue" role="img" aria-label="glue"></span>
+                    </button>
+                    <button class="diamond"
+                        data-desc="Sacrifice 100,000 feathers and 200 radioactive clocks for 1,000,000 glue!\n[This amount is higher because of a research.]$glue$"
+                        data-cost="feathers-100000|rc-200" data-earn="glue+50000" data-show="$feathery">
+                        Sacrifice for 1,000,000× <span class="glue" role="img" aria-label="glue"></span>
                     </button>
                     <button class="gold"
                         data-desc="Glue trees slowly produce rubber that can then be made into glue.\nOnly costs $80!$trees$"
@@ -10055,6 +10061,11 @@
                         <div data-show="$autofix" data-iq="80" data-cost="1e13" data-research="marketing"
                             data-desc="[You NEED 80 digital knowledge to purchase this research!]\nUse your computers to mass-advertise your clocks!\n(All items sell for +4% for each powered computer you have!)">
                             Computer advertising: <span class="foam">$10,000,000,000,000</span>
+                            <span class="ticket"></span>
+                        </div>
+                        <div data-show="$digital|feathers>123456" data-iq="60" data-cost="5e12" data-research="feathery"
+                            data-desc="[You NEED 60 digital knowledge to purchase this research!]\nIncrease the amount of glue you can get from sacrificing!">
+                            Auto-fixer-upper machines: <span class="foam">$5,000,000,000,000</span>
                             <span class="ticket"></span>
                         </div>
                         <div data-show="$digital" data-iq="50" data-cost="1e12" data-research="autofix"
