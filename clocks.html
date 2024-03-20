@@ -9382,7 +9382,7 @@
                         <hr>
                         <span class="big bunny2"></span> &nbsp; <span class="big bunny1"></span>
                         &nbsp;
-                        <span class="rainbow">Bunnies!</span>
+                        <span class="rainbow2">Bunnies!</span>
                         <br>
                         Bunnies increase your clock gain by +25% per bunny.
                         <br>
@@ -9425,6 +9425,11 @@
                             data-fade="$bunnies7"
                             data-desc="[Requires you to trade 1,250 golden carrots.]\nYou can get 100 golden carrots at once (but you spend coins instead).">
                             Construction bunnies
+                        </span>
+                        <span class="mini special" data-cost="gcarrots-2000" data-show="$bunnies7" data-earn="$bunnies8"
+                            data-fade="$bunnies8"
+                            data-desc="[Requires you to trade 2,000 golden carrots.]\nEach bunny DOUBLES your gold gain.">
+                            Rick bunnies
                         </span>
                     </div>
                     <hr>
@@ -9710,7 +9715,7 @@
                         Get +100 <span class="bigger gcarrot" role="img" aria-label="golden carrots"></span>
                     </button>
                     <button class="special" data-cost="gcarrots-24" data-show="$carrot4" data-earn="carrotgold+1"
-                        data-desc="Obtain a 24-Karrot bar by getting 24 golden carrots. Each bar increases golden shard CPS effect by +2.4%.$carrotgold$">
+                        data-desc="Obtain a 24-Karrot bar by getting 24 golden carrots. Each bar increases golden shard CPS effect by +2.4%.\n{The effect only works if you have at least 24 golden shards!}$carrotgold$">
                         Get a 24-Karrot Gold Bar <span class="bigger carrotgold"></span>
                     </button>
                     <br><br>
@@ -10791,7 +10796,7 @@
                             </div>
                             <span data-unlock="megaclocks>=7777777" class="megaach ach2" role="img"
                                 title="You've unlocked this for producing a total of 7,777,777 MegaClocks!"></span>
-                            <div data-unlock="wormholes>=1000" class="rainbow">
+                            <div data-unlock="wormholes>=1000" class="rainbow3">
                                 Produce a total of <span class="move4">1,000</span> wormholes!
                                 <br>
                                 <span class="vortexach" role="img" alt="A giant wormhole to another place!"></span>
@@ -11213,7 +11218,7 @@
                     </div>
 
                     <br>
-                    Version <b>0.0.4</b>: <span class="rainbow">free crystals!</span>
+                    Version <b>0.0.4</b>: <span class="rainbow2">free crystals!</span>
                     <div class="smaller red">Added on December 9, 2023</div>
                     <b>Now, you can click on spinning crystals that pop up every so often!</b>
                     <br>
@@ -15487,7 +15492,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     shardPower = shardPower.sqr()
                 }
 
-                shardPower = shardPower.mul(Hyper(true).add(Hyper(0.024).mul(C("carrotgold"))))
+                if (shards.isMoreOrEqual("24")) {
+                    shardPower = shardPower.mul(Hyper(true).add(Hyper(0.024).mul(C("carrotgold"))))
+                }
 
                 var shardInfoElement = ID("shardInfo")
                 if (shards.isZero()) {
@@ -16686,7 +16693,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     rawAdd("carrots", Hyper(hasResearch("carrot3") ? 3 : 1).mul(hasResearch("carrot4") ? Hyper(2).pow(C("gcarrots")) : 1).mul(hasResearch("carrot5") ? C("carrots").add(1).log2().add(1).pow(hasResearch("carrot6") ? 6 : 1) : 1).floor(true))
                 }
 
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).floor(true))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true))
 
                 if (zone === 2 && hasResearch("purple")) {
                     rawAdd("purplecandy", purpleGain)
