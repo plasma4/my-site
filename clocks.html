@@ -16567,12 +16567,19 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     }
                     type = dungeonKey.indexOf(item)
                 }
-                updateClass(tiles[i], "big " + (type !== -1 ? typeArray[type] : "blank"))
-                if (inBattle < 0) {
+                if (inBattle >= 30 || inBattle < 0) {
                     tiles[i].removeAttribute("style")
                 } else {
-                    tiles[i].style.filter = "brightness(" + Math.max(1 - Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy)) * 0.15, 0) + ")"
+                    var distance = Math.max(1 - Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy)) * 0.15, 0)
+                    if (zone === 2 && distance <= 0.25) {
+                        tiles[i].style.filter = "brightness(0)"
+                        updateClass(tiles[i], "big concrete")
+                        continue
+                    } else if (type !== -1) {
+                        tiles[i].style.filter = "brightness(" + distance.toFixed(2) + ")"
+                    }
                 }
+                updateClass(tiles[i], "big " + (type !== -1 ? typeArray[type] : "blank"))
             }
 
             if (nextToShop) {
@@ -16581,11 +16588,12 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 ID("shop").style.display = "none"
             }
 
-            if (inBattle === 0) {
-                var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier.sqr()).toString())
-                var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
-                var zoneEffect = zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1))
+            var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier.sqr()).toString())
+            var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
+            var zoneEffect = zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1))
 
+
+            if (inBattle === 0) {
                 battleFrame++
                 if (waitBeforeAttack++ === Math.max(45 - fightFrame * (hasResearch("speed") ? 5 : 0), hasResearch("super") ? 5 : 25)) {
                     fightFrame++
@@ -16766,7 +16774,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             }
                             xData = attackDataX[i] += 0.05 * dungeonSpeed * attackMultiplier
                         }
-                        attackHTML += '<span class="' + data + '" style="top:' + (8 + 32 * yData) + 'px;left:' + (7 + 32 * xData) + 'px' + additionalCSS + '"></span>'
+                        var distance = Math.max(1 - Math.sqrt((xData - cx) * (xData - cx) + (yData - cy) * (yData - cy)) * 0.4, 0)
+                        attackHTML += '<span class="' + data + '" style="top:' + (8 + 32 * yData) + 'px;left:' + (7 + 32 * xData) + 'px' + additionalCSS + ";filter:brightness(" + distance + ')"></span>'
                         i++
                     }
                 }
