@@ -2108,8 +2108,8 @@
         .comical {
             pointer-events: none;
             font-size: 16px;
-            background: linear-gradient(#0000, #fff7), linear-gradient(90deg, #0f0, #f00, #ff0, #f0f, #40405c, black, #ffffff);
             font-family: "Comic Sans MS", "Comic Sans", cursive;
+            color: inherit;
         }
 
         .loss {
@@ -9457,7 +9457,8 @@
                             data-desc="[Requires you to exchange 1.000B cringe.]\nCringe increases your health!">
                             Carrots...again^4
                         </span>
-                        <div class="bluey" id="cringe" data-for="%cringe"></div>
+                        <br>
+                        <span class="comical rainbow2" id="cringe" data-for="%CRINGE"></span>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -11119,6 +11120,11 @@
                         <li>Research and science (over 100 of them!) <span class="check"></span></li>
                     </ul>
 
+
+                    <div class="small orange">
+                        March 20, 2024: Added carrots, golden carrots, bunnies, and
+                        <u class="comical">CRINGE</u> to dungeons
+                    </div>
                     <div class="small red">
                         0.2.2.1 (March 8, 2024) Added portals in dungeons
                     </div>
@@ -17091,7 +17097,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
 
             if (sleekMode) {
-                themeCSS += "#navigation>span{background-color:#999}.comical{background:none}#navigation>span:hover{background-color:#888}#navigation>span:active{background-color:#555}button,.mini{border-color:white;color:white;background:none!important;background-color:black!important;text-shadow:none!important;filter:none!important}#spells>button:before{background:conic-gradient(#fff6 var(--time-left),transparent var(--time-left))}"
+                themeCSS += "#navigation>span{background-color:#999}#navigation>span:hover{background-color:#888}#navigation>span:active{background-color:#555}button,.mini{border-color:white;color:white;background:none!important;background-color:black!important;text-shadow:none!important;filter:none!important}#spells>button:before{background:conic-gradient(#fff6 var(--time-left),transparent var(--time-left))}"
             }
 
             if (stripedButtons) {
