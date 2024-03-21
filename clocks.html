@@ -446,7 +446,6 @@
             height: calc(100% - 10px);
         }
 
-
         #note {
             display: flex;
         }
@@ -2721,6 +2720,7 @@
 
         .blank,
         .sheet,
+        .black,
         .gcweird,
         .clock,
         .gc,
@@ -2963,8 +2963,14 @@
             background-position: -256px 0px;
         }
 
-        .blank {
+        .blank,
+        .black {
             background-image: none;
+        }
+
+        .black {
+            background-color: black;
+            filter: none;
         }
 
         .clock {
@@ -11185,7 +11191,9 @@
                         <li>Research and science (over 100 of them!) <span class="check"></span></li>
                     </ul>
 
-
+                    <div class="small yellow">
+                        March 21, 2024: Dungeons how have an interesting shadow effect!
+                    </div>
                     <div class="small orange">
                         March 20, 2024: Added carrots, golden carrots, bunnies, and
                         <u class="comical">CRINGE</u> to dungeons
@@ -16350,7 +16358,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         var battleDungeon = "", worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
         var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
         function updateDungeon() {
-            battleDungeon = battleDungeons[enemiesBattled % 4]
+            battleDungeon = battleDungeons[enemiesBattled % 5]
             if (workerUnloaded) {
                 workerUnloaded = false
                 var blob = new Blob([workerText], { type: "text/javascript" })
@@ -16607,17 +16615,18 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     }
                     type = dungeonKey.indexOf(item)
                 }
+                var distance = Math.max(1 - Math.sqrt((x - divX) * (x - divX) + (y - divY) * (y - divY)) * 0.15, 0)
                 if (!withinBattle) {
+                    distance = Math.max(distance, 1 - Math.min(Math.pow(y * 0.04, 0.6), 0.9))
+                }
+                if (distance === 1) {
                     tiles[i].removeAttribute("style")
-                } else {
-                    var distance = Math.max(1 - Math.sqrt((x - divX) * (x - divX) + (y - divY) * (y - divY)) * 0.15, 0)
-                    if (zone === 2 && distance <= 0.25) {
-                        tiles[i].style.filter = "brightness(0)"
-                        updateClass(tiles[i], "big concrete")
-                        continue
-                    } else if (type !== -1) {
-                        tiles[i].style.filter = "brightness(" + distance.toFixed(2) + ")"
-                    }
+                } else if (zone === 2 && distance <= 0.25) {
+                    tiles[i].removeAttribute("style")
+                    updateClass(tiles[i], "big black")
+                    continue
+                } else if (type !== -1) {
+                    tiles[i].style.filter = "brightness(" + distance.toFixed(2) + ")"
                 }
                 updateClass(tiles[i], "big " + (type !== -1 ? typeArray[type] : "blank"))
             }
@@ -16631,7 +16640,6 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier.sqr()).toString())
             var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
             var zoneEffect = zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1))
-
 
             if (inBattle === 0) {
                 battleFrame++
@@ -18046,7 +18054,14 @@ brbrbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
 rbrbrbrbrb
-brbrbrbrbr`.split("\n")]
+brbrbrbrbr`.split("\n"),
+        `bbbbbbbbbb
+  $$ $$
+       e
+cccccccccc
+rbrbrbrbrb
+brbrbrbrbr
+cccccccccc`.split("\n")]
 
         if (storageWorks) {
             function getMods() {
