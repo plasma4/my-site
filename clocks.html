@@ -16471,8 +16471,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
             }
 
-            var cx = Math.floor(characterX / characterSections)
-            var cy = Math.floor(characterY / characterSections)
+            var divX = characterX / characterSections
+            var divY = characterY / characterSections
+            var cx = Math.floor(divX)
+            var cy = Math.floor(divY)
             if (health.lte(0) || cy >= depth) {
                 resetCharacter()
                 return
@@ -16484,8 +16486,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 health = healthCap.min(health.add(Hyper2(healthCap).min(250).sub(hasResearch("natural") ? 0 : health).max(10).mul(0.01)))
             }
 
-            var extraX = Math.max(0, Math.floor(characterX / characterSections - dungeonX + 2))
-            var extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 3))
+            var extraX = Math.max(0, Math.floor(divX - dungeonX + 2))
+            var extraY = Math.max(0, Math.floor(divY - dungeonY + 3))
 
             if (!tileData[cy + 1] || !(collisionKey.includes(tileData[cy + 1][cx]))) {
                 characterY += ++fallSpeed
@@ -16493,7 +16495,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 extraY = Math.max(0, Math.floor(characterY / characterSections - dungeonY + 3))
             } else {
                 fallSpeed = 0
-                characterY = Math.floor(characterY / characterSections) * characterSections
+                characterY = cy * characterSections
             }
 
             var nextToShop = false
@@ -16575,7 +16577,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 if (inBattle >= 30 || inBattle < 0) {
                     tiles[i].removeAttribute("style")
                 } else {
-                    var distance = Math.max(1 - Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy)) * 0.15, 0)
+                    var distance = Math.max(1 - Math.sqrt((x - divX) * (x - divX) + (y - divY) * (y - divY)) * 0.15, 0)
                     if (zone === 2 && distance <= 0.25) {
                         tiles[i].style.filter = "brightness(0)"
                         updateClass(tiles[i], "big concrete")
@@ -16779,7 +16781,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             }
                             xData = attackDataX[i] += 0.05 * dungeonSpeed * attackMultiplier
                         }
-                        var distance = Math.max(1 - Math.sqrt((xData - cx) * (xData - cx) + (yData - cy) * (yData - cy)) * 0.4, 0)
+                        var distance = Math.max(1 - Math.sqrt((xData - divX) * (xData - divX) + (yData - divY) * (yData - divY)) * 0.4, 0)
                         attackHTML += '<span class="' + data + '" style="top:' + (4 + 32 * yData) + 'px;left:' + (7 + 32 * xData) + 'px' + additionalCSS + ";filter:brightness(" + distance + ')"></span>'
                         i++
                     }
