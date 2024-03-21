@@ -9572,6 +9572,10 @@
                             data-desc="[Costs 1,000 coins.] Your attacks now speed up to +800% faster instead of +80%!">
                             Superspeed
                         </span>
+                        <span class="mini special" data-cost="coins-333" data-show="$speed" data-earn="$triple"
+                            data-fade="$triple" data-desc="[Costs 333 coins.] Triple coin gain!">
+                            Speedy gain
+                        </span>
                         <span class="mini special" data-cost="coins-5000" data-earn="$coin" data-fade="$coin"
                             data-desc="[Costs 5,000 coins.] Gain a {+0.1% sell multiplier that stacks with other multipliers} for EVERY SINGLE coin that you currently own!\nIt's just that good! (Except that it caps out at +100,000%, anyway.)">
                             Not selling
@@ -16775,7 +16779,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             xData = attackDataX[i] += 0.05 * dungeonSpeed * attackMultiplier
                         }
                         var distance = Math.max(1 - Math.sqrt((xData - cx) * (xData - cx) + (yData - cy) * (yData - cy)) * 0.4, 0)
-                        attackHTML += '<span class="' + data + '" style="top:' + (8 + 32 * yData) + 'px;left:' + (7 + 32 * xData) + 'px' + additionalCSS + ";filter:brightness(" + distance + ')"></span>'
+                        attackHTML += '<span class="' + data + '" style="top:' + (4 + 32 * yData) + 'px;left:' + (7 + 32 * xData) + 'px' + additionalCSS + ";filter:brightness(" + distance + ')"></span>'
                         i++
                     }
                 }
@@ -16848,7 +16852,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     rawAdd("carrots", Hyper(hasResearch("carrot3") ? 3 : 1).mul(hasResearch("carrot4") ? Hyper(2).pow(C("gcarrots")) : 1).mul(hasResearch("carrot5") ? C("carrots").add(1).log2().add(1).pow(hasResearch("carrot6") ? 6 : 1) : 1).floor(true).pow(hasResearch("carrot7") ? 9 : 1).pow(hasResearch("carrot8") ? 50 : 1))
                 }
 
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("triple") ? 3 : 1).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true))
 
                 if (zone === 2 && hasResearch("purple")) {
                     rawAdd("purplecandy", purpleGain)
