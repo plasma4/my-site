@@ -9608,6 +9608,11 @@
                             data-desc="[Costs 25,000 coins.] Shoot a fireball (sorry, fireFRUIT) at an enemy by clicking on the SHOOT FIREFRUIT BUTTON or by simply pressing the F key!">
                             Fiery danger++
                         </span>
+                        <span class="mini special" data-show="$fireaim" data-cost="coins-1e400" data-earn="$fireaim2"
+                            data-fade="$fireaim2"
+                            data-desc="[Costs 1.000e400 coins.] Automatically shoot firefruit in quick bursts.">
+                            Extreme danger
+                        </span>
                         <span class="mini special" data-cost="coins-2500" data-earn="$candy" data-hide="$candy"
                             data-desc="[Costs 2,500 coins.] Eat a {magical} candy to increase your max health by 25! (Sorry, I don't have a lot of these candies.)">
                             Magical candies (0/3)
@@ -16633,7 +16638,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     attackID.push(1)
                 }
 
-                if (hasResearch("fireaim") && sceneFrame % 30 === 7) {
+                if ((hasResearch("fireaim2") && sceneFrame % 90 < 10) || (hasResearch("fireaim") && sceneFrame % 30 === 7)) {
                     shootFireball()
                 }
 
@@ -16804,7 +16809,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             xData = attackDataX[i] += 0.05 * dungeonSpeed * attackMultiplier
                         }
                         var distance = Math.max(1 - Math.sqrt((xData - divX) * (xData - divX) + (yData - divY) * (yData - divY)) * 0.4, 0)
-                        attackHTML += '<span class="' + data + '" style="top:' + (4 + 32 * yData) + 'px;left:' + (7 + 32 * xData) + 'px' + additionalCSS + ";filter:brightness(" + distance + ')"></span>'
+                        attackHTML += '<span class="' + data + '" style="top:' + (4 + 32 * (yData - extraY)) + 'px;left:' + (4 + 32 * (xData - extraX)) + 'px' + additionalCSS + ";filter:brightness(" + distance + ')"></span>'
                         i++
                     }
                 }
