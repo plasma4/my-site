@@ -446,9 +446,6 @@
             height: calc(100% - 10px);
         }
 
-        #noteBox {
-            white-space: pre-wrap;
-        }
 
         #note {
             display: flex;
@@ -2406,6 +2403,8 @@
             font-size: 24px;
         }
 
+        #potential,
+        #noteBox,
         .failed,
         #logs {
             white-space: pre-wrap;
@@ -4890,10 +4889,10 @@
                     if (category < 9007199254740992n) {
                         dollar[1] = Number(category)
                     } else if (category > BIGLIMIT) {
-                        // Change the BIGLIMIT value to something else to modify the maximum F amount
-                        if (!noWarnings) {
-                            console.error("The value you have inputted is too large!")
-                        }
+                        // Ignore the limit
+                        // if (!noWarnings) {
+                        //     console.error("The value you have inputted is too large!")
+                        // }
                         dollar = [dollar[0], 0, 0, 0n]
                     }
                     this.$ = dollar
@@ -6427,10 +6426,13 @@
                 } else if (typeof iterations !== "bigint") {
                     var repeats = new Hyper(iterations)
                     var digits = repeats.$[2]
-                    if (digits >= BIGDIGITS) {
-                        throw new RangeError("The amount of iterations is too large!")
-                    }
-                    iterations = repeats.$[3] / (10n ** (BIGDIGITSMINUSONE - BigInt(digits)))
+                    // Ignore the limit and modify the function a bit
+                    // if (digits >= BIGDIGITS) {
+                    //     throw new RangeError("The amount of iterations is too large!")
+                    // }
+                    // iterations = repeats.$[3] / (10n ** (BIGDIGITSMINUSONE - BigInt(digits)))
+                    var diff = BIGDIGITSMINUSONE - BigInt(digits)
+                    iterations = diff <= 0n ? repeats.$[3] * (10n ** -diff) : repeats.$[3] / (10n ** diff)
                 } else {
                     iterations = BigInt(iterations)
                 }
@@ -7539,8 +7541,8 @@
                     </i>
                 </div>
 
-                You have <span id="money" class="green"></span> <span class="money"></span> and
-                <span id="potential"></span>!
+                You have <span id="money" class="green"></span> <span class="money"></span>
+                and<span id="potential"></span>!
 
                 <br>
                 You're earning
@@ -8982,6 +8984,51 @@
                             data-desc="[Costs 4.800Qd clocks.] The number of quantum computers you have increases the HyperClock effect as well!">
                             Hypertech^Quantum
                         </span>
+                        <span class="mini special" data-cost="shards-4.5e45" data-show="$unitrade" data-earn="$power4"
+                            data-fade="$power4"
+                            data-desc="[Costs 4.500qd golden shards.] Clock gain is multiplied by log10(dungeon coins + 10).">
+                            That's coiny
+                        </span>
+                        <span class="mini special" data-cost="clocks-1e60|shards-1e50" data-show="$unitrade"
+                            data-earn="$power5" data-fade="$power5"
+                            data-desc="[Costs 1.000e60 clocks and 1.000e50 golden shards.] Clock gain is multiplied by log2(golden clocks + 2)^2.">
+                            Golden bonus
+                        </span>
+                        <span class="mini special" data-cost="clocks-1e70|shards-1e60" data-show="$unitrade"
+                            data-earn="$power6" data-fade="$power6"
+                            data-desc="[Costs 1.000e70 clocks and 6.000e60 golden shards.] Golden clock production speed is multiplied by log2(HyperClocks + 2), while golden clock costs are divided by log10(HyperClocks + 10).">
+                            Golden synergy
+                        </span>
+                        <span class="mini stripe4" data-cost="clocks-7.7e70|shards-9e63" data-show="$unitrade"
+                            data-earn="$power7" data-fade="$power7"
+                            data-desc="[Costs 7.700e70 clocks and 9.000e63 golden shards.] Golden bonus power is exponentiated by 7.">
+                            Power of 7
+                        </span>
+                        <span class="mini stripe4" data-cost="clocks-1e125" data-show="$unitrade" data-earn="$time4"
+                            data-fade="$time4"
+                            data-desc="[Costs 1.000e125 clocks.] Qubit gain is exponentiated by 125.">
+                            Time qubits
+                        </span>
+                        <span class="mini stripe4" data-cost="clocks-1e126" data-show="$unitrade" data-earn="$time5"
+                            data-fade="$time5"
+                            data-desc="[Costs 1.000e126 clocks.] Your matter limit is increased by the amount of clocks that you have.">
+                            Spacetime compression
+                        </span>
+                        <span class="mini stripe4" data-cost="money-eee1e33333" data-show="$time5" data-earn="$power8"
+                            data-fade="$power8"
+                            data-desc="[Costs $eee1.000e33,333.] Throw some money up into the air (well, no, not really) to automatically increase the matter limit by using smart AI trading.\nThis increase is based on your digital knowledge. {You'll unlock an option to get 1,000 Quantum Labs at once as well!}">
+                            AI acquisitions
+                        </span>
+                        <span class="mini stripe4" data-cost="money-eeee2.5e26" data-show="$time5" data-earn="$power9"
+                            data-fade="$power9"
+                            data-desc="[Costs $eee1.000e250.00S.] Spend some more money to connect all of your Quantum Labs together!\n{This allows Quantum Labs to increase their own production rate.}">
+                            Intergalactic lab chain
+                        </span>
+                        <span class="mini stripe4" data-cost="money-eeee2.5e42" data-show="$power9" data-earn="$power10"
+                            data-fade="$power10"
+                            data-desc="[Costs $eee1.000e2.500Td.] Extend Quantum Labs to the multiverse for an even BETTER Quantum Lab production boost!">
+                            Multiversal lab chain
+                        </span>
                         <br>
                         View the trades below:
                         <br>
@@ -9039,10 +9086,15 @@
                     </div>
 
                     <br>
-                    <button class="stripe4 pure2" data-show="$qlabs" data-earn="quantumlabs+1"
+                    <button class="stripe4 pure2" data-show="$qlabs" data-earn="quantumlabs+1" data-sound="building"
                         data-cost="clocks-5e26|money-1e1000"
                         data-desc="Make a quantum lab at a hefty cost that automatically produces quantum computers by gradually consuming qubits!$quantumlabs$">
                         Construct a QUANTUM LAB
+                        <span class="mini stripe5" data-show="$qlabs" data-earn="quantumlabs+1000" data-sound="building"
+                            data-cost="clocks-5e29|money-1e1003"
+                            data-desc="Make 1,000 Quantum Labs at the same time!$quantumlabs$">
+                            1,000×
+                        </span>
                     </button>
 
                     <hr>
@@ -15618,8 +15670,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
                 var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
                 var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
-                var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1).mul(hasResearch("hyperqubit") ? 100 : 1)
-                var quantumLabPower = C("quantumlabs").mul(0.00001).mul(hasResearch("hyperquantum") ? Hyper(true).add(C("hyperclocks").mul(0.01).min(50)) : 1)
+                var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1).mul(hasResearch("hyperqubit") ? 100 : 1).pow(hasResearch("time4") ? 125 : 1)
+                var quantumLabPower = C("quantumlabs").mul(0.00001).mul(hasResearch("hyperquantum") ? Hyper(true).add(C("hyperclocks").mul(0.01).min(50)) : 1).pow(hasResearch("power9") ? 4 : 1).pow(hasResearch("power10") ? 3 : 1)
                 var qubitCost = quantumLabPower.mul(100000)
 
                 var fcMakers = C("fcmakers")
@@ -15663,6 +15715,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var molders = C("molders")
                 var barmolders = C("barmolds")
                 var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 0.012 : 0.003).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1).mul(hasResearch("golden") ? Hyper(true).add(C("coins").add(10).log10().mul(0.03)) : 1)
+                var jewelerCost = jewelerPower.div(hasResearch("power6") ? C("hyperclocks").add(10).log10() : 1)
 
                 var managers = C("managers")
                 var managerPower = managers.mul(0.006 - 0.006 * Math.exp(-0.04 * managers))
@@ -15805,6 +15858,12 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     cpt = cpt.mul(C("money").add(1).log10().add(1).log10().add(1).log10().add(1).log2().add(1))
                 }
                 cpt = cpt.mul(Hyper(true).add(Hyper(0.25).mul(C("bunnies"))))
+                if (hasResearch("power4")) {
+                    cpt = cpt.mul(C("coins").add(10).log10())
+                }
+                if (hasResearch("power5")) {
+                    cpt = cpt.mul(C("gc").add(2).log2().pow(hasResearch("power7") ? 14 : 2))
+                }
 
                 add("clocks", cpt)
                 if (autosellOn) {
@@ -15903,7 +15962,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 add("goo", wells.mul(0.000165))
                 add("energy", ponds.mul(0.000008))
 
-                multiExchange("gc", jewelerPower, ["clocks", "money", "gold"], [jewelerPower.mul(4), jewelerPower, jewelerPower])
+                multiExchange("gc", jewelerPower.mul(hasResearch("power6") ? C("hyperclocks").add(2).log2() : 1), ["clocks", "money", "gold"], [jewelerCost.mul(4), jewelerCost, jewelerCost])
                 exchange("goldb", barmolders.mul(0.005), "gold", 25)
 
                 exchangeLimit(C("bottles"), "naphtha", separators.mul(0.015), "ngas")
@@ -16077,9 +16136,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     updateId("potential", "...some clocks, I guess")
                 } else if (cps.isMore("1e300")) {
                     updateId("potential", "...a few clocks, I guess")
-                } else if (cps.isMore("1e200")) {
+                } else if (cps.isMore("1e250")) {
                     updateId("potential", " WAY TOO MUCH potential")
                 } else if (cps.isMore("1e200")) {
+                    updateId("potential", " TOO MUCH potential")
+                } else if (cps.isMore("1e150")) {
+                    updateId("potential", " QUITE BIG potential")
+                } else if (cps.isMore("1e100")) {
                     updateId("potential", " BIG potential")
                 } else if (cps.isMore("1e40")) {
                     updateId("potential", " maybe a bit too much potential")
@@ -17191,7 +17254,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 digitCap = "1000"
             }
             var propertyLevel = (hasResearch("property5") ? 5000 : 0) + (hasResearch("property4") ? 523 : 0) + (hasResearch("property3") ? 4 : 0) + (hasResearch("property2") ? 1 : 0) + (hasResearch("property") ? 1 : 0) + Math.pow((hasResearch("dimension") ? 8 : 0) * (hasResearch("dimension2") ? 8 : 1), hasResearch("dimension3") ? 8 : 1)
-            propertyLevel = new Hyper(propertyLevel).pow(hasResearch("dimension4") ? 8 : 1)
+            propertyLevel = new Hyper(propertyLevel).mul(hasResearch("time5") ? C("clocks") : 1).pow(hasResearch("power8") ? Hyper(C("iq").$[1]).add(10) : 1).pow(hasResearch("dimension4") ? 8 : 1)
             matterLimit = new Hyper("e" + digitCap)
             if (propertyLevel.isPositive()) {
                 matterLimit = matterLimit.pow(propertyLevel.add(1).mul("5225").pow(3).add(1).pow(10).mul(6.3).pow10Repeat(2))
