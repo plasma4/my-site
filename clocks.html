@@ -16568,6 +16568,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     type = dungeonKey.indexOf(item)
                 }
                 updateClass(tiles[i], "big " + (type !== -1 ? typeArray[type] : "blank"))
+                if (inBattle < 0) {
+                    tiles[i].removeAttribute("style")
+                } else {
+                    tiles[i].style.filter = "brightness(" + Math.max(1 - Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy)) * 0.15, 0) + ")"
+                }
             }
 
             if (nextToShop) {
@@ -17964,7 +17969,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
         var battleX = 1
         var battleY = 2
-        var battleDungeon = ["cgggggggg", "      rr", "       e", "bbbbbbbb c", "", "cccccccc c", "grrr  rrrg"]
+        var battleDungeon = `cgggggggg
+      rr
+       e
+bbbbbbbb c
+
+cccccccc c
+brrr  rrrb`.split("\n")
 
         if (storageWorks) {
             function getMods() {
