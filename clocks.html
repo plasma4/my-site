@@ -1872,7 +1872,8 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .rainbow2 {
+        .rainbow2,
+        .rainbow4 {
             background: linear-gradient(90deg, #e41a1a, #f5a30c, #e7fa15, #2ccf4a, #1a98c2, #2270e6, #891fed, #9b24b6, #e0116b, #e41a1a, #f5a30c, #e7fa15, #2ccf4a, #1a98c2, #2270e6, #891fed, #9b24b6, #e0116b, #e41a1a);
             background-size: 200% 100%;
             animation: gradient2 15s linear infinite;
@@ -1880,6 +1881,10 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 1px #fff8;
+        }
+
+        .rainbow4 {
+            animation: gradient2 2s linear infinite;
         }
 
         .rainbow3 {
@@ -16043,7 +16048,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var cpsElem = ID("cps")
                 var cpsText = (cps.isLess(1) ? "no " : ((cps.isLess(10) ? "only " : "") + format(cps))) + (season === HALLOWEEN ? " pumpkin" : (season === CHRISTMAS ? " tree" : " clock"))
                 update(cpsElem, ((cps.isLess(1) || cps.isMoreOrEqual(2) ? cpsText + "s" : cpsText) + " a second (CPS)"))
-                if (cps.isMoreOrEqual(1e36)) {
+                if (cps.isMoreOrEqual("1e100")) {
+                    updateClass(cpsElem, "rainbow4")
+                } else if (cps.isMoreOrEqual(1e36)) {
                     updateClass(cpsElem, "rainbow2")
                 } else if (cps.isMoreOrEqual(1e33)) {
                     updateClass(cpsElem, "move5")
@@ -16088,7 +16095,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
 
                 // Yeah, there's a lot of things the game can say!
-                if (cps.isMore("ee100")) {
+                if (cps.isMore("eee6")) {
+                    updateId("potential", "...stunning ability")
+                } else if (cps.isMore("ee100000")) {
+                    updateId("potential", "...absolutely crazy ability")
+                } else if (cps.isMore("ee10000")) {
+                    updateId("potential", "...really crazy ability")
+                } else if (cps.isMore("ee1000")) {
                     updateId("potential", "...crazy ability")
                 } else if (cps.isMore("ee100")) {
                     updateId("potential", "...how about A WHOLE LOT")
