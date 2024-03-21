@@ -7268,7 +7268,7 @@
         </header>
 
         <div id="properties">
-            cringe|hypercubes|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
+            hypercubes|metaspin|metaresets|wscience|fire|s5|s4|s3|s2|silverpower|f5|f4|f3|f2|fierypower|coke|molds|silverb|platinumb|sodaash|ironore|radiumore|bauxite|cbauxite|aluminumc|aluminumo|copperore|silverore|platinumore|clay|sand|science|creativity|limestone|slag|ngas|naphtha|iq
         </div>
         <div id="shown">
             francium|warpcubes|spice|magicpowder|yellowcandy|coins|s5|s4|s3|s2|silverfruit|silvertrees|silverfields|silverplanters|silverwood|influence|metaspin|metac|metabucks|f5|f4|f3|f2|firefruit|firetrees|firefields|fireplanters|fierywood|clocks|gc|goldore
@@ -9388,12 +9388,12 @@
                         Bunnies increase your clock gain by +25% per bunny.
                         <br>
                         <button class="pure" data-cost="carrots-EX3bunnies,2" data-show="$bunnies" data-earn="bunnies+1"
-                            data-hide="bunnies>=100"
+                            data-hide="!bunnies>=100"
                             data-desc="Get a bunny that increases clock gain by +25% per bunny! You can have a maximum of 100 bunnies.$bunnies$">
                             Get a bunny <span class="bunny1"></span>
                         </button>
-                        <button class="pure" data-show="bunnies>=100" data-earn="bunnies+1" data-fade="bunnies>=100"
-                            data-desc="[You already have maximum bunnies!]">
+                        <button class="pure" data-show="!bunnies>=100" data-earn="bunnies+1" data-fade="!bunnies>=100"
+                            data-hide="!bunnies<100" data-desc="[You already have maximum bunnies!]">
                             Get a bunny <span class="bunny1"></span>
                         </button>
                         <br>
@@ -9451,6 +9451,11 @@
                             data-fade="$cringe2"
                             data-desc="[Requires you to trade 1e1,250,000 carrots.]\nCarrots increase your cringe gain!">
                             Carrots...again^3
+                        </span>
+                        <span class="mini special" data-cost="cringe-1e9" data-show="$cringe" data-earn="$cringe3"
+                            data-fade="$cringe3"
+                            data-desc="[Requires you to exchange 1.000B cringe.]\nCringe increases your health!">
+                            Carrots...again^4
                         </span>
                         <div class="bluey" id="cringe" data-for="%cringe"></div>
                     </div>
@@ -15290,7 +15295,23 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         }
                         var index = condition.indexOf(">")
                         if (index === -1) {
-                            console.warn("Conditions without a '>' or '>=' sign are ignored.")
+                            index = condition.indexOf("<")
+                            if (index === -1) {
+                                console.warn("Conditions without a valid comparison sign are ignored.")
+                            } else {
+                                var name = condition.slice(0, index)
+                                var itemAmount = (notTotal ? C(name) : getTotals(name)).floor()
+                                // Test for an equals sign right after it (which is "<=")
+                                if (condition.charCodeAt(index + 1) === 61) {
+                                    if (itemAmount.isMore(condition.slice(index + 2))) {
+                                        succeeded = false
+                                        break
+                                    }
+                                } else if (itemAmount.isMoreOrEqual(condition.slice(index + 1))) {
+                                    succeeded = false
+                                    break
+                                }
+                            }
                             continue
                         }
                         var name = condition.slice(0, index)
@@ -16209,7 +16230,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
             var carrotPower = C("carrots").pow(hasResearch("bunnies5") ? Hyper(C("bunnies")).pow(C("bunnies").add(1).pow(hasResearch("bunnies6") ? "15550" : "550")) : 1).pow(C("gcarrots").add(1).pow(Hyper(hasResearch("carrot2") ? C("carrots").add(1).pow(9) : 1).mul(hasResearch("gcarrot") ? "15253545" : 14)))
             if (carrotPower.isPositive()) {
-                cap = cap.arrow(3)(Hyper2(carrotPower.add(2).toString()).pow(10000))
+                cap = cap.arrow(3)(Hyper2(carrotPower.add(2).toString()).pow(10000).pow(hasResearch("cringe3") ? C("cringe").pow(3).add(1).pow10Repeat(2).toString() : 1))
             }
             return cap
         }
@@ -16592,7 +16613,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     var xData = attackDataX[i]
                     var yData = attackDataY[i]
                     var attackMultiplier = attackID[i]
-                    if (xData >= boundX || xData <= -0.25 || yData >= boundY || yData <= -0.25 || collideKey.includes(tileData[Math.floor(yData)][Math.floor(xData)])) {
+                    if (xData >= boundX || xData <= -0.25 || yData >= boundY || yData <= -0.25 || (Math.floor(yData) < depth && collideKey.includes(tileData[Math.floor(yData)][Math.floor(xData)]))) {
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
                         attackDataY.splice(i, 1)
