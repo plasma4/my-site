@@ -14014,14 +14014,30 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                     collectedX.splice(c, 1)
                                 }
                             }
-                            for (c = 0; c < collectedY.length;) {
-                                var value = parseInt(collectedY[c])
-                                if (isFinite(value)) {
-                                    collectedY[c] = value
-                                    c++
-                                } else {
-                                    collectedY.splice(c, 1)
+                            collectX = proceed("askO\n")
+                            if (collectX !== false) {
+                                collectX = collectX.split(" ")
+                                collectY = proceed("\n").split(" ")
+                                for (var c = 0; c < collectX.length;) {
+                                    var value = parseInt(collectX[c])
+                                    if (isFinite(value)) {
+                                        collectX[c] = value
+                                        c++
+                                    } else {
+                                        collectX.splice(c, 1)
+                                    }
                                 }
+                                for (c = 0; c < collectY.length;) {
+                                    var value = parseInt(collectY[c])
+                                    if (isFinite(value)) {
+                                        collectY[c] = value
+                                        c++
+                                    } else {
+                                        collectY.splice(c, 1)
+                                    }
+                                }
+                            } else {
+                                collectX = []
                             }
                         }
                         characterX = proceed("A")
@@ -14477,7 +14493,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             save = function () {
 
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru", "TT", "tru", "TT", "trueee"][frame % 7] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "askO\n" + collectX.join(" ") + "\n" + collectY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru", "TT", "tru", "TT", "trueee"][frame % 7] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -16320,9 +16336,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             return cap
         }
 
-        var worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
-        var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
+        var battleDungeon = "", worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
+        var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
         function updateDungeon() {
+            battleDungeon = battleDungeons[enemiesBattled % 4]
             if (workerUnloaded) {
                 workerUnloaded = false
                 var blob = new Blob([workerText], { type: "text/javascript" })
@@ -16505,6 +16522,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "wonder2", "portal", "purplecandy", "person"]
             var newX = null
             var newY = null
+            var withinBattle = inBattle < 30 && inBattle >= 0
+            if (!withinBattle) {
+                collectX = []
+                collectY = []
+            }
+            var arrayX = withinBattle ? collectX : collectedX
+            var arrayY = withinBattle ? collectY : collectedY
             for (var i = 0; i < tileAmount; i++) {
                 var x = i % dungeonX + extraX
                 var y = Math.floor(i / dungeonX) + extraY
@@ -16514,7 +16538,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var isDigit = (typeof item === "string") && item.charCodeAt(0) >= 48 && item.charCodeAt(0) <= 57
                 if (x === cx && y === cy) {
                     type = 11
-                    if ((inBattle >= 30 || inBattle < 0) && (collectingKey.includes(item) || isDigit)) {
+                    if ((!withinBattle || item === coinCharacter) && (collectingKey.includes(item) || isDigit)) {
                         if (isDigit) {
                             if (!collectedPortals.includes(item)) {
                                 collectedPortals.push(item)
@@ -16528,8 +16552,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                 }
                             }
                         } else {
-                            for (var t = 0; t < collectedX.length; t++) {
-                                if (collectedX[t] === x && collectedY[t] === y) {
+                            for (var t = 0; t < arrayX.length; t++) {
+                                if (arrayX[t] === x && arrayY[t] === y) {
                                     hideItem = true
                                     break
                                 }
@@ -16548,8 +16572,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                     startingX = characterX
                                     startingY = characterY
                                 }
-                                collectedX.push(x)
-                                collectedY.push(y)
+                                arrayX.push(x)
+                                arrayY.push(y)
                             }
                         }
                     }
@@ -16557,24 +16581,22 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     nextToShop = true
                     type = 11
                 } else if (item !== -1) {
-                    if (inBattle >= 30 || inBattle < 0) {
-                        for (var t = 0; t < collectedX.length; t++) {
-                            if (collectedX[t] === x && collectedY[t] === y) {
-                                hideItem = true
-                                break
-                            }
+                    for (var t = 0; t < arrayX.length; t++) {
+                        if (arrayX[t] === x && arrayY[t] === y) {
+                            hideItem = true
+                            break
                         }
-                        if (hideItem) {
-                            updateClass(tiles[i], "big blank")
-                            continue
-                        }
+                    }
+                    if (hideItem) {
+                        updateClass(tiles[i], "big blank")
+                        continue
                     }
                     if (isDigit) {
                         item = portalCharacter
                     }
                     type = dungeonKey.indexOf(item)
                 }
-                if (inBattle >= 30 || inBattle < 0) {
+                if (!withinBattle) {
                     tiles[i].removeAttribute("style")
                 } else {
                     var distance = Math.max(1 - Math.sqrt((x - divX) * (x - divX) + (y - divY) * (y - divY)) * 0.15, 0)
@@ -16915,6 +16937,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             enemyHealth = Hyper2(Infinity)
             fallSpeed = 0
             collectedPortals = []
+            collectX = []
+            collectY = []
             collectedX = []
             collectedY = []
             characterX = spawnX * characterSections
@@ -16927,7 +16951,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             zone = 1
             redCandyPower = Hyper2(0)
             setZone()
-            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, sceneFrame = 0, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity), dieFrame = 0, collectedPortals = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
+            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, sceneFrame = 0, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity), dieFrame = 0, collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
         }
 
         function moveCharacter(direction) {
@@ -17982,13 +18006,36 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
         var battleX = 1
         var battleY = 2
-        var battleDungeon = `cgggggggg
-      rr
-       e
-bbbbbbbb c
+        var battleDungeons = [`$$gggggggg
 
-cccccccc c
-brrr  rrrb`.split("\n")
+c      e
+brbrbrbrbr
+rbrbrbrbrb
+brbrbrbrbr`.split("\n"),
+        `cccccccccc
+  $$$$
+       e
+cccccccccc
+rbrbrbrbrb
+brbrbrbrbr`.split("\n"),
+        `cccccccccc
+
+$      e
+rbrbrbrbrb
+brbrbrbrbr
+rbrbrbrbrb
+brbrbrbrbr
+rbrbrbrbrb
+brbrbrbrbr`.split("\n"),
+        `cccccccccc
+     $$
+       e
+rbrbrbrbrb
+brbrbrbrbr
+rbrbrbrbrb
+brbrbrbrbr
+rbrbrbrbrb
+brbrbrbrbr`.split("\n")]
 
         if (storageWorks) {
             function getMods() {
