@@ -12749,25 +12749,31 @@
         })
 
         ID("fireReset").addEventListener("click", function () {
-            var earnings = C("firefruit").log10()
-            if (earnings !== false) {
-                earnings = earnings.mul(0.9).sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 1.6 : 0.4).floor(true)
-                if (earnings.isPositive() && doubleCheck("Are you sure? You will LOSE all of your fiery progress!")) {
-                    add("fierywood", earnings)
-                    clearAmount(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
-                    setup(true)
+            var firefruit = C("firefruit")
+            if (firefruit.isPositive()) {
+                var earnings = firefruit.log10()
+                if (earnings !== false) {
+                    earnings = earnings.mul(0.9).sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 1.6 : 0.4).floor(true)
+                    if (earnings.isPositive() && doubleCheck("Are you sure? You will LOSE all of your fiery progress!")) {
+                        add("fierywood", earnings)
+                        clearAmount(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
+                        setup(true)
+                    }
                 }
             }
         })
 
         ID("silverReset").addEventListener("click", function () {
-            var earnings = C("silverfruit").log10()
-            if (earnings !== false) {
-                earnings = earnings.sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
-                if (earnings.isPositive() && doubleCheck("Are you sure? You will LOSE all of your precious silvery progress!")) {
-                    add("silverwood", (hasResearch("silversquare") ? earnings.sqr() : earnings).floor(true))
-                    clearAmount(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
-                    setup(true)
+            var silverfruit = C("silverfruit")
+            if (silverfruit.isPositive()) {
+                var earnings = silverfruit.log10()
+                if (earnings !== false) {
+                    earnings = earnings.sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
+                    if (earnings.isPositive() && doubleCheck("Are you sure? You will LOSE all of your precious silvery progress!")) {
+                        add("silverwood", (hasResearch("silversquare") ? earnings.sqr() : earnings).floor(true))
+                        clearAmount(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
+                        setup(true)
+                    }
                 }
             }
         })
@@ -17257,7 +17263,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 updateOfflineTime()
                 easyTime = Math.max(easyTime, newTime + 100)
                 autoTime = Math.max(autoTime, newTime + 100)
-                mixingTime = mixingTime.sub((hasResearch("supermix") ? C("spice").log10().mul(0.3362) : new Hyper(true)).mul(mixingSpeed * (hasResearch("cauldron") ? 2 : 1) * (hasResearch("cauldron2") ? 2 : 1)).mul(newFrames).mul(hasResearch("pot") ? 3 : 1))
+                mixingTime = mixingTime.sub((hasResearch("supermix") ? C("spice").add(10).log10().mul(0.3362) : new Hyper(true)).mul(mixingSpeed * (hasResearch("cauldron") ? 2 : 1) * (hasResearch("cauldron2") ? 2 : 1)).mul(newFrames).mul(hasResearch("pot") ? 3 : 1))
             }
             time = newTime
 
