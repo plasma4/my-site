@@ -1872,7 +1872,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .rainbow2,
+        .rainbow3,
         .rainbow4 {
             background: linear-gradient(90deg, #e41a1a, #f5a30c, #e7fa15, #2ccf4a, #1a98c2, #2270e6, #891fed, #9b24b6, #e0116b, #e41a1a, #f5a30c, #e7fa15, #2ccf4a, #1a98c2, #2270e6, #891fed, #9b24b6, #e0116b, #e41a1a);
             background-size: 200% 100%;
@@ -1887,7 +1887,7 @@
             animation: gradient2 2s linear infinite;
         }
 
-        .rainbow3 {
+        .rainbow2 {
             animation: rainbow 2.5s linear infinite;
         }
 
@@ -4893,13 +4893,14 @@
                     var category = dollar[1]
                     if (category < 9007199254740992n) {
                         dollar[1] = Number(category)
-                    } else if (category > BIGLIMIT) {
-                        // Ignore the limit
-                        // if (!noWarnings) {
-                        //     console.error("The value you have inputted is too large!")
-                        // }
-                        dollar = [dollar[0], 0, 0, 0n]
                     }
+                    // Ignore the limit
+                    // else if (category > BIGLIMIT) {
+                    //     if (!noWarnings) {
+                    //         console.error("The value you have inputted is too large!")
+                    //     }
+                    //     dollar = [dollar[0], 0, 0, 0n]
+                    // }
                     this.$ = dollar
                 }
             }
@@ -9398,49 +9399,49 @@
                         <span class="mini warn" data-cost="spice-1e50" data-show="$rediv" data-earn="$carrot"
                             data-fade="$carrot"
                             data-desc="[Costs 1.000e50 spice.]\nUnlock [carrots] that you gain from killing enemies in Zone II!\nCarrots increase the effect of red candy on health.">
-                            <span class="bigger outlined rainbow2">Carrotene</span>
+                            <span class="bigger outlined rainbow3">Carrotene</span>
                         </span>
                         <span class="mini warn" data-cost="gcarrots-1" data-show="$carrot" data-earn="$gcarrot"
                             data-fade="$gcarrot"
                             data-desc="[Costs 1 golden carrot.]\nGolden carrots are more powerful!">
-                            <span class="bigger outlined rainbow2">Golden Carrotene</span>
+                            <span class="bigger outlined rainbow3">Golden Carrotene</span>
                         </span>
                         <span class="mini warn" data-cost="carrots-50" data-show="$carrot" data-earn="$carrot2"
                             data-fade="$carrot2"
                             data-desc="[Costs 50 carrots.]\nCarrots increase golden carrot effect.">
-                            <span class="bigger outlined rainbow2">Double Carrotene</span>
+                            <span class="bigger outlined rainbow3">Double Carrotene</span>
                         </span>
                         <span class="mini warn" data-cost="gcarrots-2" data-show="$carrot" data-earn="$carrot3"
                             data-fade="$carrot3"
                             data-desc="[Costs 2 golden carrots.]\nGolden carrots costs less and carrot gain is multiplied by 3×.">
-                            <span class="bigger outlined rainbow2">Triple Carrotene</span>
+                            <span class="bigger outlined rainbow3">Triple Carrotene</span>
                         </span>
                         <span class="mini warn" data-cost="gcarrots-4|carrots-44" data-show="$carrot"
                             data-earn="$carrot4" data-fade="$carrot4"
                             data-desc="[Costs 4 golden carrots and 44 carrots.]\nEach golden carrot DOUBLES carrot gain.">
-                            <span class="bigger outlined rainbow2">2× Carrotene</span>
+                            <span class="bigger outlined rainbow3">2× Carrotene</span>
                         </span>
                         <span class="mini warn" data-cost="gcarrots-7" data-show="$carrot" data-earn="$carrot5"
                             data-fade="$carrot5"
                             data-desc="[Costs 7 golden carrots.]\nYour carrot gain is increased by the number of carrots you have.">
-                            <span class="bigger outlined rainbow2">Superjuice</span>
+                            <span class="bigger outlined rainbow3">Superjuice</span>
                         </span>
                         <span class="mini warn" data-cost="gcarrots-10" data-show="$carrot" data-earn="$carrot6"
                             data-fade="$carrot6"
                             data-desc="[Costs 10 golden carrots.]\nThe power of superjuice is exponentiated by 6.">
-                            <span class="bigger outlined rainbow2">Superjuice^6</span>
+                            <span class="bigger outlined rainbow3">Superjuice^6</span>
                         </span>
                         <span class="mini warn" data-cost="carrots-1e33" data-show="$carrot6" data-earn="$bunnies"
                             data-fade="$bunnies"
                             data-desc="[Costs 1.000D carrots.]\nUnlock {bunnies} (yes, king buns).">
-                            <span class="bigger outlined rainbow2">Bunnies</span>
+                            <span class="bigger outlined rainbow3">Bunnies</span>
                         </span>
                     </div>
                     <div id="bunnyContainer" class="smallish lime" style="display: none">
                         <hr>
                         <span class="big bunny2"></span> &nbsp; <span class="big bunny1"></span>
                         &nbsp;
-                        <span class="rainbow2">Bunnies!</span>
+                        <span class="rainbow3">Bunnies!</span>
                         <br>
                         Bunnies increase your clock gain by +25% per bunny.
                         <br>
@@ -9515,7 +9516,7 @@
                             Carrots...again^4
                         </span>
                         <br>
-                        <span class="comical rainbow2" id="cringe" data-for="%CRINGE"></span>
+                        <span class="comical rainbow3" id="cringe" data-for="%CRINGE"></span>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -10891,7 +10892,7 @@
                             </div>
                             <span data-unlock="megaclocks>=7777777" class="megaach ach2" role="img"
                                 title="You've unlocked this for producing a total of 7,777,777 MegaClocks!"></span>
-                            <div data-unlock="wormholes>=1000" class="rainbow3">
+                            <div data-unlock="wormholes>=1000" class="rainbow2">
                                 Produce a total of <span class="move4">1,000</span> wormholes!
                                 <br>
                                 <span class="vortexach" role="img" alt="A giant wormhole to another place!"></span>
@@ -11318,7 +11319,7 @@
                     </div>
 
                     <br>
-                    Version <b>0.0.4</b>: <span class="rainbow2">free crystals!</span>
+                    Version <b>0.0.4</b>: <span class="rainbow3">free crystals!</span>
                     <div class="smaller red">Added on December 9, 2023</div>
                     <b>Now, you can click on spinning crystals that pop up every so often!</b>
                     <br>
@@ -11417,7 +11418,7 @@
 
             <div id="items">
                 <!-- ??? -->
-                <div class="rainbow3" data-desc="???">
+                <div class="rainbow2" data-desc="???">
                     <span class="wonder"></span> MYSTERY <span class="wonder2"></span>
                 </div>
                 <!-- ??? -->
@@ -11430,7 +11431,7 @@
                     data-desc="Golden, shiny, and bright, this clock is a good measure of wealth, with a flashy gilded outside.\nAlso makes for an amazing decoration in your home!"
                     data-for="$gc"></div>
                 <div id="rc" class="dangerous" data-desc="A radioactive clock.\nScary!" data-for="$rc"></div>
-                <div id="hyperclocks" class="rainbow2" data-desc="Hyper...Clock...Hyper...Clock..."
+                <div id="hyperclocks" class="rainbow3" data-desc="Hyper...Clock...Hyper...Clock..."
                     data-for="$hyperclock"></div>
                 <br>
 
@@ -14060,7 +14061,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         }
                         updateInput("partyInput", "$" + partySpending.format())
                         noAudio = proceed("FX")
-                        noAudio = noAudio === "trueee" || noAudio === "tru"
+                        noAudio = noAudio === "trueee" || noAudio === "tru" || noAudio === "TT"
                         stripedButtons = proceed("DDDX") === "V"
                         sleekMode = proceed("EX") === "["
                         seasonsEnabled = proceed("fX") === "true"
@@ -14471,7 +14472,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             save = function () {
 
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru"][frame % 3] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru", "TT", "tru", "TT", "trueee"][frame % 7] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -16051,7 +16052,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 if (cps.isMoreOrEqual("1e100")) {
                     updateClass(cpsElem, "rainbow4")
                 } else if (cps.isMoreOrEqual(1e36)) {
-                    updateClass(cpsElem, "rainbow2")
+                    updateClass(cpsElem, "rainbow3")
                 } else if (cps.isMoreOrEqual(1e33)) {
                     updateClass(cpsElem, "move5")
                 } else if (cps.isMoreOrEqual(1e30)) {
@@ -16081,7 +16082,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 } else if (cps.isMoreOrEqual(1e6)) {
                     updateClass(cpsElem, "repeat1")
                 } else if (cps.isMoreOrEqual(100000)) {
-                    updateClass(cpsElem, "rainbow2")
+                    updateClass(cpsElem, "rainbow3")
                 } else if (cps.isMoreOrEqual(10000)) {
                     updateClass(cpsElem, "wow2")
                 } else if (cps.isMoreOrEqual(1000)) {
