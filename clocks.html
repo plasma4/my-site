@@ -16795,7 +16795,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         attackDataY.splice(i, 1)
                         attackID.splice(i, 1)
                         len--
-                    } else if ((data !== "hammer" || attackMultiplier !== 4) && attackMultiplier > 0 && data !== "shard" && Math.floor(xData) === 7 && Math.floor(yData) === 2) {
+                    } else if ((data !== "hammer" || attackMultiplier !== 4) && attackMultiplier > 0 && data !== "shard" && Math.floor(xData) === 7 && (Math.floor(yData) === 2 || (isBoss && Math.floor(yData) === 1))) {
                         var healthToRemove = 25
                         if (data === "gc") {
                             healthToRemove = 40
@@ -16892,7 +16892,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateHTML(ID("redcandy"), formattedCandy + '× <span class="bigger redcandy">')
             updateHTML(ID("damage"), damageMultiplier.mul(40).format() + ' for <span class="small valuable2">golden clocks</span> and ' + damageMultiplier.mul(25).format() + " for other attacks")
             updateId("health", (health.eq(healthCap) && health.gte("10^^100")) ? formattedHealthCap : (formatExpanta(health.max(0), 2) + "/" + formattedHealthCap))
-            updateId("enemyHealth", Math.min(Math.max(enemyHealth, 0), enemyCap).toFixed(2) + "/" + enemyCap.toFixed(2))
+            updateId("enemyHealth", enemyHealth.format(2) + "/" + enemyCap.format(2))
 
             if (enemyHealth.lte(0)) {
                 if (hasResearch("money")) {
@@ -17017,7 +17017,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     }
                 } else if (direction === 2) {
                     if (inBattle === 0) {
-                        if (cy < battleDungeon.length && !(collisionKey.includes(battleDungeon[cy][cx + 1]))) {
+                        if (cy < battleDungeon.length && !(collisionKey.includes(battleDungeon[cy][cx + 1])) && (!isBoss || cx !== 6 || cy !== 1)) {
                             characterX += characterSections
                         }
                     } else {
