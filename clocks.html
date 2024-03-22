@@ -16550,7 +16550,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var nextToShop = false
             var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][enemiesBattled % 34] : ((enemiesBattled % 6) + 1)
-            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 ? 17 : 1)).mul(isWonder ? 11.11 : 1).pow(10000)
+            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 ? 17 : 1)).mul(isWonder ? 11.11 : 1)
             enemyHealth = enemyCap.min(enemyHealth)
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "wonder2", "portal", "purplecandy", "person"]
             var newX = null
@@ -16637,10 +16637,6 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 if (distance === 1) {
                     tiles[i].removeAttribute("style")
-                } else if (distance === 0) {
-                    tiles[i].removeAttribute("style")
-                    updateClass(tiles[i], "big black")
-                    continue
                 } else if (type !== -1) {
                     tiles[i].style.filter = "brightness(" + distance.toFixed(2) + ")"
                 }
