@@ -8086,7 +8086,7 @@
                     </label>
                     <button class="upper special" data-show="$parties" id="startParty" data-earn=""
                         data-desc="Note that clicking on this button again will simply reset the party time left to one hour.\n[Parties only affect workers that receive money as payment.]">
-                        Spend that much on a <span class="outlined rainbow">party</span>
+                        Spend that much on a <span class="outlined rainbow2">party</span>
                     </button>
 
                     <div class="smallish valuable">
@@ -16550,7 +16550,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var nextToShop = false
             var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][enemiesBattled % 34] : ((enemiesBattled % 6) + 1)
-            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 ? 17 : 1)).mul(isWonder ? 11.11 : 1)
+            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 ? 17 : 1)).mul(isWonder ? 11.11 : 1).pow(10000)
             enemyHealth = enemyCap.min(enemyHealth)
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "wonder2", "portal", "purplecandy", "person"]
             var newX = null
@@ -16629,13 +16629,15 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     }
                     type = dungeonKey.indexOf(item)
                 }
-                var distance = Math.max(1 - Math.sqrt((x - divX) * (x - divX) + (y - divY) * (y - divY)) * 0.15, 0)
-                if (!withinBattle) {
-                    distance = Math.max(distance, Math.max(0.1, 1 - Math.pow(y * 0.04, 0.6)))
+                var distance
+                if (withinBattle) {
+                    distance = Math.max(1 - Math.sqrt((x - divX) * (x - divX) + (y - divY) * (y - divY)) * 0.15, 0)
+                } else {
+                    distance = Math.max(1 - Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy)) * 0.125, Math.max(0.125, 1 - Math.pow(y * 0.04, 0.6)))
                 }
                 if (distance === 1) {
                     tiles[i].removeAttribute("style")
-                } else if (zone === 2 && distance <= 0.25) {
+                } else if (distance === 0) {
                     tiles[i].removeAttribute("style")
                     updateClass(tiles[i], "big black")
                     continue
@@ -16768,7 +16770,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     var xData = attackDataX[i]
                     var yData = attackDataY[i]
                     var attackMultiplier = attackID[i]
-                    if (xData >= boundX || xData <= -0.25 || yData >= boundY || yData <= -0.25 || (Math.floor(yData) < depth && collideKey.includes(tileData[Math.floor(yData)][Math.floor(xData)]))) {
+                    if (xData >= boundX + 0.5 || xData <= -0.25 || yData >= boundY + 0.25 || yData <= -0.25 || (Math.floor(yData) < depth && collideKey.includes(tileData[Math.floor(yData)][Math.floor(xData)]))) {
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
                         attackDataY.splice(i, 1)
@@ -16785,7 +16787,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             health = health.sub(zoneEffect.mul(Hyper2(1.02).pow(sceneFrame).mul(1000 * Math.max(1, 0.2 + Math.pow(difficulty, 3.6) * 0.072))))
                         } else if (data === "hammer") {
                             health = health.sub(zoneEffect.mul(35 * Math.max(1, 0.2 + Math.pow(difficulty, 2.5) * 0.072)))
-                            characterX -= 0.5 * characterSections
+                            characterX -= (xData < 7 ? 0.5 : -0.5) * characterSections
                             attackID[i] = 4
                             i++
                             continue
@@ -16812,6 +16814,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         attackID.splice(i, 1)
                         len--
                     } else {
+                        if (xData >= 7 || (cx > 7 && yData < 2.5)) {
+                            attackMultiplier = -attackMultiplier
+                        }
                         var additionalCSS = ""
                         if (data === "gc" || data === "radiumbar") {
                             xData = attackDataX[i] += Math.min(zone === 2 ? difficultyTier.toString() : 1, 6) * 0.03 * dungeonSpeed * attackMultiplier
