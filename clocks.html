@@ -9006,14 +9006,19 @@
                             data-desc="[Costs 1.000e50 clocks and 10.000Dd golden shards.] Clock gain is multiplied by log2(golden clocks + 2)^2.">
                             Golden bonus
                         </span>
+                        <span class="mini special" data-cost="supercoolers-500" data-show="$unitrade"
+                            data-earn="$rawpower" data-fade="$rawpower"
+                            data-desc="[Costs 500 supercoolers.] Multiply time machine production by 1,000,000×.">
+                            Raw power
+                        </span>
                         <span class="mini special" data-cost="clocks-1e70|shards-1e60" data-show="$unitrade"
                             data-earn="$power6" data-fade="$power6"
                             data-desc="[Costs 1.000e70 clocks and 6.000e60 golden shards.] Golden clock production speed is multiplied by log2(HyperClocks + 2), while golden clock costs are divided by log10(HyperClocks + 10).">
                             Golden synergy
                         </span>
-                        <span class="mini stripe4" data-cost="clocks-7.7e70|shards-9e63" data-show="$unitrade"
+                        <span class="mini stripe4" data-cost="clocks-7.7e70|shards-1e60" data-show="$unitrade"
                             data-earn="$power7" data-fade="$power7"
-                            data-desc="[Costs 7.700e70 clocks and 9.000e63 golden shards.] Golden bonus power is exponentiated by 7.">
+                            data-desc="[Costs 7.700e70 clocks and 1.000e60 golden shards.] Golden bonus power is exponentiated by 7.">
                             Power of 7
                         </span>
                         <span class="mini stripe4" data-cost="clocks-1e125" data-show="$unitrade" data-earn="$time4"
@@ -15910,7 +15915,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.15)
                 var clockmakerIncome = clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)
 
-                cpt = cpt.add(C("timemachines").mul(Hyper(true).add(C("timeshards"))).mul(hasResearch("time1") ? "2e13" : "1e13").mul(hasResearch("time3") ? Hyper(true).add(C("shards").sqrt().sqrt().sqrt().sqrt()) : 1).div(hasResearch("time2") ? 30 : 60)).add(electricCPT).add(clockmakerIncome).add(familyIncome)
+                cpt = cpt.add(C("timemachines").mul(hasResearch("rawpower") ? "1e6" : 1).mul(Hyper(true).add(C("timeshards").mul(0.25))).mul(hasResearch("time1") ? "2e13" : "1e13").mul(hasResearch("time3") ? Hyper(true).add(C("shards").sqrt().sqrt().sqrt().sqrt()) : 1).div(hasResearch("time2") ? 30 : 60)).add(electricCPT).add(clockmakerIncome).add(familyIncome)
                 if (shards.isPositive()) {
                     cpt = cpt.mul(shardPower)
                 }
