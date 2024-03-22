@@ -8991,19 +8991,19 @@
                             data-desc="[Costs 25.000qd clocks.] You earn 100× more qubits.">
                             Hyperqubit
                         </span>
-                        <span class="mini stripe3" data-cost="clocks-4.8e48" data-show="$unitrade" data-earn="$power3"
+                        <span class="mini stripe3" data-cost="clocks-5e46" data-show="$unitrade" data-earn="$power3"
                             data-fade="$power3"
-                            data-desc="[Costs 4.800Qd clocks.] The number of quantum computers you have increases the HyperClock effect as well!">
+                            data-desc="[Costs 50.000qd clocks.] The number of quantum computers you have increases the HyperClock effect as well!">
                             Hypertech^Quantum
                         </span>
-                        <span class="mini special" data-cost="shards-4.5e45" data-show="$unitrade" data-earn="$power4"
+                        <span class="mini special" data-cost="clocks-5e49" data-show="$unitrade" data-earn="$power4"
                             data-fade="$power4"
-                            data-desc="[Costs 4.500qd golden shards.] Clock gain is multiplied by log10(dungeon coins + 10).">
-                            That's coiny
+                            data-desc="[Costs 50.000Qd clocks.] Clock gain and golden shard gain are multiplied by log2(dungeon coins + 2).">
+                            That's clocky
                         </span>
-                        <span class="mini special" data-cost="clocks-1e60|shards-1e50" data-show="$unitrade"
+                        <span class="mini special" data-cost="clocks-1e50|shards-1e40" data-show="$unitrade"
                             data-earn="$power5" data-fade="$power5"
-                            data-desc="[Costs 1.000e60 clocks and 1.000e50 golden shards.] Clock gain is multiplied by log2(golden clocks + 2)^2.">
+                            data-desc="[Costs 1.000e50 clocks and 10.000Dd golden shards.] Clock gain is multiplied by log2(golden clocks + 2)^2.">
                             Golden bonus
                         </span>
                         <span class="mini special" data-cost="clocks-1e70|shards-1e60" data-show="$unitrade"
@@ -15652,7 +15652,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var oldMoney = new Hyper(C("money")).min(matterLimit)
 
-                add("shards", C("hyperclocks").mul(hasResearch("power3") ? C("qcomputers").add(4).log2().sub(1) : 1).mul(hasResearch("power2") ? C("qubits").add(2).log2().log10().add(1) : 1).mul(hasResearch("shiny") ? C("clocks").add(1).ln().add(1).sqr() : 1).div(hasResearch("production") ? 4 : 12))
+                add("shards", C("hyperclocks").mul(hasResearch("power4") ? C("coins").add(2).log2() : 1).mul(hasResearch("power3") ? C("qcomputers").add(4).log2().sub(1) : 1).mul(hasResearch("power2") ? C("qubits").add(2).log2().log10().add(1) : 1).mul(hasResearch("shiny") ? C("clocks").add(1).ln().add(1).sqr() : 1).div(hasResearch("production") ? 4 : 12))
                 var shards = C("shards")
                 var shardPower = shards.isZero() ? Hyper(true) : shards.mul(10000).sqrt(true).sqrt(true)
                 if (hasResearch("polish")) {
@@ -15919,7 +15919,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 cpt = cpt.mul(Hyper(true).add(Hyper(0.25).mul(C("bunnies"))))
                 if (hasResearch("power4")) {
-                    cpt = cpt.mul(C("coins").add(10).log10())
+                    cpt = cpt.mul(C("coins").add(2).log2())
                 }
                 if (hasResearch("power5")) {
                     cpt = cpt.mul(C("gc").add(2).log2().pow(hasResearch("power7") ? 14 : 2))
