@@ -9521,6 +9521,11 @@
                             data-desc="[Requires you to exchange 1.000B cringe.]\nCringe increases your health!">
                             Carrots...again^4
                         </span>
+                        <span class="mini special" data-cost="cringe-5e9" data-show="$cringe" data-earn="$cringe4"
+                            data-fade="$cringe4"
+                            data-desc="[Requires you to exchange 5.000B cringe.]\nCringe gain is multiplied by 10.">
+                            Meme bunnies
+                        </span>
                         <br>
                         <span class="comical rainbow3" id="cringe" data-for="%CRINGE"></span>
                     </div>
@@ -9788,7 +9793,7 @@
                             data-desc="[Well, I think you might be ready!]">
                             Travel to Zone II
                         </span>
-                        <span class="mini crystal" data-show="$candyzone" id="candyzone" data-earn=""
+                        <span class="mini crystal" data-show="$candyzone" id="candyZone" data-earn=""
                             data-desc="{mmm} t[a]s[t]{yyyy}\nThe Candy Zone gives you TONS of red candy, yellow candy, AND purple candy all at once!">
                             Travel to The Candy Zone
                             <span class="redcandy"></span><span class="yellowcandy"></span><span
@@ -14033,11 +14038,20 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                     collectedX.splice(c, 1)
                                 }
                             }
+                            for (var c = 0; c < collectedY.length;) {
+                                var value = parseInt(collectedY[c])
+                                if (isFinite(value)) {
+                                    collectedY[c] = value
+                                    c++
+                                } else {
+                                    collectedY.splice(c, 1)
+                                }
+                            }
                             collectX = proceed("askO\n")
                             if (collectX !== false) {
                                 collectX = collectX.split(" ")
                                 collectY = proceed("\n").split(" ")
-                                for (var c = 0; c < collectX.length;) {
+                                for (c = 0; c < collectX.length;) {
                                     var value = parseInt(collectX[c])
                                     if (isFinite(value)) {
                                         collectX[c] = value
@@ -16439,7 +16453,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateId("purpleGain", purpleGain.format(4) + "×")
             rawAdd("spice", spiceGain.div(60))
             if (hasResearch("cringe")) {
-                add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").log10().log2().sqr() : 1).div(60))
+                add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").log10().log2().sqr() : 1).div(hasResearch("cringe4") ? 6 : 60))
             }
             limit("gcarrots", Hyper(10000))
 
@@ -16617,7 +16631,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 var distance = Math.max(1 - Math.sqrt((x - divX) * (x - divX) + (y - divY) * (y - divY)) * 0.15, 0)
                 if (!withinBattle) {
-                    distance = Math.max(distance, 1 - Math.min(Math.pow(y * 0.04, 0.6), 0.9))
+                    distance = Math.max(distance, Math.max(0.1, 1 - Math.pow(y * 0.04, 0.6)))
                 }
                 if (distance === 1) {
                     tiles[i].removeAttribute("style")
@@ -17092,7 +17106,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 resetCharacter()
             }
         })
-        attachEvent("candyzone", function () {
+        attachEvent("candyZone", function () {
             if (zone !== -1) {
                 zone = -1
                 setZone()
