@@ -5297,7 +5297,7 @@
                     var d1 = start.$[2]
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
-                    var diff = d2 - d1
+                    var diff = d1 - d2
                     if (diff > DIGITSMINUSONE) {
                         return new Hyper(start)
                     }
@@ -5320,7 +5320,7 @@
                     if (diff > DIGITSMINUSONE) {
                         return b
                     }
-                    var sum = b.$[3] + minorPart / (10n ** diff)
+                    var sum = b.$[3] / (10n ** diff) + minorPart
                     if (sum >= BIGLIMIT) {
                         if (d2 === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
@@ -8880,6 +8880,8 @@
                     Time travel? In a clock game? No way!
                     <br>
                     <div class="small yellow">
+                        Digital knowledge is hardcapped at F9.999e999.
+                        <br>
                         For some reason, you can't fit metal or radioactive objects through a time machine.
                         You just can't. It breaks the machine or something.
                     </div>
@@ -9051,6 +9053,41 @@
                             data-desc="[Costs $80.00|F5.] You gain 1,000 Quantum Labs every second.">
                             Replicating quantum
                         </span>
+                        <span class="mini stripe4" data-cost="money-115F5" data-show="$power11" data-earn="$power12"
+                            data-fade="$power12" data-desc="[Costs $115.00|F5.] Clock gain is increased by itself.">
+                            Self-strength
+                        </span>
+                        <span class="mini stripe4" data-cost="hyperclocks-1e2500" data-show="$power12"
+                            data-earn="$power13" data-fade="$power13"
+                            data-desc="[Costs 1.000e2,500 HyperClocks.] Clock gain is increased by itself again.">
+                            Self-strength 2
+                        </span>
+                        <span class="mini stripe4" data-cost="hyperclocks-1e2950" data-show="$power13"
+                            data-earn="$power14" data-fade="$power14"
+                            data-desc="[Costs 1.000e2,950 HyperClocks.] Your golden shard production speed is multiplied by HyperClocks^0.125×.">
+                            HyperShards
+                        </span>
+                        <span class="mini stripe4" data-cost="hyperclocks-1e2950|goldb-2e10" data-show="$power14"
+                            data-earn="$power15" data-fade="$power15"
+                            data-desc="[Costs 1.000e4,000 golden shards and 20.000B gold bars.] Your golden shard production is increased by the number of gold bars that you have.">
+                            Bars of power
+                        </span>
+                        <span class="mini stripe4" data-cost="shards-1e4422" data-show="$power15" data-earn="$power16"
+                            data-fade="$power16"
+                            data-desc="[Costs 1.000e4,422 golden shards.] Your gold bar production is increased by the number of golden shards that you have.">
+                            Shards of power
+                        </span>
+                        <span class="mini stripe4" data-cost="shards-1e4500" data-show="$power16" data-earn="$power17"
+                            data-fade="$power17"
+                            data-desc="[Costs 1.000e4,500 golden shards.] Qubits increase clock gain by a LOT!">
+                            Qubits of power
+                        </span>
+                        <span class="mini stripe4" data-cost="shards-1e25500" data-show="$power17" data-earn="$power18"
+                            data-fade="$power18"
+                            data-desc="[Costs 1.000e25,500 golden shards.] Shards increase their own gain.">
+                            Superior shards
+                        </span>
+
                         <br>
                         View the trades below:
                         <br>
@@ -15662,7 +15699,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var oldMoney = new Hyper(C("money")).min(matterLimit)
 
-                add("shards", C("hyperclocks").mul(hasResearch("power4") ? C("coins").add(2).log2() : 1).mul(hasResearch("power3") ? C("qcomputers").add(4).log2().sub(1) : 1).mul(hasResearch("power2") ? C("qubits").add(2).log2().log10().add(1) : 1).mul(hasResearch("shiny") ? C("clocks").add(1).ln().add(1).sqr() : 1).div(hasResearch("production") ? 4 : 12))
+                add("shards", C("hyperclocks").mul(hasResearch("power15") ? C("goldb").add(1).pow(15) : 1).mul(hasResearch("power14") ? C("clocks").sqrt().sqrt().sqrt() : 1).mul(hasResearch("power4") ? C("coins").add(2).log2() : 1).mul(hasResearch("power3") ? C("qcomputers").add(4).log2().sub(1) : 1).mul(hasResearch("power2") ? C("qubits").add(2).log2().log10().add(1) : 1).mul(hasResearch("shiny") ? C("clocks").add(1).ln().add(1).sqr() : 1).div(hasResearch("production") ? 4 : 12).mul(hasResearch("power18") ? C("shards").add(10).log10().pow(100) : 1))
                 var shards = C("shards")
                 var shardPower = shards.isZero() ? Hyper(true) : shards.mul(10000).sqrt(true).sqrt(true)
                 if (hasResearch("polish")) {
@@ -15787,7 +15824,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var clockmakers = C("clockmakers")
 
                 var molders = C("molders")
-                var barmolders = C("barmolds")
+                var barMolderPower = C("barmolds").mul(hasResearch("power16") ? C("shards").add(2).log2() : 1)
                 var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 0.012 : 0.003).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1).mul(hasResearch("golden") ? Hyper(true).add(C("coins").add(10).log10().mul(0.03)) : 1)
                 var jewelerCost = jewelerPower.div(hasResearch("power6") ? C("hyperclocks").add(10).log10() : 1)
 
@@ -15911,12 +15948,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     var iq = C("iq")
                     var iqGain = C("qcomputers").mul("1e9").add(useableData.computers.mul(hasResearch("ai2") ? 2 : 1).mul(hasResearch("ai3") ? 2 : 1).mul(hasResearch("ai4") ? 2 : 1).mul(hasResearch("ai5") ? 2 : 1).mul(hasResearch("ai6") ? 2 : 1).mul(hasResearch("ai7") ? 2 : 1)).mul(hasResearch("darkness") ? Hyper(true).add(C("darktowers").sqr().mul(5)) : 1)
                     if (hasResearch("tetrate")) {
-                        iqGain = iqGain.mul(iq.pow10Repeat(speed.add(speed).mul(hasResearch("genius") ? Hyper(true).add(C("qcomputers").sqr()) : 1).mul(hasResearch("superbrain") ? C("wscience").add(1).log2().add(1).log10().add(1) : 1)))
+                        iqGain = iqGain.mul(iq.pow10Repeat(speed.add(speed).mul(hasResearch("genius") ? Hyper(true).add(C("qcomputers").sqr()) : 1).mul(hasResearch("superbrain") ? C("wscience").add(1).log2().add(1).log10().add(1) : 1).min("1e1000")))
                     }
                     if (hasResearch("singularity")) {
                         iqGain = iq.add(1).pow(Hyper.pow(3, speed))
                     }
                     add("iq", hasResearch("darkinfo") ? iqGain.pow(Hyper(true).add(C("darktowers"))) : iqGain)
+                    limit("iq", Hyper("F" + "9".repeat(1000)))
                 }
 
                 // Update the amount of clocks that you have
@@ -15937,6 +15975,15 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 if (hasResearch("power5")) {
                     cpt = cpt.mul(C("gc").add(2).log2().pow(hasResearch("power7") ? 14 : 2))
+                }
+                if (hasResearch("power12")) {
+                    cpt = cpt.mul(cpt.add(10).log10().pow(16))
+                }
+                if (hasResearch("power13")) {
+                    cpt = cpt.mul(cpt.add(3).ln().pow(50))
+                }
+                if (hasResearch("power17")) {
+                    cpt = cpt.mul(C("qubits").add(10).log10().pow(125))
                 }
 
                 add("clocks", cpt)
@@ -16037,7 +16084,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 add("energy", ponds.mul(0.000008))
 
                 multiExchange("gc", jewelerPower.mul(hasResearch("power6") ? C("hyperclocks").add(2).log2() : 1), ["clocks", "money", "gold"], [jewelerCost.mul(4), jewelerCost, jewelerCost])
-                exchange("goldb", barmolders.mul(0.005), "gold", 25)
+                exchange("goldb", barMolderPower.mul(0.005), "gold", 25)
 
                 exchangeLimit(C("bottles"), "naphtha", separators.mul(0.015), "ngas")
                 exchange("plastic", petroplants.mul(0.05), "naphtha")
@@ -16413,7 +16460,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 mixingType = 0
                 mixingTime = new Hyper()
             }
-            var speedOfMixing = (hasResearch("supermix") ? C("spice").log10().mul(0.3362) : new Hyper(true)).mul(mixingSpeed * (hasResearch("cauldron") ? 2 : 1) * (hasResearch("cauldron2") ? 2 : 1)).mul(hasResearch("pot") ? 3 : 1)
+            var speedOfMixing = (hasResearch("supermix") ? C("spice").add(10).log10().mul(0.3362) : new Hyper(true)).mul(mixingSpeed * (hasResearch("cauldron") ? 2 : 1) * (hasResearch("cauldron2") ? 2 : 1)).mul(hasResearch("pot") ? 3 : 1)
             mixingTime = mixingTime.sub(speedOfMixing)
             updateId("cauldronSpeed", formatValue(speedOfMixing, 2) + "×")
             if (hasResearch("purple2")) {
@@ -16467,7 +16514,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateId("purpleGain", purpleGain.format(4) + "×")
             rawAdd("spice", spiceGain.div(60))
             if (hasResearch("cringe")) {
-                add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").log10().log2().sqr() : 1).div(hasResearch("cringe4") ? 6 : 60))
+                add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").add(10).log10().log2().sqr() : 1).div(hasResearch("cringe4") ? 6 : 60))
             }
             limit("gcarrots", Hyper(10000))
 
