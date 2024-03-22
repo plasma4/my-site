@@ -5297,7 +5297,7 @@
                     var d1 = start.$[2]
                     var minorPart = b.$[2]
                     var d2 = BigInt(minorPart.toString().length - 1)
-                    var diff = d1 - d2
+                    var diff = d2 - d1
                     if (diff > DIGITSMINUSONE) {
                         return new Hyper(start)
                     }
@@ -9045,6 +9045,11 @@
                             data-fade="$power10"
                             data-desc="[Costs $eee1.000e2.500Td.] Extend Quantum Labs to the multiverse for an even BETTER Quantum Lab production boost!">
                             Multiversal lab chain
+                        </span>
+                        <span class="mini stripe4" data-cost="money-80F5" data-show="$power10" data-earn="$power11"
+                            data-fade="$power11"
+                            data-desc="[Costs $80.00|F5.] You gain 1,000 Quantum Labs every second.">
+                            Replicating quantum
                         </span>
                         <br>
                         View the trades below:
@@ -15736,6 +15741,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
                 var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
                 var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1).mul(hasResearch("hyperqubit") ? 100 : 1).pow(hasResearch("time4") ? 125 : 1)
+
+                if (hasResearch("power11")) {
+                    add("quantumlabs", Hyper(1000).div(60))
+                }
                 var quantumLabPower = C("quantumlabs").mul(0.00001).mul(hasResearch("hyperquantum") ? Hyper(true).add(C("hyperclocks").mul(0.01).min(50)) : 1).pow(hasResearch("power9") ? 4 : 1).pow(hasResearch("power10") ? 3 : 1)
                 var qubitCost = quantumLabPower.mul(100000)
 
