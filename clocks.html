@@ -7297,7 +7297,7 @@
             metaresets|wscience|bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium
         </div>
         <div id="wikiData">
-            void: Void (12, Emptiness.)
+            void: %Void$ (12, Emptiness.)
             cringe: Cringe (10, Uh oh)
             quantumlabs: %Quantum Lab (11, A unique lab that makes quantum computers)
             hyperclocks: %HyperClock (11, A weird and strange clock)
@@ -9587,6 +9587,48 @@
                             id="enterVoid">
                             Enter the Void
                         </div>
+                        <span class="mini pure" data-cost="void-250000" data-show="$void" data-earn="$void2"
+                            data-fade="$void2" data-desc="[Costs 25,000 Void.]\nIncrease void gain by itself.">
+                            Error: null
+                        </span>
+                        <span class="mini pure" data-cost="void-1e7" data-show="$void2" data-earn="$void3"
+                            data-fade="$void3" data-desc="[Costs 10.000M Void.]\nIncrease void gain by itself again.">
+                            Error: undefined
+                        </span>
+                        <span class="mini pure" data-cost="void-1e10" data-show="$void3" data-earn="$void4"
+                            data-fade="$void4" data-desc="[Costs 10.000B Void.]\nCoins increase void gain.">
+                            undefined: null
+                        </span>
+                        <span class="mini pure" data-cost="void-1e11" data-show="$void4" data-earn="$void5"
+                            data-fade="$void5"
+                            data-desc="[Costs 100.00B Void.]\nVoid increases coin gain, up to 10^1000×.">
+                            null: undefined
+                        </span>
+                        <span class="mini pure" data-cost="void-2.5e11" data-show="$void5" data-earn="$void6"
+                            data-fade="$void6" data-desc="[Costs 250.00B Void.]\nVoid increases your damage output.">
+                            void(0)
+                        </span>
+                        <span class="mini pure" data-cost="void-1e15" data-show="$void6" data-earn="$one"
+                            data-fade="$one"
+                            data-desc="[Costs 1.000q Void.]\nThat's a start. Unlock some upgrades that increase void gain by itself!">
+                            One
+                        </span>
+                        <span class="mini pure" data-cost="void-5e15" data-show="$one" data-earn="$two" data-fade="$two"
+                            data-desc="[Costs 5.000q Void.]\nVoid gain is increased.">
+                            Two
+                        </span>
+                        <span class="mini pure" data-cost="void-1e17" data-show="$one" data-earn="$three"
+                            data-fade="$three" data-desc="[Costs 1.000Q Void.]\nVoid gain is increased again.">
+                            Three
+                        </span>
+                        <span class="mini pure" data-cost="void-1e27" data-show="$one" data-earn="$four"
+                            data-fade="$four" data-desc="[Costs 1.000O Void.]\nVoid gain is increased further.">
+                            Four
+                        </span>
+                        <span class="mini pure" data-cost="void-1e33" data-show="$one" data-earn="$five"
+                            data-fade="$five" data-desc="[Costs 1.000D Void.]\nVoid gain is increased once more.">
+                            Five
+                        </span>
                         <br>
                         <span class="comical rainbow3" id="cringe" data-for="%CRINGE"></span>
                         <br>
@@ -16785,7 +16827,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier.sqr()).toString())
             var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
-            var zoneEffect = zone === 999 ? Hyper2(100000).pent(Hyper2(sceneFrame + 3).tetr(5 + Math.pow(sceneFrame, (difficulty - 1) * 0.5))) : (zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1)))
+            var zoneEffect = zone === 999 ? Hyper2(100000).pent(Hyper2(sceneFrame + 3).tetr(Hyper2(sceneFrame).pow(difficulty - 2).add(5))) : (zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1)))
 
             if (inBattle === 0) {
                 battleFrame++
@@ -16886,7 +16928,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 updateHTML(ID("zoneEffect"), "")
             }
 
-            var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)).mul(hasResearch("bunnies2") ? Hyper(true).add(C("bunnies").mul(0.1)).toString() : 1).mul(C("cringe").add(1).ln().add(1).toString())
+            var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)).mul(hasResearch("bunnies2") ? Hyper(true).add(C("bunnies").mul(0.1)).toString() : 1).mul(C("cringe").add(1).ln().add(1).toString()).mul(hasResearch("void6") ? C("void").sqrt().sqrt().toString() : 1)
             var boundX = dungeonX - 0.75
             var boundY = dungeonY - 0.75
             var collideKey = collisionKey.replace("e", "")
@@ -17045,13 +17087,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     rawAdd("carrots", Hyper(hasResearch("carrot3") ? 3 : 1).mul(hasResearch("carrot4") ? Hyper(2).pow(C("gcarrots")) : 1).mul(hasResearch("carrot5") ? C("carrots").add(1).log2().add(1).pow(hasResearch("carrot6") ? 6 : 1) : 1).floor(true).pow(hasResearch("carrot7") ? 9 : 1).pow(hasResearch("carrot8") ? 50 : 1))
                 }
 
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("triple") ? 3 : 1).mul(hasResearch("double") ? 2 : 1).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true).pow(zone === 999 ? C("void").sqrt() : 1))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("triple") ? 3 : 1).mul(hasResearch("double") ? 2 : 1).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true).mul((zone === 999 && hasResearch("void5")) ? C("void").add(1).pow(11).min("1e1000") : 1))
 
                 if (zone === 2 && hasResearch("purple")) {
                     rawAdd("purplecandy", purpleGain)
                 }
                 if (zone === 999) {
-                    rawAdd("void", Hyper(difficulty).pow(14))
+                    rawAdd("void", Hyper(difficulty).pow(67).sqrt().sqrt().mul(hasResearch("void2") ? C("void").add(2).log2() : 1).mul(hasResearch("void3") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("void4") ? C("coins").add(10).log10().sqrt() : 1).mul(hasResearch("two") ? C("void").add(2).log2() : 1).mul(hasResearch("three") ? C("void").add(2).log2().pow(3) : 1).mul(hasResearch("four") ? C("void").add(1).sqrt().sqrt().sqrt() : 1).mul(hasResearch("five") ? C("void").add(1).sqrt().sqrt() : 1))
                 }
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
