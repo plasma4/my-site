@@ -2971,6 +2971,9 @@
         .black {
             background-color: black;
             filter: none;
+            border-radius: 3px;
+            width: 12px;
+            height: 12px;
         }
 
         .clock {
@@ -7294,6 +7297,7 @@
             metaresets|wscience|bonus1|bonus2|bonus3|copper|silver|platinum|gold|radium
         </div>
         <div id="wikiData">
+            void: Void (12, Emptiness.)
             cringe: Cringe (10, Uh oh)
             quantumlabs: %Quantum Lab (11, A unique lab that makes quantum computers)
             hyperclocks: %HyperClock (11, A weird and strange clock)
@@ -9573,8 +9577,20 @@
                             data-desc="[Requires you to exchange 5.000B cringe.]\nCringe gain is multiplied by 10.">
                             Meme bunnies
                         </span>
+                        <span class="mini pure" data-cost="bunnies-100|wormholes-1" data-show="$cringe4"
+                            data-earn="$void|void+1" data-fade="$void"
+                            data-desc="[Costs 100 bunnies and 1 wormhole. Wormholes are unlocked by grinding firefruit!]\n{(Fight the Void. Fight again. Repeat.)}\nUnlock the Void. Void increases your health!">
+                            The Void
+                        </span>
+                        <div class="mini special2"
+                            data-desc="uh oh...\nNote that difficulty increases the health of enemies by a LOT, but you gain a lot more Void!"
+                            id="enterVoid">
+                            Enter the Void
+                        </div>
                         <br>
                         <span class="comical rainbow3" id="cringe" data-for="%CRINGE"></span>
+                        <br>
+                        <span class="comical white outlined" id="void" data-for="$big black"></span>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -13017,6 +13033,11 @@
         }
 
         function setZone() {
+            if (zone === 999) {
+                setupDungeons(`pS!
+ccccccc gg    gggggg  g gggg  g  g g  g gggggggggg  g g g  g g  ggggggg`, 10, 5)
+                return
+            }
             setupDungeons(zone === -1 ? `pS!          PP
 cccccccccccccccccccccccccccccccccc g        !!!c
 !!$     $        PPPPP !!!         gcccccccccc!c               !!!!!PPPP
@@ -13627,7 +13648,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         ]
 
         const LEFT = 0, UP = 1, RIGHT = 2, DOWN = 3
-        var goFast = 0, invert = 0, spinAnimation = 0, spinSpeed = 1, epilepsy = 0, bright = 0, silly = 0, workerUnloaded = true, zone = 1, sceneFrame = 0, characterX = characterSections, characterY = 0, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, isWonder = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonSpeed = 1, dungeonY = 10, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity)
+        var goFast = 0, invert = 0, spinAnimation = 0, spinSpeed = 1, epilepsy = 0, bright = 0, silly = 0, workerUnloaded = true, zone = 1, sceneFrame = 0, characterX = characterSections, characterY = 0, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, isWonder = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonY = 10, dungeonSpeed = 1, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity)
         var stuff, stuffTotals, frame, offlineFrames
         var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, noAudio = false, sleekMode = false, stripedButtons = false, seasonsEnabled = false, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
         var newsOptions = ["This news ticker will go away soon.", "You shouldn't expect to complete the clock game quickly. It takes a while!", "Did you know? This is a news ticker.", "You have made a total of $CLOCKTOTAL$ clocks in this run of TTC. (Yes, that's the nickname. Or...The Clock Game.)", "It's very difficult to support variations of English. American...Canadian...British...United Clock Confederation...", "Do you really want lore?", "Should I make Ordinal Pringles minus the ordinal?", "Apparently quettagram is a thing, for some reason.", "haha pedro pascal funny", "Imagine having a sticky key...in real life!", '<u onclick="invert=100">invert colors</u>', '<u onclick="goFast=1000">gotta go fast</u>', '<u onclick="bright=60">flashlight mode</u>', '<u onclick="silly=120">silly</u>', "uh, hello there, news ticker reader", "how many atoms is too many?", "You shouldn't touch francium-215.", "Is the first EraClock the Stonehenge of our time?", "Francium is only one atomic number behind radium...and it decays faster!", generateEverySprite(240, 112), "1000 999 998 997 996 995 994 993 992 991 990 989 i'm lazy no more typing 3 2 1...HAPPY NEW YEAR", "new game when?", '<u onclick="epilepsy=60">Click get epilepsy</u>', '<u onclick="spinAnimation=360,spinSpeed=20">Click for a fast spinny</u>', '<u onclick="spinAnimation=360,spinSpeed=2.5">Click for a spinny</u>', "The time since you started/your last shard reset was $TIMEAFTER$ seconds.", "So, if I remove this news ticker, will there be less content?", "There are " + progressNotes.length + " tips in the game (currently, of course).", "Why is it called a news TICKER? Is it ticking?", "[pretend this has a bad dad joke here]", "\u2014From someone", "What is NaN, you ask? Why don't you Bing it up? (Sorry, I had to say it.)", firefoxZero === 0 ? "You are using Firefox!" : "You are NOT using Firefox.", "How bad do your clocks have to be to be worth ONE DOLLAR?", "Hear me out: I never update the changelog because you likely haven't even seen it yet.", "You have just read news ticker $NEWSID$. Congrats!", "This news ticker was seeded using math. Isn't that weird? This is also news message $NEWSID$.", "Did you know digital clocks used to be a part of the game? They used 3D printers (and were NOT very good).", "What are MegaClocks filled with? Who knows?", "Listen, this is an incremental game, not an RPG. Don't get too excited.", "Please observe the next news message carefully. It could affect you in many ways!", "Modern clocks are mass-produced, and a common material is clock brass.", "News tickers were added in 0.2.0. The current version is " + version + ".", "Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "what? i fight in an old dungeon? for what? coins? candy? CANDY? WHTA DA HUH? WHY? WHAT DOES THIS HAVE TO DO WITH? WHAT?", "You have been in dungeon battles for a total of $BATTLEFRAME$ frames!", "The news tickers that you get are based on how long the game has been actively running on your device. (Or other devices with exporting.)", "Don't even try to use base64 tools on the save file!", "You know zooming out on the news ticker won't help you?", "ARE YOU BORD?", "Purple, green, then BLUE!!???? Why are the colors out of order!!!!??????? Come oneeee!!!!!!!!!", "did you know that many people think Google's AI (Gemini) is better than ChatGPT 3.5?", "Flipper Zeroes likely won't work on your car because they use an advanced method that prevents signal data from being reused. (Somewhat well, anyway.)", "To open inspector, press...                               Ctrl+Shift+Q+Q on a Chromium laptop. Much effect! WAIT! DON'T ACTUALLY DO IT!", "Modding the game is an idea you could have: the tools are already in place!", "The CSS code is over 3,333 lines long! It's even over 3,335 lines long!", window.location.href, "Moose code: " + "- .... .. ... / .. ... / .- / -.-. .- -".replace(/ /g, '<span class="rc"></span>').replace(/\./g, "moose").replace(/-/g, "mooose"), "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomo-row's yesterday. Bob, of course, nose this.", "Do you get all the references? Because this one's meta (but NOT omega)", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ seconds. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Bragging rights!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1 me bored true=valid', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select the icons on the page? Well, that's a shame.", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?            <<<not formal", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8! (No, not a factorial. Sorry.)", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Listen, just imagine that you actually had 1e1,000 golden nuggets. What would you do with them? Oh wait, the multiverse died.", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
@@ -14105,7 +14126,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                 crystalCap = Number(proceed("CCAP"))
                             }
                             autoClick = proceed("\n") === "OX"
-                            if (version === "0.2.2.1") {
+                            if (version === "0.2.2.1" || version === "0.2.3") {
                                 var str = proceed("\n")
                                 collectedPortals = str.length === 0 ? [] : str.split(" ")
                             }
@@ -16457,8 +16478,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 cap = cap.arrow(2)(spicePower.arrow(2)(spicePower.pent(spicePower)))
             }
             var carrotPower = C("carrots").pow(hasResearch("bunnies5") ? Hyper(C("bunnies")).pow(C("bunnies").add(1).pow(hasResearch("bunnies6") ? "15550" : "550")) : 1).pow(C("gcarrots").add(1).pow(Hyper(hasResearch("carrot2") ? C("carrots").add(1).pow(9) : 1).mul(hasResearch("gcarrot") ? "15253545" : 14)))
+            var voidPower = C("void").sqr()
             if (carrotPower.isPositive()) {
-                cap = cap.arrow(3)(Hyper2(carrotPower.add(2).toString()).pow(10000).pow(hasResearch("cringe3") ? C("cringe").pow(3).add(1).pow10Repeat(2).toString() : 1))
+                cap = cap.arrow(3)(Hyper2(carrotPower.add(2).toString()).pow(10000).pow(hasResearch("cringe3") ? C("cringe").pow(3).add(1).pow10Repeat(2).toString() : 1).tetr(voidPower.isMore(1) ? voidPower.toString() : 1))
             }
             return cap
         }
@@ -16644,7 +16666,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var nextToShop = false
             var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][(enemiesBattled) % 34] : ((enemiesBattled % 6) + 1)
-            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 ? 17 : 1)).mul(isWonder ? 11.11 : 1)
+            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 || zone === 999 ? 17 : 1)).mul(isWonder ? 11.11 : 1).mul(zone === 999 ? Math.pow(difficulty, 14) : 1)
             enemyHealth = enemyCap.min(enemyHealth)
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "wonder2", "portal", "purplecandy", "person"]
             var newX = null
@@ -16745,7 +16767,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier.sqr()).toString())
             var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
-            var zoneEffect = zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1))
+            var zoneEffect = zone === 999 ? Hyper2(100000).pent(Hyper2(sceneFrame + 3).tetr(5 + Math.pow(sceneFrame, (difficulty - 1) * 0.5))) : (zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1)))
 
             if (inBattle === 0) {
                 battleFrame++
@@ -16986,7 +17008,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateHTML(ID("redcandy"), formattedCandy + '× <span class="bigger redcandy">')
             updateHTML(ID("damage"), damageMultiplier.mul(40).format() + ' for <span class="small valuable2">golden clocks</span> and ' + damageMultiplier.mul(25).format() + " for other attacks")
             updateId("health", (health.eq(healthCap) && health.gte("10^^100")) ? formattedHealthCap : (formatExpanta(health.max(0), 2) + "/" + formattedHealthCap))
-            updateId("enemyHealth", enemyHealth.format(2) + "/" + enemyCap.format(2))
+            updateId("enemyHealth", enemyHealth.min(enemyCap).format(2) + "/" + enemyCap.format(2))
 
             if (enemyHealth.lte(0)) {
                 if (hasResearch("money")) {
@@ -17005,10 +17027,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     rawAdd("carrots", Hyper(hasResearch("carrot3") ? 3 : 1).mul(hasResearch("carrot4") ? Hyper(2).pow(C("gcarrots")) : 1).mul(hasResearch("carrot5") ? C("carrots").add(1).log2().add(1).pow(hasResearch("carrot6") ? 6 : 1) : 1).floor(true).pow(hasResearch("carrot7") ? 9 : 1).pow(hasResearch("carrot8") ? 50 : 1))
                 }
 
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("triple") ? 3 : 1).mul(hasResearch("double") ? 2 : 1).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("triple") ? 3 : 1).mul(hasResearch("double") ? 2 : 1).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true).pow(zone === 999 ? C("void").sqrt() : 1))
 
                 if (zone === 2 && hasResearch("purple")) {
                     rawAdd("purplecandy", purpleGain)
+                }
+                if (zone === 999) {
+                    rawAdd("void", Hyper(difficulty).pow(14))
                 }
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
@@ -17204,6 +17229,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         attachEvent("candyZone", function () {
             if (zone !== -1) {
                 zone = -1
+                setZone()
+                resetCharacter()
+            }
+        })
+        attachEvent("enterVoid", function () {
+            if (zone !== 999) {
+                zone = 999
                 setZone()
                 resetCharacter()
             }
