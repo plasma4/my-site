@@ -8067,7 +8067,7 @@
                     <label class="hidden" for="wageSlider">
                         The wage multiplier you want to pay your workers, divided by 100.
                     </label>
-                    <input type="range" min="100" max="10000" value="0" tabindex="-1" id="wageSlider"
+                    <input type="range" min="100" max="10000" value="100" tabindex="-1" id="wageSlider"
                         aria-hidden="true">
                     <label for="wageInput" class="orange">
                         <input id="wageInput" placeholder="1.00×" value="1.00×" aria-label="Wage multiplier">
@@ -9583,7 +9583,7 @@
                             <label class="hidden" for="difficulty">
                                 Difficulty level requested (defaults to 1)
                             </label>
-                            <input type="range" min="1" max="12" value="0" tabindex="-1" id="difficulty">
+                            <input type="range" min="1" max="12" value="1" id="difficulty">
                             <div class="small green">
                                 (Difficulty level of enemies: <b id="difficultyText" class="small lime"></b>)
                             </div>
@@ -10878,6 +10878,15 @@
                         <br>
                         Yes, green crystals are better than blue crystals! Sorry for the color choice!
                     </div>
+                    <label class="lime" for="crystalSpend">
+                        This is the crystal spending multiplier.
+                        (Each number doubles the spend rate, but only up to what your upgrades allow)
+                    </label>
+                    <div class="smallish green">
+                        Currently, this value is <b class="yellow" id="crystalMultiplier"></b>.
+                    </div>
+                    <input type="range" min="0" max="6" value="0" id="crystalSpend">
+                    <div class="mini crystal" id="increaseCap" tabindex="0"></div>
 
                     <button class="crystal" data-cost="crystal3-1" data-earn="base|bonus3+600"
                         data-desc="Each purple crystal increases the game's speed by 100 times for 10 seconds.\nAlthough green and blue crystals stack with this, the speed of decay for these is also multiplied.$crystal3$">
@@ -11227,9 +11236,9 @@
                     <br>
                     Features <span class="question"></span><span class="question"></span>:
                     <ul>
-                        <li class="rainbow">built-in autoclicker <span class="check"></span></li>
-                        <li class="rainbow">custom themes <span class="check"></span></li>
-                        <li class="rainbow">HOURS of gameplay</li>
+                        <li><span class="small rainbow">built-in autoclicker <span class="check"></span></span></li>
+                        <li><span class="small rainbow">custom themes <span class="check"></span></span></li>
+                        <li><span class="small rainbow">HOURS of gameplay</span></li>
                         <li>Unlocking the MULTIVERSE! <span class="check"></span></li>
                         <li>Time travel (no, really...well, sort of not really) <span class="check"></span></li>
                         <li>clicky sound effects <span class="check"></span></li>
@@ -11243,6 +11252,12 @@
                         <li>Research and science (over 100 of them!) <span class="check"></span></li>
                     </ul>
 
+                    <div class="pink">Version <b>0.2.3</b>: <i>Crystals now have a NEW upgrade!</i></div>
+                    <div class="smallish purple">
+                        (Added on March 22, 2024)
+                        You can now increase how fast you spend your crystals, in exchange for something, of course...
+                    </div>
+                    <hr>
                     <div class="small yellow">
                         March 21, 2024: Dungeons how have an interesting shadow effect!
                     </div>
@@ -11709,7 +11724,7 @@
         ID("script").remove()
 
         // Set the version
-        const version = "0.2.2.1"
+        const version = "0.2.3"
 
         var Hyper2 = ExpantaNum
         Hyper2.prototype.isPlural = function () {
@@ -12844,7 +12859,7 @@
             ID("hyperReset").removeAttribute("style")
         })
 
-        var crystalTotal = 0, crystalTime = -1, crystalSpeed = 30000
+        var crystalSpending = 1, crystalCap = 1, crystalTotal = 0, crystalTime = -1, crystalSpeed = 30000
         attachEvent("crystal", function () {
             if (alreadyClicked) {
                 return
@@ -12862,6 +12877,17 @@
             if (!noAudio) {
                 playPress()
             }
+        })
+
+        var crystalCosts = [0, 0, 1, 2, 3, 4, 6, 8, 10, 15, 20, 25, 40, 50, 60, 70, 80, 100, 125, 150, 200, 250, 300, 400, 500, 600, 750, 900, 1200, 5000, 25000, "1e6", "1e10", "eee10", "eee50", "eee100", "eee111", "eee121", "eee133", "eee1000", "eeee6", "eeee8", "eeee10", "eeee15", "eeee20", "eeee50", "eeee100", "eeee250", "eeee500", "eeee1000", "F1000000", "F1000000000000", "F1000000000000000000000000", "F1000000000000000000000000000000000000000000000000"]
+        ID("increaseCap").addEventListener("click", function () {
+            if (crystalCap < (crystalCosts.length - 1) && rawRemove("money", Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor())) {
+                crystalCap++
+            }
+        })
+
+        ID("crystalSpend").addEventListener("input", function () {
+            crystalSpending = Math.pow(2, ID("crystalSpend").value)
         })
 
         // Checks for a research: this function can be modified
@@ -14048,7 +14074,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     if (loaded) {
                         reset(true);
                     }
-                    if (version === "0.0.5.1" || version === "0.1.0" || version === "0.1.1" || version === "0.2.0" || version === "0.2.1" || version === "0.2.2" || version === "0.2.2.1") {
+                    if (version === "0.0.5.1" || version === "0.1.0" || version === "0.1.1" || version === "0.2.0" || version === "0.2.1" || version === "0.2.2" || version === "0.2.2.1" || version === "0.2.3") {
                         // I minimized the saving code and lost the non-compressed version, so only this part makes much sense. Oops!
                         function proceed(endingString) {
                             var index = $.indexOf(endingString)
@@ -14068,7 +14094,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         updateId("wageAmount", wageBoost.format(4) + "×")
 
                         autosellOn = proceed("AX") === "t"
-                        if (version === "0.2.0" || version === "0.2.1" || version === "0.2.2" || version === "0.2.2.1") {
+                        if (version === "0.2.0" || version === "0.2.1" || version === "0.2.2" || version === "0.2.2.1" || version === "0.2.3") {
+                            if (version === "0.2.3") {
+                                crystalSpending = Number(proceed("SCAP"))
+                                crystalCap = Number(proceed("CCAP"))
+                            }
                             autoClick = proceed("\n") === "OX"
                             if (version === "0.2.2.1") {
                                 var str = proceed("\n")
@@ -14334,7 +14364,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             stuff2[properties[t]] = new Hyper()
                         }
                         stuffTotals = Object.assign(stuff2, parseCompact(T[1], compactedData))
-                        if (version !== "0.2.2" || version !== "0.2.2.1") {
+                        if (version !== "0.2.2" || version !== "0.2.2.1" || version !== "0.2.3") {
                             clearAmount("hypercubes", 1)
                         }
                     } else {
@@ -14573,7 +14603,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             save = function () {
 
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "askO\n" + collectX.join(" ") + "\n" + collectY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru", "TT", "tru", "TT", "trueee"][frame % 7] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + crystalSpending + "SCAP" + crystalCap + "CCAP" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "askO\n" + collectX.join(" ") + "\n" + collectY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru", "TT", "tru", "TT", "trueee"][frame % 7] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + seasonsEnabled + "fX" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -17593,41 +17623,67 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 boostElem.style.display = "none"
             }
 
+            var usedCrystal = false
+            var realSpend = Math.min(crystalSpending, crystalCap)
             if (!C("bonus3").isZero()) {
                 updateClass(speedElements[1], "big crystal3")
-                if (rawRemove("bonus3", Hyper(true))) {
-                    speed = Hyper(100)
+                if (usedCrystal) {
+                    if (rawRemove("bonus3", Hyper(true))) {
+                        speed = Hyper(100)
+                    } else {
+                        clearAmount("bonus3")
+                    }
                 } else {
-                    clearAmount("bonus3")
+                    if (rawRemove("bonus3", Hyper(realSpend))) {
+                        speed = Hyper(realSpend * 100)
+                    } else {
+                        clearAmount("bonus3")
+                    }
                 }
             } else {
                 updateClass(speedElements[1], "big graystal")
             }
 
             if (!C("bonus2").isZero()) {
-                updateClass(speedElements[2], "big crystal2")
-                if (rawRemove("bonus2", Hyper(speed))) {
-                    speed = speed.mul(25)
+                if (usedCrystal) {
+                    if (rawRemove("bonus2", Hyper(true))) {
+                        speed = Hyper(100)
+                    } else {
+                        clearAmount("bonus2")
+                    }
                 } else {
-                    clearAmount("bonus2")
+                    if (rawRemove("bonus2", Hyper(realSpend))) {
+                        speed = Hyper(realSpend * 100)
+                    } else {
+                        clearAmount("bonus2")
+                    }
                 }
             } else {
                 updateClass(speedElements[2], "big graystal")
             }
 
             if (!C("bonus1").isZero()) {
-                updateClass(speedElements[3], "big crystal1")
-                if (rawRemove("bonus1", Hyper(speed))) {
-                    speed = speed.mul(10)
+                if (usedCrystal) {
+                    if (rawRemove("bonus1", Hyper(true))) {
+                        speed = Hyper(100)
+                    } else {
+                        clearAmount("bonus1")
+                    }
                 } else {
-                    clearAmount("bonus1")
+                    if (rawRemove("bonus1", Hyper(realSpend))) {
+                        speed = Hyper(realSpend * 100)
+                    } else {
+                        clearAmount("bonus1")
+                    }
                 }
             } else {
                 updateClass(speedElements[3], "big graystal")
             }
 
+            updateId("crystalMultiplier", realSpend === crystalSpending ? realSpend + "× with a cap of " + crystalCap + "×" : (realSpend + "× (set to " + crystalSpending + "× but isn't valid due to a lack of upgrades)"))
             timeBonus = Hyper(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0).mul(Hyper(true).add(C("hypercubes").mul(0.01)))
             speed = speed.mul(Hyper(true).add(C("hypercubes").mul(0.01))).max(timeBonus).mul(baseSpeed)
+            updateId("increaseCap", "Increase the crystal speed cap (costs $" + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor().format(2) + ")")
 
             var noBoosts = ID("noBoosts")
             if (speed.isEqual(timeBonus.mul(baseSpeed))) {
