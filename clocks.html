@@ -13046,7 +13046,13 @@ ccccccc gg    gggggg  g gggg  g  g g  g gggggggggg  g g g  g g  ggggggg
                             c                                 ggg       cc
 
         !        !                                 !     !                 !              !
-rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr           rrrrrrrrrrrrrrrrrr           rrrrrrrrrrrrrrrrrr
+rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr!         !rrrrrrrrrrrrrrrrrr           rrrrrrrrrrrrrrrrrr
+                              cccccccc   cccccccc
+                                cccccc   cccccc
+                                 ccccc   ccccc
+                                  cccc   cccc
+                                      !!!                !!               !
+                            bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 `, 10, 10)
                 return
             }
@@ -16500,7 +16506,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         var battleDungeon = "", worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
         var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
         function updateDungeon() {
-            battleDungeon = battleDungeons[(enemiesBattled + 1) % 5]
+            battleDungeon = battleDungeons[(enemiesBattled + 1) % 7]
             if (workerUnloaded) {
                 workerUnloaded = false
                 var blob = new Blob([workerText], { type: "text/javascript" })
@@ -18226,7 +18232,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         var battleX = 1
         var battleY = 2
         var battleDungeons = [`$$gggggggg
-
+   rr
 c      e
 brbrbrbrbr
 rbrbrbrbrb
@@ -18254,14 +18260,28 @@ brbrbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
 rbrbrbrbrb
-brbrbrbrbr`.split("\n"),
+brbrbrbrbr
+bbbbbrrrrr`.split("\n"),
         `bbbbbbbbbb
   $$ $$
-       e
-cccccccccc
+       e    $  $$
+cccccccccccccccbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
-cccccccccc`.split("\n")]
+cccccccccc`.split("\n"),
+        `cccccccccc
+$$$
+       e
+bbbbbbbbbb`.split("\n"),
+        `cccccccccc
+           $
+       e   $$
+bbbbbbbbbbccc
+rrrrrrrrrrccccccccc
+bbbbbbbbbb
+rrrrrrrrrr
+bbbbbbbbbb
+rrrrrrrrrr`.split("\n")]
 
         if (storageWorks) {
             function getMods() {
