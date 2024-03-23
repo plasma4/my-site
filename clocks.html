@@ -9583,7 +9583,7 @@
                             The Void
                         </span>
                         <div class="mini special2"
-                            data-desc="uh oh...\nNote that difficulty increases the health of enemies by a LOT, but you gain a lot more Void!"
+                            data-desc="[uh oh...]\n{Note that difficulty increases the health of enemies by a LOT, but you gain a lot more Void!}"
                             id="enterVoid">
                             Enter the Void
                         </div>
@@ -9628,6 +9628,15 @@
                         <span class="mini pure" data-cost="void-1e33" data-show="$one" data-earn="$five"
                             data-fade="$five" data-desc="[Costs 1.000D Void.]\nVoid gain is increased once more.">
                             Five
+                        </span>
+                        <span class="mini pure" data-cost="void-1e55" data-show="$one" data-earn="$six" data-fade="$six"
+                            data-desc="[Costs 1.000e55 Void.]\nEnemy health is decreased significantly for difficulty 3 and 4.">
+                            Six
+                        </span>
+                        <span class="mini pure" data-cost="void-9e63" data-show="$one" data-earn="$seven"
+                            data-fade="$seven"
+                            data-desc="[Costs 7.700e67 Void.]\nEnemy health is decreased significantly for difficulty 5 and 6.">
+                            Seven
                         </span>
                         <br>
                         <span class="comical rainbow3" id="cringe" data-for="%CRINGE"></span>
@@ -16727,6 +16736,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             var nextToShop = false
             var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][(enemiesBattled) % 34] : ((enemiesBattled % 6) + 1)
             var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 || zone === 999 ? 17 : 1)).mul(isWonder ? 11.11 : 1).mul(zone === 999 ? Math.pow(difficulty, 14) : 1)
+            if (zone === 999 && difficulty >= (hasResearch("seven") ? 8 : (hasResearch("six") ? 6 : 4))) {
+                enemyCap = Hyper2(10).pow(enemyCap)
+            }
             enemyHealth = enemyCap.min(enemyHealth)
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "wonder2", "portal", "purplecandy", "person"]
             var newX = null
