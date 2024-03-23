@@ -1202,10 +1202,10 @@
             box-shadow: 0 0 2px #f3b20e, 0 0 5px #f58925;
         }
 
-        .special2 {
+        .special2.special2 {
             padding: 2px 10px 2px 10px;
-            border-color: #dab651;
-            background-color: #f3710e;
+            border-color: #dab651 !important;
+            background-color: #f3710e !important;
         }
 
         .special2:hover,
@@ -10886,7 +10886,7 @@
                         Currently, this value is <b class="yellow" id="crystalMultiplier"></b>.
                     </div>
                     <input type="range" min="0" max="6" value="0" id="crystalSpend">
-                    <div class="mini crystal" id="increaseCap" tabindex="0"></div>
+                    <div class="mini special2" id="increaseCap" tabindex="0"></div>
 
                     <button class="crystal" data-cost="crystal3-1" data-earn="base|bonus3+600"
                         data-desc="Each purple crystal increases the game's speed by 100 times for 10 seconds.\nAlthough green and blue crystals stack with this, the speed of decay for these is also multiplied.$crystal3$">
@@ -17625,16 +17625,18 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var usedCrystal = false
             var realSpend = Math.min(crystalSpending, crystalCap)
+            var realHyper = new Hyper(realSpend)
             if (!C("bonus3").isZero()) {
                 updateClass(speedElements[1], "big crystal3")
                 if (usedCrystal) {
-                    if (rawRemove("bonus3", Hyper(true))) {
+                    if (rawRemove("bonus3", realHyper)) {
                         speed = Hyper(100)
                     } else {
                         clearAmount("bonus3")
                     }
                 } else {
-                    if (rawRemove("bonus3", Hyper(realSpend))) {
+                    usedCrystal = true
+                    if (rawRemove("bonus3", realHyper)) {
                         speed = Hyper(realSpend * 100)
                     } else {
                         clearAmount("bonus3")
@@ -17645,15 +17647,17 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
 
             if (!C("bonus2").isZero()) {
+                updateClass(speedElements[2], "big crystal2")
                 if (usedCrystal) {
-                    if (rawRemove("bonus2", Hyper(true))) {
-                        speed = Hyper(100)
+                    if (rawRemove("bonus2", realHyper.mul(speed))) {
+                        speed = speed.mul(25)
                     } else {
                         clearAmount("bonus2")
                     }
                 } else {
-                    if (rawRemove("bonus2", Hyper(realSpend))) {
-                        speed = Hyper(realSpend * 100)
+                    usedCrystal = true
+                    if (rawRemove("bonus2", realHyper.mul(speed))) {
+                        speed = Hyper(realSpend * 25)
                     } else {
                         clearAmount("bonus2")
                     }
@@ -17663,15 +17667,18 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
 
             if (!C("bonus1").isZero()) {
+                updateClass(speedElements[3], "big crystal1")
                 if (usedCrystal) {
-                    if (rawRemove("bonus1", Hyper(true))) {
-                        speed = Hyper(100)
+                    if (rawRemove("bonus1", realHyper.mul(speed))) {
+                        speed = speed.mul(10)
                     } else {
                         clearAmount("bonus1")
                     }
                 } else {
-                    if (rawRemove("bonus1", Hyper(realSpend))) {
-                        speed = Hyper(realSpend * 100)
+                    usedCrystal = true
+
+                    if (rawRemove("bonus1", realHyper.mul(speed))) {
+                        speed = Hyper(realSpend * 10)
                     } else {
                         clearAmount("bonus1")
                     }
@@ -17680,7 +17687,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 updateClass(speedElements[3], "big graystal")
             }
 
-            updateId("crystalMultiplier", realSpend === crystalSpending ? realSpend + "× with a cap of " + crystalCap + "×" : (realSpend + "× (set to " + crystalSpending + "× but isn't valid due to a lack of upgrades)"))
+            updateInput("crystalSpend", Math.log2(crystalSpending))
+            updateId("crystalMultiplier", realSpend === crystalSpending ? realSpend + "× with a cap of " + crystalCap + "×" : (realSpend + "× (set to " + crystalSpending + "× but isn't actually that multiplier due to a lack of upgrades)"))
             timeBonus = Hyper(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0).mul(Hyper(true).add(C("hypercubes").mul(0.01)))
             speed = speed.mul(Hyper(true).add(C("hypercubes").mul(0.01))).max(timeBonus).mul(baseSpeed)
             updateId("increaseCap", "Increase the crystal speed cap (costs $" + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor().format(2) + ")")
@@ -17947,6 +17955,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     if (parent !== null) {
                         text = parent.getAttribute("data-desc")
                     }
+                }
+                if (hovered.id === "increaseCap") {
+                    text = "Increase the maximum speed that you spend crystals!"
                 }
                 if (text === null) {
                     if (previousHTML.length !== 0) {
