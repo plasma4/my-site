@@ -94,7 +94,7 @@
 
         #health,
         #enemyHealth {
-            transition: width 125ms;
+            transition: width 125ms, opacity 250ms;
             text-align: center;
             white-space: pre;
             font-size: 14px;
@@ -111,6 +111,12 @@
         #enemyHealth::selection {
             color: black;
             background: white;
+        }
+
+        .barHidden {
+            opacity: 0;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         #enemyHealth {
@@ -17138,7 +17144,12 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateHTML(ID("redcandy"), formattedCandy + '× <span class="bigger redcandy">')
             updateHTML(ID("damage"), damageMultiplier.mul(40).format() + ' for <span class="small valuable2">golden clocks</span> and ' + damageMultiplier.mul(25).format() + " for other attacks")
             updateId("health", (health.eq(healthCap) && health.gte("10^^100")) ? formattedHealthCap : (formatExpanta(health.max(0), 2) + "/" + formattedHealthCap))
-            updateId("enemyHealth", inBattle === 0 ? enemyHealth.min(enemyCap).max(0).format(2) + "/" + enemyCap.format(2) : "...")
+            if (withinBattle) {
+                updateId("enemyHealth", enemyHealth.min(enemyCap).max(0).format(2) + "/" + enemyCap.format(2))
+                ID("enemyHealth").removeAttribute("class")
+            } else {
+                updateClass(ID("enemyHealth"), "barHidden")
+            }
 
             if (enemyHealth.lte(0)) {
                 if (hasResearch("money")) {
