@@ -17138,7 +17138,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateHTML(ID("redcandy"), formattedCandy + '× <span class="bigger redcandy">')
             updateHTML(ID("damage"), damageMultiplier.mul(40).format() + ' for <span class="small valuable2">golden clocks</span> and ' + damageMultiplier.mul(25).format() + " for other attacks")
             updateId("health", (health.eq(healthCap) && health.gte("10^^100")) ? formattedHealthCap : (formatExpanta(health.max(0), 2) + "/" + formattedHealthCap))
-            updateId("enemyHealth", enemyHealth.min(enemyCap).max(0).format(2) + "/" + enemyCap.format(2))
+            updateId("enemyHealth", inBattle === 0 ? enemyHealth.min(enemyCap).max(0).format(2) + "/" + enemyCap.format(2) : "...")
 
             if (enemyHealth.lte(0)) {
                 if (hasResearch("money")) {
