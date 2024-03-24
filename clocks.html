@@ -7635,7 +7635,7 @@
 
                         <button class="diamond" data-earn="millmakers+1" data-cost="furnaces-50|money-1e9"
                             data-show="factories>0"
-                            data-desc="[NOTE: Need blue wood? You need to have that specific research, as well as a few other ones.]\nSteel mill constructors are hard to make, costing 50 furnaces and a billion dollars.\nHowever, with blue wood, it turns out that you can construct steel mills, along with 500 steel and a 200 platinum to make one.$millmakers$">
+                            data-desc="[NOTE: Need blue wood? You need to have that specific research, as well as a few other ones.]\nSteel mill constructors are hard to make, costing 50 furnaces and a billion dollars.\nHowever, with blue wood by using {5,000 steel}, {2,000 platinum}, and {250 blue wood} to make one.$millmakers$">
                             Get a steel mill constructor <span class="gears"></span>
                         </button>
                     </div>
@@ -15963,7 +15963,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var steelMills = C("steelmills")
                 var steelPower = steelMills.mul(millPower)
-                var millMakers = C("millmakers")
+                var millMakerPower = C("millmakers").mul(0.000325)
 
                 var radiumMills = C("radiummills")
                 var radiumMakers = C("radiummakers")
@@ -16242,7 +16242,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     multiExchange("steel", steelPower.mul(0.004), "slag", steelPower.mul(0.004))
                 }
 
-                multiExchange("steelmills", millMakers.mul(0.000325), ["steel", "platinum", "bwood"], [millMakers.mul(2.5), millMakers, millMakers.mul(0.01)])
+                multiExchange("steelmills", millMakerPower, ["steel", "platinum", "bwood"], [millMakerPower.mul(5000), millMakerPower.mul(2000), millMakerPower.mul(250)])
 
                 add("goo", wells.mul(0.000165))
                 add("energy", ponds.mul(0.000008))
