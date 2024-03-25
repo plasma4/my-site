@@ -9120,15 +9120,20 @@
                             data-desc="[Costs 1e10,000 golden shards.] Qubits increase clock gain!">
                             Qubits of power
                         </span>
-                        <span class="mini stripe4" data-cost="shards-1e125000" data-show="$power17" data-earn="$power18"
+                        <span class="mini techy" data-cost="shards-1e125000" data-show="$power17" data-earn="$power18"
                             data-fade="$power18"
                             data-desc="[Costs 1e125,000 golden shards.] Shards increase their own gain by a LOT.">
                             Superior shards
                         </span>
-                        <span class="mini stripe4" data-cost="shards-ee6" data-show="$power18" data-earn="$power19"
+                        <span class="mini techy" data-cost="shards-ee6" data-show="$power18" data-earn="$power19"
                             data-fade="$power19"
                             data-desc="[Costs 1e1,000,000 golden shards.] Shards increase their own gain even more!">
                             Superior+ shards
+                        </span>
+                        <span class="mini techy" data-cost="shards-ee6" data-show="$power19" data-earn="$superpower"
+                            data-fade="$superpower"
+                            data-desc="[Costs 1e1,000,000 golden shards.] Supershard power is squared!">
+                            Superpower shards
                         </span>
                         <br>
                         <button class="techy" data-cost="shards-EXPsupershards,3000" data-show="$power16"
@@ -16190,6 +16195,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var supershards = C("supershards")
                 var supershardCapped = supershards.isMore(300)
                 var supershardPower = supershardCapped ? Hyper("1e25").pow(supershards.add(11700)) : Hyper("1e1000").pow(supershards)
+                if (hasResearch("superpower")) {
+                    supershardPower.sqr(true)
+                }
                 var familySqrt = C("family").sqrt()
                 var familyIncome = familySqrt.mul(familySqrt.sqrt()).mul(0.15)
                 var clockmakerIncome = clockmakers.mul(remove("money", clockmakers.mul(0.05)) ? 1.2 : 0)
@@ -16644,7 +16652,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 updateId("achievementAmount", ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
 
-                updateId("supershard", supershards.isPositive() ? "Your " + format(supershards, "supershard") + " multiply base time machine production by " + supershardPower.format(2) + (supershardCapped ? "× (softcapped)." : "×.") : "You don't have supershards yet. sad.")
+                updateId("supershard", supershards.isPositive() ? "Your " + format(supershards, "supershard") + " multiply base time machine production by " + supershardPower.format(2) + (supershardCapped ? "× (softcapped)." : "×.") : "You don't have supershards yet. very. sad.")
 
                 Game.triggerEventListeners("draw", { inWarp: false, startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted })
             }
