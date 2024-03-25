@@ -12979,7 +12979,7 @@
             ID("hyperReset").removeAttribute("style")
         })
 
-        var crystalSpending = 1, crystalCap = 1, crystalTotal = 0, crystalTime = -1, crystalSpeed = 30000
+        var crystalSpending = 1, crystalCap = 1, crystalHTML = null, crystalTotal = 0, crystalTime = -1, crystalSpeed = 30000
         attachEvent("crystal", function () {
             if (alreadyClicked) {
                 return
@@ -13003,6 +13003,12 @@
         ID("increaseCap").addEventListener("click", function () {
             if (crystalCap < (crystalCosts.length - 1) && rawRemove(crystalCap >= 50 ? "shards" : "money", Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor())) {
                 crystalCap++
+                if (notSafari) {
+                    sounds.transaction.cloneNode().play()
+                } else {
+                    sounds.transaction.currentTime = 0
+                    sounds.transaction.play()
+                }
             }
         })
 
@@ -16615,7 +16621,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         var battleDungeon = "", worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
         var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
         function updateDungeon() {
-            battleDungeon = battleDungeons[(enemiesBattled + 1) % 7]
+            battleDungeon = battleDungeons[[2, 3, 4, 4, 6, 1, 2, 6, 6, 5, 5, 5, 4, 2, 1, 3, 5, 1, 0, 2, 0, 6, 6, 0, 5, 6, 6, 0, 4, 2, 4, 3, 2, 3, 2, 5, 1, 4, 4, 6, 1, 6, 6, 6, 6, 1, 3, 3, 1, 2, 0, 3, 1, 5, 5, 5, 4, 5, 2, 3, 0, 2, 0, 6, 5, 0, 1, 6, 5, 5, 5, 3, 1, 4, 0, 4, 0, 4, 4, 5, 0, 3, 5, 4, 1, 5, 5, 0, 0, 5, 5, 4, 6, 1, 5, 3, 3, 2, 2, 5][(enemiesBattled + 17) % 100]]
             if (workerUnloaded) {
                 workerUnloaded = false
                 var blob = new Blob([workerText], { type: "text/javascript" })
@@ -17879,10 +17885,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateId("crystalMultiplier", realSpend === crystalSpending ? realSpend + "× with a cap of " + crystalCap + "×" : (realSpend + "× (set to " + crystalSpending + "× but isn't actually that multiplier due to a lack of upgrades)"))
             timeBonus = Hyper(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0).mul(Hyper(true).add(C("hypercubes").mul(0.01)))
             speed = speed.mul(Hyper(true).add(C("hypercubes").mul(0.01))).max(timeBonus).mul(baseSpeed)
-            if (crystalCap >= 50) {
-                updateHTML(ID("increaseCap"), 'Increase the crystal speed cap (costs <b class="yellow outlined">' + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor().format(2) + '</b><span class="shard"></span>)')
-            } else {
-                updateHTML(ID("increaseCap"), 'Increase the crystal speed cap (costs <b class="green outlined">$' + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor().format(2) + '</b><span class="money"></span>)')
+            if (crystalHTML !== crystalCap) {
+                crystalHTML = crystalCap
+                if (crystalCap >= 50) {
+                    updateHTML(ID("increaseCap"), 'Increase the crystal speed cap (costs <b class="yellow outlined">' + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor().format(2) + '</b><span class="shard" aria-label="GOLDEN shards"></span>)')
+                } else {
+                    updateHTML(ID("increaseCap"), 'Increase the crystal speed cap (costs <b class="green outlined">$' + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor().format(2) + '</b><span class="money"></span>)')
+                }
             }
 
             var noBoosts = ID("noBoosts")
