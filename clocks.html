@@ -6620,12 +6620,6 @@
                 } else if (signA === -1 && signB === 1) {
                     var result = HyperAddBase(a, b)
                     return result
-                } else if (signA === 1 && signB === 1) {
-                    var result = HyperSubtractBase(a, b)
-                    if (result === false) {
-                        result = HyperSubtractBase(b, a)
-                    }
-                    return result
                 } else {
                     var result = HyperSubtractBase(a, b)
                     if (result === false) {
@@ -6642,13 +6636,15 @@
                 if (signA === 1 && signB === -1) {
                     return HyperAddBase(a, b)
                 } else if (signA === -1 && signB === 1) {
+                    if (a.$[3] === 0n && b.$[3] === 0n) {
+                        b.$[0] = -1
+                        return b
+                    }
                     return false
                 } else if (signA === 1 && signB === 1) {
-                    var result = HyperSubtractBase(a, b)
-                    return result
+                    return HyperSubtractBase(a, b)
                 } else {
-                    var result = HyperSubtractBase(a, b)
-                    return result
+                    return HyperSubtractBase(b, a)
                 }
             }
 
@@ -13005,7 +13001,7 @@
 
         var crystalCosts = [0, 0, 1, 2, 3, 4, 6, 8, 10, 15, 20, 25, 40, 50, 60, 70, 80, 100, 125, 150, 200, 250, 300, 400, 500, 600, 750, 900, 1200, 5000, 25000, "1e6", "1e10", "eee10", "eee50", "eee100", "eee111", "eee121", "eee133", "eee1000", "eeee6", "eeee8", "eeee10", "eeee15", "eeee20", "eeee50", "eeee100", "eeee250", "eeee500", "eeee1000", "5000", "10000", "25000", "50000", "100000", "250000", "500000", "1e6", "2.5e6", "1e7", "1e8", "1e9", "1e100", "ee100", "F1000001"]
         ID("increaseCap").addEventListener("click", function () {
-            if (crystalCap < (crystalCosts.length - 1) && rawRemove(crystalCap >= 50 ? "shards" : "money", Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor())) {
+            if (crystalCap < (crystalCosts.length - 1) && rawRemove(crystalCap >= 50 ? "shards" : "money", Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e10").floor())) {
                 crystalCap++
                 if (notSafari) {
                     sounds.transaction.cloneNode().play()
@@ -16533,6 +16529,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
 
                 var newMoney = C("money").min(matterLimit)
+                stuff.money = newMoney
                 var moneyLoss = oldMoney.sub(newMoney)
                 var newStats = moneyLoss.isLess("eee100") ? moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")) : ""
 
@@ -17894,9 +17891,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             if (crystalHTML !== crystalCap) {
                 crystalHTML = crystalCap
                 if (crystalCap >= 50) {
-                    updateHTML(ID("increaseCap"), 'Increase the crystal speed cap (costs <b class="yellow outlined">' + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor().format(2) + '</b><span class="shard" aria-label="GOLDEN shards"></span>)')
+                    updateHTML(ID("increaseCap"), 'Increase the crystal speed cap (costs <b class="yellow outlined">' + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e10").floor().format(2) + '</b><span class="shard" aria-label="GOLDEN shards"></span>)')
                 } else {
-                    updateHTML(ID("increaseCap"), 'Increase the crystal speed cap (costs <b class="green outlined">$' + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e9").floor().format(2) + '</b><span class="money"></span>)')
+                    updateHTML(ID("increaseCap"), 'Increase the crystal speed cap (costs <b class="green outlined">$' + Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e10").floor().format(2) + '</b><span class="money"></span>)')
                 }
             }
 
