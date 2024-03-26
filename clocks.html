@@ -9142,7 +9142,7 @@
                         </span>
                         <span class="mini techy" data-cost="supershards-1325" data-show="$superpower"
                             data-earn="$autoshard" data-fade="$autoshard"
-                            data-desc="[Costs 1,325 supershards.] You automatically gain supershards at no extra cost.">
+                            data-desc="[Costs 1,325 supershards.] You can now automatically gain supershards at no extra cost.">
                             Automatic supershards
                         </span>
                         <span class="mini techy" data-cost="supershards-1325" data-show="$superpower" data-earn="$bonus"
@@ -9171,8 +9171,49 @@
                             The digital gift
                         </span>
                         <span class="mini techy" data-cost="supershards-2.12e8" data-show="$bonus" data-earn="$bonus6"
-                            data-fade="$bonus6" data-desc="[Costs 212.00M supershards.] Supershard power is squared...again.">
+                            data-fade="$bonus6"
+                            data-desc="[Costs 212.00M supershards.] Supershard power is squared...again.">
                             Many realities
+                        </span>
+                        <span class="mini techy" data-cost="supershards-8.5e8" data-show="$bonus" data-earn="$bonus7"
+                            data-fade="$bonus7"
+                            data-desc="[Costs 850.00M supershards.] Automatic supershard gain amount is multiplied by 7!">
+                            EZCollection
+                        </span>
+                        <span class="mini techy" data-cost="supershards-1e12" data-show="$bonus" data-earn="$bonus8"
+                            data-fade="$bonus8"
+                            data-desc="[Costs 1.000T supershards.] No cap fr fr increase your supershard hardcap based on HyperClocks.">
+                            That's no cap
+                        </span>
+                        <span class="mini techy" data-cost="supershards-3.5e16" data-show="$bonus" data-earn="$bonus9"
+                            data-fade="$bonus9"
+                            data-desc="[Costs 35.000q supershards.] Your supershard hardcap is multiplied by 9.">
+                            Nine lives
+                        </span>
+                        <span class="mini techy" data-cost="supershards-6e17" data-show="$bonus" data-earn="$bonus10"
+                            data-fade="$bonus10"
+                            data-desc="[Costs 600.00q supershards.] Your supershard hardcap is multiplied by 10.">
+                            Level 10
+                        </span>
+                        <span class="mini techy" data-cost="supershards-1.45e19" data-show="$bonus" data-earn="$cap"
+                            data-fade="$cap"
+                            data-desc="[Costs 14.500Q supershards.] Your supershard hardcap is...well, increased by a lot. But not removed entirely.">
+                            STOP THE CAP!
+                        </span>
+                        <span class="mini techy" data-cost="supershards-1e27" data-show="$cap" data-earn="$cap2"
+                            data-fade="$cap2"
+                            data-desc="[Costs 1.000O supershards.] Your HyperClocks increase the cap more.">
+                            STOP THE CAP 2!
+                        </span>
+                        <span class="mini techy" data-cost="shards-ee5000" data-show="$cap2" data-earn="$qubit"
+                            data-fade="$qubit"
+                            data-desc="[Costs e1.000e5,000 golden shards.] You earn more qubits, which may or may not explode the numbers...">
+                            Qubit insanity
+                        </span>
+                        <span class="mini techy" data-cost="shards-50F1000" data-show="$qubit" data-earn="$supergrowth"
+                            data-fade="$supergrowth"
+                            data-desc="[Costs 50.00|F1,000 golden shards.] Qubit gain is increased by...uh...itself. Also, matter limits on qubits are removed.">
+                            Supergrowth
                         </span>
                         <br>
                         <button class="techy" data-cost="shards-EXPsupershards,3000" data-show="$power16"
@@ -13083,7 +13124,7 @@
             }
         })
 
-        var crystalCosts = [0, 0, 1, 2, 3, 4, 6, 8, 10, 15, 20, 25, 40, 50, 60, 70, 80, 100, 125, 150, 200, 250, 300, 400, 500, 600, 750, 900, 1200, 5000, 25000, "1e6", "1e10", "eee10", "eee50", "eee100", "eee111", "eee121", "eee133", "eee1000", "eeee6", "eeee8", "eeee10", "eeee15", "eeee20", "eeee50", "eeee100", "eeee250", "eeee500", "eeee1000", "5000", "10000", "25000", "50000", "100000", "250000", "500000", "1e6", "2.5e6", "1e7", "1e8", "1e9", "1e100", "ee100", "F1000001"]
+        var crystalCosts = [0, 0, 1, 2, 3, 4, 6, 8, 10, 15, 20, 25, 40, 50, 60, 70, 80, 100, 125, 150, 200, 250, 300, 400, 500, 600, 750, 900, 1200, 5000, 25000, "1e6", "1e10", "eee10", "eee50", "eee100", "eee111", "eee121", "eee133", "eee1000", "eeee6", "eeee8", "eeee10", "eeee15", "eeee20", "eeee50", "eeee100", "eeee250", "eeee500", "eeee1000", "5000", "10000", "25000", "50000", "100000", "250000", "500000", "1e6", "2.5e6", "1e7", "1e8", "1e9", "1e100", "ee100", "F10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"]
         ID("increaseCap").addEventListener("click", function () {
             if (crystalCap < (crystalCosts.length - 1) && rawRemove(crystalCap >= 50 ? "shards" : "money", Hyper(1.11).pow(crystalCosts[crystalCap]).mul("1e10").floor())) {
                 crystalCap++
@@ -14836,7 +14877,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         }
                     }
                     Game.triggerEventListeners("load", modObject);
-                    console.log("The save was loaded successfully (in " + text.length + " bytes).");
+                    console.log("The save was loaded successfully (in " + text.length.toString().replace(/\B(?=(.{3})+(?!.))/g, ",") + " bytes).");
                     return !0
                 } catch (e) {
                     message('Loading the save failed (maybe it was invalid). You may want to try reloading!\r\n<b class="pink">[' + (e.stack == null ? e : e.stack) + "]</b>")
@@ -16049,6 +16090,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
                 var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
                 var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1).mul(hasResearch("hyperqubit") ? 100 : 1).pow(hasResearch("time4") ? 125 : 1)
+                if (hasResearch("qubit")) {
+                    qubitProduction = qubitProduction.pow10Repeat(hasResearch("supergrowth") ? 100 : 3)
+                }
 
                 if (hasResearch("power11")) {
                     add("quantumlabs", Hyper(hasResearch("power12") ? 100000 : 1000).add(hasResearch("bonus3") ? C("supershards").pow(6) : 0).mul(hasResearch("bonus4") ? C("shards").add(10).log10().sqrt() : 1).div(60))
@@ -16231,18 +16275,21 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
 
                 // Update the amount of clocks that you have
-                var supershards = C("supershards")
+                var supershardCap = (hasResearch("bonus8") ? C("hyperclocks").add(10).log10().sqrt().sqrt().pow(hasResearch("cap2") ? 3 : 1).mul("1e12") : Hyper("1e12")).mul(hasResearch("bonus9") ? 9 : 1).mul(hasResearch("bonus10") ? 10 : 1).mul(hasResearch("cap") ? 777777 : 1).min("1e1000")
+                var supershards = C("supershards").min(supershardCap)
                 var superBonus = hasResearch("bonus") ? supershards.sqrt().add(hasResearch("bonus2") ? C("qcomputers").add(2).log2().sqr() : 0) : null
                 if (hasResearch("autoshard")) {
-                    var newSuper = C("shards").max(10).log10().div(3000).add(superBonus).mul(hasResearch("bonus5") ? 25 : 1).floor()
+                    var newSuper = C("shards").max(10).log10().div(3000).add(superBonus).mul(hasResearch("bonus5") ? 25 : 1).mul(hasResearch("bonus7") ? 7 : 1).floor()
                     if (supershards.isLess(newSuper)) {
                         rawAdd("supershards", newSuper.sub(supershards))
+                        limit("supershards", Hyper(supershardCap))
                         supershards = C("supershards")
                     }
                 }
                 var supershardCapped = supershards.isMore(300)
                 var supershardSupercapped = supershards.isMore("3e7")
-                var supershardPower = supershardCapped ? supershardSupercapped ? Hyper("10").pow(supershards).mul("e750292500") : Hyper("1e25").pow(supershards.add(11700)) : Hyper("1e1000").pow(supershards)
+                var supershardHardcapped = supershards.isMoreOrEqual(supershardCap)
+                var supershardPower = supershardCapped ? supershardSupercapped ? Hyper(10).pow(supershards).mul("e750292500") : Hyper("1e25").pow(supershards.add(11700)) : Hyper("1e1000").pow(supershards)
                 if (supershards.isPositive()) {
                     if (hasResearch("superpower")) {
                         supershardPower.sqr(true)
@@ -16286,7 +16333,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 if (autosellOn) {
                     var quantity = cpt.mul(sellPercent).mul(speed).mul(0.01)
                     rawAdd("money", quantity.mul(Hyper(true).add(C("influence").mul(0.01).min(2.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : new Hyper(true)).mul(hasResearch("aiselling") ? C("iq").add(1).log10().add(1).log10().add(1).log10() : Hyper(true)).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001).min(1000)) : 1))
-                    rawRemove("clocks", quantity)
+                    if (cpt.isLess("ee50")) {
+                        rawRemove("clocks", quantity)
+                    }
                 }
 
                 multiExchange(["coal", "limestone", "ironore", "bauxite", "graphite", "silicon", "copperore", "silverore", "goldore", "sodaash", "platinumore", "radiumore"], [miningPower.mul(0.0145), miningPower.mul(0.065), miningPower.mul(0.04), miningPower.mul(0.01825), miningPower.mul(0.003), miningPower.mul(0.0025), miningPower.mul(0.0175), miningPower.mul(0.0075), miningPower.mul(0.00325), miningPower.mul(0.0025), miningPower.mul(0.0002), miningPower.mul(0.0000027725)], "money", miners.mul(0.1))
@@ -16708,7 +16757,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 updateId("achievementAmount", ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
 
-                updateId("supershard", supershards.isPositive() ? "Your " + format(supershards, "supershard") + " multiply your time machine production by " + supershardPower.format(2) + (supershardCapped ? supershardSupercapped ? "× (softcapped further past 30.000M supershards)." : "× (softcapped)." : "×.") + (superBonus !== null ? " You also gain an extra " + superBonus.mul(hasResearch("bonus5") ? 25 : 1).format() + " supershards at no additional cost!" : "") : "You don't have supershards right now. very. sad.")
+                updateId("supershard", supershards.isPositive() ? "Your " + format(supershards, "supershard") + " multiply your time machine production by " + supershardPower.format(2) + (supershardCapped ? supershardSupercapped ? supershardHardcapped ? supershardCap.isMoreOrEqual("1e1000") ? "× (actually, truly, genuinely hardcapped)" : "× (HARDCAPPED at " + supershardCap.format() + " supershards until you have more HyperClocks)." : "× (softcapped FURTHER past 30.000M supershards)." : "× (softcapped)." : "×.") + (superBonus !== null && !supershardHardcapped ? " You also gain an extra " + superBonus.mul(hasResearch("bonus5") ? 25 : 1).mul(hasResearch("bonus7") ? 7 : 1).format() + " supershards at no additional cost!" : "") : "You don't have supershards right now. very. sad.")
 
                 Game.triggerEventListeners("draw", { inWarp: false, startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted })
             }
@@ -17754,6 +17803,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             limitedProperties.splice(limitedProperties.indexOf("creativity"), 1)
             limitedProperties.splice(limitedProperties.indexOf("yellowcandy"), 1)
             limitedProperties.splice(limitedProperties.indexOf("purplecandy"), 1)
+            if (hasResearch("supergrowth")) {
+                limitedProperties.splice(limitedProperties.indexOf("qubits"), 1)
+            }
             var metaLimited = [], newLimited = []
             for (var i = 0; i < limitedProperties.length; i++) {
                 var limitedProperty = limitedProperties[i]
