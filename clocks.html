@@ -17182,7 +17182,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 updateHTML(ID("zoneEffect"), "")
             }
 
-            var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)).mul(hasResearch("bunnies2") ? Hyper(true).add(C("bunnies").mul(0.1)).toString() : 1).mul(C("cringe").add(1).ln().add(1).toString()).mul(hasResearch("void6") ? C("void").sqrt().sqrt().toString() : 1)
+            var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)).mul(hasResearch("bunnies2") ? Hyper(true).add(C("bunnies").mul(0.1)).toString() : 1).mul(C("cringe").add(1).ln().add(1).toString()).mul(hasResearch("void6") ? C("void").add(2).sqrt().sqrt().toString() : 1)
             var boundX = dungeonX - 0.75
             var boundY = dungeonY - 0.75
             var collideKey = collisionKey.replace("e", "")
