@@ -9600,7 +9600,7 @@
                         </span>
                         <span class="mini warn" data-cost="gcarrots-2" data-show="$carrot" data-earn="$carrot3"
                             data-fade="$carrot3"
-                            data-desc="[Costs 2 golden carrots.]\nGolden carrots costs less and carrot gain is multiplied by 3×.">
+                            data-desc="[Costs 2 golden carrots.]\nGolden carrots cost less and carrot gain is tripled.">
                             <span class="bigger outlined rainbow3">Triple Carrotene</span>
                         </span>
                         <span class="mini warn" data-cost="gcarrots-4|carrots-44" data-show="$carrot"
@@ -9787,6 +9787,11 @@
                             data-desc="[Costs 1e10.000M Void.]\nIncrease coin gain further based on Void!">
                             10,000,000
                         </span>
+                        <span class="mini pure" data-cost="void-e1e7" data-show="$tenmillion" data-earn="$voidcap"
+                            data-fade="$voidcap"
+                            data-desc="[Costs 1e10.000M Void, again.]\nThe maximum amount of void is now increased to 1e100.00M.">
+                            100,000,000
+                        </span>
                         <br>
                         <span class="mini special" data-cost="coins-1.25e1250" data-show="$eighty" data-earn="$flashy"
                             data-fade="$flashy"
@@ -9812,7 +9817,7 @@
                         <span class="comical rainbow3" id="cringe" data-for="%CRINGE"></span>
                         <br>
                         <span class="comical white outlined" id="void" data-for="$big black"></span>
-                        Note that Void is capped at 1e10.000M.
+                        Note that Void is capped at 1e10.000M unless you have special upgrades.
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
@@ -17353,7 +17358,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 if (zone === 999) {
                     rawAdd("void", Hyper(difficulty).pow(67).sqrt().sqrt().mul(hasResearch("void2") ? C("void").add(2).log2() : 1).mul(hasResearch("void3") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("void4") ? C("coins").add(10).log10().sqrt() : 1).mul(hasResearch("two") ? C("void").add(2).log2() : 1).mul(hasResearch("three") ? C("void").add(2).log2().pow(3) : 1).mul(hasResearch("four") ? C("void").add(1).sqrt().sqrt().sqrt() : 1).mul(hasResearch("five") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("flashiest") ? C("coins").add(2).log2().pow(6) : 1).pow(hasResearch("onesixty") ? 2 : 1))
-                    limit("void", "e1e7")
+                    limit("void", hasResearch("voidcap") ? "e1e8" : "e1e7")
                 }
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
