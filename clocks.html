@@ -9789,8 +9789,23 @@
                         </span>
                         <span class="mini pure" data-cost="void-e1e7" data-show="$tenmillion" data-earn="$voidcap"
                             data-fade="$voidcap"
-                            data-desc="[Costs 1e10.000M Void, again.]\nThe maximum amount of void is now increased to 1e100.00M.">
+                            data-desc="[Costs 1e10.000M Void, again.]\nThe maximum amount of Void is now increased to 1e100.00M.">
                             100,000,000
+                        </span>
+                        <span class="mini pure" data-cost="void-e2.5e7" data-show="$tenmillion" data-earn="$voidcap2"
+                            data-fade="$voidcap2"
+                            data-desc="[Costs 1e25.000M Void.]\nThe limit to Void is now 1e10.000B, but Void gain is decreased past 1e100.00M.">
+                            &omega;
+                        </span>
+                        <span class="mini pure" data-cost="void-e1.12e8" data-show="$tenmillion" data-earn="$voidcap3"
+                            data-fade="$voidcap3"
+                            data-desc="[Costs 1e112.00M Void.]\nVoid gain is stronger past 1e100.00M.">
+                            &omega;^&omega;
+                        </span>
+                        <span class="mini pure" data-cost="void-e1e10" data-show="$tenmillion" data-earn="$voidcap4"
+                            data-fade="$voidcap4"
+                            data-desc="[Costs 1e10.000B Void.]\nVoid cap is increased to 1e1.000T.">
+                            &Omega;
                         </span>
                         <br>
                         <span class="mini special" data-cost="coins-1.25e1250" data-show="$eighty" data-earn="$flashy"
@@ -10336,7 +10351,7 @@
                         +1 MEGA-manager <span class="coin"></span> <span class="coin"></span>
                         <span class="mini stripe4"
                             data-desc="Get multiple MEGA-managers at once.\nFor every OMEGA-manager you get, you get +1 purchase power!$megamanagers$"
-                            data-cost="gc-5e7|goldb-1e6" data-earn="megamanagers+1" data-show="omegamanagers>0"
+                            data-cost="gc-2e7|goldb-1e6" data-earn="megamanagers+1" data-show="omegamanagers>0"
                             data-omegabuy></span>
                     </button>
                     <button class="ocean"
@@ -10363,6 +10378,11 @@
                     </span>
 
                     <div id="research" class="study">
+                        <div data-cost="eeee1000" data-research="speedvi"
+                            data-desc="Want to bend time?\n[Each time bender upgrade increases the game's speed by +100%.\nUsing crystals still keeps the multiplier at the same amount, but the amount of time the crystal lasts is multiplied instead.]\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10.\n{After purchasing this upgrade, your crystal boosts will automatically clear and have to be reapplied.})">
+                            Time Bender OMEGA: <span class="purple">$eee1.000e1,000</span>
+                            <span class="big money"></span>
+                        </div>
                         <div data-cost="1e19" data-research="speedv"
                             data-desc="Want to bend time?\n[Each time bender upgrade increases the game's speed by +100%.\nUsing crystals still keeps the multiplier at the same amount, but the amount of time the crystal lasts is multiplied instead.]\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10.\n{After purchasing this upgrade, your crystal boosts will automatically clear and have to be reapplied.})">
                             Time Bender V: <span class="purple">$10.000Q</span>
@@ -17357,8 +17377,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     rawAdd("purplecandy", purpleGain)
                 }
                 if (zone === 999) {
-                    rawAdd("void", Hyper(difficulty).pow(67).sqrt().sqrt().mul(hasResearch("void2") ? C("void").add(2).log2() : 1).mul(hasResearch("void3") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("void4") ? C("coins").add(10).log10().sqrt() : 1).mul(hasResearch("two") ? C("void").add(2).log2() : 1).mul(hasResearch("three") ? C("void").add(2).log2().pow(3) : 1).mul(hasResearch("four") ? C("void").add(1).sqrt().sqrt().sqrt() : 1).mul(hasResearch("five") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("flashiest") ? C("coins").add(2).log2().pow(6) : 1).pow(hasResearch("onesixty") ? 2 : 1))
-                    limit("void", hasResearch("voidcap") ? "e1e8" : "e1e7")
+                    var baseVoidGain = Hyper(difficulty).pow(67).sqrt().sqrt().mul(hasResearch("void2") ? C("void").add(2).log2() : 1).mul(hasResearch("void3") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("void4") ? C("coins").add(10).log10().sqrt() : 1).mul(hasResearch("two") ? C("void").add(2).log2() : 1).mul(hasResearch("three") ? C("void").add(2).log2().pow(3) : 1).mul(hasResearch("four") ? C("void").add(1).sqrt().sqrt().sqrt() : 1).mul(hasResearch("five") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("flashiest") ? C("coins").add(2).log2().pow(6) : 1).pow(hasResearch("onesixty") ? 2 : 1)
+                    rawAdd("void", baseVoidGain.isMore("e1e8") ? Hyper(10).pow(baseVoidGain.log10().mul(hasResearch("voidcap3") ? 0.85 : 0.3).add("7e7")) : baseVoidGain)
+                    limit("void", hasResearch("voidcap") ? hasResearch("voidcap2") ? hasResearch("voidcap4") ? "e1e12" : "e1e10" : "e1e8" : "e1e7")
                 }
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
