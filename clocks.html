@@ -9713,7 +9713,7 @@
                             The Void
                         </span>
                         <div class="mini special2"
-                            data-desc="[uh oh...]\n{Note that difficulty increases the health of enemies by a LOT, but you gain a lot more Void!}"
+                            data-desc="[uh oh...]\n{Note that difficulty increases the health of enemies by a LOT, but you get Void upon defeating an enemy!}"
                             id="enterVoid">
                             Enter the Void
                         </div>
@@ -9806,6 +9806,11 @@
                             data-fade="$voidcap4"
                             data-desc="[Costs 1e10.000B Void.]\nVoid cap is increased to 1e1.000T.">
                             &Omega;
+                        </span>
+                        <span class="mini pure" data-cost="void-e1e12" data-show="$tenmillion" data-earn="$voidcap5"
+                            data-fade="$voidcap5"
+                            data-desc="[Costs 1e1.000T Void.]\nVoid cap is increased to 1e10.000T.">
+                            &Omega;+1
                         </span>
                         <br>
                         <span class="mini special" data-cost="coins-1.25e1250" data-show="$eighty" data-earn="$flashy"
@@ -17379,7 +17384,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 if (zone === 999) {
                     var baseVoidGain = Hyper(difficulty).pow(67).sqrt().sqrt().mul(hasResearch("void2") ? C("void").add(2).log2() : 1).mul(hasResearch("void3") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("void4") ? C("coins").add(10).log10().sqrt() : 1).mul(hasResearch("two") ? C("void").add(2).log2() : 1).mul(hasResearch("three") ? C("void").add(2).log2().pow(3) : 1).mul(hasResearch("four") ? C("void").add(1).sqrt().sqrt().sqrt() : 1).mul(hasResearch("five") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("flashiest") ? C("coins").add(2).log2().pow(6) : 1).pow(hasResearch("onesixty") ? 2 : 1)
                     rawAdd("void", baseVoidGain.isMore("e1e8") ? Hyper(10).pow(baseVoidGain.log10().mul(hasResearch("voidcap3") ? 0.85 : 0.3).add("7e7")) : baseVoidGain)
-                    limit("void", hasResearch("voidcap") ? hasResearch("voidcap2") ? hasResearch("voidcap4") ? "e1e12" : "e1e10" : "e1e8" : "e1e7")
+                    limit("void", hasResearch("voidcap") ? hasResearch("voidcap2") ? hasResearch("voidcap4") ? hasResearch("voidcap5") ? "e1e13" : "e1e12" : "e1e10" : "e1e8" : "e1e7")
                 }
                 if (hasResearch("collector")) {
                     var redCandyToAdd = null
