@@ -10383,9 +10383,9 @@
                     </span>
 
                     <div id="research" class="study">
-                        <div data-cost="eeee1000" data-research="speedvi"
+                        <div data-show="$speedv" data-cost="eeee1000" data-research="speedvi"
                             data-desc="Want to bend time?\n[Each time bender upgrade increases the game's speed by +100%.\nUsing crystals still keeps the multiplier at the same amount, but the amount of time the crystal lasts is multiplied instead.]\n(For example, having Time Bender I and II would increase normal speed to 3.00×.\nSimply using a purple crystal would still keep the speed at 100.00×, but the crystal lasts for 30 seconds instead of 10.\n{After purchasing this upgrade, your crystal boosts will automatically clear and have to be reapplied.})">
-                            Time Bender OMEGA: <span class="purple">$eee1.000e1,000</span>
+                            Time Bender &Omega;: <span class="purple">$eee1.000e1,000</span>
                             <span class="big money"></span>
                         </div>
                         <div data-cost="1e19" data-research="speedv"
@@ -12611,7 +12611,7 @@
                             item = C("money", "This happened while checking for the research cost.")
                             cost = Hyper(costString)
                             if (item.isMoreOrEqual(cost)) {
-                                if (research === "speedi" || research === "speedii" || research === "speediii" || research === "speediv" || research === "speedv") {
+                                if (research === "speedi" || research === "speedii" || research === "speediii" || research === "speediv" || research === "speedv" || research === "speedvi") {
                                     rawAdd("crystal3", stuff.bonus3.div(timeBonus.mul(600)).floor(), false)
                                     rawAdd("crystal2", stuff.bonus2.div(timeBonus.mul(600)).floor(), false)
                                     rawAdd("crystal1", stuff.bonus1.div(timeBonus.mul(600)).floor(), false)
@@ -18078,7 +18078,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             updateInput("crystalSpend", Math.log2(crystalSpending))
             updateId("crystalMultiplier", realSpend === crystalSpending ? realSpend + "× with a cap of " + crystalCap + "×" : (realSpend + "× (set to " + crystalSpending + "× but isn't actually that multiplier due to a lack of upgrades)"))
-            timeBonus = Hyper(true).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0).mul(Hyper(true).add(C("hypercubes").mul(0.01)))
+            timeBonus = Hyper(true).add(hasResearch("speedvi") ? 1 : 0).add(hasResearch("speedv") ? 1 : 0).add(hasResearch("speediv") ? 1 : 0).add(hasResearch("speediii") ? 1 : 0).add(hasResearch("speedii") ? 1 : 0).add(hasResearch("speedi") ? 1 : 0).mul(Hyper(true).add(C("hypercubes").mul(0.01)))
             speed = speed.mul(Hyper(true).add(C("hypercubes").mul(0.01))).max(timeBonus).mul(baseSpeed)
             if (crystalHTML !== crystalCap) {
                 crystalHTML = crystalCap
