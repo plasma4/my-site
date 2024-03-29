@@ -565,7 +565,7 @@
         A reasonable next step would be to exponentiate even more, going from $ω^2$ to $ω^x$, and <i>then</i> to $ω^ω$.
         #f_{ω^{n+1}}(x)=f_{n×ω^n}(x)=f_{ω^n(x-1)+x}(x)\newline
         f_{ω^ω}(x)=f_{ω^x}(x)#
-        At this rate, this function grows faster than Conway chains! (imagine not reading it...) You might be wondering how we know what part to simplify. We won't go into detail, but, usually, simplifying values near the end of the equation gets things down. Eventually, you'll get an unimaginable formula, which could technically be expanded, but the universe would collapse before you even got 1% there.
+        At this rate, this function grows faster than Conway chains! (Imagine not reading it.) You might be wondering how we know what part to simplify. We won't go into detail, but, usually, simplifying values near the end of the equation gets things down. Eventually, you'll get an unimaginable formula, which could technically be expanded, but the universe would collapse before you even got 1% there.
         <small>Oh, also, the function ($f$) isn't what makes the value huge. As long as it's somewhat fast-growing, the weird $ω$ symbol does the rest. If you're wondering how values like $f_{ω^{ω^2}}$ are calculated, well, it expands like this:
         #f_{ω^{ω^2}}(x)=f_{ω^{ωx}}(x)=f_{ω^{ω×x}}(x)=f_{ω^{ω(x-1)+ω}}(x)=f_{ω^{ω(x-1)+x-1}×ω}(x)=f_{ω^{ω(x-1)+x-1}×x}(x)=f_{ω^{ω(x-1)+x-1}×(x-1)+ω^{ω(x-1)+x-1}}(x)\text{ and so on and on}#
         at which point expansion continues until the expression finally has a $+1$ dangling at the end. (This also means that large values soon become painfully hard to expand!)</small>
@@ -620,6 +620,7 @@
         <big><b>fast</b>, <b>Fast</b>, and <b>FAST!</b> (and more symbols)</big>
         Next up: the Veblen function, represented with the lowercase phi symbol.
         #φ_0(0)=1\newline
+        φ_0(k)=ω^k\newline
         φ_1(k)=ε_k\newline
         φ_{x+1}(0)[n]=φ_x^n(0)\newline
         φ_{x+1}(y+1)[n]=φ_x^n(φ_{x+1}(y)+1)\newline#
@@ -769,10 +770,13 @@
         ψ(Ω^ω)[n]=φ_n(0)=\underset{n\ ψ\text{'s}}{\underbrace{ψ(Ω^{n-1}×ψ(Ω^{n-1}×ψ(Ω^{n-1}×⋯ψ(Ω^{n-1}×ψ(Ω^{n-1}×ψ(0))))))}}#
         As you might expect, the silly w symbol doesn't do much. Next up is a pretty big landmark: $Ω^Ω$.
         #ψ(Ω^Ω)[n]=\underset{n\ ψ\text{'s}}{\underbrace{ψ(Ω^{ψ(Ω^{ψ(Ω^{ψ(Ω^{ψ(Ω^{⋰^{ψ(Ω^{ψ(0)})}})})})})})}}=\underset{n\ φ\text{'s}}{\underbrace{φ_{φ_{φ_{φ_{φ_{φ_⋯φ_{φ(0)}(0)}(0)}(0)}(0)}(0)}(0)}}=Γ_0[n]#
-        This upside-down L symbol represents a Feferman-Schütte Ordinal, and, again, is Greek (an uppercase gamma this time). We've now surpassed $φ$ for two variables, but we can go further even more:
-        #Γ_{a+1}[n]=\underset{n\ φ\text{'s}}{\underbrace{φ_{φ_{φ_{φ_{φ_{φ_⋯φ_{Γ_a+1}(0)}(0)}(0)}(0)}(0)}(0)}}#
-        ($\operatorname{BH}$ is an infinity, not a function, ending our montage of special symbols. Also, notice how you don't wrap it around the $ψ$ function!)
-        <br><br>
+        This upside-down L symbol represents a Feferman-Schütte Ordinal, and, again, is Greek (an uppercase gamma this time). We've now surpassed the simple $φ$ stuff, but we can go further even more. But before we do, just make a mental note that $φ_x(y)=φ(x,y)$. (We'll deal with more inputs below!)
+        #Γ_{k+1}[n]=\underset{n\ φ\text{'s}}{\underbrace{φ_{φ_{φ_{φ_{φ_{φ_⋯φ_{Γ_k+1}(0)}(0)}(0)}(0)}(0)}(0)}}\newline
+        φ(1,1,0)[n]=\underset{n\ Γ\text{'s}}{\underbrace{Γ_{Γ_{Γ⋯Γ_0}}}}\newline
+        φ(1,1,1)[n]=\underset{n\ φ\text{'s}}{\underbrace{Γφ(1,0,φ(1,0,⋯φ(1,1,0)+1⋯))}}\newline
+        φ(1,1,n+1)[n]=\underset{n\ φ\text{'s}}{\underbrace{Γφ(1,0,φ(1,0,⋯φ(1,1,n)+1⋯))}}#
+        You might be wondering what φ(1,2,0) is. Well, that's for the future.
+        <br>
         <small>
             $\operatorname{BH}[n]$ is SO LARGE that the number of <i>distinct functions</i> needed to expand the value is approximately $f_{ε_0}(n)$! For example:
             #f_ω(4)=f_3^3(f_2^3(f_1^3(f_0^4(5))))#
