@@ -6387,10 +6387,10 @@
                         var finalPart
                         var hyperData = new Hyper(part2)
                         hyperData.$[2] -= DIGITSMINUSONE
-                        hyperData = hyperData.log10(true).add(part1).log10(true)
+                        hyperData = HyperLog10(HyperLog10(hyperData, true).add(part1), true)
                         if (hyperData.$[2] >= 1n) {
                             category++
-                            hyperData = hyperData.log10(true)
+                            hyperData = HyperLog10(hyperData, true)
                         }
                         var string = hyperData.$[3].toString()
                         finalPart = string[0] + "." + string.slice(1, 5)
