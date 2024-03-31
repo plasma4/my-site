@@ -6376,9 +6376,14 @@
                 var sign = this.$[0] === 1 ? "" : "-"
                 var category = this.$[1]
                 if (category >= 2) {
+                    if (++category >= 9999999) {
+                        if (category !== 9999999 || this.$[2] >= 10000000000n) {
+                            return sign + "F" + formatValue(++category)
+                        }
+                    }
                     var part1 = this.$[2]
                     var part2 = this.$[3].toString()
-                    if (category >= 5 || (category === 4 && this.$[2] >= 10000000n)) {
+                    if (category >= 4 || (category === 3 && this.$[2] >= 10000000n)) {
                         var finalPart
                         var hyperData = new Hyper(part2)
                         hyperData.$[2] -= 49
@@ -6389,7 +6394,7 @@
                         }
                         var string = hyperData.$[3].toString()
                         finalPart = string[0] + "." + string.slice(1, 5)
-                        return (category < 1e7 ? sign + finalPart + "F" : "F") + formatValue(++category)
+                        return sign + finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",")
                     } else {
                         return sign + ("e".repeat(--category) + part2[0] + "." + part2.slice(1, 4) + "e" + formatValue(part1))
                     }
