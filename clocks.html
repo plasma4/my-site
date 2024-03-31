@@ -6376,9 +6376,6 @@
                 var sign = this.$[0] === 1 ? "" : "-"
                 var category = this.$[1]
                 if (category >= 2) {
-                    if (category >= 1e7) {
-                        return sign + "F" + formatValue(category + (typeof category === "bigint" ? 2n : 2))
-                    }
                     var part1 = this.$[2]
                     var part2 = this.$[3].toString()
                     if (category >= 5 || (category === 4 && this.$[2] >= 10000000n)) {
@@ -6392,7 +6389,7 @@
                         }
                         var string = hyperData.$[3].toString()
                         finalPart = string[0] + "." + string.slice(1, 5)
-                        return sign + finalPart + "F" + (category + 1).toString().replace(/\B(?=(.{3})+(?!.))/g, ",")
+                        return (category < 1e7 ? sign + finalPart + "F" : "F") + formatValue(++category)
                     } else {
                         return sign + ("e".repeat(--category) + part2[0] + "." + part2.slice(1, 4) + "e" + formatValue(part1))
                     }
