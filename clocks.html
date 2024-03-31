@@ -6386,7 +6386,7 @@
                     if (category >= 4 || (category === 3 && this.$[2] >= 10000000n)) {
                         var finalPart
                         var hyperData = new Hyper(part2)
-                        hyperData.$[2] -= 49
+                        hyperData.$[2] -= DIGITSMINUSONE
                         hyperData = hyperData.log10(true).add(part1).log10(true)
                         if (hyperData.$[2] >= 1n) {
                             category++
