@@ -4441,8 +4441,7 @@
         function formatExpanta(num, precision = 2, small = false) {
             if (ExpantaNum.isNaN(num)) return "???"
             let precision2 = Math.max(3, precision) // for e
-            let precision3 = Math.max(4, precision) // for F, G, H
-            let precision4 = Math.max(6, precision) // for J, K
+            let precision3 = Math.max(6, precision) // for F, G, H, J, and K
             num = new ExpantaNum(num)
             let array = num.array
             if (num.abs().lt(1e-308)) return (0).toFixed(precision)
@@ -4505,7 +4504,7 @@
             }
             else if (num.lt("J10000000")) { // 5J4 ~ J10,000,000
                 let pol = polarize(array, true)
-                return regularFormat(Math.log10(pol.bottom) + pol.top, precision4) + "J" + commaFormat(pol.height)
+                return regularFormat(Math.log10(pol.bottom) + pol.top, precision3) + "J" + commaFormat(pol.height)
             }
             else if (num.lt("J^4 10")) { // J10,000,000 ~ 1K5
                 let rep = num.layer
@@ -4541,7 +4540,7 @@
                     topJ = 1 + Math.log10(Math.log10(bottom) + top)
                     layer += 2
                 }
-                return regularFormat(topJ, precision4) + "K" + commaFormat(layer)
+                return regularFormat(topJ, precision3) + "K" + commaFormat(layer)
             }
             // K10,000,000 and beyond
             let n = num.layer + 1
@@ -6387,13 +6386,13 @@
                         var finalPart
                         var hyperData = new Hyper(part2)
                         hyperData.$[2] -= DIGITSMINUSONE
-                        hyperData = HyperLog10(HyperLog10(hyperData, true).add(part1), true)
+                        hyperData = HyperLog10(HyperLog10(hyperData).add(part1))
                         if (hyperData.$[2] >= 1n) {
                             category++
-                            hyperData = HyperLog10(hyperData, true)
+                            hyperData = HyperLog10(hyperData)
                         }
                         var string = hyperData.$[3].toString()
-                        finalPart = string[0] + "." + string.slice(1, 5)
+                        finalPart = string[0] + "." + string.slice(1, 7)
                         return sign + finalPart + "F" + category.toString().replace(/\B(?=(.{3})+(?!.))/g, ",")
                     } else {
                         return sign + ("e".repeat(--category) + part2[0] + "." + part2.slice(1, 4) + "e" + formatValue(part1))
