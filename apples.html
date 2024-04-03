@@ -3419,6 +3419,8 @@
                 stuff[property] = new Hyper()
                 stuffTotals[property] = new Hyper()
             }
+
+            confirmReset = false
         }
 
         function updateProperties() {
@@ -3585,6 +3587,10 @@
             } else {
                 confirmReset = true
                 ID("reset").textContent = "Are you sure?"
+                setTimeout(function () {
+                    ID("reset").textContent = "RESET"
+                    confirmReset = false
+                }, 2500)
             }
         })
 
