@@ -2978,6 +2978,7 @@
 
     <style>
         * {
+            text-align: center;
             font-size: 30px;
             font-family: Calibri, "Trebuchet MS";
             color: white;
@@ -3056,7 +3057,7 @@
         }
 
         p {
-            font-size: 16px;
+            font-size: 22px;
         }
 
         .red {
@@ -3189,9 +3190,10 @@
     <button class="green" data-cost="fuji-all|fujiT-all|water-all" data-earn="money+*1">
         Sell all Fuji (you lose water and Fuji trees)
     </button>
+    <p>Pipes produce water, while fertilizer improves Fuji apple gain.</p>
     <p>
-        Pipes produce water, while fertilizer impoves Fuji apple gain.
-        (Fertilizer costs 10.000B Gala apples and 1,000 water.)
+        (Currently increasing production by <span style="color: #b66" id="fBoost"></span>.
+        Fertilizer costs 10.000B Gala apples and 1,000 water.)
     </p>
     <p>
         Pesticides increase Fuji apple gain and Fuji tree gain by +100%, but the effect is capped at 99 pesticides.
@@ -3205,15 +3207,26 @@
     <button class="brown" data-cost="reddel-2.5e15" data-earn="pesticides+1" data-stat="pesticides">
         Get pesticides
     </button>
-    <p>Compostors take the fruit you give it and turn it into Fujilizer! Each one costs 10.000S Honeycrisps.</p>
-    <p>Flowers also boost Fujilizer production. They cost 100.00T Fuji apples, 1.000q Gala apples, 10.000q Red
-        Delicious, and 100.00q Honeycrisps.</p>
+    <p>
+        Compostors take the fruit you give it and turn it into 5 Fujilizer per second!
+        Each one costs 10.000S Honeycrisps.
+    </p>
+    <p>
+        Flowers also boost Fujilizer production.
+        Each flower costs 100.00T Fuji apples, 1.000q Gala apples, 10.000q Red Delicious, and 100.00q Honeycrisps.
+    </p>
     <button class="gray" data-cost="honeycrisps-1e25" data-earn="compostors+1" data-stat="compostors">
         Get a composter
     </button>
     <button class="yellow" data-cost="fuji-1e14|gala-1e15|reddel-1e16|honeycrisps-1e17" data-earn="flowers+1"
         data-stat="flowers">
-        Gain a flower
+        Gain a small flower
+    </button>
+    <p>
+        Mushrooms boost Fujilizer effect by +1,000% for every one that you have. They cost 10.000N Honeycrisps.
+    </p>
+    <button class="brown" data-cost="honeycrisps-1e31" data-earn="mushrooms+1" data-stat="mushrooms">
+        Gain a mushroom
     </button>
 
     <script id="main">
@@ -3537,7 +3550,7 @@
             add("water", C("pipes").add(1).div(60))
             add("fujiT", C("fujiP").mul(C("pesticides").min(99).add(1).mul(0.5)))
             add("fertilizer", C("compostors").div(12).mul(C("flowers").add(1)))
-            add("fuji", C("fujiT").mul(C("pesticides").min(99).add(1)).mul(C("fertilizer").sqrt().mul(0.01).add(0.05)))
+            add("fuji", C("fujiT").mul(C("pesticides").min(99).add(1)).mul(C("fertilizer").sqrt().mul(C("mushrooms").mul(0.1).add(0.01)).add(0.05)))
             add("gala", C("galaT").mul(C("fuji").add(0.1).mul(0.05)))
             add("reddel", C("reddelT").mul(C("gala").add(0.1).mul(0.05)))
             add("honeycrisps", C("honeycrispsT").mul(C("reddel").add(0.1).mul(0.05)))
@@ -3548,7 +3561,7 @@
             var newTime = Date.now()
             updateNumbers()
             updateGame()
-
+            update(ID("fBoost"), "+" + C("fertilizer").sqrt().mul(20).format(2) + "%")
             alreadyClicked = false
             if (++frame % 30 === 0) {
                 saveLocally()
