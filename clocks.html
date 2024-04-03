@@ -15864,6 +15864,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
         function meetsRequirements(conditions, scienceMode) {
             var splitItems = conditions.split("/")
+            var conditionsMet = true
             for (var i = 0; i < splitItems.length; i++) {
                 var requirements = splitItems[i]
                 var text = requirements.trim()
@@ -15880,7 +15881,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     if (condition.charCodeAt(0) === 36) {
                         // Check if the research doesn't exist
                         if (!hasResearch(condition.slice(1))) {
-                            return false
+                            conditionsMet = false
+                            break
                         }
                     } else {
                         var notTotal = false
@@ -15899,10 +15901,12 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                 // Test for an equals sign right after it (which is "<=")
                                 if (condition.charCodeAt(index + 1) === 61) {
                                     if (itemAmount.isMore(condition.slice(index + 2))) {
-                                        return false
+                                        conditionsMet = false
+                                        break
                                     }
                                 } else if (itemAmount.isMoreOrEqual(condition.slice(index + 1))) {
-                                    return false
+                                    conditionsMet = false
+                                    break
                                 }
                             }
                             continue
@@ -15915,16 +15919,22 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                 if (scienceMode && (name === "science" || name === "creativity")) {
                                     return -1
                                 }
-                                return false
+                                conditionsMet = false
+                                break
                             }
                         } else if (itemAmount.isLessOrEqual(condition.slice(index + 1))) {
-                            return false
+                            conditionsMet = false
+                            break
                         }
                     }
                 }
 
-                return true
+                if (conditionsMet) {
+                    return true
+                }
+                conditionsMet = true
             }
+            return false
         }
 
         var alreadyInvalid = []
