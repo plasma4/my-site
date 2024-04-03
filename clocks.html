@@ -8974,7 +8974,7 @@
                             100×
                         </span>
                         <span class="mini pure2" data-earn="hyperclocks+*1e-22"
-                            data-desc="Exchange ALL of your clocks for HyperClocks!\nNot a bad deal...$hyperclocks$"
+                            data-desc="Exchange ALL of your clocks for HyperClocks!\nNot a bad deal...but capped at 1.000F5.$hyperclocks$"
                             data-cost="clocks-all" data-show="$power">
                             ALL
                         </span>
@@ -9189,9 +9189,9 @@
                             data-desc="[Costs 1,365 supershards.] Gain additional bonus supershards at no extra cost, but this time based on your quantum computers.">
                             Quantum buff
                         </span>
-                        <span class="mini techy" data-cost="supershards-141000" data-show="$bonus" data-earn="$bonus3"
+                        <span class="mini techy" data-cost="supershards-140000" data-show="$bonus" data-earn="$bonus3"
                             data-fade="$bonus3"
-                            data-desc="[Costs 141,000 supershards.] You gain Quantum Labs based on your supershards.">
+                            data-desc="[Costs 140,000 supershards.] You gain Quantum Labs based on your supershards.">
                             Into the clouds
                         </span>
                         <span class="mini techy" data-cost="supershards-3.1e6" data-show="$bonus" data-earn="$bonus4"
@@ -9253,6 +9253,36 @@
                             data-earn="$hypergrowth" data-fade="$hypergrowth"
                             data-desc="[Costs 1.0000F1,000,000 golden shards.] Qubit gain is increased even further!">
                             Hypergrowth
+                        </span>
+                        <span class="mini techy" data-cost="shards-F10000000" data-show="$hypergrowth"
+                            data-earn="$shardgrowth" data-fade="$shardgrowth"
+                            data-desc="[Costs F10.000M golden shards.] Your qubit gain is increased more based on your supershards.">
+                            Shardgrowth
+                        </span>
+                        <span class="mini techy" data-cost="shards-F500000000" data-show="$shardgrowth"
+                            data-earn="$overcap" data-fade="$overcap"
+                            data-desc="[Costs F500.00M golden shards.] Supershard cap is, erm, increased based on your clocks.\nAlso, crystals now have a significant effect on qubit gain.">
+                            Overcap
+                        </span>
+                        <span class="mini techy" data-cost="shards-F5000000000000" data-show="$shardgrowth"
+                            data-earn="$overcap2" data-fade="$overcap2"
+                            data-desc="[Costs F5.000T golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN.">
+                            Overcap^2
+                        </span>
+                        <span class="mini techy" data-cost="shards-F5000000000000000" data-show="$shardgrowth"
+                            data-earn="$overcap3" data-fade="$overcap3"
+                            data-desc="[Costs F5.000q golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN^2.">
+                            Overcap^2^2
+                        </span>
+                        <span class="mini techy" data-cost="shards-F500000000000000000000" data-show="$shardgrowth"
+                            data-earn="$overcap4" data-fade="$overcap4"
+                            data-desc="[Costs F500.00Q golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN^4.">
+                            Overcap^2^2^2
+                        </span>
+                        <span class="mini techy" data-cost="shards-F500000000000000000000" data-show="$shardgrowth"
+                            data-earn="$overcap4" data-fade="$overcap4"
+                            data-desc="[Costs F500.00Q golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN^4.">
+                            Overcap^2^2^2
                         </span>
                         <br>
                         <button class="techy" data-cost="shards-EXPsupershards,3000" data-show="$power16"
@@ -13979,7 +14009,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                 } else {
                                     multipliedAmount = multipliedAmount.mul(buttonPower)
                                     // * sign: multiply the amount of the item with "%" or "all" spent (so a data-cost of "gold-1%" with the playing having 200 gold as well as an data-earn of "money+*4" means that the user earns 2 * 4 = 8 dollars)
-                                    rawAdd(part1, multipliedAmount.mul(part2.slice(1)).mul(multiplier))
+                                    var finalAmount = multipliedAmount.mul(part2.slice(1)).mul(multiplier)
+                                    rawAdd(part1, part1 === "hyperclocks" ? finalAmount.min("F5") : finalAmount)
                                 }
                             } else if (isRemoving) {
                                 createRemoveMenu(part1)
@@ -16231,7 +16262,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
                 var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1).mul(hasResearch("hyperqubit") ? 100 : 1).pow(hasResearch("time4") ? 125 : 1)
                 if (hasResearch("qubit")) {
-                    qubitProduction = qubitProduction.pow10Repeat(hasResearch("supergrowth") ? hasResearch("hypergrowth") ? 500 : 100 : 3)
+                    qubitProduction = qubitProduction.pow10Repeat(Hyper(hasResearch("supergrowth") ? hasResearch("hypergrowth") ? 500 : 100 : 3).mul(hasResearch("shardgrowth") ? C("supershards").add(10).ln().sqrt() : 1).mul(hasResearch("overcap") ? speed : 1))
                 }
 
                 if (hasResearch("power11")) {
@@ -16415,7 +16446,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
 
                 // Update the amount of clocks that you have
-                var supershardCap = (hasResearch("bonus8") ? C("hyperclocks").add(10).log10().sqrt().sqrt().pow(hasResearch("cap2") ? 3 : 1).mul("1e12") : Hyper("1e12")).mul(hasResearch("bonus9") ? 9 : 1).mul(hasResearch("bonus10") ? 10 : 1).mul(hasResearch("cap") ? 777777 : 1).min("1e1000")
+                var trueSupercap = hasResearch("overcap") ? Hyper("1e1000").mul(Hyper(C("clocks").$[1]).add(10).pow(Hyper(hasResearch("overcap2") ? "10000000000" : "100000").pow(hasResearch("overcap3") ? 2 : 1).pow(hasResearch("overcap4") ? 2 : 1))) : Hyper("1e1000")
+                var supershardCap = (hasResearch("bonus8") ? C("hyperclocks").add(10).log10().sqrt().sqrt().pow(hasResearch("cap2") ? 3 : 1).mul("1e12") : Hyper("1e12")).mul(hasResearch("bonus9") ? 9 : 1).mul(hasResearch("bonus10") ? 10 : 1).mul(hasResearch("cap") ? 777777 : 1).min(trueSupercap)
                 var supershards = C("supershards").min(supershardCap)
                 var superBonus = hasResearch("bonus") ? supershards.sqrt().add(hasResearch("bonus2") ? C("qcomputers").add(2).log2().sqr() : 0) : null
                 if (hasResearch("autoshard")) {
@@ -16429,7 +16461,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var supershardCapped = supershards.isMore(300)
                 var supershardSupercapped = supershards.isMore("3e7")
                 var supershardHardcapped = supershards.isMoreOrEqual(supershardCap)
-                var supershardPower = supershardCapped ? supershardSupercapped ? Hyper(10).pow(supershards).mul("e750292500") : Hyper("1e25").pow(supershards.add(11700)) : Hyper("1e1000").pow(supershards)
+                var supershardPower = supershardCapped ? supershardSupercapped ? Hyper(10).pow(supershards).mul("e750292500") : Hyper("1e25").pow(supershards.add(11700)) : trueSupercap.pow(supershards)
                 if (supershards.isPositive()) {
                     if (hasResearch("superpower")) {
                         supershardPower.sqr(true)
@@ -16897,7 +16929,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
                 updateId("achievementAmount", ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"][achieveCount])
 
-                updateId("supershard", supershards.isPositive() ? "Your " + format(supershards, "supershard") + " multiply your time machine production by " + supershardPower.format(2) + (supershardCapped ? supershardSupercapped ? supershardHardcapped ? supershardCap.isMoreOrEqual("1e1000") ? "× (actually, truly, genuinely hardcapped)" : "× (HARDCAPPED at " + supershardCap.format() + " supershards until you have more HyperClocks)." : "× (softcapped FURTHER past 30.000M supershards)." : "× (softcapped)." : "×.") + (superBonus !== null && !supershardHardcapped ? " You also gain an extra " + superBonus.mul(hasResearch("bonus5") ? 25 : 1).mul(hasResearch("bonus7") ? 7 : 1).format() + " supershards at no additional cost!" : "") : "You don't have supershards right now. very. sad.")
+                updateId("supershard", supershards.isPositive() ? "Your " + format(supershards, "supershard") + " multiply your time machine production by " + supershardPower.format(2) + (supershardCapped ? supershardSupercapped ? supershardHardcapped ? supershardCap.isMoreOrEqual(trueSupercap) ? "× (actually, truly, genuinely hardcapped, er, well, maybe not...)" : "× (HARDCAPPED at " + supershardCap.format() + " supershards until you have more HyperClocks)." : "× (softcapped FURTHER past 30.000M supershards)." : "× (softcapped)." : "×.") + (superBonus !== null && !supershardHardcapped ? " You also gain an extra " + superBonus.mul(hasResearch("bonus5") ? 25 : 1).mul(hasResearch("bonus7") ? 7 : 1).format() + " supershards at no additional cost!" : "") : "You don't have supershards right now. very. sad.")
 
                 Game.triggerEventListeners("draw", { inWarp: false, startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted })
             }
