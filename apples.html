@@ -3508,20 +3508,18 @@
                     var amount = C(property)
                     if (property === "money") {
                         update(element, "$" + amount.format(2))
-                    } else {
-                        if (amount.isPositive()) {
-                            element.style.display = null
-                            var string = amount.format() + " "
-                            if (amount.isPlural()) {
-                                var p = element.getAttribute("data-p")
-                                string += p === null ? element.getAttribute("data-s") + "s" : p
-                            } else {
-                                string += element.getAttribute("data-s")
-                            }
-                            update(element, string)
+                    } else if (T(property).isPositive()) {
+                        element.style.display = null
+                        var string = amount.format() + " "
+                        if (amount.isPlural()) {
+                            var p = element.getAttribute("data-p")
+                            string += p === null ? element.getAttribute("data-s") + "s" : p
                         } else {
-                            element.style.display = "none"
+                            string += element.getAttribute("data-s")
                         }
+                        update(element, string)
+                    } else {
+                        element.style.display = "none"
                     }
                 }
             }
