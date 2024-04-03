@@ -1058,11 +1058,11 @@
         }
 
         .linky2 {
-            color: #efbb4a !important;
+            color: #f8731b !important;
         }
 
         .linky2:focus {
-            text-shadow: 0 0 4px #ef771b;
+            text-shadow: 0 0 4px #ec4b11;
         }
 
         .save {
@@ -9455,6 +9455,7 @@
                     <span class="big cube grass"></span>
                     <br>
                     Discover the power of <span class="big gray">PIXELS</span> in dungeons!
+                    <u id="changeDungeonFont" class="linky2" role="link">Change DUNGEON font</u>
                     <br>
                     <b class="small">Dungeons give boosts like sell value and even GOLDEN CLOCK boosts later on!</b>
                     <i class="smallish">
@@ -12596,7 +12597,10 @@
 
         var logsHidden = true
         attachEvent("changeFont", function () {
-            mainFont = (mainFont + 1) % 3
+            mainFont = (mainFont + 3) % 9
+        })
+        attachEvent("changeDungeonFont", function () {
+            mainFont = (mainFont + 1) % 3 + 3 * Math.floor(mainFont / 3)
         })
         attachEvent("toggleLogs", function () {
             if (logSectionHidden) {
@@ -13768,7 +13772,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                         if (e !== true) {
                             // Prevent the button being clicked multiple times during the same frame
-                            if (alreadyClicked || button.hasAttribute("disabled")) {
+                            if (alreadyClicked || button.className === "disabled" || button.hasAttribute("disabled")) {
                                 e.stopPropagation()
                                 return
                             }
@@ -17847,7 +17851,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
 
             if (mainFont !== 0) {
-                themeCSS += mainFont === 1 ? '*{font-family:Retron2000,"Gill Sans","Gill Sans MT",Calibri,"Trebuchet MS"}' : '*{font-family:Valorant,"Gill Sans","Gill Sans MT",Calibri,"Trebuchet MS"}'
+                var div = Math.floor(mainFont / 3)
+                var mod = mainFont % 3
+                themeCSS += (div === 1 ? '*{font-family:Retron2000,"Gill Sans","Gill Sans MT",Calibri,"Trebuchet MS"}' : (div === 2 ? '*{font-family:Valorant,"Gill Sans","Gill Sans MT",Calibri,"Trebuchet MS"}' : "")) + (mod === 1 ? '#dungeon *{font-family:Valorant,"Gill Sans","Gill Sans MT",Calibri,"Trebuchet MS"}' : (mod === 2 ? '#dungeon *{font-family:"Gill Sans","Gill Sans MT",Calibri,"Trebuchet MS"}' : ""))
             }
 
             updateInput("mainColor", mainHex)
