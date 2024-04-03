@@ -3205,7 +3205,7 @@
     <button class="brown" data-cost="reddel-2.5e15" data-earn="pesticides+1" data-stat="pesticides">
         Get pesticides
     </button>
-    <p>Compostors take the fruit you give it and turn it into Fujilizer. Each one costs 10.000S Honeycrisps.</p>
+    <p>Compostors take the fruit you give it and turn it into Fujilizer! Each one costs 10.000S Honeycrisps.</p>
     <p>Flowers also boost Fujilizer production. They cost 100.00T Fuji apples, 1.000q Gala apples, 10.000q Red
         Delicious, and 100.00q Honeycrisps.</p>
     <button class="gray" data-cost="honeycrisps-1e25" data-earn="compostors+1" data-stat="compostors">
@@ -3558,7 +3558,6 @@
             setTimeout(draw, (frame % 3 === 0 ? 16 : 17) - Date.now() + newTime)
         }
 
-        onbeforeunload = () => 1
         onpagehide = function () {
             saveLocally()
         }
