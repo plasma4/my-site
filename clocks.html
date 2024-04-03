@@ -4482,10 +4482,10 @@
             else if (num.sign < 0) return "-" + formatExpanta(num.neg(), precision)
             else if (num.isInfinite()) return "Infinity"
             else if (num.lt("1e50")) { return formatValue(num.toNumber(), precision) }
-            else if (num.lt("(10^)^5 7")) { // 1e9 ~ eeee1e7
+            else if (num.lt("(10^)^5 7")) { // 1e50 ~ eeee1e7
                 let bottom = arraySearch(array, 0)
                 let rep = arraySearch(array, 1) - 1
-                if (bottom >= 1e9) {
+                if (bottom >= 1e50) {
                     bottom = Math.log10(bottom)
                     rep++
                 }
