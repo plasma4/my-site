@@ -3612,15 +3612,7 @@
                 easyButton = target
                 easyTime = Date.now() + 500
 
-                if (target.getAttribute) {
-                    if (target.getAttribute("type") === "range" && !noAudio) {
-                        sounds.press.currentTime = 0
-                        sounds.press.play()
-                    }
-                    hovered = target
-                } else {
-                    hovered = null
-                }
+                hovered = target.getAttribute ? target : null
             }
         })
 
