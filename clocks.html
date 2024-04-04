@@ -12517,7 +12517,7 @@
             updateId("removeButton", isRemoving ? "Disable Item Removal" : "Enable Item Removal (THIS BUTTON IS FOR REMOVING ITEMS ONLY!)")
         }
 
-        var easyButton = null, easyTime = -1, autoTime = Date.now() + 50, spaceDown = false, enterDown = false
+        var easyButton = null, easyTime = Date.now() + 250, autoTime = Date.now() + 50, spaceDown = false, enterDown = false
         document.addEventListener("keyup", function (e) {
             if (e.keyCode === 32) {
                 spaceDown = false
@@ -15476,7 +15476,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 wageBoost = Hyper(true)
                 autoClick = false
                 easyButton = null
-                easyTime = -1
+                easyTime = Date.now() + 250
                 autosellOn = false
                 sellPercent = 100
                 usingTheme = false
