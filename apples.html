@@ -3251,7 +3251,7 @@
                 let button = buttons[i]
 
                 var text = button.textContent
-                if (button.hasAttribute("data-stat")) {
+                if (button.hasAttribute("data-stat") && !button.hasAttribute("data-raw")) {
                     button.setAttribute("data-raw", text)
                 }
 
