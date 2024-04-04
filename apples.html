@@ -3163,7 +3163,8 @@
 
 <body>
     <button class="red" id="reset">RESET</button>
-    <br>
+    <p>Note that if you press and hold on a button, it will be automatically clicked on 20 times/second.</p>
+    <p>This will also happen if you use the Space/Enter keys!</p>
     <div id="pomegranates" data-s="pomegranate" style="color: #844"></div>
     <div id="water" data-s="water" data-p="water" style="color: #089ed9"></div>
     <div id="money" data-s="dollar" style="color: #080"></div>
@@ -3557,17 +3558,28 @@
             add("honeycrisps", C("honeycrispsT").mul(C("reddel").add(0.1).mul(0.05)))
         }
 
-        var frame = 0
+        var frame = 0, easyButton = null, easyTime = -1
         function draw() {
             var newTime = Date.now()
             updateNumbers()
             updateGame()
             update(ID("fBoost"), "+" + C("fertilizer").sqrt().mul(20).format(2) + "%")
+
+            if (easyButton !== null && easyTime <= newTime) {
+                easyButton.click()
+                easyTime += 50
+                alreadyClicked = false
+            }
+
             alreadyClicked = false
             if (++frame % 30 === 0) {
                 saveLocally()
             }
             setTimeout(draw, (frame % 3 === 0 ? 16 : 17) - Date.now() + newTime)
+        }
+
+        oncontextmenu = function () {
+            return false
         }
 
         onpagehide = function () {
@@ -3589,6 +3601,108 @@
             }
             localStorage.setItem("fcSave", newResult.join(" "))
         }
+
+        var mouseDown, mouseX, mouseY, noTouching = true, hovered = null, spaceDown = false, enterDown = false
+        document.addEventListener("mousedown", function (e) {
+            if (noTouching) {
+                mouseDown = true
+                mouseX = e.clientX
+                mouseY = e.clientY
+                var target = e.target
+                easyButton = target
+                easyTime = Date.now() + 500
+
+                if (target.getAttribute) {
+                    if (target.getAttribute("type") === "range" && !noAudio) {
+                        sounds.press.currentTime = 0
+                        sounds.press.play()
+                    }
+                    hovered = target
+                } else {
+                    hovered = null
+                }
+            }
+        })
+
+        document.addEventListener("mousemove", function (e) {
+            if (noTouching) {
+                mouseX = e.clientX
+                mouseY = e.clientY
+            }
+        })
+
+        document.addEventListener("mouseup", function (e) {
+            mouseDown = false
+            if (noTouching) {
+                easyButton = null
+            }
+        })
+
+        document.addEventListener("touchstart", function (e) {
+            updateTouch(e)
+            noTouching = false
+        })
+        document.addEventListener("touchmove", updateTouch)
+        document.addEventListener("touchend", function (e) {
+            noTouching = e.touches.length === 0
+            easyButton = null
+        })
+
+        function updateTouch(e) {
+            if (e.touches.length === 1) {
+                var touch = e.touches[0]
+                var target = document.elementFromPoint(touch.clientX, touch.clientY)
+
+                if (target !== null && target.getAttribute) {
+                    hovered = target
+                    easyButton = target
+                    easyTime = Date.now() + 500
+                } else {
+                    hovered = null
+                }
+            } else {
+                hovered = null
+            }
+        }
+
+        document.addEventListener("keyup", function (e) {
+            if (e.keyCode === 32) {
+                spaceDown = false
+            } else if (e.keyCode === 13) {
+                enterDown = false
+            }
+            if (!spaceDown && !enterDown) {
+                easyButton = null
+            }
+        })
+
+        document.addEventListener("keydown", function (e) {
+            var target = e.target
+            if (!(["INPUT", "SELECT", "TEXTAREA", "U"]).includes(target.tagName)) {
+                if (e.repeat) {
+                    if (e.keyCode === 32 || e.keyCode === 13) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                    }
+                } else if (!e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                    if (e.keyCode === 32 || e.keyCode === 13) {
+                        if (e.keyCode === 32) {
+                            spaceDown = true
+                        } else {
+                            enterDown = true
+                        }
+                        if (target.parentElement) {
+                            easyButton = target
+                            easyTime = Date.now() + 500
+                            target.click()
+                        }
+
+                        e.preventDefault()
+                        e.stopPropagation()
+                    }
+                }
+            }
+        })
 
         var confirmReset = false, resetTimeout = null
         ID("reset").addEventListener("click", function () {
