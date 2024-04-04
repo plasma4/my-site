@@ -2998,9 +2998,11 @@
 
         .light {
             background-color: white;
+            transform: scale(3) translate(2px, -2px);
         }
 
-        .clock {
+        .clock,
+        .light {
             filter: drop-shadow(0 0 0.5px #fff);
         }
 
@@ -7372,6 +7374,7 @@
             quantumlabs: %Quantum Lab (11, A unique lab that makes quantum computers)
             hyperclocks: %HyperClock (11, A weird and strange clock)
             supershards: Supershard (12, An amazing shard)
+            light: Light$ (12, Light itself)
             stablefrancium: Picogram$ of Stabilized Francium/s of Stabilized Francium (9, A portion of stable francium)
             francium: Francium Atom (8, Why does uranium get all the glory?)
             franciummakers: Francium Maker (9, Someone who makes francium)
@@ -8958,6 +8961,14 @@
                     <div class="white" id="light" data-for="$light"></div>
                     Time travel? In a clock game? No way!
                     <br>
+                    <span class="mini pure" data-cost="light-10" data-show="$light" data-earn="$light2"
+                        data-fade="$light2" data-desc="[Costs 10 light.] Light increases qubit gain!">
+                        Bright help
+                    </span>
+                    <span class="mini pure" data-cost="light-1e6" data-show="$light" data-earn="$light3"
+                        data-fade="$light3" data-desc="[Costs 1,000,000 light.] Light increases its own gain!">
+                        Self-improvement
+                    </span>
                     <div class="small yellow">
                         Digital knowledge is hardcapped at F9.999e999.
                         <br>
@@ -9293,9 +9304,9 @@
                             Overcap^2^2^2
                         </span>
                         <br>
-                        <span class="mini techy" data-cost="shards-F1000000000000000000000" data-show="$overcap"
+                        <span class="mini pure" data-cost="shards-F1000000000000000000000000" data-show="$overcap"
                             data-earn="$light" data-fade="$light"
-                            data-desc="[Costs F1.000s golden shards.] Unlock {light} that increases qubit gain further!">
+                            data-desc="[Costs F1.000S golden shards.] Unlock {light} that increases qubit gain further!\nYou'll start gaining 1 light/sec and see new upgrades near the top of the screen.">
                             A light in the darkness
                         </span>
                         <br>
@@ -16269,6 +16280,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     stuffTotals.silverpower = Hyper(true)
                 }
 
+                if (hasResearch("light")) {
+                    add("light", Hyper(hasResearch("light3") ? C("light").add(2).log2() : 1).div(60))
+                }
                 var darkTowers = C("darktowers")
                 var copperTowers = C("coppertowers")
                 var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
@@ -16276,7 +16290,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
                 var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1).mul(hasResearch("hyperqubit") ? 100 : 1).pow(hasResearch("time4") ? 125 : 1)
                 if (hasResearch("qubit")) {
-                    qubitProduction = qubitProduction.pow10Repeat(Hyper(hasResearch("supergrowth") ? hasResearch("hypergrowth") ? 500 : 100 : 3).mul(hasResearch("shardgrowth") ? C("supershards").add(10).ln().sqrt() : 1).mul(hasResearch("overcap") ? speed : 1))
+                    qubitProduction = qubitProduction.pow10Repeat(Hyper(hasResearch("supergrowth") ? hasResearch("hypergrowth") ? 500 : 100 : 3).mul(hasResearch("shardgrowth") ? C("supershards").add(10).ln().sqrt() : 1).mul(hasResearch("overcap") ? speed : 1).mul(hasResearch("light2") ? Hyper(true).add(C("light").sqr()) : 1))
                 }
 
                 if (hasResearch("power11")) {
@@ -16460,7 +16474,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
 
                 // Update the amount of clocks that you have
-                var trueSupercap = hasResearch("overcap") ? Hyper("1e1000").mul(Hyper(C("clocks").$[1]).add(10).pow(Hyper(hasResearch("overcap2") ? "10000000000" : "100000").pow(hasResearch("overcap3") ? 2 : 1).pow(hasResearch("overcap4") ? 2 : 1))) : Hyper("1e1000")
+                var trueSupercap = (hasResearch("overcap") ? Hyper("1e1000").mul(Hyper(C("clocks").$[1]).add(10).pow(Hyper(hasResearch("overcap2") ? "10000000000" : "100000").pow(hasResearch("overcap3") ? 2 : 1).pow(hasResearch("overcap4") ? 2 : 1))) : Hyper("1e1000"))
                 var supershardCap = (hasResearch("bonus8") ? C("hyperclocks").add(10).log10().sqrt().sqrt().pow(hasResearch("cap2") ? 3 : 1).mul("1e12") : Hyper("1e12")).mul(hasResearch("bonus9") ? 9 : 1).mul(hasResearch("bonus10") ? 10 : 1).mul(hasResearch("cap") ? 777777 : 1).min(trueSupercap)
                 var supershards = C("supershards").min(supershardCap)
                 var superBonus = hasResearch("bonus") ? supershards.sqrt().add(hasResearch("bonus2") ? C("qcomputers").add(2).log2().sqr() : 0) : null
