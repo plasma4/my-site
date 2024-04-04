@@ -2763,6 +2763,7 @@
         .blank,
         .sheet,
         .black,
+        .light,
         .gcweird,
         .clock,
         .gc,
@@ -2981,16 +2982,22 @@
         }
 
         .blank,
-        .black {
+        .black,
+        .light {
             background-image: none;
         }
 
-        .black {
+        .black,
+        .light {
             background-color: black;
             filter: none;
             border-radius: 3px;
             width: 12px;
             height: 12px;
+        }
+
+        .light {
+            background-color: white;
         }
 
         .clock {
@@ -8864,12 +8871,12 @@
                                 <span class="move3">BACK</span>: <span class="glow">$1.650s</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="1.234e21" data-rp="2e200" data-show="$copper" data-research="firepower"
+                            <div data-cost="1.234e21" data-rp="2e200" data-show="$wormpower" data-research="firepower"
                                 data-desc="[You need 2.000e200 research points to purchase this research!]\nIncrease the production of wormhole power generators by +0.001% for every firebar you currently have!">
                                 Fiery wormholes: <span class="glow">$1.234s</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="1e20" data-rp="1.550e155" data-show="$quantum" data-research="copper"
+                            <div data-cost="1e20" data-rp="1.550e155" data-show="$wormpower" data-research="copper"
                                 data-desc="[You need 1.550e155 research points to purchase this research!]\nAllow each copper tower to start producing 1 firebar a second.\n(I don't have a better description!)">
                                 Copper machines: <span class="glow">$100.00Q</span>
                                 <span class="big money"></span>
@@ -8880,7 +8887,7 @@
                                 <span class="big money"></span>
                             </div>
                             <div data-cost="5.2052e20" data-rp="5.2e52" data-show="$wormy8" data-research="wormpower"
-                                data-desc="[You need 5.200e52 research points to purchase this research!]\nUnlock the ability to use time machines, allowing you to MASSIVELY increase clock production!">
+                                data-desc="[You need 5.200e52 research points to purchase this research!]\nUnlock additional upgrades!">
                                 <span class="yellow">Electric inspirations:</span> <span class="glow">$520.52Q</span>
                                 <span class="big money"></span>
                             </div>
@@ -8948,6 +8955,7 @@
 
                 <div id="timetravel" style="display: none">
                     <span class="hyperclock"></span>
+                    <div class="white" id="light" data-for="$light"></div>
                     Time travel? In a clock game? No way!
                     <br>
                     <div class="small yellow">
@@ -9283,6 +9291,12 @@
                             data-earn="$overcap4" data-fade="$overcap4"
                             data-desc="[Costs F500.00Q golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN^4.">
                             Overcap^2^2^2
+                        </span>
+                        <br>
+                        <span class="mini techy" data-cost="shards-F1000000000000000000000" data-show="$overcap"
+                            data-earn="$light" data-fade="$light"
+                            data-desc="[Costs F1.000s golden shards.] Unlock {light} that increases qubit gain further!">
+                            A light in the darkness
                         </span>
                         <br>
                         <button class="techy" data-cost="shards-EXPsupershards,3000" data-show="$power16"
