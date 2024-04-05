@@ -9927,6 +9927,21 @@
                             data-desc="[Costs 1e50.000T Void, 25.000B cringe, and 100 bunnies.]\nGain 250 FREE bunnies!">
                             More bunnies
                         </span>
+                        <span class="mini pure" data-cost="void-e8e13" data-show="$voidcap8" data-earn="$rage"
+                            data-fade="$rage"
+                            data-desc="[Costs 1e80.000T Void.]\nUnlock Rage Difficulty, which only works in the Void.">
+                            Rage
+                        </span>
+                        <span class="mini pure" data-cost="purplecandy-1e33" data-show="$voidcap8" data-earn="$rage2"
+                            data-fade="$rage2"
+                            data-desc="[Costs 1.000D purple candy.]\nSquare your attack power. (This is NOT affected by the attack softcap!)">
+                            Rage strength^2
+                        </span>
+                        <span class="mini pure" data-cost="purplecandy-1e50" data-show="$voidcap8" data-earn="$rage3"
+                            data-fade="$rage3"
+                            data-desc="[Costs 1.000e50 purple candy.]\nSquare your attack power AGAIN. (This is NOT affected by the attack softcap!)">
+                            Rage strength^4
+                        </span>
                         <br>
                         <span class="mini special" data-cost="coins-1.25e1250" data-show="$eighty" data-earn="$flashy"
                             data-fade="$flashy"
@@ -9953,11 +9968,26 @@
                         <br>
                         <span class="comical white outlined" id="void" data-for="$big black"></span>
                         Note that Void is capped at 1e10.000M unless you have special upgrades.
+                        <br>
+                        <div id="rdContainer" class="smallish red" style="visibility: hidden">
+                            <label class="hidden" for="rd">
+                                Rage difficulty level requested (defaults to 1)
+                            </label>
+                            <input type="range" min="1" max="10" value="1" id="rd">
+                            <br>
+                            <i class="small pink">
+                                (Rage difficulty level of enemies: <i id="rdText" class="small red"></i>)
+                            </i>
+                            <br>
+                            Rage difficulty above 1 allows you to gain purple candy when defeating an enemy.
+                            However, it also increases enemy health and attack, and only works in the Void!
+                            (Purple candy gain is HARDCAPPED at 1e1,000,000.)
+                        </div>
                     </div>
                     <hr>
                     <div id="shop" class="small center orange" style="display: none">
                         Hello! I'm a shopkeeper. I can use my secret methods and products to give you a big boost!
-                        <div id="difficultyContainer" class="smallish yellow">
+                        <div id="difficultyContainer" class="smallish yellow" style="visibility: hidden">
                             <label class="hidden" for="difficulty">
                                 Difficulty level requested (defaults to 1)
                             </label>
@@ -12884,6 +12914,11 @@
             ID("difficultyText").textContent = difficulty
         })
 
+        ID("rd").addEventListener("input", function (e) {
+            rageDifficulty = Number(e.target.value)
+            ID("rdText").textContent = rageDifficulty
+        })
+
         var wattUsage = 0
         ID("wattSlider").addEventListener("input", function (e) {
             wattUsage = Number(e.target.value)
@@ -14087,7 +14122,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         ]
 
         const LEFT = 0, UP = 1, RIGHT = 2, DOWN = 3
-        var goFast = 0, invert = 0, spinAnimation = 0, spinSpeed = 1, epilepsy = 0, bright = 0, silly = 0, workerUnloaded = true, zone = 1, sceneFrame = 0, characterX = characterSections, characterY = 0, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, isWonder = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonY = 10, dungeonSpeed = 1, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity)
+        var goFast = 0, invert = 0, spinAnimation = 0, spinSpeed = 1, epilepsy = 0, bright = 0, silly = 0, workerUnloaded = true, zone = 1, sceneFrame = 0, characterX = characterSections, characterY = 0, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, isWonder = false, difficulty = 1, rageDifficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonY = 10, dungeonSpeed = 1, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity)
         var stuff, stuffTotals, frame, offlineFrames
         var baseSpeed = Hyper(true), speed = Hyper(baseSpeed), buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, showStats = true, noAudio = false, sleekMode = false, showSubtabs = false, stripedButtons = false, seasonsEnabled = false, mainFont = 0, extraCSS = "", themeCSS = "", usingTheme = false, mainColor = "#333", backColor = "d", isDark = false
         var newsOptions = ["Why does increasing the crystal cap costs GOLDEN SHARDS now? Like, why?", "This news ticker will go away soon.", "You shouldn't expect to complete the clock game quickly. It takes a while!", "Did you know? This is a news ticker.", "You have made a total of $CLOCKTOTAL$ clocks in this run of TTC. (Yes, that's the nickname. Or...The Clock Game.)", "It's very difficult to support variations of English. American...Canadian...British...United Clock Confederation...", "Do you really want lore?", "Should I make Ordinal Pringles minus the ordinal?", "Apparently quettagram is a thing, for some reason.", "haha pedro pascal funny", "Imagine having a sticky key...in real life!", '<u onclick="invert=100">invert colors</u>', '<u onclick="goFast=1000">gotta go fast</u>', '<u onclick="bright=60">flashlight mode</u>', '<u onclick="silly=120">silly</u>', "uh, hello there, news ticker reader", "how many atoms is too many?", "You shouldn't touch francium-215.", "Is the first EraClock the Stonehenge of our time?", "Francium is only one atomic number behind radium...and it decays faster!", generateEverySprite(240, 112) + '<span class="hyperclock"></span><span class="crystal4"></span><span class="apple"></span><span class="carrotgold"></span>', "1000 999 998 997 996 995 994 993 992 991 990 989 i'm lazy no more typing 3 2 1...HAPPY NEW YEAR", "new game when?", '<u onclick="epilepsy=60">Click get epilepsy</u>', '<u onclick="spinAnimation=360,spinSpeed=20">Click for a fast spinny</u>', '<u onclick="spinAnimation=360,spinSpeed=2.5">Click for a spinny</u>', "The time since you started/your last shard reset was $TIMEAFTER$ seconds.", "So, if I remove this news ticker, will there be less content?", "There are " + progressNotes.length + " tips in the game (currently, of course).", "Why is it called a news TICKER? Is it ticking?", "[pretend this has a bad dad joke here]", "\u2014From someone", "What is NaN, you ask? Why don't you Bing it up? (Sorry, I had to say it.)", firefoxZero === 0 ? "You are using Firefox!" : "You are NOT using Firefox.", "How bad do your clocks have to be to be worth ONE DOLLAR?", "Hear me out: I never update the changelog because you likely haven't even seen it yet.", "You have just read news ticker $NEWSID$. Congrats!", "This news ticker was seeded using math. Isn't that weird? This is also news message $NEWSID$.", "Did you know digital clocks used to be a part of the game? They used 3D printers (and were NOT very good).", "What are MegaClocks filled with? Who knows?", "Listen, this is an incremental game, not an RPG. Don't get too excited.", "Please observe the next news message carefully. It could affect you in many ways!", "Modern clocks are mass-produced, and a common material is clock brass.", "News tickers were added in 0.2.0. The current version is " + version + ".", "Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "what? i fight in an old dungeon? for what? coins? candy? CANDY? WHTA DA HUH? WHY? WHAT DOES THIS HAVE TO DO WITH? WHAT?", "You have been in dungeon battles for a total of $BATTLEFRAME$ frames!", "The news tickers that you get are based on how long the game has been actively running on your device. (Or other devices with exporting.)", "Don't even try to use base64 tools on the save file!", "You know zooming out to look at a news ticker won't help you?", "ARE YOU BORD?", "Purple, green, then BLUE!!???? Why are the colors out of order!!!!??????? Come oneeee!!!!!!!!!", "did you know that many people think Google's AI (Gemini) is better than ChatGPT 3.5?", "Flipper Zeroes likely won't work on your car because they use an advanced method that prevents signal data from being reused. (Somewhat well, anyway.)", "To open inspector, press...                               Ctrl+Shift+Q+Q on a Chromium laptop. Much effect! WAIT! DON'T ACTUALLY DO IT!", "Modding the game is an idea you could have: the tools are already in place!", "The CSS code is over 3,333 lines long! It's even over 3,335 lines long!", window.location.href, "Moose code: " + "- .... .. ... / .. ... / .- / -.-. .- -".replace(/ /g, '<span class="rc"></span>').replace(/\./g, "moose").replace(/-/g, "mooose"), "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomo-row's yesterday. Bob, of course, nose this.", "Do you get all the references? Because this one's meta (but NOT omega)", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ seconds. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Bragging rights!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1 me bored true=valid', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "potential cheater spotted: please report any cheaters immediately!", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM MAY RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Breaking news: mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "i have a feeling you're getting a left-to-right ticker soon...", "Never gonna give clocks up...never gonna break them down...", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Stop playing me, layer those Omegas, and get Omega Metad!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select the icons on the page? Well, that's a shame.", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "!?            <<<not formal", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8! (No, not a factorial. Sorry.)", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">it\'s time to take a literal break</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "We taking...our clocks...TO THE MOOOOON!", "We're taking the MOOOOOON!", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                                 DONE!', "pay your workers more", "Listen, just imagine that you actually had 1e1,000 golden nuggets. What would you do with them? Oh wait, the multiverse died.", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "Houston! We have a problem! Clocks are now wandering around the streets and trying to become sentient!", "news ticker meta: the MetaClocks return", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
@@ -14627,6 +14662,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         enemiesBattled = Number(proceed("ENM_VYZX")) - 1
                         battleFrame = Number(proceed("ENM_VF"))
                         difficulty = Math.max(proceed("DDD") / 4362, 1)
+                        rageDifficulty = Math.max(proceed("rageVal"), 1)
                         difficultyTier = Hyper(proceed("DTD")).max(1)
                         isBoss = proceed("YESTYPE") === "true"
                         isWonder = proceed("YESTYPE") === "true"
@@ -15050,6 +15086,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     }
                     updateInput("difficulty", difficulty)
                     ID("difficultyText").textContent = difficulty
+                    updateInput("rd", rageDifficulty)
+                    ID("rdText").textContent = rageDifficulty
 
                     var cap = getHealthCap()
                     formattedHealthCap = formatExpanta(cap, 2)
@@ -15074,7 +15112,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             save = function () {
 
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + crystalSpending + "SCAP" + crystalCap + "CCAP" + (showStats ? "BANAN" : "baNaN") + "STRVAL" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + collectX.join(" ") + "askO\n" + collectY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru", "TT", "tru", "TT", "trueee"][frame % 7] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + (showSubtabs ? "[" : "[StrRR4rRfalse]") + "ERESX" + seasonsEnabled + "fX" + mainFont + "   customData" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + crystalSpending + "SCAP" + crystalCap + "CCAP" + (showStats ? "BANAN" : "baNaN") + "STRVAL" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + collectX.join(" ") + "askO\n" + collectY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + rageDifficulty + "rageVal" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru", "TT", "tru", "TT", "trueee"][frame % 7] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + (showSubtabs ? "[" : "[StrRR4rRfalse]") + "ERESX" + seasonsEnabled + "fX" + mainFont + "   customData" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -17059,6 +17097,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             if (hasResearch("purple3")) {
                 purpleGain = purpleGain.sqr()
             }
+            purpleGain = purpleGain.min("1e1000000")
             updateId("spiceGain", spiceGain.format(2))
             updateId("purpleGain", purpleGain.format(4) + "×")
             rawAdd("spice", spiceGain.div(60))
@@ -17164,7 +17203,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var nextToShop = false
             var enemyType = isBoss ? [1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2, 1, 2, 1, 2, 1, 2][(enemiesBattled) % 34] : ((enemiesBattled % 6) + 1)
-            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 || zone === 999 ? 17 : 1)).mul(isWonder ? 11.11 : 1).mul(zone === 999 ? Math.pow(difficulty, 14) : 1)
+            var enemyCap = Hyper2((isBoss ? enemyType === 3 ? 32768 : 5000 : (enemyType === 1 ? 300 : 100)) * Math.pow(difficulty, isBoss ? 1.7 : 1.3)).mul(zone === 2 ? difficultyTier.mul(585.9528).sub(1000).max(585.9528).toString() : (zone === -1 || zone === 999 ? 17 : 1)).mul(isWonder ? 11.11 : 1).mul(zone === 999 ? Hyper2(Math.pow(difficulty, 14)) : 1)
             if (zone === 999 && hasResearch("eight")) {
                 if (difficulty > 8) {
                     enemyCap = enemyCap.pow((difficulty - 5) / 3)
@@ -17184,7 +17223,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             if (hasResearch("flashiest")) {
                 enemyCap = enemyCap.div(C("coins").add(2).log2().pow(16).toString())
             }
-            enemyCap = enemyCap.max(1)
+            enemyCap = enemyCap.max(1).mul((zone === 999 && rageDifficulty > 1) ? Hyper2("1e1000000").pow(rageDifficulty * rageDifficulty) : 1)
             enemyHealth = enemyCap.min(enemyHealth)
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "wonder2", "portal", "purplecandy", "person"]
             var newX = null
@@ -17285,7 +17324,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var zoneSpeed = Hyper2(Hyper(150).div(difficultyTier.sqr()).toString())
             var damageCategory = Hyper2(sceneFrame).div(zoneSpeed).floor()
-            var zoneEffect = zone === 999 ? Hyper2(100000).pent(Hyper2(sceneFrame + 3).tetr(Hyper2(sceneFrame).pow(difficulty - 2).add(5))) : (zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1)))
+            var zoneEffect = zone === 999 ? Hyper2(100000).pent(Hyper2(sceneFrame + 3).tetr(Hyper2(sceneFrame).pow(difficulty - 2).add(5).pow(Math.pow(rageDifficulty, 100)))) : (zone === -1 ? Hyper2(1845939492).pow(sceneFrame + 3).pent(Hyper2(sceneFrame).pow(3 + sceneFrame * 0.01).pow(sceneFrame < 500 ? 1 : Math.pow(sceneFrame - 498, 0.7)).pow(sceneFrame < 800 ? 1 : Hyper2(8).pow(Math.pow(sceneFrame - 798, 11)))) : (zone === 2 ? Hyper2(328).tetr(sceneFrame * 3.1678, sceneFrame * 1e50).arrow(damageCategory)(Hyper2(sceneFrame - Math.min(damageCategory, 9)).mul(zoneSpeed).pow(37.3) * (sceneFrame >= 25 ? 0.000285 : 0) + 3) : Hyper2(1)))
 
             if (inBattle === 0) {
                 battleFrame++
@@ -17388,7 +17427,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
             var damageMultiplier = Hyper2(0.48).mul(C("attackpotions").toString()).add(1).mul((hasResearch("damage") ? 2 : 1) * (hasResearch("damage2") ? 2 : 1) * (hasResearch("sharpnessi") ? 5 : 1) * (hasResearch("sharpnessii") ? 3 : 1) * (hasResearch("sharpnessiii") ? 2 : 1)).mul(hasResearch("bunnies2") ? Hyper(true).add(C("bunnies").mul(0.1)).toString() : 1).mul(C("cringe").add(1).ln().add(1).toString()).mul(hasResearch("void6") ? C("void").add(2).sqrt().sqrt().toString() : 1)
             if (damageMultiplier.gt("1e1000000")) {
-                damageMultiplier = damageMultiplier.div("1e1000000").add(10).ln().pow(100000).mul("1e962017")
+                damageMultiplier = Hyper2(10).pow(damageMultiplier.div("1e1000000").log10().mul(0.8).sqrt().add("1000000")).min(damageMultiplier)
+            }
+            if (hasResearch("rage2")) {
+                damageMultiplier = damageMultiplier.sqr()
+            }
+            if (hasResearch("rage3")) {
+                damageMultiplier = damageMultiplier.sqr()
             }
             var boundX = dungeonX - 0.75
             var boundY = dungeonY - 0.75
@@ -17559,6 +17604,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     rawAdd("purplecandy", purpleGain)
                 }
                 if (zone === 999) {
+                    if (rageDifficulty > 1) {
+                        rawAdd("purplecandy", purpleGain.pow(rageDifficulty).min("1e1000000"))
+                    }
                     var voidGain = Hyper(difficulty).pow(67).sqrt().sqrt().mul(hasResearch("void2") ? C("void").add(2).log2() : 1).mul(hasResearch("void3") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("void4") ? C("coins").add(10).log10().sqrt() : 1).mul(hasResearch("two") ? C("void").add(2).log2() : 1).mul(hasResearch("three") ? C("void").add(2).log2().pow(3) : 1).mul(hasResearch("four") ? C("void").add(1).sqrt().sqrt().sqrt() : 1).mul(hasResearch("five") ? C("void").add(1).sqrt().sqrt() : 1).mul(hasResearch("flashiest") ? C("coins").add(2).log2().pow(6) : 1).pow((hasResearch("onesixty") ? 2 : 1) * (hasResearch("voidcap7") ? 2 : 1))
                     if (voidGain.isMore("e1e8")) {
                         voidGain = Hyper(10).pow(voidGain.log10().mul(hasResearch("voidcap3") ? 0.85 : 0.3).add("7e7"))
@@ -17638,7 +17686,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             zone = 1
             redCandyPower = Hyper2(0)
             setZone()
-            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, difficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, sceneFrame = 0, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity), dieFrame = 0, collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
+            characterX = spawnX * characterSections, characterY = spawnY * characterSections, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, difficulty = 1, rageDifficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, sceneFrame = 0, waitBeforeAttack = 0, fightFrame = 0, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity), dieFrame = 0, collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0
         }
 
         function moveCharacter(direction) {
@@ -18179,14 +18227,19 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             } else if (ID("difficulty").getAttribute("max") != 12) {
                 ID("difficulty").setAttribute("max", 12)
             }
+            if (hasResearch("rage")) {
+                ID("rdContainer").removeAttribute("style")
+            } else if (ID("rdContainer").style.visibility !== "hidden") {
+                ID("rdContainer").style.visibility = "hidden"
+            }
             if (hasResearch("harder")) {
                 ID("difficultyContainer").removeAttribute("style")
-            } else if (ID("difficultyContainer").style.display !== "none") {
+            } else if (ID("difficultyContainer").style.visibility !== "hidden") {
                 ID("difficultyContainer").style.visibility = "hidden"
             }
             if (hasResearch("tier")) {
                 ID("tierContainer").removeAttribute("style")
-            } else if (ID("tierContainer").style.display !== "none") {
+            } else if (ID("tierContainer").style.visibility !== "hidden") {
                 ID("tierContainer").style.visibility = "hidden"
             }
             updateId("tierText", format(difficultyTier))
