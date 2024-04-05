@@ -9963,6 +9963,13 @@
                             data-desc="[Costs 5.000e2,575 coins.]\n24-Karrot Gold Bars are 24× more effective!">
                             Vitamin gold <span class="carrotgold"></span>
                         </span>
+                        <span class="mini special" data-cost="coins-e1.7e7" data-show="$vitamin" data-earn="$stash"
+                            data-fade="$stash"
+                            data-desc="[Costs 1e17.000M coins.]\nCoin gain from defeating enemies is increased by itself.">
+                            Stash of coins
+                            <span class="coin"></span><span class="coin"></span><span class="coin"></span><span
+                                class="coin"></span>
+                        </span>
                         <br>
                         <span class="comical rainbow3" id="cringe" data-for="%CRINGE"></span>
                         <br>
@@ -17104,7 +17111,6 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             if (hasResearch("cringe")) {
                 add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").add(10).log10().log2().sqr() : 1).div(hasResearch("cringe4") ? 6 : 60))
             }
-            limit("gcarrots", Hyper(10000))
 
             if (hasResearch("fireball")) {
                 ID("shootFireball").removeAttribute("style")
@@ -17598,7 +17604,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     rawAdd("carrots", Hyper(hasResearch("carrot3") ? 3 : 1).mul(hasResearch("bunnies3") ? difficulty : 1).mul(hasResearch("carrot4") ? Hyper(2).pow(C("gcarrots")) : 1).mul(hasResearch("carrot5") ? C("carrots").add(1).log2().add(1).pow(hasResearch("carrot6") ? 6 : 1) : 1).floor(true).pow(hasResearch("carrot7") ? 9 : 1).pow(hasResearch("carrot8") ? 50 : 1))
                 }
 
-                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("triple") ? 3 : 1).mul(hasResearch("double") ? 2 : 1).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true).mul((zone === 999 && hasResearch("void5")) ? C("void").add(1).pow(11).min("1e1000") : 1).mul(hasResearch("tenmillion") ? C("void").add(2).log2().pow(160) : 1))
+                rawAdd("coins", new Hyper((21 + enemyType * 6.3) * difficulty * (zone === 1 ? 1 : 438939)).mul(hasResearch("triple") ? 3 : 1).mul(hasResearch("double") ? 2 : 1).mul(hasResearch("coinboost") ? Hyper(true).add(C("yellowcandy").mul(0.03)) : 1).mul(Hyper(true).add(C("goldenpotions").mul(hasResearch("golden") ? C("coins").add(10).log10().mul(0.25) : 0.25))).round().mul((isBoss ? hasResearch("lootingi") ? 750 : 15 : (hasResearch("lootingi") && hasResearch("notbossy") ? 50 : 1)) * (hasResearch("lootingii") ? 7777 : 1) * (hasResearch("lootingiii") ? 10000 : 1)).mul(hasResearch("coins2") ? Hyper(redCandy.slog().slog().slog().min("1e16").max(1)) : 1).mul(zone === 2 ? difficultyTier.mul(difficultyTier.sqrt()).toString() : 1).mul(hasResearch("powder3") ? C("spice").log2() : 1).mul(hasResearch("richer") ? C("purplecandy").pow(17) : 1).mul(isWonder ? 10 : 1).mul(hasResearch("bunnies8") ? Hyper(2).pow(C("bunnies")) : 1).floor(true).mul((zone === 999 && hasResearch("void5")) ? C("void").add(1).pow(11).min("1e1000") : 1).mul(hasResearch("tenmillion") ? C("void").add(2).log2().pow(160) : 1).mul(hasResearch("stash") ? C("coins").add(1).sqrt().sqrt().sqrt().sqrt() : 1))
 
                 if (zone === 2 && hasResearch("purple")) {
                     rawAdd("purplecandy", purpleGain)
@@ -18069,6 +18075,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
 
             var limitedProperties = properties.slice(0)
+            limitedProperties.splice(limitedProperties.indexOf("gcarrots"), 1)
             limitedProperties.splice(limitedProperties.indexOf("iq"), 1)
             limitedProperties.splice(limitedProperties.indexOf("science"), 1)
             limitedProperties.splice(limitedProperties.indexOf("wscience"), 1)
@@ -18087,6 +18094,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     newLimited.push(limitedProperty)
                 }
             }
+            limit("gcarrots", Hyper(10000))
             limit(newLimited, matterLimit)
 
             // Also update the meta item caps
