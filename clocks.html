@@ -18242,6 +18242,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             } else if (ID("tierContainer").style.visibility !== "hidden") {
                 ID("tierContainer").style.visibility = "hidden"
             }
+            if (hasResearch("void")) {
+                ID("enterVoid").removeAttribute("style")
+            } else if (ID("enterVoid").style.visibility !== "hidden") {
+                ID("enterVoid").style.visibility = "hidden"
+            }
             updateId("tierText", format(difficultyTier))
 
             var boostElem = ID("turbineBoost")
