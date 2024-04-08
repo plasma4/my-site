@@ -9943,6 +9943,21 @@
                             data-desc="[Costs 1.000e50 purple candy.]\nSquare your attack power AGAIN. (This is NOT affected by the attack softcap!)">
                             Rage strength^4
                         </span>
+                        <span class="mini pure" data-cost="purplecandy-1e500000" data-show="$voidcap8"
+                            data-earn="$rage4" data-fade="$rage4"
+                            data-desc="[Costs 1e500,000 purple candy.]\nSquare your attack power AGAIN. (This is NOT affected by the attack softcap!)">
+                            Rage strength^8
+                        </span>
+                        <span class="mini pure" data-cost="purplecandy-1e1000001" data-show="$rage4"
+                            data-earn="$strongcringe" data-fade="$strongcringe"
+                            data-desc="[Costs 1e1,000,001 purple candy.]\nCringe gain is increased based on your coins, and cringe affects health more by a LOT!">
+                            Cringe strength
+                        </span>
+                        <span class="mini pure" data-cost="cringe-1e15" data-show="$rage4" data-earn="$strongcringe2"
+                            data-fade="$strongcringe2"
+                            data-desc="[Costs 1.000q cringe.]\nCringe gain is squared, and cringe increases attack damage by a LOT. (Cringe is hardcapped at 1.000O.)">
+                            Cringe^2
+                        </span>
                         <br>
                         <span class="mini special" data-cost="coins-1.25e1250" data-show="$eighty" data-earn="$flashy"
                             data-fade="$flashy"
@@ -10082,7 +10097,7 @@
                             data-desc="[Costs 25,000 coins.] Shoot a fireball (sorry, fireFRUIT) at an enemy by clicking on the SHOOT FIREFRUIT BUTTON or by simply pressing the F key!">
                             Fiery danger++
                         </span>
-                        <span class="mini special" data-show="$fireaim" data-cost="coins-1e400" data-earn="$fireaim2"
+                        <span class="mini special" data-show="$fireaim" data-cost="coins-1e500" data-earn="$fireaim2"
                             data-fade="$fireaim2"
                             data-desc="[Costs 1.000e400 coins.] Automatically shoot firefruit in quick bursts.">
                             Extreme danger
@@ -17022,6 +17037,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             if (carrotPower.isPositive()) {
                 cap = cap.arrow(3)(Hyper2(carrotPower.add(2).toString()).pow(10000).pow(hasResearch("cringe3") ? C("cringe").pow(3).add(1).pow10Repeat(2).toString() : 1).tetr(voidPower.isMore(1) ? voidPower.toString() : 1))
             }
+            if (hasResearch("strongcringe")) {
+                cap = cap.arrow(4)(C("cringe").add(10).log10().pow(50).toString())
+            }
             return cap
         }
 
@@ -17110,7 +17128,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             updateId("purpleGain", purpleGain.format(4) + "×")
             rawAdd("spice", spiceGain.div(60))
             if (hasResearch("cringe")) {
-                add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").add(10).log10().log2().sqr() : 1).div(hasResearch("cringe4") ? 6 : 60))
+                add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").add(10).log10().log2().sqr() : 1).mul(hasResearch("strongcringe") ? C("coins").add(1).sqrt().sqrt().add(9).log10() : 1).div(hasResearch("cringe4") ? 6 : 60).pow(hasResearch("strongcringe2") ? 2 : 1))
             }
 
             if (hasResearch("fireball")) {
@@ -17441,6 +17459,12 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
             if (hasResearch("rage3")) {
                 damageMultiplier = damageMultiplier.sqr()
+            }
+            if (hasResearch("rage4")) {
+                damageMultiplier = damageMultiplier.sqr()
+            }
+            if (hasResearch("strongcringe2")) {
+                damageMultiplier = damageMultiplier.mul(Hyper(2.5).pow(C("cringe").add(1).sqrt().mul(6).sqrt()).toString())
             }
             var boundX = dungeonX - 0.75
             var boundY = dungeonY - 0.75
@@ -18076,6 +18100,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
 
             var limitedProperties = properties.slice(0)
+            limitedProperties.splice(limitedProperties.indexOf("cringe"), 1)
             limitedProperties.splice(limitedProperties.indexOf("gcarrots"), 1)
             limitedProperties.splice(limitedProperties.indexOf("iq"), 1)
             limitedProperties.splice(limitedProperties.indexOf("science"), 1)
@@ -18096,6 +18121,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
             }
             limit("gcarrots", Hyper(10000))
+            limit("cringe", Hyper("1e27"))
             limit(newLimited, matterLimit)
 
             // Also update the meta item caps
