@@ -461,7 +461,8 @@
         .study,
         #modPanel,
         #noteBox,
-        #tipInfo {
+        #tipInfo,
+        #finaleOverlay {
             display: none;
         }
 
@@ -2475,6 +2476,16 @@
             font-size: 25px;
             color: #f14662;
             font-weight: 700;
+        }
+
+        #finaleOverlay {
+            font-family: Retron2000, "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
+            position: fixed;
+            background-color: black;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .yellowbg {
@@ -7636,7 +7647,7 @@
 
                 <br>
                 <span class="mini techy" id="toggleStats">Toggle stat visibility</span>
-                <span class="mini techy" id="autoClicking" data-show="family>0" data-earn=""
+                <span class="mini techy2" id="autoClicking" data-show="family>0" data-earn=""
                     data-desc="Autoclicking clicks 20 times a second on a button automatically, unless...it's a secret.\n{(If you are pressing the Space/Enter key, or if you are pressing down on a button, it will also autoclick at the same rate.)}">
                     Toggle autoclicker
                 </span>
@@ -8958,16 +8969,26 @@
 
                 <div id="timetravel" style="display: none">
                     <span class="hyperclock"></span>
-                    <div class="white" id="light" data-for="$light"></div>
                     Time travel? In a clock game? No way!
                     <br>
+                    <div class="white" id="light" data-for="$light"></div>
                     <span class="mini pure" data-cost="light-10" data-show="$light" data-earn="$light2"
                         data-fade="$light2" data-desc="[Costs 10 light.] Light increases qubit gain!">
                         Bright help
                     </span>
-                    <span class="mini pure" data-cost="light-1e6" data-show="$light" data-earn="$light3"
-                        data-fade="$light3" data-desc="[Costs 1,000,000 light.] Light increases its own gain!">
+                    <span class="mini pure" data-cost="light-10000" data-show="$light" data-earn="$light3"
+                        data-fade="$light3" data-desc="[Costs 10,000 light.] Light increases its own gain!">
                         Self-improvement
+                    </span>
+                    <span class="mini pure" data-cost="light-1e6" data-show="$light" data-earn="$light4"
+                        data-fade="$light4"
+                        data-desc="[Costs 1,000,000 light.] Light increases its own gain once again!">
+                        Ultra-improvement
+                    </span>
+                    <span class="mini techy2" data-cost="light-1e9" data-show="$light" data-earn="$finale"
+                        data-fade="$finale"
+                        data-desc="[Costs 1.000B light, but also needs H1,000 red candy from dungeons to do anything.] Unlock THE FINALE!">
+                        The FINALE
                     </span>
                     <div class="small yellow">
                         Digital knowledge is hardcapped at F9.999e999.
@@ -9278,30 +9299,30 @@
                             data-desc="[Costs F10.000M golden shards.] Your qubit gain is increased more based on your supershards.">
                             Shardgrowth
                         </span>
-                        <span class="mini techy" data-cost="shards-F500000000" data-show="$shardgrowth"
+                        <span class="mini techy2" data-cost="shards-F500000000" data-show="$shardgrowth"
                             data-earn="$overcap" data-fade="$overcap"
                             data-desc="[Costs F500.00M golden shards.] Supershard cap is, erm, increased based on your clocks.\nAlso, crystals now have a significant effect on qubit gain.">
                             Overcap
                         </span>
-                        <span class="mini techy" data-cost="shards-F5000000000000" data-show="$shardgrowth"
+                        <span class="mini techy2" data-cost="shards-F5000000000000" data-show="$shardgrowth"
                             data-earn="$overcap2" data-fade="$overcap2"
                             data-desc="[Costs F5.000T golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN.">
                             Overcap^2
                         </span>
-                        <span class="mini techy" data-cost="shards-F5000000000000000" data-show="$shardgrowth"
+                        <span class="mini techy2" data-cost="shards-F5000000000000000" data-show="$shardgrowth"
                             data-earn="$overcap3" data-fade="$overcap3"
                             data-desc="[Costs F5.000q golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN^2.">
                             Overcap^2^2
                         </span>
-                        <span class="mini techy" data-cost="shards-F500000000000000000000" data-show="$shardgrowth"
+                        <span class="mini techy2" data-cost="shards-F500000000000000000000" data-show="$shardgrowth"
                             data-earn="$overcap4" data-fade="$overcap4"
                             data-desc="[Costs F500.00Q golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN^4.">
                             Overcap^2^2^2
                         </span>
-                        <span class="mini techy" data-cost="shards-F500000000000000000000" data-show="$shardgrowth"
-                            data-earn="$overcap4" data-fade="$overcap4"
-                            data-desc="[Costs F500.00Q golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN^4.">
-                            Overcap^2^2^2
+                        <span class="mini techy2" data-cost="shards-F10000000000000000000000000"
+                            data-show="$shardgrowth" data-earn="$overcap5" data-fade="$overcap5"
+                            data-desc="[Costs F10.000S golden shards.] Supershard cap is, erm, increased based on your clocks AGAIN^8 this time.">
+                            Overcap^2^2^2^2
                         </span>
                         <br>
                         <span class="mini pure" data-cost="shards-F1000000000000000000000000" data-show="$overcap"
@@ -9955,7 +9976,7 @@
                         </span>
                         <span class="mini pure" data-cost="cringe-1e15" data-show="$rage4" data-earn="$strongcringe2"
                             data-fade="$strongcringe2"
-                            data-desc="[Costs 1.000q cringe.]\nCringe gain is squared, and cringe increases attack damage by a LOT. (Cringe is hardcapped at 1.000O.)">
+                            data-desc="[Costs 1.000q cringe.]\nCringe gain is squared, and cringe increases attack damage by a LOT. {(Be aware that cringe is hardcapped at 1.000O.)}">
                             Cringe^2
                         </span>
                         <br>
@@ -12154,6 +12175,8 @@
     <div id="noteBox">
         <div id="note"></div><span class="cross" id="closeNote" tabindex="0"></span>
     </div>
+
+    <div id="finaleOverlay">Future content coming soon...</div>
 
     <script id="worker" type="javascript/worker">
         self.addEventListener("message", function (e) {
@@ -16342,7 +16365,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
 
                 if (hasResearch("light")) {
-                    add("light", Hyper(hasResearch("light3") ? C("light").add(2).log2() : 1).div(60))
+                    add("light", Hyper(hasResearch("light3") ? C("light").add(2).log2() : 1).pow(hasResearch("light4") ? 3 : 1).div(60))
                 }
                 var darkTowers = C("darktowers")
                 var copperTowers = C("coppertowers")
@@ -16535,7 +16558,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
 
                 // Update the amount of clocks that you have
-                var trueSupercap = (hasResearch("overcap") ? Hyper("1e1000").mul(Hyper(C("clocks").$[1]).add(10).pow(Hyper(hasResearch("overcap2") ? "10000000000" : "100000").pow(hasResearch("overcap3") ? 2 : 1).pow(hasResearch("overcap4") ? 2 : 1))) : Hyper("1e1000"))
+                var trueSupercap = (hasResearch("overcap") ? Hyper("1e1000").mul(Hyper(C("clocks").$[1]).add(10).pow(Hyper(hasResearch("overcap2") ? "10000000000" : "100000").pow(hasResearch("overcap3") ? 2 : 1).pow(hasResearch("overcap4") ? 2 : 1).pow(hasResearch("overcap5") ? 2 : 1))) : Hyper("1e1000"))
                 var supershardCap = (hasResearch("bonus8") ? C("hyperclocks").add(10).log10().sqrt().sqrt().pow(hasResearch("cap2") ? 3 : 1).mul("1e12") : Hyper("1e12")).mul(hasResearch("bonus9") ? 9 : 1).mul(hasResearch("bonus10") ? 10 : 1).mul(hasResearch("cap") ? 777777 : 1).min(trueSupercap)
                 var supershards = C("supershards").min(supershardCap)
                 var superBonus = hasResearch("bonus") ? supershards.sqrt().add(hasResearch("bonus2") ? C("qcomputers").add(2).log2().sqr() : 0) : null
@@ -17129,6 +17152,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             rawAdd("spice", spiceGain.div(60))
             if (hasResearch("cringe")) {
                 add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").add(10).log10().log2().sqr() : 1).mul(hasResearch("strongcringe") ? C("coins").add(1).sqrt().sqrt().add(9).log10() : 1).div(hasResearch("cringe4") ? 6 : 60).pow(hasResearch("strongcringe2") ? 2 : 1))
+                limit("cringe", Hyper("1e27"))
             }
 
             if (hasResearch("fireball")) {
@@ -17896,8 +17920,18 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         const NONE = 0
         const HALLOWEEN = 1
         const CHRISTMAS = 2
-        var season = -1, activeElement = document.activeElement, previousHTML = "", cps = new Hyper()
+        var finaleValue = 0, season = -1, activeElement = document.activeElement, previousHTML = "", cps = new Hyper()
         draw = function () {
+            if (finaleValue < 200 && hasResearch("finale")) {
+                if (++finaleValue < 100) {
+                    ID("finaleOverlay").style.display = "block"
+                    ID("finaleOverlay").style.opacity = finaleValue * 0.01
+                } else if (finaleValue > 150) {
+                    ID("finaleOverlay").style.opacity = 1 - (finaleValue - 150) * 0.02
+                }
+            } else {
+                ID("finaleOverlay").removeAttribute("style")
+            }
             if (document.hidden) {
                 requestAnimationFrame(draw)
                 return
@@ -18121,7 +18155,6 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 }
             }
             limit("gcarrots", Hyper(10000))
-            limit("cringe", Hyper("1e27"))
             limit(newLimited, matterLimit)
 
             // Also update the meta item caps
