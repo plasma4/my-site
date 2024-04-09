@@ -7671,7 +7671,7 @@
 
                 <div id="finale" style="display: none">
                     <span class="light"></span> &nbsp; Endgame when?
-                    (Use the keyboard/buttons to move)
+                    (Use the keyboard/buttons to move, use Shift to sprint)
                     <br>
                     <canvas id="underground2" width="320" height="320"></canvas>
                     <br>
@@ -17119,7 +17119,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1, endgameLoaded = false
 
         var endgameSheet = new Image()
-        endgameSheet.src = "data:image/png;base64,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"
+        endgameSheet.src = "data:image/png;base64,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"
         endgameSheet.onload = function () {
             endgameLoaded = true
         }
@@ -17129,20 +17129,20 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 cgg       g  g      3            g
 cg             g          2
 c       g                g             1111111
-c                   gggg          1111111
-c
-c122222             2   gg
+c    .              gggg          1111111
+c  AA
+c122222             2   gg                          B
 c133211                              ccccccccccccccccccc2222222222222
 c133211            g                  cccccccccccccccccccccccc222222222
-c122222     g
+c122222     g                                 CCCCC     CCC
 c                                               g 111111111111111
 c                       gggg  111111111111111111
-c           111111111111111111
+c           111111111111111111   AA                   AB
 c             g 222222222333333333331111111111111111111111111
 c                    111111111111111111111111111111111111111111
 c                       333
 c`.split("\n")
-        var spriteW = 999, playerX = 5, playerY = 5, endX = 0, endY = 0, effect = 0
+        var spriteW = 999, playerX = 5, playerY = 5, endX = 0, endY = 0, effect = -1, collisionKey = "cgABC"
         function updateDungeon(endgameMode) {
             if (endgameMode) {
                 var mapHeight = endgameMap.length
@@ -17152,20 +17152,20 @@ c`.split("\n")
                 var ctx = document.getElementById("underground2").getContext("2d")
                 if (endgameLoaded) {
                     if (endX === -1) {
-                        if (playerY < 0 || !"cg".includes(getTile(Math.ceil(playerX) - 1, playerY))) {
+                        if (playerY < 0 || !collisionKey.includes(getTile(Math.ceil(playerX) - 1, playerY))) {
                             playerX -= 0.0625
                         }
                     } else if (endX === 1) {
-                        if (playerY < 0 || !"cg".includes(getTile(playerX + 1, playerY))) {
+                        if (playerY < 0 || !collisionKey.includes(getTile(playerX + 1, playerY))) {
                             playerX += 0.0625
                         }
                     }
                     if (endY === -1) {
-                        if (playerY < 1 || !"cg".includes(getTile(playerX, Math.ceil(playerY) - 1))) {
+                        if (playerY < 1 || !collisionKey.includes(getTile(playerX, Math.ceil(playerY) - 1))) {
                             playerY -= 0.0625
                         }
                     } else if (endY === 1) {
-                        if (playerY < -1 || !"cg".includes(getTile(playerX, playerY + 1))) {
+                        if (playerY < -1 || !collisionKey.includes(getTile(playerX, playerY + 1))) {
                             playerY += 0.0625
                         }
                     }
@@ -17173,7 +17173,7 @@ c`.split("\n")
                     for (var h = 0; h < mapHeight; h++) {
                         var mapLine = endgameMap[h]
                         for (var w = 0; w < mapLine.length; w++) {
-                            var spriteID = "cg123e$".indexOf(mapLine[w]) + 1
+                            var spriteID = "cg123ABC.e$".indexOf(mapLine[w]) + 1
                             if (spriteID !== 0) {
                                 var clipX = spriteID % spriteW
                                 var clipY = Math.floor(spriteID / spriteW)
