@@ -3308,7 +3308,7 @@
                         }
 
                         alreadyClicked = true
-                        var multiplier = hasMultiBuild ? C("cmanagers", "This happened while trying to check for build manager multipliers.").add(1) : (hasMegaMulti ? C("megamanagers", "This happened while trying to check for MEGA-manager multipliers.").add(1) : (hasMulti ? C("managers", "This happened while trying to check for manager multipliers.").add(1) : 1))
+                        var multiplier = Hyper(true)
 
                         var types = Array(len)
                         var amounts = Array(len)
@@ -3345,7 +3345,6 @@
                                             amount = multipliedAmount
                                         }
                                     } else {
-                                        // The multiplier is used if the "data-multibuy" attribute exists: it multiplies costs and earnings by the amount of managers plus one. However, it is ignored by "%" or "all" costs.
                                         amount = Hyper(str)
                                         if (multiplier !== null) {
                                             amount = amount.mul(multiplier)
@@ -3372,14 +3371,6 @@
 
                         for (t = 0; t < onclicks.length; t++) {
                             var action = onclicks[t]
-                            if (action === "wattseconds=max") {
-                                var issue = "This happened while finding the maximum amount allowed for a value."
-                                var limit = C("batteries", issue).mul(600000).add(C("megabatteries", issue).mul(600000000)).add(C("bluebatteries", issue).mul(150000000000))
-                                stuffTotals.wattseconds = stuffTotals.wattseconds.add(limit).sub(stuff.wattseconds)
-                                stuff.wattseconds = limit
-                                continue
-                            }
-
                             var plus = action.indexOf("+")
                             if (plus === -1) {
                                 var sign = action.indexOf("*")
@@ -3397,19 +3388,6 @@
 
                             var part1 = action.slice(0, plus)
                             var part2 = action.slice(plus + 1)
-                            if (part1.charCodeAt(0) === 36) {
-                                var num = Hyper(part2)
-                                var oldManagersUsed = cManagersUsed
-                                add(part1, num)
-                                cManagersUsed = cManagersUsed.add(num)
-                                var cManagers = C("cmanagers", "This happened while checking for the maximum amount of construction managers that can work on a rocket part.")
-                                var diff = cManagersUsed.sub(cManagers)
-                                if (diff !== false) {
-                                    cManagersUsed = Hyper(cManagers)
-                                    remove(part1, diff)
-                                }
-                                continue
-                            }
 
                             if (part2.charCodeAt(0) === 42) {
                                 if (multipliedAmount === null) {
