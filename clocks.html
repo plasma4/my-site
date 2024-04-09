@@ -2488,6 +2488,15 @@
             height: 100%;
         }
 
+        canvas {
+            background-color: #2228;
+            image-rendering: pixelated;
+            border-radius: 5px;
+            transform-origin: top left;
+            width: 640px;
+            height: 640px;
+        }
+
         .yellowbg {
             background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAAAXNSR0IArs4c6QAAAP9JREFUSEu9lcENwjAMReMuUdEhuHQO1mAO1mAO1oALQwT1jkCAiFFiB7VR0yRuoRfLcqv/Yju/gEajsg9qF5S5UPQ5cm64Hub0tlJVQxFW4zlwveI65+AAhOL6fHJizboVQwC+j9SBwpN7cd8AKQQBCMWbmuR1R1ECAfg6DHcgNfOO2h596rJxEEDuwqXEPVUBBOBzzx1IbHuueCEEAcxte2weGZ0AfOz4FkTueenJQ5gEBAHETGaueMY4AO/b8R1YSjwBQQDhDiwtPgEBeNsMd+BX4hEIAuAdsPbq3W3abeRV65p9xwS8tq4D3x8L26tcYvrL0LYdwL/EPVof4gM4kdRNFSdhsgAAAABJRU5ErkJggg==");
         }
@@ -7585,6 +7594,7 @@
         </div>
 
         <nav id="navigation" aria-label="The navigation to switch tabs">
+            <span data-tab="finale" title="ENDGAME" data-show="$end"><span class="light"></span></span>
             <span data-tab="main" title="Build menu" data-show="miners>0"><span class="hammer"></span></span>
             <span data-tab="clock" title="Clock menu"><span class="clock"></span></span>
             <span data-tab="wages" title="Wages menu" data-show="$wages"><span class="money"></span></span>
@@ -7657,6 +7667,20 @@
                         data-desc="The amount of clocks you are making every. Single. Second!"></span>.
                     <br>
                     <div class="lime small" id="stats"></div>
+                </div>
+
+                <div id="finale" style="display: none">
+                    <span class="light"></span> &nbsp; Endgame when?
+                    (Use the keyboard/buttons to move)
+                    <br>
+                    <canvas id="underground2" width="320" height="320"></canvas>
+                    <br>
+                    <span class="mini special nosel" id="moveUp">UP</span>
+                    <span class="mini special nosel" id="moveDown">DOWN</span>
+                    <span class="mini special nosel" id="moveLeft">LEFT</span>
+                    <span class="mini special nosel" id="moveRight">RIGHT</span>
+                    <span class="mini special nosel" id="stopMoving">STOP MOVING</span>
+                    <span class="mini warn2" id="die2">Respawn</span>
                 </div>
 
                 <div id="main">
@@ -8987,7 +9011,7 @@
                     </span>
                     <span class="mini techy2" data-cost="light-1e9" data-show="$light" data-earn="$finale"
                         data-fade="$finale"
-                        data-desc="[Costs 1.000B light, but also needs H1,000 red candy from dungeons to do anything.] Unlock THE FINALE!">
+                        data-desc="[Costs 1.000B light, but also requires you to eat at least H1,000 red candy from dungeons to do anything.]\n{Confused? You'll see a new button pop up near the top.}Unlock THE FINALE!">
                         The FINALE
                     </span>
                     <div class="small yellow">
@@ -9582,6 +9606,8 @@
                     <div id="powderContainer" class="smallish orange" style="display: none">
                         <span class="smallish orange" id="spice" data-for="$bigger spice"></span>
                         <span class="smallish pink" id="magicpowder" data-for="$bigger magicpowder"></span>
+                        <br>
+                        Note that when going to another menu, dungeons do not update!
                         <br>
                         You are gaining <span class="smallish yellow" id="spiceGain"></span> spice per second
                         (based on your purple candy amount). Your spice is increasing purple candy gain by
@@ -10354,7 +10380,7 @@
                     <span class="mini special nosel" id="moveLeft">LEFT</span>
                     <span class="mini special nosel" id="moveRight">RIGHT</span>
                     <br><br>
-                    <span class="mini warn2" id="die">DIE (resets health and position)</span>
+                    <span class="mini warn2" id="die">Respawn</span>
                 </div>
 
                 <div id="materials" style="display: none">
@@ -12176,7 +12202,7 @@
         <div id="note"></div><span class="cross" id="closeNote" tabindex="0"></span>
     </div>
 
-    <div id="finaleOverlay">Future content coming soon...</div>
+    <div id="finaleOverlay">You've unlocked the FINALE...and a new zone!</div>
 
     <script id="worker" type="javascript/worker">
         self.addEventListener("message", function (e) {
@@ -12620,10 +12646,22 @@
 
         var easyButton = null, easyTime = Date.now() + 250, autoTime = Date.now() + 50, spaceDown = false, enterDown = false
         document.addEventListener("keyup", function (e) {
-            if (e.keyCode === 32) {
+            var code = e.keyCode
+            if (code === 32) {
                 spaceDown = false
-            } else if (e.keyCode === 13) {
+            } else if (code === 13) {
                 enterDown = false
+            }
+            if (code === 65) {
+                stopCharacter(LEFT)
+            } else if (code === 87 || code === 32) {
+                stopCharacter(UP)
+            } else if (code === 68) {
+                stopCharacter(RIGHT)
+            } else if (code === 83) {
+                stopCharacter(DOWN)
+            } else if (code >= 37 && code <= 40) {
+                stopCharacter(code - 37)
             }
             if (!spaceDown && !enterDown) {
                 easyButton = null
@@ -12641,7 +12679,7 @@
                         e.stopPropagation()
                     }
                 } else if (!e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                    if (currentTab === "dungeon") {
+                    if (currentTab === "dungeon" || currentTab === "finale") {
                         var code = e.keyCode
                         if (code === 65) {
                             moveCharacter(LEFT)
@@ -14644,6 +14682,16 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             if (version === "0.2.3") {
                                 crystalSpending = Number(proceed("SCAP"))
                                 crystalCap = Number(proceed("CCAP"))
+                                playerX = proceed("INFO_DATA")
+                                playerY = proceed("INFO_DATA_END")
+                                if (playerX === false) {
+                                    playerX = 5
+                                    playerY = 5
+                                } else {
+                                    playerX = Number(playerX)
+                                    playerY = Number(playerY)
+                                }
+                                finaleValue = Number(proceed("finaleSillyTrue"))
                             }
                             showStats = proceed("STRVAL") !== "baNaN"
                             autoClick = proceed("\n") === "OX"
@@ -15158,7 +15206,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             save = function () {
 
                 try {
-                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + crystalSpending + "SCAP" + crystalCap + "CCAP" + (showStats ? "BANAN" : "baNaN") + "STRVAL" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + collectX.join(" ") + "askO\n" + collectY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + rageDifficulty + "rageVal" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru", "TT", "tru", "TT", "trueee"][frame % 7] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + (showSubtabs ? "[" : "[StrRR4rRfalse]") + "ERESX" + seasonsEnabled + "fX" + mainFont + "   customData" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
+                    for (var b = version + "_" + (currentTab === "cheats" ? "changelog" : currentTab) + "Wb" + wageMultiplier + "Qb" + (autosellOn ? "t" : "fa") + "AX" + crystalSpending + "SCAP" + crystalCap + "CCAP" + playerX + "INFO_DATA" + playerY + "INFO_DATA_END" + finaleValue + "finaleSillyTrue" + finaleValue + "finaleSillyTrue" + (showStats ? "BANAN" : "baNaN") + "STRVAL" + (autoClick ? "OX" : "ISSUE") + "\n" + collectedPortals.join(" ") + "\n" + collectedX.join(" ") + "\n" + collectedY.join(" ") + "\n" + collectX.join(" ") + "askO\n" + collectY.join(" ") + "\n" + characterX + "A" + Math.max(dieFrame, 0) + "A" + characterY + "C" + fallSpeed + "C" + (inBattle + 1) + "FIGHT_VAL" + enemiesDefeated + "ENM_X" + (enemiesBattled + 1) + "ENM_VYZX" + battleFrame + "ENM_VF" + (difficulty * 4362) + "DDD" + rageDifficulty + "rageVal" + difficultyTier + "DTD" + isBoss + "YESTYPE" + isWonder + "YESTYPE" + mixingType + "RRR" + mixingTime + "RR" + (zone === -1 ? 492869 : zone) + "ZZO" + health + "B" + startingX + "XXX" + startingY + "YYZ" + redCandyPower + "RRR" + redCandy + "RRR" + "\n" + sellPercent + "\n\nn" + partyTime + "\n\n" + partySpending + "\n\n" + (noAudio ? ["trueee", "tru", "tru", "TT", "tru", "TT", "trueee"][frame % 7] : "fallle") + "FX" + (stripedButtons ? "V" : "[R]") + "DDDX" + (sleekMode ? "[" : "[v]") + "EX" + (showSubtabs ? "[" : "[StrRR4rRfalse]") + "ERESX" + seasonsEnabled + "fX" + mainFont + "   customData" + usingTheme + "Xz" + mainColor.replace("#", "!") + "Wc" + backColor.replace("#", "!") + "Wd" + startingTime.toString(35) + "@" + crystalTotal.toString(20) + "@" + crystalTime.toString(30) + "z" + (overclocked ? "x" : "Z") + (factoriesOverclocked ? "y" : "T") + (turbinesEnabled ? "V" : "y") + "U" + (computersEnabled ? "K" : "y") + (factoriesEnabled ? "R" : "y") + (armsEnabled ? "Q" : "y") + (aluminumArmsEnabled ? "Q" : "y") + (coalMachinesEnabled ? "Q" : "y") + "_" + wattageOrder.join("*") + "$" + formatSpells() + [wattUsage, researches.join("="), ""].join("&") + offlineFrames + "&" + time + "$" + stringifyCompact(stuff) + "|" + stringifyCompact(stuffTotals, stuff), c = "", a = 0; 12 > a; a++) c +=
                         "01234567890123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(46 * E.r())];
                     p(c + frame.toString(7));
                     var e = frame.toString(25),
@@ -15566,6 +15614,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         function reset(force) {
             // Resets everything if the parameter is set to true
             if (force) {
+                finaleValue = 0
                 time = Date.now()
                 var crystalImage = ID("crystal")
                 crystalImage.removeAttribute("class")
@@ -17067,8 +17116,81 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         }
 
         var battleDungeon = "", worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
-        var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1
-        function updateDungeon() {
+        var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1, endgameLoaded = false
+
+        var endgameSheet = new Image()
+        endgameSheet.src = "data:image/png;base64,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"
+        endgameSheet.onload = function () {
+            endgameLoaded = true
+        }
+
+
+        var endgameMap = `cccccccccccccccccccccccccc
+cgg       g  g      3            g
+cg             g          2
+c       g                g             1111111
+c                   gggg          1111111
+c
+c122222             2   gg
+c133211                              ccccccccccccccccccc2222222222222
+c133211            g                  cccccccccccccccccccccccc222222222
+c122222     g
+c                                               g 111111111111111
+c                       gggg  111111111111111111
+c           111111111111111111
+c             g 222222222333333333331111111111111111111111111
+c                    111111111111111111111111111111111111111111
+c                       333
+c`.split("\n")
+        var spriteW = 999, playerX = 5, playerY = 5, endX = 0, endY = 0, effect = 0
+        function updateDungeon(endgameMode) {
+            if (endgameMode) {
+                var mapHeight = endgameMap.length
+                function getTile(x, y) {
+                    return y < 0 || y >= mapHeight ? undefined : endgameMap[Math.floor(y)][Math.floor(x)]
+                }
+                var ctx = document.getElementById("underground2").getContext("2d")
+                if (endgameLoaded) {
+                    if (endX === -1) {
+                        if (playerY < 0 || !"cg".includes(getTile(Math.ceil(playerX) - 1, playerY))) {
+                            playerX -= 0.0625
+                        }
+                    } else if (endX === 1) {
+                        if (playerY < 0 || !"cg".includes(getTile(playerX + 1, playerY))) {
+                            playerX += 0.0625
+                        }
+                    }
+                    if (endY === -1) {
+                        if (playerY < 1 || !"cg".includes(getTile(playerX, Math.ceil(playerY) - 1))) {
+                            playerY -= 0.0625
+                        }
+                    } else if (endY === 1) {
+                        if (playerY < -1 || !"cg".includes(getTile(playerX, playerY + 1))) {
+                            playerY += 0.0625
+                        }
+                    }
+                    ctx.clearRect(0, 0, 320, 320)
+                    for (var h = 0; h < mapHeight; h++) {
+                        var mapLine = endgameMap[h]
+                        for (var w = 0; w < mapLine.length; w++) {
+                            var spriteID = "cg123e$".indexOf(mapLine[w]) + 1
+                            if (spriteID !== 0) {
+                                var clipX = spriteID % spriteW
+                                var clipY = Math.floor(spriteID / spriteW)
+                                var mod = (frame + 2 * w + h) % 80
+                                if (effect !== 0 || mod < 50) {
+                                    ctx.drawImage(endgameSheet, clipX * 16, clipY * 16, 16, 16, (w - playerX + 9.5) * 16, (h - playerY + 9.5) * 16, 16, 16)
+                                } else if (mod < 60) {
+                                    ctx.fillRect((w - playerX + 9.5) * 16, (h - playerY + 9.5) * 16, 16, 16)
+                                }
+                            }
+                        }
+                    }
+                }
+                ctx.drawImage(endgameSheet, 0, 0, 16, 16, 152, 152, 16, 16)
+                return
+            }
+
             battleDungeon = battleDungeons[[2, 3, 4, 4, 6, 1, 2, 6, 6, 5, 5, 5, 4, 2, 1, 3, 5, 1, 0, 2, 0, 6, 6, 0, 5, 6, 6, 0, 4, 2, 4, 3, 2, 3, 2, 5, 1, 4, 4, 6, 1, 6, 6, 6, 6, 1, 3, 3, 1, 2, 0, 3, 1, 5, 5, 5, 4, 5, 2, 3, 0, 2, 0, 6, 5, 0, 1, 6, 5, 5, 5, 3, 1, 4, 0, 4, 0, 4, 4, 5, 0, 3, 5, 4, 1, 5, 5, 0, 0, 5, 5, 4, 6, 1, 5, 3, 3, 2, 2, 5][(enemiesBattled + 17) % 100]]
             if (workerUnloaded) {
                 workerUnloaded = false
@@ -17745,6 +17867,13 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         }
 
         function moveCharacter(direction) {
+            if (currentTab === "finale") {
+                if (direction === 0 || direction === 2) {
+                    endX = direction === 0 ? -1 : 1
+                } else if (direction === 1 || direction === 3) {
+                    endY = direction === 1 ? -1 : 1
+                }
+            }
             if (inBattle <= 0 && dieFrame < 0 && !characterActed) {
                 characterActed = true
                 var cx = Math.floor(characterX / characterSections)
@@ -17784,6 +17913,14 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 } else if (direction === 3) {
                     // No down action
                 }
+            }
+        }
+
+        function stopCharacter(direction) {
+            if (direction === 0 || direction === 2) {
+                endX = 0
+            } else if (direction === 1 || direction === 3) {
+                endY = 0
             }
         }
 
@@ -17897,11 +18034,19 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         attachEvent("moveRight", function () {
             moveCharacter(RIGHT)
         })
+        attachEvent("stopMoving", function () {
+            endX = 0
+            endY = 0
+        })
 
         ID("die").addEventListener("click", function () {
-            if (dieFrame < 0 && doubleCheck("Are you sure you want to DIE? You can't undo this!")) {
+            if (dieFrame < 0 && doubleCheck("Are you sure you want to reset your position and health? You won't gain any reward!")) {
                 resetCharacter()
             }
+        })
+        ID("die2").addEventListener("click", function () {
+            playerX = 5
+            playerY = 5
         })
 
         var noItemWarning = true, alreadyClicked = true, characterActed = false
@@ -17922,15 +18067,18 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         const CHRISTMAS = 2
         var finaleValue = 0, season = -1, activeElement = document.activeElement, previousHTML = "", cps = new Hyper()
         draw = function () {
-            if (finaleValue < 200 && hasResearch("finale")) {
+            if (finaleValue < 200 && hasResearch("finale") && redCandyPower.gt("10^^^^1000")) {
+                ID("finaleOverlay").style.display = "block"
                 if (++finaleValue < 100) {
-                    ID("finaleOverlay").style.display = "block"
                     ID("finaleOverlay").style.opacity = finaleValue * 0.01
                 } else if (finaleValue > 150) {
                     ID("finaleOverlay").style.opacity = 1 - (finaleValue - 150) * 0.02
                 }
             } else {
                 ID("finaleOverlay").removeAttribute("style")
+            }
+            if (finaleValue > 150 && !researches.includes("end")) {
+                researches.push("end")
             }
             if (document.hidden) {
                 requestAnimationFrame(draw)
@@ -18425,8 +18573,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             }
 
             // Update dungeons (and also not dragons, oops)
-            if (currentTab !== "warp" && hasResearch("dungeon")) {
-                updateDungeon()
+            if ((currentTab === "dungeon" || currentTab === "finale") && hasResearch("dungeon")) {
+                updateDungeon(currentTab === "finale")
             }
 
             // Update the silly news ticker
