@@ -3196,16 +3196,18 @@
     <p>Molecules boost hydrogen gain and stars produce 100 hydrogen/sec.</p>
     <button class="gray" data-cost="stars-all|starmakers-all|molecules-all|atoms-all" data-earn="clouds+*1" data-stat="clouds">Go SUPERNOVA and get gas clouds</button>
     <button class="green" data-cost="clouds-25" data-earn="helium+1" data-stat="helium">Condense 25 gas clouds into helium</button>
-    <button class="diamond" data-cost="stars-250000" data-earn="nstars+1" data-stat="nstars">Fuse 250,000 stars into a neutron star</button>
+    <button class="orange" data-cost="stars-250000" data-earn="nstars+1" data-stat="nstars">Fuse 250,000 stars into a neutron star</button>
     <br>
     <button class="blue" data-cost="clouds-50000|stars-100000" data-earn="reactors+1" data-stat="reactors">Make a neutron condenser from 50,000 gas clouds and 100,000 stars</button>
     <button class="green" data-cost="exotic-25000" data-earn="magnets+1" data-stat="magnets">Make a strange magnet with 25,000 strange matter</button>
     <p>You need at least 50 stars to go SUPERNOVA. It will convert all stars to gas clouds and reset previous progress.</p>
-    <p>Helium increases star production by <span style="color: #fdd" id="heliumBoost"></span>, and neutron star produce helium.</p>
-    <p>Strange matter boosts molecule and neutron star effect by <span style="color: #79b" id="strangeBoost"></span>.</p>
+    <p>Helium increases star production by <span style="color: #fdd" id="heliumBoost"></span>, and neutron stars produce helium.</p>
+    <p>Strange matter boosts molecule and neutron star effect by <span style="color: #79b" id="strangeBoost"></span>. You make strange matter from neutron condensers and strange stars.</p>
     <p>Strange magnets attract more strange matter and increase their production by <span style="color: #2b5" id="magnetBoost"></span>.</p>
     <button class="green" data-cost="exotic-1e7" data-earn="planets+1" data-stat="planets">Make a strange planet with 10M strange matter</button>
+    <button class="diamond" data-cost="planets-5" data-earn="sstars+1" data-stat="sstars">Make a strange star with 5 strange planets</button>
     <p>Fuse an entire planet of strange matter together, which in turn increases automated hydrogen and helium gain by <span style="color: #aaa" id="planetBoost"></span>.</p>
+    <p>You can also take 5 strange planets and smash them together to make a strange star, which produces massive amounts of strange matter.</p>
 
     <script id="main">
         ID("main").remove()
@@ -3377,7 +3379,7 @@
                                     add(part1, multipliedAmount.mul(part2.slice(1)))
                                 }
                             } else {
-                                add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost).add(1)) : multiplier))
+                                add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost)) : multiplier))
                             }
 
                         }
@@ -3505,23 +3507,27 @@
             }
         }
 
+        function calculateBoost(number) {
+            return number.isMoreOrEqual(10) ? (number.format(2) + "×") : ("+" + number.mul(100).sub(100).format(2) + "%")
+        }
+
         var strangeBoost
         function updateGame() {
-            // Do stuff
-            var heliumBoost = C("helium").sqrt().mul(0.3).mul(C("helium").add(10).log10())
+            // Increase numbers
+            var heliumBoost = C("helium").sqrt().mul(0.3).mul(C("helium").add(10).log10()).add(1)
             strangeBoost = C("exotic").add(1).log2().mul(49).add(1)
             var magnetBoost = C("magnets").add(1).ln().mul(19).add(1)
             var planetBoost = C("planets").mul(17).add(10).log10()
             add("atoms", C("stars").div(0.6).mul(planetBoost))
             add("stars", C("starmakers").div(60).mul(heliumBoost.add(1)))
             add("helium", C("nstars").div(60).mul(strangeBoost))
-            add("exotic", C("reactors").div(120).mul(magnetBoost))
+            add("exotic", C("reactors").div(120).add(C("sstars").mul(700)).mul(magnetBoost))
 
             // Update text
-            update(ID("heliumBoost"), heliumBoost.isMoreOrEqual(10) ? (heliumBoost.add(1).format(2) + "×") : ("+" + heliumBoost.mul(100).format(2) + "%"))
-            update(ID("strangeBoost"), strangeBoost.format(2) + "×")
-            update(ID("magnetBoost"), magnetBoost.format(2) + "×")
-            update(ID("planetBoost"), planetBoost.isMoreOrEqual(10) ? (planetBoost.add(1).format(2) + "×") : ("+" + planetBoost.mul(100).sub(100).format(2) + "%"))
+            update(ID("heliumBoost"), calculateBoost(heliumBoost))
+            update(ID("strangeBoost"), calculateBoost(strangeBoost))
+            update(ID("magnetBoost"), calculateBoost(magnetBoost))
+            update(ID("planetBoost"), calculateBoost(planetBoost))
         }
 
         var frame = 0, easyButton = null, easyTime = -1
