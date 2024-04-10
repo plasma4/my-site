@@ -3379,7 +3379,7 @@
                                     add(part1, multipliedAmount.mul(part2.slice(1)))
                                 }
                             } else {
-                                add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost).add(1)) : multiplier))
+                                add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost.add(1)).add(1)) : multiplier))
                             }
 
                         }
