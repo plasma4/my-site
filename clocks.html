@@ -17142,7 +17142,7 @@ c             g 222222222333333333331111111111111111111111111
 c                    111111111111111111111111111111111111111111
 c                       333
 c`.split("\n")
-        var spriteW = 999, playerX = 5, playerY = 5, endX = 0, endY = 0, effect = -1, collisionKey = "cgABC"
+        var spriteW = 999, playerX = 5, playerY = 5, endX = 0, endY = 0, effect = -1, endgameCollide = "cgABC"
         function updateDungeon(endgameMode) {
             if (endgameMode) {
                 var mapHeight = endgameMap.length
@@ -17152,20 +17152,20 @@ c`.split("\n")
                 var ctx = document.getElementById("underground2").getContext("2d")
                 if (endgameLoaded) {
                     if (endX === -1) {
-                        if (playerY < 0 || !collisionKey.includes(getTile(Math.ceil(playerX) - 1, playerY))) {
+                        if (playerY < 0 || !endgameCollide.includes(getTile(Math.ceil(playerX) - 1, playerY))) {
                             playerX -= 0.0625
                         }
                     } else if (endX === 1) {
-                        if (playerY < 0 || !collisionKey.includes(getTile(playerX + 1, playerY))) {
+                        if (playerY < 0 || !endgameCollide.includes(getTile(playerX + 1, playerY))) {
                             playerX += 0.0625
                         }
                     }
                     if (endY === -1) {
-                        if (playerY < 1 || !collisionKey.includes(getTile(playerX, Math.ceil(playerY) - 1))) {
+                        if (playerY < 1 || !endgameCollide.includes(getTile(playerX, Math.ceil(playerY) - 1))) {
                             playerY -= 0.0625
                         }
                     } else if (endY === 1) {
-                        if (playerY < -1 || !collisionKey.includes(getTile(playerX, playerY + 1))) {
+                        if (playerY < -1 || !endgameCollide.includes(getTile(playerX, playerY + 1))) {
                             playerY += 0.0625
                         }
                     }
