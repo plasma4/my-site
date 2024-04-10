@@ -3188,7 +3188,7 @@
     <div style="color: #bbb" data-s="gas cloud" id="clouds"></div>
     <div style="color: #ddd" data-s="helium" data-p="helium" id="helium"></div>
     <div style="color: #3d4" data-s="strange matter" data-p="strange matter" id="exotic"></div>
-    <button class="red" data-earn="atoms+1">Get a hydrogen atom</button>
+    <button class="red" data-earn="atoms+1">Get hydrogen atoms</button>
     <button class="orange" data-cost="atoms-50" data-earn="molecules+1" data-stat="molecules">Get a molecule for 50 hydrogen</button>
     <br>
     <button class="yellow" data-cost="atoms-50000" data-earn="stars+1" data-stat="stars">Form a star for 50,000 hydrogen</button>
@@ -3379,7 +3379,7 @@
                                     add(part1, multipliedAmount.mul(part2.slice(1)))
                                 }
                             } else {
-                                add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost)) : multiplier))
+                                add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost).add(1)) : multiplier))
                             }
 
                         }
