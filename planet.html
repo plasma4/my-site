@@ -3006,14 +3006,6 @@
             color: black;
         }
 
-        button[data-show],
-        button[data-hide],
-        .mini[data-show],
-        .mini[data-hide] {
-            display: none;
-            opacity: 0;
-        }
-
         .mini {
             padding: 4px 8px 4px 8px;
             min-width: 44px;
@@ -3180,7 +3172,7 @@
     </style>
 </head>
 
-<body>
+<body style="display: none">
     <button class="bold red" id="reset">RESET</button>
     <p>Note that if you press and hold on a button, it will be automatically clicked on 20 times/second.</p>
     <p>This will also happen if you use the Space/Enter keys!</p>
@@ -3189,32 +3181,36 @@
     <div style="color: #ddd" data-s="helium" data-p="helium" id="helium"></div>
     <div style="color: #3d4" data-s="strange matter" data-p="strange matter" id="exotic"></div>
     <button class="red" data-earn="atoms+1">Get hydrogen atoms</button>
-    <button class="orange" data-cost="atoms-50" data-earn="molecules+1" data-stat="molecules">Get a molecule for 50 hydrogen</button>
+    <button class="orange" data-cost="atoms-50" data-earn="molecules+1" data-stat="molecules" data-show="atoms>10">Get a molecule for 50 hydrogen</button>
     <br>
     <button class="yellow" data-cost="atoms-50000" data-earn="stars+1" data-stat="stars">Form a star for 50,000 hydrogen</button>
     <button class="yellow" data-cost="stars-10" data-earn="starmakers+1" data-stat="starmakers">Get a star synthesizer for 10 stars</button>
-    <p>Molecules boost hydrogen gain and stars produce 100 hydrogen/sec.</p>
+    <p>Molecules boost manual hydrogen gain and stars produce 100 hydrogen/sec.</p>
     <button class="gray" data-cost="stars-all|starmakers-all|molecules-all|atoms-all" data-earn="clouds+*1" data-stat="clouds">Go SUPERNOVA and get gas clouds</button>
     <button class="green" data-cost="clouds-25" data-earn="helium+1" data-stat="helium">Condense 25 gas clouds into helium</button>
-    <button class="orange" data-cost="stars-250000" data-earn="nstars+1" data-stat="nstars">Fuse 250,000 stars into a neutron star</button>
+    <button class="orange" data-cost="stars-250000" data-earn="nstars+1" data-stat="nstars" data-show="clouds>0">Fuse 250,000 stars into a neutron star</button>
     <br>
-    <button class="blue" data-cost="clouds-50000|stars-100000" data-earn="reactors+1" data-stat="reactors">Make a neutron condenser from 50,000 gas clouds and 100,000 stars</button>
-    <button class="green" data-cost="exotic-25000" data-earn="magnets+1" data-stat="magnets">Make a strange magnet with 25,000 strange matter</button>
+    <button class="blue" data-cost="clouds-50000|stars-100000" data-earn="reactors+1" data-stat="reactors" data-show="clouds>0">Make a neutron condenser from 50,000 gas clouds and 100,000 stars</button>
+    <button class="green" data-cost="exotic-25000" data-earn="magnets+1" data-stat="magnets" data-show="clouds>0">Make a strange magnet with 25,000 strange matter</button>
     <p>You need at least 50 stars to go SUPERNOVA. It will convert all stars to gas clouds and reset previous progress.</p>
-    <p>Helium increases star production by <span style="color: #fdd" id="heliumBoost"></span>, and neutron stars produce helium.</p>
-    <p>Strange matter boosts molecule and neutron star effect by <span style="color: #79b" id="strangeBoost"></span>. You make strange matter from neutron condensers and strange stars.</p>
-    <p>Strange magnets attract more strange matter and increase their production by <span style="color: #2b5" id="magnetBoost"></span>.</p>
-    <button class="green" data-cost="exotic-1e7" data-earn="planets+1" data-stat="planets">Make a strange planet with 10M strange matter</button>
-    <button class="diamond" data-cost="planets-5" data-earn="sstars+1" data-stat="sstars">Make a strange star with 5 strange planets</button>
-    <p>Fuse an entire planet of strange matter together, which in turn increases automated hydrogen and helium gain by <span style="color: #aaa" id="planetBoost"></span>.</p>
-    <p>You can also take 5 strange planets and smash them together to make a strange star, which produces massive amounts of strange matter.</p>
+    <div class="hide" data-show="helium>0">
+        <p>Helium increases star gain by <span style="color: #fdd" id="heliumBoost"></span>, and neutron stars produce helium.</p>
+        <p>Strange matter boosts molecule and neutron star effect by <span style="color: #79b" id="strangeBoost"></span>. You make strange matter from neutron condensers and strange stars.</p>
+        <p>Strange magnets attract more strange matter and increase their production by <span style="color: #2b5" id="magnetBoost"></span>.</p>
+    </div>
+    <div class="hide" data-show="magnets>0">
+        <button class="green" data-cost="exotic-1e7" data-earn="planets+1" data-stat="planets">Make a strange planet with 10M strange matter</button>
+        <button class="diamond" data-cost="planets-5" data-earn="sstars+1" data-stat="sstars">Make a strange star with 5 strange planets</button>
+        <p>Fuse an entire planet of strange matter together, which in turn increases automated hydrogen and helium gain by <span style="color: #aaa" id="planetBoost"></span>.</p>
+        <p>You can also take 5 strange planets and smash them together to make a strange star, which produces massive amounts of strange matter, as well as 1 star condenser every second.</p>
+    </div>
 
     <script id="main">
         ID("main").remove()
         ID("bigScript").remove()
         var baseProperties = ["exotic"]
 
-        var buttons = null, properties = baseProperties, stuff = [], stuffTotals = [], alreadyClicked = true
+        var buttons = null, buttonsAndUnlocks = [], properties = baseProperties, stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
             var elements = document.getElementsByTagName("*")
             buttons = []
@@ -3438,6 +3434,8 @@
                     }
                 }
             }
+
+            buttonsAndUnlocks = buttons.concat(Array.from(document.getElementsByClassName("hide")))
         }
 
         function add(item, amount) {
@@ -3511,14 +3509,103 @@
             return number.isMoreOrEqual(10) ? (number.format(2) + "×") : ("+" + number.mul(100).sub(100).format(2) + "%")
         }
 
+        function meetsRequirements(conditions) {
+            var splitItems = conditions.split("/")
+            var conditionsMet = true
+            for (var i = 0; i < splitItems.length; i++) {
+                var requirements = splitItems[i]
+                var text = requirements.trim()
+                if (text.length === 0) {
+                    continue
+                } else if (text === "*") {
+                    continue
+                }
+
+                var items = requirements.split("|")
+                // Test if the requirements were all met
+                for (var t = 0; t < items.length; t++) {
+                    var condition = items[t]
+                    if (condition.charCodeAt(0) === 36) {
+                        // Check if the research doesn't exist
+                        if (!hasResearch(condition.slice(1))) {
+                            conditionsMet = false
+                            break
+                        }
+                    } else {
+                        var notTotal = false
+                        if (condition.charCodeAt(0) === 33) {
+                            notTotal = true
+                            condition = condition.slice(1)
+                        }
+                        var index = condition.indexOf(">")
+                        if (index === -1) {
+                            index = condition.indexOf("<")
+                            if (index === -1) {
+                                console.warn("Conditions without a valid comparison sign are ignored.")
+                            } else {
+                                var name = condition.slice(0, index)
+                                var itemAmount = (notTotal ? C(name) : T(name)).floor()
+                                // Test for an equals sign right after it (which is "<=")
+                                if (condition.charCodeAt(index + 1) === 61) {
+                                    if (itemAmount.isMore(condition.slice(index + 2))) {
+                                        conditionsMet = false
+                                        break
+                                    }
+                                } else if (itemAmount.isMoreOrEqual(condition.slice(index + 1))) {
+                                    conditionsMet = false
+                                    break
+                                }
+                            }
+                            continue
+                        }
+                        var name = condition.slice(0, index)
+                        var itemAmount = (notTotal ? C(name) : T(name)).floor()
+                        // Test for an equals sign right after it (which is ">=")
+                        if (condition.charCodeAt(index + 1) === 61) {
+                            if (itemAmount.isLess(condition.slice(index + 2))) {
+                                conditionsMet = false
+                                break
+                            }
+                        } else if (itemAmount.isLessOrEqual(condition.slice(index + 1))) {
+                            conditionsMet = false
+                            break
+                        }
+                    }
+                }
+
+                if (conditionsMet) {
+                    return true
+                }
+                conditionsMet = true
+            }
+            return false
+        }
+
         var strangeBoost
         function updateGame() {
+            for (var i = 0; i < buttonsAndUnlocks.length; i++) {
+                var child = buttonsAndUnlocks[i]
+                var requirements = child.getAttribute("data-show")
+                var hideRequirements = child.getAttribute("data-hide")
+                if (hideRequirements !== null && meetsRequirements(hideRequirements)) {
+                    if (child.style.display !== "none") {
+                        child.style.display = "none"
+                    }
+                } else if (requirements !== null) {
+                    if (meetsRequirements(requirements)) {
+                        child.removeAttribute("style")
+                    } else if (child.style.display !== "none") {
+                        child.style.display = "none"
+                    }
+                }
+            }
             // Increase numbers
             var heliumBoost = C("helium").sqrt().mul(0.3).mul(C("helium").add(10).log10()).add(1)
             strangeBoost = C("exotic").add(1).log2().mul(49).add(1)
             var magnetBoost = C("magnets").add(1).ln().mul(19).add(1)
             var planetBoost = C("planets").mul(17).add(10).log10()
             add("atoms", C("stars").div(0.6).mul(planetBoost))
+            add("starmakers", C("sstars").div(60))
             add("stars", C("starmakers").div(60).mul(heliumBoost.add(1)))
             add("helium", C("nstars").div(60).mul(strangeBoost))
             add("exotic", C("reactors").div(120).add(C("sstars").mul(700)).mul(magnetBoost))
@@ -3709,6 +3796,7 @@
         }
 
         draw()
+        document.body.removeAttribute("style")
     </script>
 </body>
 
