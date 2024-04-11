@@ -3218,6 +3218,23 @@
             background-color: black;
             color: white;
         }
+
+        .wow {
+            background-color: #fbb;
+            color: black;
+            border-color: white;
+        }
+
+        .wow:hover,
+        .wow:focus {
+            background-color: #d44;
+            color: white;
+        }
+
+        .wow:active {
+            background-color: white;
+            color: black;
+        }
     </style>
 </head>
 
@@ -3235,6 +3252,7 @@
     <button class="yellow" data-cost="atoms-50000" data-earn="stars+1" data-stat="stars">Form a star for 50,000 hydrogen</button>
     <button class="yellow" data-cost="stars-10" data-earn="starmakers+1" data-stat="starmakers">Get a star synthesizer for 10 stars</button>
     <p>Molecules boost manual hydrogen gain and produce an additional 1 hydrogen per second. Much more powerful stars produce 100 hydrogen/sec.</p>
+    <hr>
     <button class="gray" data-cost="stars-all|starmakers-all|molecules-all|atoms-all" data-earn="clouds+*1" data-stat="clouds">Go SUPERNOVA and get gas clouds</button>
     <button class="green" data-cost="clouds-25" data-earn="helium+1" data-stat="helium">Condense 25 gas clouds into helium</button>
     <button class="orange" data-cost="stars-250000" data-earn="nstars+1" data-stat="nstars" data-show="clouds>0">Fuse 250,000 stars into a neutron star</button>
@@ -3258,23 +3276,31 @@
         <hr>
         <div style="color: #4b2" id="money"></div>
         <div style="color: #d38" data-s="quark" id="quarks"></div>
+        <div style="color: #f64" data-s="spin" data-p="spin" id="spin"></div>
         <button class="green" data-cost="atoms-all" data-earn="money+*0.01">Sell all hydrogen for $0.01 each</button>
         <button class="quark" data-cost="money-1e13" data-earn="quarkgen+1" data-stat="quarkgen">Create a strange quark generator for $10T</button>
-        <button class="quark" data-show="quarkgen>0" data-cost="money-all" data-earn="quarkgen+*1e-13">Get max strange quark generators</button>
-        <button class="gray" data-show="quarkgen>1000" data-cost="exotic-all" data-earn="planets+*1e-7">Max all strange planets</button>
-        <button class="gray" data-show="quarkgen>1000|planets>10000" data-cost="planets-all" data-earn="sstars+*0.2">Max all strange stars</button>
+        <button class="quark" data-show="quarkgen>=10" data-cost="money-all" data-earn="quarkgen+*1e-13">Get max strange quark generators</button>
+        <button class="gray" data-show="quarkgen>=100" data-cost="exotic-all" data-earn="planets+*1e-7">Max all strange planets</button>
+        <button class="gray" data-show="quarkgen>=100|planets>=1000" data-cost="planets-all" data-earn="sstars+*0.2">Max all strange stars</button>
         <p>You can create strange quarks by separting individual particles from strange matter. These increase the speed that gas is created by speeding up internal reactions and boost hydrogen and helium production by <span style="color: #d1b" id="quarkBoost"></span>.</p>
     </div>
-    <div class="hide" data-show="atoms>1e21">
+    <div class="hide" data-show="planets>=1000">
         <hr>
         <button class="black" data-cost="atoms-1e24" data-earn="blackholes+1" data-stat="blackholes">Make a black hole</button>
-        <p>A black hole...now THAT's powerful. Spend 1.000S hydrogen for a single one! They boost helium production speed by <span style="color: #1db" id="holeBoost"></span> by sucking in nearby gas.</p>
+        <button class="black" data-show="blackholes>0" data-cost="blackholes-100" data-earn="superholes+1" data-stat="superholes">Make a SUPERMASSIVE black hole from 100 black holes</button>
+        <br>
+        <button class="wow" data-show="superholes>0" data-cost="atoms-all|stars-all|starmakers-all|molecules-all|clouds-all|helium-all|nstars-all|exotic-all|reactors-all|magnets-all|planets-all|sstars-all|money-all|quarkgen-all|blackholes-all|superholes-all|quarks-all|spin-all" data-earn="neon+*1e-9" data-stat="neon">Go HYPERNOVA and gain neon based on hydrogen</button>
+        <button class="wow" data-show="superholes>0" data-cost="neon-1e39|stars-1" data-earn="dwarfs+1" data-stat="dwarfs">Create a white dwarf for 1.000Dd neon and 1 star</button>
+        <p>A black hole...now THAT's powerful. Spend 1.000S hydrogen for a single one! They boost helium production speed by <span style="color: #1db" id="holeBoost"></span> by sucking in nearby gas rapidly.</p>
+        <p class="hide" data-show="blackholes>0">Supermassive black holes, meanwhile, have immense spin speed and generate spin. Your spin increases quark production by <span style="color: #f42" id="spinBoost"></span>.</p>
+        <p class="hide" data-show="superholes>0">You can also go HYPERNOVA, which resets previous progress in exchange for neon. Your neon multiplies automated hydrogen and star gain by <span style="color: #db3" id="neonBoost"></span>.</p>
+        <p class="hide" data-show="neon>0">White dwarfs are made from a bunch of neon and the remnants of a former star. They increase helium gain by <span style="color: #fab" id="dwarfBoost"></span>.</p>
     </div>
 
     <script id="main">
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = ["exotic", "quarks"]
+        var baseProperties = ["exotic", "quarks", "spin"]
 
         var buttons = null, buttonsAndUnlocks = [], properties = baseProperties, stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
@@ -3665,18 +3691,23 @@
                     }
                 }
             }
+
             // Increase numbers
             var heliumBoost = C("helium").sqrt().mul(0.3).mul(C("helium").add(10).log10()).add(1)
             strangeBoost = C("exotic").add(1).log2().mul(49).add(1)
             var magnetBoost = C("magnets").add(1).ln().mul(19).add(1)
             var planetBoost = C("planets").mul(17).add(10).log10()
             var quarkBoost = C("quarks").add(4294967296).sqrt().sqrt().sub(255)
+            var spinBoost = C("spin").add(10000).sqrt().sqrt().sub(9)
             var holeBoost = C("blackholes").mul(5.3).add(1).log2().pow(7).add(1)
-            add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost))
-            add("quarks", C("quarkgen").div(0.0000357))
+            var neonBoost = C("neon").sqrt().sqrt().add(0.02).mul(50).log10().pow(10).add(1)
+            var dwarfBoost = C("dwarfs").add(1).ln().sqr().add(1)
+            add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost))
+            add("spin", C("superholes").mul("5.4321234e8"))
+            add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost))
             add("starmakers", C("sstars").div(60))
-            add("stars", C("starmakers").div(60).mul(heliumBoost.add(1)))
-            add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost))
+            add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost))
+            add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost))
             add("exotic", C("reactors").div(120).add(C("sstars").mul(700)).mul(magnetBoost))
 
             // Update text
@@ -3686,6 +3717,9 @@
             update(ID("planetBoost"), calculateBoost(planetBoost))
             update(ID("quarkBoost"), calculateBoost(quarkBoost))
             update(ID("holeBoost"), calculateBoost(holeBoost))
+            update(ID("spinBoost"), calculateBoost(spinBoost))
+            update(ID("neonBoost"), calculateBoost(neonBoost))
+            update(ID("dwarfBoost"), calculateBoost(dwarfBoost))
         }
 
         var frame = 0, easyButton = null, easyTime = -1
@@ -3884,6 +3918,12 @@
 
         draw()
         document.body.removeAttribute("style")
+        
+        function getEverything() {
+            for (var i = 0; i < properties.length; i++) {
+                add(properties[i], Hyper("1000"))
+            }
+        }
     </script>
 </body>
 
