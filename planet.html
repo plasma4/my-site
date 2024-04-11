@@ -3298,14 +3298,21 @@
     </div>
     <div class="hide" data-show="dwarfs>0">
         <hr>
-        <button class="wow" data-show="superholes>0" data-cost="spin-3POWtickspeed" data-earn="tickspeed+1" id="tickspeed"></button>
+        <button class="wow" data-show="superholes>0" data-cost="spin-3POWtickspeed" data-earn="tickspeed+1" id="getTickspeed"></button>
         <p class="hide">Want things to go faster? Get tickspeed by accelerating and use Einstein's theory of relativity to your advantage! (Currently increasing all production speed by <span style="color: #d72" id="tickBoost"></span>.)</p>
+        <p>You'll unlock something new at 1.000e100 neon...</p>
+    </div>
+    <div class="hide" data-show="neon>1e100">
+        <hr>
+        <div style="color: #7d5" data-s="slime" data-p="slime" id="slime"></div>
+        <button class="green" data-cost="neon-1e10POWvortexes" data-earn="vortexes+1" id="getVortex">Get a strange vortex</button>
+        <p>Ooh...a vortex...Vortexes produce strange slime, which boosts automated hydrogen gain by <span style="color: #7d5" id="slimeBoost"></span>.</p>
     </div>
 
     <script id="main">
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = ["exotic", "quarks", "spin"]
+        var baseProperties = ["exotic", "quarks", "spin", "slime"]
 
         var buttons = null, buttonsAndUnlocks = [], properties = baseProperties, stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
@@ -3597,8 +3604,8 @@
 
             for (i = 0; i < buttons.length; i++) {
                 var button = buttons[i]
-                if (button.id === "tickspeed") {
-                    update(button, "Get tickspeed to accelarate time itself (you have " + C("tickspeed").format() + " tickspeed, and the next one will cost " + Hyper(3).pow(C("tickspeed")).format() + " spin)")
+                if (button.id === "getTickspeed" || button.id === "getVortex") {
+                    update(button, (button.id === "getTickspeed" ? "Get tickspeed to accelerate time itself (you have " + C("tickspeed").format() + " tickspeed, and the next one will cost " + Hyper(3).pow(C("tickspeed")).format() + " spin)" : ("Get a strange vortex (you have " + C("vortexes").format() + " vortexes, and the next one will cost " + Hyper("1e10").pow(C("vortexes")).format() + " neon)")))
                 } else {
                     var raw = button.getAttribute("data-raw")
                     if (raw !== null) {
@@ -3714,7 +3721,9 @@
             var neonBoost = C("neon").sqrt().sqrt().add(0.02).mul(50).log10().pow(10).add(1)
             var dwarfBoost = C("dwarfs").add(1).ln().sqr().add(1)
             var tickBoost = C("tickspeed").mul(0.327).sqr().add(1)
-            add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost))
+            var slimeBoost = C("slime").mul(0.327).add(1).log2().pow(7777).add(1)
+            add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost))
+            add("slime", C("vortexes").mul("321.678"))
             add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost))
             add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost))
             add("starmakers", C("sstars").div(60).mul(tickBoost))
@@ -3733,6 +3742,7 @@
             update(ID("neonBoost"), calculateBoost(neonBoost))
             update(ID("dwarfBoost"), calculateBoost(dwarfBoost))
             update(ID("tickBoost"), calculateBoost(tickBoost))
+            update(ID("slimeBoost"), calculateBoost(slimeBoost))
         }
 
         var frame = 0, easyButton = null, easyTime = -1
