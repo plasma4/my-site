@@ -3294,7 +3294,12 @@
         <p>A black hole...now THAT's powerful. Spend 1.000S hydrogen for a single one! They boost helium production speed by <span style="color: #1db" id="holeBoost"></span> by sucking in nearby gas rapidly.</p>
         <p class="hide" data-show="blackholes>0">Supermassive black holes, meanwhile, have immense spin speed and generate spin. Your spin increases quark production by <span style="color: #f42" id="spinBoost"></span>.</p>
         <p class="hide" data-show="superholes>0">You can also go HYPERNOVA, which resets previous progress in exchange for neon. Your neon multiplies automated hydrogen and star gain by <span style="color: #db3" id="neonBoost"></span>.</p>
-        <p class="hide" data-show="neon>0">White dwarfs are made from a bunch of neon and the remnants of a former star. They increase helium gain by <span style="color: #fab" id="dwarfBoost"></span>.</p>
+        <p class="hide" data-show="neon>0">White dwarfs are made from a bunch of neon and the remnants of a former star. They increase helium and exotic matter gain by <span style="color: #fab" id="dwarfBoost"></span>.</p>
+    </div>
+    <div class="hide" data-show="dwarfs>0">
+        <hr>
+        <button class="wow" data-show="superholes>0" data-cost="spin-3POWtickspeed" data-earn="tickspeed+1" id="tickspeed"></button>
+        <p class="hide">Want things to go faster? Get tickspeed by accelerating and use Einstein's theory of relativity to your advantage! (Currently increasing all production speed by <span style="color: #d72" id="tickBoost"></span>.)</p>
     </div>
 
     <script id="main">
@@ -3374,7 +3379,7 @@
                         }
 
                         alreadyClicked = true
-                        var multiplier = Hyper(true)
+                        var multiplier = new Hyper(true)
 
                         var types = Array(len)
                         var amounts = Array(len)
@@ -3405,18 +3410,20 @@
                                         multipliedAmount = new Hyper(amount)
                                     }
                                 } else {
-                                    var lenSub = str.length - 1
-                                    if (str.charCodeAt(lenSub) === 37) {
-                                        // The string ends with a percent sign:
-                                        multipliedAmount = quantity.mul(0.01).mul(str.slice(0, lenSub)).ceil(true)
-
-                                        if (multipliedAmount === null) {
-                                            amount = multipliedAmount
-                                        }
+                                    var powIndex = str.indexOf("POW")
+                                    if (powIndex !== -1) {
+                                        amount = Hyper(str.slice(0, powIndex)).pow(C(str.slice(powIndex + 3))).mul(multiplier)
                                     } else {
-                                        amount = Hyper(str)
-                                        if (multiplier !== null) {
-                                            amount = amount.mul(multiplier)
+                                        var lenSub = str.length - 1
+                                        if (str.charCodeAt(lenSub) === 37) {
+                                            // The string ends with a percent sign:
+                                            multipliedAmount = quantity.mul(0.01).mul(str.slice(0, lenSub)).ceil(true)
+
+                                            if (multipliedAmount === null) {
+                                                amount = multipliedAmount
+                                            }
+                                        } else {
+                                            amount = Hyper(str).mul(multiplier)
                                         }
                                     }
                                 }
@@ -3590,9 +3597,13 @@
 
             for (i = 0; i < buttons.length; i++) {
                 var button = buttons[i]
-                var raw = button.getAttribute("data-raw")
-                if (raw !== null) {
-                    update(button, button.getAttribute("data-raw") + " (you have " + C(button.getAttribute("data-stat")).format() + ")")
+                if (button.id === "tickspeed") {
+                    update(button, "Get tickspeed to accelarate time itself (you have " + C("tickspeed").format() + " tickspeed, and the next one will cost " + Hyper(3).pow(C("tickspeed")).format() + " spin)")
+                } else {
+                    var raw = button.getAttribute("data-raw")
+                    if (raw !== null) {
+                        update(button, button.getAttribute("data-raw") + " (you have " + C(button.getAttribute("data-stat")).format() + ")")
+                    }
                 }
             }
         }
@@ -3702,13 +3713,14 @@
             var holeBoost = C("blackholes").mul(5.3).add(1).log2().pow(7).add(1)
             var neonBoost = C("neon").sqrt().sqrt().add(0.02).mul(50).log10().pow(10).add(1)
             var dwarfBoost = C("dwarfs").add(1).ln().sqr().add(1)
-            add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost))
-            add("spin", C("superholes").mul("5.4321234e8"))
-            add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost))
-            add("starmakers", C("sstars").div(60))
-            add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost))
-            add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost))
-            add("exotic", C("reactors").div(120).add(C("sstars").mul(700)).mul(magnetBoost))
+            var tickBoost = C("tickspeed").mul(0.327).sqr().add(1)
+            add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost))
+            add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost))
+            add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost))
+            add("starmakers", C("sstars").div(60).mul(tickBoost))
+            add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost).mul(tickBoost))
+            add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost).mul(tickBoost))
+            add("exotic", C("reactors").div(120).add(C("sstars").mul(700)).mul(magnetBoost).mul(dwarfBoost).mul(tickBoost))
 
             // Update text
             update(ID("heliumBoost"), calculateBoost(heliumBoost))
@@ -3720,6 +3732,7 @@
             update(ID("spinBoost"), calculateBoost(spinBoost))
             update(ID("neonBoost"), calculateBoost(neonBoost))
             update(ID("dwarfBoost"), calculateBoost(dwarfBoost))
+            update(ID("tickBoost"), calculateBoost(tickBoost))
         }
 
         var frame = 0, easyButton = null, easyTime = -1
