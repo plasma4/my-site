@@ -3716,16 +3716,28 @@
             var result = ""
             for (var i = 0; i < properties.length; i++) {
                 var item = properties[i]
-                result += item + ":" + stuff[item] + "#" + stuffTotals[item] + "%"
+                var total = stuffTotals[item]
+                if (total.isPositive()) {
+                    result += item + ":" + stuff[item] + "#" + total + "%"
+                }
             }
+
+            if (result.length === 0) {
+                localStorage.setItem("atomSave", "atomicly")
+                return
+            }
+
             // Do some silly encoding
             var len = result.length
             var newResult = Array(len)
             for (i = 0; i < len; i++) {
                 var code = result.charCodeAt(i)
-                newResult[i] = ["apple", "orange", "banana", "-"][code & 3] + Math.floor(code * 0.25)
+                if (i % 6 === 0 || (i + 18) % 37 < 3) {
+                    code = code * code + 3
+                }
+                newResult[i] = ["star", "helium", "atomic", "-"][code & 3] + Math.floor(code * 0.25)
             }
-            localStorage.setItem("atomSave", newResult.join(" "))
+            localStorage.setItem("atomSave", "atomicly " + newResult.join(" "))
         }
 
         var mouseDown, mouseX, mouseY, noTouching = true, hovered = null, spaceDown = false, enterDown = false
@@ -3844,11 +3856,15 @@
         setup()
         if (localData !== null) {
             var convertedResult = ""
-            localData = localData.split(" ")
+            localData = localData.slice(9).split(" ")
             for (i = 0; i < localData.length; i++) {
                 var item = localData[i]
-                var modulo4 = "aob-".indexOf(item[0])
-                convertedResult += String.fromCharCode(modulo4 + (4 * item.slice([5, 6, 6, 1][modulo4])))
+                var modulo4 = "sha-".indexOf(item[0])
+                var code = modulo4 + (4 * item.slice([4, 6, 6, 1][modulo4]))
+                if (i % 6 === 0 || (i + 18) % 37 < 3) {
+                    code = Math.sqrt(code - 3)
+                }
+                convertedResult += String.fromCharCode(code)
             }
 
             // Decode the silly encoding
