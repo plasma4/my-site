@@ -11010,7 +11010,7 @@
                         Buy a <span class="battery" role="img" aria-label="battery"></span>
                     </button>
                     <button class="gold"
-                        data-desc="MEGABatteries are absolutely HUGE, and cost $25,000. They store 100 times more than a normal battery though, so they're worth it.\n(probably)$megabatteries$"
+                        data-desc="MEGABatteries are absolutely HUGE, and cost $25,000. They store 200 times more than a normal battery though, so they're worth it.\n(probably)$megabatteries$"
                         data-cost="money-25000" data-earn="megabatteries+1" data-show="batteries>0">
                         Buy a MEGA-<span class="battery" role="img" aria-label="battery"></span>
                     </button>
@@ -14074,7 +14074,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             var action = onclicks[t]
                             if (action === "wattseconds=max") {
                                 var issue = "This happened while finding the maximum amount allowed for a value."
-                                var limit = C("batteries").mul(600000).add(C("megabatteries").mul(60000000)).add(C("bluebatteries").mul(150000000000))
+                                var limit = C("batteries").mul(600000).add(C("megabatteries").mul(120000000)).add(C("bluebatteries").mul(150000000000))
                                 stuffTotals.wattseconds = getTotals("wattseconds").add(limit).subOrFalse(stuff.wattseconds)
                                 stuff.wattseconds = limit
                                 continue
@@ -16481,7 +16481,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var glassmakers = C("glassmakers")
 
-                var maxWattSeconds = C("batteries").mul(600000).add(C("megabatteries").mul(600000000)).add(C("bluebatteries").mul(150000000000))
+                var maxWattSeconds = C("batteries").mul(600000).add(C("megabatteries").mul(120000000)).add(C("bluebatteries").mul(150000000000))
 
                 var separators = C("separators")
                 var petroplants = C("petroplants")
