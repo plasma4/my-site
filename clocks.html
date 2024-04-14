@@ -11571,6 +11571,7 @@
                             data-sound="transaction">
                             -1,000,000,000 <span class="shard" aria-label="GOLDEN shards"></span> for golden shards to
                             increase jeweler production <i class="outlined">significantly</i>
+                            (capped at 1,000,000× with no cost increase)
                         </div>
 
                         <br><br>
@@ -16471,7 +16472,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var molders = C("molders")
                 var barMolderPower = C("barmolds").mul(hasResearch("power16") ? C("shards").add(2).log2() : 1)
-                var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 0.012 : 0.003).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()) : 1).mul(hasResearch("golden") ? Hyper(true).add(C("coins").add(10).log10().mul(0.03)) : 1)
+                var jewelerPower = C("jewelers").mul(hasResearch("goldjewelers") ? 0.012 : 0.003).mul(hasResearch("trade") ? 2.5 : 1).mul(hasResearch("academy") ? 1.5 : 1).mul(hasResearch("golden") ? Hyper(true).add(C("coins").add(10).log10().mul(0.03)) : 1)
                 var jewelerCost = jewelerPower.div(hasResearch("power6") ? C("hyperclocks").add(10).log10() : 1)
 
                 var managers = C("managers")
@@ -16760,7 +16761,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 add("goo", wells.mul(0.000165))
                 add("energy", ponds.mul(0.000008))
 
-                multiExchange("gc", jewelerPower.mul(hasResearch("power6") ? C("hyperclocks").add(2).log2() : 1), ["clocks", "money", "gold"], [jewelerCost.mul(4), jewelerCost, jewelerCost])
+                multiExchange("gc", jewelerPower.mul(hasResearch("shardjewel") ? shards.add(10).log10().add(shards.sqrt().sqrt().sqrt()).min("1e6") : 1).mul(hasResearch("power6") ? C("hyperclocks").add(2).log2() : 1), ["clocks", "money", "gold"], [jewelerCost.mul(4), jewelerCost, jewelerCost])
                 exchange("goldb", barMolderPower.mul(0.005), "gold", 25)
 
                 exchangeLimit(C("bottles"), "naphtha", separators.mul(0.015), "ngas")
