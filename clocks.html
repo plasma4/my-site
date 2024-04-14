@@ -7560,7 +7560,7 @@
             watts: Permanent Watt (2, Voltage that can be used to actively power machines)
             wattseconds: Temporary Watt (1, Voltage that is stored in batteries and is used as backup wattage)
             batteries: Batter$y/ies (3, A small battery that can be used to store wattage)
-            megabatteries: %MEGABatter$y/ies (4, A huge battery able to store sizeable amounts of voltage)
+            megabatteries: %MEGA-Batter$y/ies (4, A huge battery able to store sizeable amounts of voltage)
             bluebatteries: Blue Wood batter$y/ies (5, A blue wood battery that holds a ludicrous amount of power)
             ngas: Gallon$ of Natural Gas/s of Natural Gas (2, A gallon of natural gas that can be made into naphtha)
             barmolds: Bar Molder (2, A robot arm that is tasked to fill gold into a large mold)
@@ -11015,7 +11015,7 @@
                         Buy a MEGA-<span class="battery" role="img" aria-label="battery"></span>
                     </button>
                     <button class="diamond"
-                        data-desc="Instead of storing electricity the conventional way, use ANOTHER non-renewable source: blue wood.\nThese store WAY MORE than a normal battery, plus they look snazzy from what you're told!\nCosts a MILLION blue wood (plus $10,000 for the packaging).$bluebatteries$"
+                        data-desc="Instead of storing electricity the conventional way, use ANOTHER non-renewable source: blue wood.\nThese store 2,000× more than a MEGA-battery, plus, they look snazzy (from what you're told).\nEach one costs a MILLION blue wood (plus $10,000 for the packaging).$bluebatteries$"
                         data-cost="bwood-1e6|money-10000" data-earn="bluebatteries+1"
                         data-show="megabatteries>0|megaturbines>0">
                         Buy a <span class="battery" role="img" aria-label="battery"></span> made of blue wood
@@ -14074,7 +14074,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                             var action = onclicks[t]
                             if (action === "wattseconds=max") {
                                 var issue = "This happened while finding the maximum amount allowed for a value."
-                                var limit = C("batteries").mul(600000).add(C("megabatteries").mul(120000000)).add(C("bluebatteries").mul(150000000000))
+                                var limit = C("batteries").mul(600000).add(C("megabatteries").mul(120000000)).add(C("bluebatteries").mul(240000000000))
                                 stuffTotals.wattseconds = getTotals("wattseconds").add(limit).subOrFalse(stuff.wattseconds)
                                 stuff.wattseconds = limit
                                 continue
@@ -16481,7 +16481,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var glassmakers = C("glassmakers")
 
-                var maxWattSeconds = C("batteries").mul(600000).add(C("megabatteries").mul(120000000)).add(C("bluebatteries").mul(150000000000))
+                var maxWattSeconds = C("batteries").mul(600000).add(C("megabatteries").mul(120000000)).add(C("bluebatteries").mul(240000000000))
 
                 var separators = C("separators")
                 var petroplants = C("petroplants")
@@ -18310,13 +18310,15 @@ c`.split("\n")
             limit(metaLimited, metaCap)
 
             var money = C("money", "This happened while updating the amount of money that you have.")
-            updateId("money", money.isLess(0.01) ? "no money" : ("$" + money.format(2)))
-            updateClass(ID("money"), money.isLess("eeee1000") ? "green" : "move3")
+
 
             // Items without references in buttons are ignored!
             for (i = 0; i < properties.length; i++) {
                 var key = properties[i]
-                if (key !== "money") {
+                if (key === "money") {
+                    updateId("money", money.isLess(0.01) ? "no money" : ("$" + money.format(2)))
+                    updateClass(ID("money"), money.isLess("eeee1000") ? "green" : "move3")
+                } else {
                     var elem = ID(key)
                     if (elem !== null) {
                         var amount = C(key, "This happened while updating property information: it exists in the 'properties' variable.")
@@ -18337,8 +18339,10 @@ c`.split("\n")
                             } else {
                                 if (key === "wattseconds") {
                                     amount = amount.div(60)
+                                    formatted = format(amount) + "/" + format(C("batteries").mul(600000).add(C("megabatteries").mul(120000000)).add(C("bluebatteries").mul(240000000000)))
+                                } else {
+                                    formatted = isSpecial ? format(amount) : format(amount, name)
                                 }
-                                formatted = isSpecial ? format(amount) : format(amount, name)
                             }
 
                             var lastPart = key.length - 3
