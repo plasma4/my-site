@@ -3305,8 +3305,10 @@
     <div class="hide" data-show="neon>1e100">
         <hr>
         <div style="color: #7d5" data-s="slime" data-p="slime" id="slime"></div>
-        <button class="green" data-cost="neon-1e10POWvortexes" data-earn="vortexes+1" id="getVortex">Get a strange vortex</button>
+        <button class="green" data-cost="neon-1e10POWvortexes" data-earn="vortexes+1" id="getVortex"></button>
+        <button class="quark" data-cost="slime-1e9" data-earn="vortex4+1" data-stat="vortex4">Get a 4D vortex for 1.000B slime</button>
         <p>Ooh...a vortex...Vortexes produce strange slime, which boosts automated hydrogen gain by <span style="color: #7d5" id="slimeBoost"></span>.</p>
+        <p>4D vortexes are hyperdimensional and boost vortex power by <span style="color: #bd5" id="vortexBoost"></span> and spin production by <span style="color: #ec6" id="vortexSpinBoost"></span>.</p>
     </div>
 
     <script id="main">
@@ -3722,9 +3724,11 @@
             var dwarfBoost = C("dwarfs").add(1).ln().sqr().add(1)
             var tickBoost = C("tickspeed").mul(0.327).sqr().add(1)
             var slimeBoost = C("slime").mul(0.327).add(1).log2().pow(7777).add(1)
+            var vortexBoost = C("vortex4").mul(6.2).add(1).sqr()
+            var vortexSpinBoost = vortexBoost.ln().add(1)
             add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost))
-            add("slime", C("vortexes").mul("321.678"))
-            add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost))
+            add("slime", C("vortexes").mul("321.678").mul(vortexBoost))
+            add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost).mul(vortexSpinBoost))
             add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost))
             add("starmakers", C("sstars").div(60).mul(tickBoost))
             add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost).mul(tickBoost))
@@ -3743,6 +3747,8 @@
             update(ID("dwarfBoost"), calculateBoost(dwarfBoost))
             update(ID("tickBoost"), calculateBoost(tickBoost))
             update(ID("slimeBoost"), calculateBoost(slimeBoost))
+            update(ID("vortexBoost"), calculateBoost(vortexBoost))
+            update(ID("vortexSpinBoost"), calculateBoost(vortexSpinBoost))
         }
 
         var frame = 0, easyButton = null, easyTime = -1
