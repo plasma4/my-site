@@ -3299,7 +3299,7 @@
     <div class="hide" data-show="dwarfs>0">
         <hr>
         <button class="wow" data-show="superholes>0" data-cost="spin-3POWtickspeed" data-earn="tickspeed+1" id="getTickspeed"></button>
-        <p class="hide">Want things to go faster? Get tickspeed by accelerating and use Einstein's theory of relativity to your advantage! (Currently increasing all production speed by <span style="color: #d72" id="tickBoost"></span>.)</p>
+        <p class="hide">Want things to go faster? Get tickspeed by accelerating and use Einstein's theory of relativity to your advantage! (Currently increasing all pre-slime production speed by <span style="color: #d72" id="tickBoost"></span>.)</p>
         <p>You'll unlock something new at 1.000e100 neon...</p>
     </div>
     <div class="hide" data-show="neon>1e100">
@@ -3315,6 +3315,11 @@
         <p>Ooh...a vortex...Vortexes produce strange slime, which boosts automated hydrogen gain by <span style="color: #7d5" id="slimeBoost"></span>.</p>
         <p data-show="vortex4>0">4D vortexes are hyperdimensional and boost vortex power by <span style="color: #bd5" id="vortexBoost"></span> and spin production by <span style="color: #ec6" id="vortexSpinBoost"></span>.</p>
         <p>4D producers create 10 vortexes a second. 5D producers create 10 4D producers a second, and so on.</p>
+    </div>
+    <div class="hide" data-show="producer6>0">
+        <hr>
+        <button class="orange" data-show="superholes>0" data-cost="slime-1e26" data-earn="rockets+1" data-stat="rockets">Get a rocket for 100.00S slime</button>
+        <p>Rockets boost your spin gain by <span style="color: #b72" id="rocketBoost"></span>. Yay tickspeed! (Rockets also boost slime production by <span style="color: #5b3" id="rocketSlimeBoost"></span>.)</p>
     </div>
 
     <script id="main">
@@ -3732,12 +3737,14 @@
             var slimeBoost = C("slime").mul(0.327).add(1).log2().pow(7777).add(1)
             var vortexBoost = C("vortex4").mul(6.2).add(1).sqr()
             var vortexSpinBoost = vortexBoost.ln().add(1)
+            var rocketBoost = C("rockets").pow(13).add(1)
+            var rocketSlimeBoost = C("rockets").pow(5).add(1)
             add("producer5", C("producer6").div(6))
             add("producer4", C("producer5").div(6))
             add("vortexes", C("producer4").div(6))
             add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost))
-            add("slime", C("vortexes").mul("321.678").mul(vortexBoost))
-            add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost).mul(vortexSpinBoost))
+            add("slime", C("vortexes").mul("321.678").mul(vortexBoost).mul(rocketSlimeBoost))
+            add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost).mul(vortexSpinBoost).mul(rocketBoost))
             add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost))
             add("starmakers", C("sstars").div(60).mul(tickBoost))
             add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost).mul(tickBoost))
@@ -3758,6 +3765,8 @@
             update(ID("slimeBoost"), calculateBoost(slimeBoost))
             update(ID("vortexBoost"), calculateBoost(vortexBoost))
             update(ID("vortexSpinBoost"), calculateBoost(vortexSpinBoost))
+            update(ID("rocketBoost"), calculateBoost(rocketBoost))
+            update(ID("rocketSlimeBoost"), calculateBoost(rocketSlimeBoost))
         }
 
         var frame = 0, easyButton = null, easyTime = -1
