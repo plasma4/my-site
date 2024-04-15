@@ -3307,8 +3307,14 @@
         <div style="color: #7d5" data-s="slime" data-p="slime" id="slime"></div>
         <button class="green" data-cost="neon-1e10POWvortexes" data-earn="vortexes+1" id="getVortex"></button>
         <button class="quark" data-cost="slime-1e9" data-earn="vortex4+1" data-stat="vortex4">Get a 4D vortex for 1.000B slime</button>
+        <br>
+        <button data-show="vortex4>0" class="black" data-cost="slime-1e17" data-earn="producer4+1" data-stat="producer4">Get a 4D producer for 100.00q slime</button>
+        <br>
+        <button data-show="producer4>0" class="blue" data-cost="producer4-10" data-earn="producer5+1" data-stat="producer5">Get a 5D producer for 10 4D producers</button>
+        <button data-show="producer5>0" class="blue" data-cost="producer5-100" data-earn="producer6+1" data-stat="producer6">Get a 6D producer for 100 5D producers</button>
         <p>Ooh...a vortex...Vortexes produce strange slime, which boosts automated hydrogen gain by <span style="color: #7d5" id="slimeBoost"></span>.</p>
-        <p>4D vortexes are hyperdimensional and boost vortex power by <span style="color: #bd5" id="vortexBoost"></span> and spin production by <span style="color: #ec6" id="vortexSpinBoost"></span>.</p>
+        <p data-show="vortex4>0">4D vortexes are hyperdimensional and boost vortex power by <span style="color: #bd5" id="vortexBoost"></span> and spin production by <span style="color: #ec6" id="vortexSpinBoost"></span>.</p>
+        <p>4D producers create 10 vortexes a second. 5D producers create 10 4D producers a second, and so on.</p>
     </div>
 
     <script id="main">
@@ -3726,6 +3732,9 @@
             var slimeBoost = C("slime").mul(0.327).add(1).log2().pow(7777).add(1)
             var vortexBoost = C("vortex4").mul(6.2).add(1).sqr()
             var vortexSpinBoost = vortexBoost.ln().add(1)
+            add("producer5", C("producer6").div(6))
+            add("producer4", C("producer5").div(6))
+            add("vortexes", C("producer4").div(6))
             add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost))
             add("slime", C("vortexes").mul("321.678").mul(vortexBoost))
             add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost).mul(vortexSpinBoost))
