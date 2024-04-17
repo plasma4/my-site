@@ -17022,7 +17022,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var newMoney = C("money").min(matterLimit)
                 stuff.money = newMoney
                 var moneyLoss = oldMoney.sub(newMoney)
-                var newStats = moneyLoss.isLess("eee100") ? moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).format(2) + "</span>/sec")) : ""
+                var newStats = moneyLoss.isLess("eee100") ? moneyLoss.isNegative() ? 'Money gain: <span class="small green">$' + newMoney.subOrFalse(oldMoney).div(lagData).mul(60).format(2) + "</span>/sec" : (moneyLoss.isZero() ? 'Money loss: <span class="small yellow">$0.00</span>/sec' : ('Money loss: <span class="small red">$' + moneyLoss.mul(60).div(lagData).format(2) + "</span>/sec")) : ""
 
                 var valueMultiplier = Hyper(true).add(C("influence").mul(0.01).min(C("metaspin").add(10).log10().add(1.5))).mul(hasResearch("marketing") ? Hyper(true).add(useableData.computers.mul(0.04)) : 1).mul(hasResearch("coin") ? Hyper(true).add(C("coins").mul(0.001).min(1000)) : 1)
 
@@ -17038,7 +17038,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     newStats = 'Sell multiplier: <span class="small blue">' + valueMultiplier.format(5) + (hasResearch("aiselling") ? '×</span> <span class="serif small purple">(with the AI selling research)</span>' : "×</span>") + (newStats.length === 0 ? "" : ("<br>" + newStats))
                 }
 
-                valueMultiplier = valueMultiplier.mul(speed).mul(60)
+                valueMultiplier = valueMultiplier.mul(earlySpeed).mul(60)
 
                 if (familyIncome.isPositive()) {
                     newStats += '<br>Family member clock value: <span class="small green">$' + familyIncome.mul(shardPower).mul(valueMultiplier).format(2) + "</span>/sec"
