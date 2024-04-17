@@ -3958,7 +3958,7 @@
         })
 
         function loadSave(localData) {
-            if (localData === null && localData.trim().length !== 0) {
+            if (localData === null || localData.trim().length === 0) {
                 return
             }
             var convertedResult = ""
