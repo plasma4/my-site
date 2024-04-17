@@ -3823,11 +3823,11 @@
                 newResult[i] = ["star", "helium", "atomic", "-"][code & 3] + Math.floor(code * 0.25)
             }
 
-            return newResult.join(" ")
+            return "atomicly " + newResult.join(" ")
         }
 
         function saveLocally() {
-            localStorage.setItem("atomSave", "atomicly " + getSave())
+            localStorage.setItem("atomSave", getSave())
         }
 
         var mouseDown, mouseX, mouseY, noTouching = true, hovered = null, spaceDown = false, enterDown = false
@@ -3953,7 +3953,7 @@
         })
 
         function loadSave(localData) {
-            if (localData === null) {
+            if (localData === null && localData.trim().length !== 0) {
                 return
             }
             var convertedResult = ""
@@ -3968,9 +3968,8 @@
                 convertedResult += String.fromCharCode(code)
             }
 
-            // Clear previous data
-            console.log(stuff)
-            for (var i = 0; i < properties.length; i++) {
+            // Clear previous stats
+            for (i = 0; i < properties.length; i++) {
                 var property = properties[i]
                 stuff[property] = new Hyper()
                 stuffTotals[property] = new Hyper()
@@ -3978,7 +3977,7 @@
 
             // Decode the silly encoding
             localData = convertedResult.split("%")
-            for (var i = 0; i < localData.length; i++) {
+            for (i = 0; i < localData.length; i++) {
                 var item = localData[i]
                 var colonKey = item.indexOf(":")
                 var key = item.slice(0, colonKey)
