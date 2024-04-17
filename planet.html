@@ -3515,8 +3515,6 @@
                 stuff[property] = new Hyper()
                 stuffTotals[property] = new Hyper()
             }
-
-            confirmReset = false
         }
 
         function updateProperties() {
@@ -3935,9 +3933,11 @@
                 if (confirm("Are you ABSOLUTELY sure you want to reset? You will lose ALL progress!")) {
                     setup()
                     ID("reset").textContent = "RESET"
-                    if (resetTimeout !== null) {
-                        clearTimeout(resetTimeout)
-                    }
+                }
+                confirmReset = false
+                if (resetTimeout !== null) {
+                    clearTimeout(resetTimeout)
+                    resetTimeout = null
                 }
             } else {
                 confirmReset = true
@@ -3958,7 +3958,7 @@
         })
 
         function loadSave(localData) {
-            if (localData === null || localData.trim().length === 0) {
+            if (localData === null || localData.trim().length < 10) {
                 return
             }
             var convertedResult = ""
