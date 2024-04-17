@@ -17252,7 +17252,7 @@ c`.split("\n")
             }
 
             var purpleCandy = C("purplecandy")
-            var spiceGain = purpleCandy.sqrt().mul(speed)
+            var spiceGain = purpleCandy.sqrt()
             spiceGain = spiceGain.mul(spiceGain.sqrt().sqrt()).mul(hasResearch("spice") ? 3 : 1).mul(hasResearch("spice2") ? 3 : 1).mul(hasResearch("spice3") ? 3 : 1).mul(hasResearch("spicy") ? purpleCandy : 1)
             var purpleGain = C("spice").sqrt().sqrt().add(4).sqrt().sub(1)
 
@@ -17271,7 +17271,7 @@ c`.split("\n")
             purpleGain = purpleGain.min("1e1000000")
             updateId("spiceGain", spiceGain.format(2))
             updateId("purpleGain", purpleGain.format(4) + "×")
-            rawAdd("spice", spiceGain.div(60))
+            add("spice", spiceGain.div(60))
             if (hasResearch("cringe")) {
                 add("cringe", C("bunnies").mul(hasResearch("cringe2") ? C("carrots").add(10).log10().log2().sqr() : 1).mul(hasResearch("strongcringe") ? C("coins").add(1).sqrt().sqrt().add(9).log10() : 1).div(hasResearch("cringe4") ? 6 : 60).pow(hasResearch("strongcringe2") ? 2 : 1))
                 limit("cringe", Hyper("1e27"))
@@ -18218,6 +18218,7 @@ c`.split("\n")
                 easyTime = Math.max(easyTime, newTime + 100)
                 autoTime = Math.max(autoTime, newTime + 100)
                 mixingTime = mixingTime.sub((hasResearch("supermix") ? C("spice").add(10).log10().mul(0.3362) : new Hyper(true)).mul(mixingSpeed * (hasResearch("cauldron") ? 2 : 1) * (hasResearch("cauldron2") ? 2 : 1)).mul(newFrames).mul(hasResearch("pot") ? 3 : 1))
+                diff = 1
             }
             time = newTime
 
@@ -18574,6 +18575,10 @@ c`.split("\n")
                 updateHTML(speedElements[0], "")
             } else {
                 update(speedElements[0], "Speed multiplier: " + speed.format(speed.isLess(100) ? 2 : 0) + "×")
+            }
+
+            if (diff > 18) {
+                speed = speed.mul(diff * 60).div(1000)
             }
 
             // Update dungeons (and also not dragons, oops)
