@@ -3677,14 +3677,16 @@
         var confirmReset = false, resetTimeout = null
         ID("reset").addEventListener("click", function () {
             if (confirmReset) {
-                setup()
-                ID("reset").textContent = "RESET"
-                if (resetTimeout !== null) {
-                    clearTimeout(resetTimeout)
+                if (confirm("Are you ABSOLUTELY sure you want to reset? You will lose ALL progress!")) {
+                    setup()
+                    ID("reset").textContent = "RESET"
+                    if (resetTimeout !== null) {
+                        clearTimeout(resetTimeout)
+                    }
                 }
             } else {
                 confirmReset = true
-                ID("reset").textContent = "Are you sure?"
+                ID("reset").textContent = "Are you sure you want to reset?"
                 resetTimeout = setTimeout(function () {
                     ID("reset").textContent = "RESET"
                     confirmReset = false
