@@ -14790,6 +14790,12 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                         redCandyPower = Hyper2(redCandyPower === false ? 0 : redCandyPower)
                         redCandy = proceed("RRR")
                         redCandy = Hyper2(redCandy === false ? 0 : redCandy)
+                        if (redCandy.isNaN()) {
+                            redCandy = Hyper2(0)
+                        }
+                        if (redCandyPower.isNaN()) {
+                            redCandyPower = Hyper2(0)
+                        }
                         formattedCandy = formatExpanta(redCandy, 0)
                         previousCandy = redCandy
                         sellPercent = Number(proceed("\n\nn"))
