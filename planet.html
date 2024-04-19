@@ -3331,7 +3331,7 @@
         <button class="brown" data-show="arms>0" data-cost="arms-10" data-earn="ezclickers+1" data-stat="ezclickers">Create an EZClicker with 10 robot arms</button>
         <button class="yellow" data-show="superholes>0" data-cost="rockets-1e8" data-earn="hyperrockets+1" data-stat="hyperrockets">Create an HyperRocket from 100M rockets</button>
         <br><br>
-        <button class="red" data-show="superholes>0" data-cost="ezclickers-all" data-earn="atoms+0">Clear ALL EZClickers (WARNING: CANNOT UNDO)</button>
+        <button class="orange" data-show="superholes>0" data-cost="ezclickers-all" data-earn="arms+*10">Dismantle ALL EZClickers</button>
         <p>Rockets boost your spin gain by <span style="color: #b72" id="rocketBoost"></span>. Yay tickspeed! (Rockets also boost slime production by <span style="color: #5b3" id="rocketSlimeBoost"></span>.)</p>
         <p class="hide" data-show="rockets>0">You can use galactic robot arms to purchase various upgrades...</p>
         <p class="hide" data-show="arms>0">EZClickers increase easyclick speed of most buttons by <span style="color: #4d2" id="ezBoost"></span>.</p>
@@ -3448,8 +3448,8 @@
                                     }
                                 } else {
                                     var powIndex = str.indexOf("POW")
-                                    noPow = false
                                     if (powIndex !== -1) {
+                                        noPow = false
                                         amount = Hyper(str.slice(0, powIndex)).pow(C(str.slice(powIndex + 3))).mul(multiplier)
                                     } else {
                                         var lenSub = str.length - 1
@@ -3804,7 +3804,7 @@
 
                 var clickBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
                 if (easyButton !== null && easyTime.isLess(newTime)) {
-                    clickRepeats = clickBoost.mul(diff).div(20).max(1)
+                    clickRepeats = clickBoost.mul(diff).div(20).floor().max(1)
                     alreadyClicked = false
                     easyButton.click()
                     easyTime = easyTime.add(50)
