@@ -3809,6 +3809,8 @@
                     easyButton.click()
                     easyTime = easyTime.add(50)
                 }
+            } else {
+                easyTime = Hyper(newTime + 50)
             }
             alreadyClicked = false
             if (++frame % 30 === 0) {
