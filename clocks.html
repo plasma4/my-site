@@ -5246,6 +5246,10 @@
                         digits -= digitDiff
                         modified *= 10n ** digitDiff
                     }
+                    if (digits < 9007199254740992n) {
+                        a.$[1] = 0
+                        digits = Number(digits)
+                    }
                     a.$[3] = modified
                 }
                 a.$[2] = digits
@@ -5456,6 +5460,8 @@
                 var b = new Hyper(value)
                 if (b.$[3] === 0n) {
                     throw RangeError("Hyper division by zero.")
+                } else if (start.$[3] === 0n) {
+                    return new Hyper()
                 }
 
                 var s1 = start.$[0]
@@ -5517,7 +5523,7 @@
                     var multiplied = start.$[3] * BIGONE / b.$[3]
                     digits = BigInt(digits) - b.$[2]
                     if (multiplied < BIGONE) {
-                        multiplied /= 10n
+                        multiplied *= 10n
                         digits--
                     }
                     b.$[3] = multiplied
@@ -5525,7 +5531,7 @@
                     var multiplied = start.$[3] * BIGONE / b.$[3]
                     digits -= BigInt(b.$[2])
                     if (multiplied < BIGONE) {
-                        multiplied /= 10n
+                        multiplied *= 10n
                         digits--
                     }
                     b.$[1] = 1
@@ -5667,7 +5673,7 @@
                     var newDigits = oldDigits << 1n
                     if (multiplied >= DOUBLELIMIT) {
                         if (++newDigits >= BIGLIMIT) {
-                            value.$ = [1, 2, BIGDIGITS, oldDigits / 10n]
+                            value.$ = [1, 2, BIGDIGITS, newDigits / 10n]
                             return value
                         }
                         value.$[3] = multiplied / BIGLIMIT
@@ -5813,6 +5819,9 @@
             }
 
             function HyperPower(start, exponent) {
+                if (exponent === 1) {
+                    return new Hyper(start)
+                }
                 var power = new Hyper(exponent)
                 if (power.$[0] !== 1) {
                     power.$[0] = 1
@@ -16683,6 +16692,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 if (hasResearch("power17")) {
                     cpt = cpt.mul(C("qubits").add(10).log10().pow(125))
                 }
+                console.log(C("qubits").log10().pow(125))
 
                 add("clocks", cpt)
                 if (autosellOn) {
