@@ -3306,7 +3306,7 @@
     <div class="hide" data-show="dwarfs>0">
         <hr>
         <button class="wow" data-show="superholes>0" data-cost="spin-3POWtickspeed" data-earn="tickspeed+1" id="getTickspeed"></button>
-        <p class="hide">Want things to go faster? Get tickspeed by accelerating and use Einstein's theory of relativity to your advantage! (Currently increasing all pre-slime production speed by <span style="color: #d72" id="tickBoost"></span>.)</p>
+        <p>Want things to go faster? Get tickspeed by accelerating and use Einstein's theory of relativity to your advantage! (Currently increasing all pre-slime production speed by <span style="color: #d72" id="tickBoost"></span>.)</p>
         <p>You'll unlock something new at 1.000e100 neon...</p>
     </div>
     <div class="hide" data-show="neon>1e100">
@@ -3326,15 +3326,24 @@
     <div class="hide" data-show="producer6>0">
         <hr>
         <button class="orange" data-show="superholes>0" data-cost="slime-1e26" data-earn="rockets+1" data-stat="rockets">Get a rocket for 100.00S slime</button>
+        <button class="red" data-show="superholes>0" data-cost="atoms-e27000" data-earn="arms+1" data-stat="arms">Get a galactic robot arm for 1e27,000 hydrogen</button>
+        <br>
+        <button class="brown" data-show="arms>0" data-cost="arms-10" data-earn="ezclickers+1" data-stat="ezclickers">Create an EZClicker with 10 robot arms</button>
+        <button class="yellow" data-show="superholes>0" data-cost="rockets-1e8" data-earn="hyperrockets+1" data-stat="hyperrockets">Create an HyperRocket from 100M rockets</button>
+        <br><br>
+        <button class="red" data-show="superholes>0" data-cost="ezclickers-all" data-earn="atoms+0">Clear ALL EZClickers (WARNING: CANNOT UNDO)</button>
         <p>Rockets boost your spin gain by <span style="color: #b72" id="rocketBoost"></span>. Yay tickspeed! (Rockets also boost slime production by <span style="color: #5b3" id="rocketSlimeBoost"></span>.)</p>
+        <p class="hide" data-show="rockets>0">You can use galactic robot arms to purchase various upgrades...</p>
+        <p class="hide" data-show="arms>0">EZClickers increase easyclick speed of most buttons by <span style="color: #4d2" id="ezBoost"></span>.</p>
+        <p class="hide" data-show="hyperrockets>0">HyperRockets increase tickspeed effect by <span style="color: #f42" id="hyperBoost"></span>.</p>
     </div>
 
     <script id="main">
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = ["exotic", "quarks", "spin", "slime"]
+        var baseProperties = []
 
-        var buttons = null, buttonsAndUnlocks = [], properties = baseProperties, stuff = [], stuffTotals = [], alreadyClicked = true
+        var buttons = null, buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
             var elements = document.getElementsByTagName("*")
             buttons = []
@@ -3408,6 +3417,7 @@
                         alreadyClicked = true
                         var multiplier = new Hyper(true)
 
+                        var noPow = true
                         var types = Array(len)
                         var amounts = Array(len)
 
@@ -3438,6 +3448,7 @@
                                     }
                                 } else {
                                     var powIndex = str.indexOf("POW")
+                                    noPow = false
                                     if (powIndex !== -1) {
                                         amount = Hyper(str.slice(0, powIndex)).pow(C(str.slice(powIndex + 3))).mul(multiplier)
                                     } else {
@@ -3453,6 +3464,10 @@
                                             amount = Hyper(str).mul(multiplier)
                                         }
                                     }
+                                }
+
+                                if (multipliedAmount === null && noPow) {
+                                    amount = amount.mul(clickRepeats)
                                 }
 
                                 if (quantity.isLess(amount)) {
@@ -3501,10 +3516,11 @@
                                     add(part1, multipliedAmount.mul(part2.slice(1)))
                                 }
                             } else {
-                                add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost.add(1)).add(1)) : multiplier))
+                                add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost.add(1)).add(1)) : multiplier).mul((multipliedAmount === null && noPow) ? clickRepeats : 1))
                             }
-
                         }
+
+                        clickRepeats = Hyper(1)
                     }
                 }
             }
@@ -3738,12 +3754,14 @@
             var holeBoost = C("blackholes").mul(5.3).add(1).log2().pow(7).add(1)
             var neonBoost = C("neon").sqrt().sqrt().add(0.02).mul(50).log10().pow(10).add(1)
             var dwarfBoost = C("dwarfs").add(1).ln().sqr().add(1)
-            var tickBoost = C("tickspeed").mul(0.327).sqr().add(1)
+            var hyperBoost = C("hyperrockets").mul(436).add(1).pow(3)
+            var tickBoost = C("tickspeed").mul(0.327).sqr().mul(hyperBoost).add(1)
             var slimeBoost = C("slime").mul(0.327).add(1).log2().pow(7777).add(1)
             var vortexBoost = C("vortex4").mul(6.2).add(1).sqr()
             var vortexSpinBoost = vortexBoost.ln().add(1)
             var rocketBoost = C("rockets").pow(13).add(1)
             var rocketSlimeBoost = C("rockets").pow(5).add(1)
+            var ezBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
             add("producer5", C("producer6").div(6))
             add("producer4", C("producer5").div(6))
             add("vortexes", C("producer4").div(6))
@@ -3772,25 +3790,32 @@
             update(ID("vortexSpinBoost"), calculateBoost(vortexSpinBoost))
             update(ID("rocketBoost"), calculateBoost(rocketBoost))
             update(ID("rocketSlimeBoost"), calculateBoost(rocketSlimeBoost))
+            update(ID("ezBoost"), calculateBoost(ezBoost))
+            update(ID("hyperBoost"), calculateBoost(hyperBoost))
         }
 
-        var frame = 0, easyButton = null, easyTime = -1
+        var frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickRepeats = Hyper(1)
         function draw() {
             var newTime = Date.now()
-            updateNumbers()
-            updateGame()
+            var diff = newTime - time
+            if (diff < 1000) {
+                updateNumbers()
+                updateGame()
 
-            if (easyButton !== null && easyTime <= newTime) {
-                easyButton.click()
-                easyTime += 50
-                alreadyClicked = false
+                var clickBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
+                if (easyButton !== null && easyTime.isLess(newTime)) {
+                    clickRepeats = clickBoost.mul(diff).div(20).max(1)
+                    alreadyClicked = false
+                    easyButton.click()
+                    easyTime = easyTime.add(50)
+                }
             }
-
             alreadyClicked = false
             if (++frame % 30 === 0) {
                 saveLocally()
             }
-            setTimeout(draw, (frame % 3 === 0 ? 16 : 17) - Date.now() + newTime)
+            time = newTime
+            setTimeout(draw, (frame % 3 === 0 ? 16 : 17) - Date.now() + time)
         }
 
         oncontextmenu = function () {
@@ -3841,7 +3866,7 @@
                 mouseY = e.clientY
                 var target = e.target
                 easyButton = target
-                easyTime = Date.now() + 500
+                easyTime = Hyper(Date.now() + 500)
 
                 hovered = target.getAttribute ? target : null
             }
@@ -3879,7 +3904,7 @@
                 if (target !== null && target.getAttribute) {
                     hovered = target
                     easyButton = target
-                    easyTime = Date.now() + 500
+                    easyTime = Hyper(Date.now() + 500)
                 } else {
                     hovered = null
                 }
@@ -3916,7 +3941,7 @@
                         }
                         if (target.parentElement) {
                             easyButton = target
-                            easyTime = Date.now() + 500
+                            easyTime = Hyper(Date.now() + 500)
                             target.click()
                         }
 
@@ -4001,7 +4026,7 @@
         
         function getEverything() {
             for (var i = 0; i < properties.length; i++) {
-                add(properties[i], Hyper("1000"))
+                add(properties[i], Hyper("100"))
             }
         }
     </script>
