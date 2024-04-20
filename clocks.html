@@ -5604,9 +5604,20 @@
                     return c1 > c2 ? new Hyper(start) : b
                 }
 
+                c1 = b.$[0]
                 if (digits <= -9007199254740992) {
                     b.$ = [sign, 0, 0, 0n]
                     return b
+                } else if (c1 === 0 && digits >= 9007199254740992) {
+                    b.$[1] = 1
+                    digits = BigInt(digits)
+                } else if (c1 === 1 && digits < 9007199254740992) {
+                    b.$[1] = 0
+                    digits = Number(digits)
+                } else if (c1 === 1 && digits >= BIGLIMIT) {
+                    b.$[1] = 2
+                    b.$[3] = digits / 10n
+                    digits = 50n
                 }
                 b.$[2] = digits
                 return b
@@ -5632,6 +5643,8 @@
                         value.$ = [value.$[0], 0, 0, 0n]
                         return value
                     }
+
+                    // Little thing when digits = -0
                     value.$[2] = digits === -0 ? 0 : digits
                     return value
                 }
@@ -5713,6 +5726,7 @@
                         value.$ = [1, 0, 0, 0n]
                         return value
                     }
+                    // Remember, digits have been multiplied by 0.5, and the & operator doesn't work because it's only 32-bit.
                     digitsEven = digits % 1 === 0
                     if (digitsEven) {
                         data *= 10n
@@ -5863,7 +5877,7 @@
                         var digitValue = value.$[2]
                         if (digitValue < 9007199254740992n) {
                             value.$[1] = 0
-                            value.$[2] = Number(value.$[2])
+                            value.$[2] = Number(digitValue)
                         } else {
                             value.$[1] = 1
                         }
@@ -7352,7 +7366,7 @@
                     text += "\r\n(No debug information provided)"
                 }
                 document.body.style.backgroundColor = "black"
-                failed.textContent = text + "\r\n\r\nRecent logs:\r\n" + document.getElementById("logs").textContent
+                failed.textContent = text + "\r\n\r\nRecent logs (out of " + Number(window.logCount).toString().replace(/\B(?=(.{3})+(?!.))/g, ",") + "):\r\n" + document.getElementById("logs").textContent
                 document.body.insertBefore(failed, document.body.firstChild)
                 document.getElementById("everything").remove()
                 var modPanel = document.getElementById("modPanel")
@@ -8813,9 +8827,9 @@
                             data-desc="Build a basic quantum computer from 100,000 qubits, 100 metal sandwiches, and 5 pieces of gold foil.\n[Effectiveness: 1,000,000,000× as much as a classical computer!]$qcomputers$">
                             <span class="white">Build a QUANTUM COMPUTER</span>
                         </button>
-                        <button class="pure" data-earn="qubitmachines+1" data-cost="aluminumarms-2.5e8"
+                        <button class="pure" data-earn="qubitmachines+1" data-cost="aluminumarms-2e6"
                             data-show="qcomputers>0" data-sound="building"
-                            data-desc="Qubit machines will cost you 250 MILLION aluminum robot arms each.\nThey produce 1 qubit every two seconds.$qubitmachines$">
+                            data-desc="Qubit machines will cost you 2 MILLION aluminum robot arms each.\nThey produce 1 qubit every two seconds.$qubitmachines$">
                             Get a qubit machine
                         </button>
 
@@ -9718,9 +9732,9 @@
                         </span>
                         <br>
                         <span class="mini warn"
-                            data-cost="healpotions-100|shieldpotions-100|goldenpotions-100|attackpotions-100"
+                            data-cost="healpotions-100|shieldpotions-100|goldenpotions-50|attackpotions-25"
                             data-show="$superred" data-earn="$redi" data-fade="$redi"
-                            data-desc="[Costs 100 healing potions, 100 attack potions, 100 *GOLDEN* potions, and 100 ATTACK potions.]\nSuper red pentation amount is multiplied by log10(purple candy + 1).">
+                            data-desc="[Costs 100 healing potions, 100 attack potions, 50 *GOLDEN* potions, and 25 ATTACK potions.]\nSuper red pentation amount is multiplied by log10(purple candy + 1).">
                             <span class="bigger outlined blood">Red I</span>
                         </span>
                         <span class="mini warn" data-cost="healpotions-1000|yellowcandy-1e10|purplecandy-1e17"
@@ -16692,7 +16706,6 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 if (hasResearch("power17")) {
                     cpt = cpt.mul(C("qubits").add(10).log10().pow(125))
                 }
-                console.log(C("qubits").log10().pow(125))
 
                 add("clocks", cpt)
                 if (autosellOn) {
@@ -19233,7 +19246,7 @@ rrrrrrrrrr`.split("\n")]
         })
 
         loaded = true
-        ID("everything").removeAttribute("style")
+        ID("everything").removeAttribute("style") 
     </script>
 </body>
 
