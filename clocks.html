@@ -14423,7 +14423,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         // Returns the amount and property name as a string and automatically considers plural and singular forms
         function getAmount(id, overrideAmount) {
             var issue = "This happened while formatting name and quantity information."
-            var actualAmount = C(id)
+            var actualAmount = C(id).min(matterLimit)
             var amount = actualAmount
             if (overrideAmount != null && (overrideAmount.slice(0, 3) === "EXP" || overrideAmount.slice(0, 3) === "EX3")) {
                 var comma = overrideAmount.indexOf(",")
@@ -18998,7 +18998,7 @@ c`.split("\n")
                                 for (var t = 0; t < len; t++) {
                                     var c = costs[t]
                                     var cIndex = c.indexOf("-")
-                                    var divValue = C(c.slice(0, cIndex)).div(c.slice(cIndex + 1))
+                                    var divValue = C(c.slice(0, cIndex)).min(matterLimit).div(c.slice(cIndex + 1))
                                     maxClicks = maxClicks === null ? divValue : maxClicks.min(divValue)
                                 }
                             }
