@@ -13413,7 +13413,7 @@
                 if (earnings !== false) {
                     earnings = earnings.mul(0.9).sub(30).mul(C("silverfruit").add(1)).mul(hasResearch("morefwood2") ? 3 : 1).mul(hasResearch("morefwood") ? 1.6 : 0.4).floor(true)
                     if (earnings.isPositive() && doubleCheck("Are you sure? You will LOSE all of your fiery progress!")) {
-                        add("fierywood", earnings)
+                        rawAdd("fierywood", earnings)
                         clearAmount(["fierypower", "f2", "f3", "f4", "f5", "firefruit", "firetrees", "firefields", "firefarms", "firetowns", "fireplanters"], true)
                         setup(true)
                     }
@@ -13428,7 +13428,7 @@
                 if (earnings !== false) {
                     earnings = earnings.sub(10).mul(hasResearch("silvergain") ? C("fierywood").add(1).log10() : 0.5).mul(hasResearch("triplesilver") ? 2 : 1)
                     if (earnings.isPositive() && doubleCheck("Are you sure? You will LOSE all of your precious silvery progress!")) {
-                        add("silverwood", (hasResearch("silversquare") ? earnings.sqr() : earnings).floor(true))
+                        rawAdd("silverwood", (hasResearch("silversquare") ? earnings.sqr() : earnings).floor(true))
                         clearAmount(["silverpower", "s2", "s3", "s4", "s5", "silverfruit", "silvertrees", "silverfields", "silverfarms", "silvertowns", "silverplanters"], true)
                         setup(true)
                     }
@@ -13501,7 +13501,7 @@
         }
 
         function shouldAutoClick(elem) {
-            return !shiftDown && elem !== null && elem.tagName !== "U" && elem.tagName !== "LABEL" && elem.id.slice(0, 12) !== "autoClicking" && !(["removeButton", "addMod", "wipe", "crystal", "secret", "cheat", "autosell", "toggleStats", "exitWarp"].includes(elem.id))
+            return !shiftDown && elem !== null && elem.tagName !== "U" && elem.tagName !== "LABEL" && elem.id.slice(0, 12) !== "autoClicking" && !(["removeButton", "addMod", "wipe", "crystal", "secret", "cheat", "autosell", "toggleStats", "exitWarp", "hyperReset", "metaReset", "fireReset", "silverReset"].includes(elem.id))
         }
 
         var currentTab = "main"
@@ -13927,7 +13927,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     button.style.opacity = 1
                 }
 
-                var clickData = button.getAttribute("data-earn")
+                let clickData = button.getAttribute("data-earn")
                 if (clickData != null) {
                     let multiplierAttribute = null
                     if (button.hasAttribute("data-silverbuy")) {
@@ -13986,7 +13986,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     let isImproveAI = button.id === "improveAI"
                     let isBrainyAI = button.id === "brainyAI"
                     function eventFunction(e) {
-                        for (var loops = 0; loops < buttonLoops; loops++) {
+                        var loopAmount = clickData.includes("$") ? 1 : buttonLoops
+                        for (var loops = 0; loops < loopAmount; loops++) {
                             var multiplier = multiplierAttribute === null ? Hyper(true) : C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
                             if (multiplierAttribute === "franciummakers") {
                                 multiplier = multiplier.sqrt()
