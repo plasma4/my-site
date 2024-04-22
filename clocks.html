@@ -13407,7 +13407,7 @@
         })
 
         ID("fireReset").addEventListener("click", function () {
-            var firefruit = C("firefruit")
+            var firefruit = C("firefruit").min(matterLimit)
             if (firefruit.isPositive()) {
                 var earnings = firefruit.log10()
                 if (earnings !== false) {
@@ -13422,7 +13422,7 @@
         })
 
         ID("silverReset").addEventListener("click", function () {
-            var silverfruit = C("silverfruit")
+            var silverfruit = C("silverfruit").min(matterLimit)
             if (silverfruit.isPositive()) {
                 var earnings = silverfruit.log10()
                 if (earnings !== false) {
