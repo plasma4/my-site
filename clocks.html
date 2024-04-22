@@ -5001,6 +5001,9 @@
                     if (category < 9007199254740992n) {
                         dollar[1] = Number(category)
                     }
+                    if (dollar[3] !== 0n && dollar[3].toString().length !== 50) {
+                        alert(dollar[3])
+                    }
                     // Ignore the limit
                     // else if (category > BIGLIMIT) {
                     //     if (!noWarnings) {
@@ -7441,7 +7444,7 @@
             wormholeteams: Wormhole Research Team (12, A dediated team that researches the ins and outs of wormholes)
             burnt: Burnt Dark Matter Gram (8, A gram of burnt dark matter)
             shards: Golden Shard (7, An EXTREMELY rare and valuable shard found by breaking golden clocks)
-            iq: Digital Knowlege$ (4, Knowlege that can be used for amazing upgrades)
+            iq: Digital Knowledge$ (4, Knowledge that can be used for amazing upgrades)
             goo: Purple Goo$ (3, A piece of magical purple goo)
             wells: Goo Well (4, A well filled with goo that can slowly make more)
             ponds: Goo Pond (5, A huge pond filled with goo and gold bars)
@@ -19247,6 +19250,37 @@ rrrrrrrrrr`.split("\n")]
 
         loaded = true
         ID("everything").removeAttribute("style")
+
+        // Hyper function testing
+        function testHyper(value) {
+            if (value instanceof Hyper) {
+                if (value.$[3] !== 0n && value.$[3].toString().length !== 50) {
+                    return false
+                } else {
+                    return value.toString()
+                }
+            }
+            return "Not a Hyper value: " + value
+        }
+
+        function generateTests(func) {
+            for (var a = 0; a < 100; a++) {
+                for (var b = 0; b < 100; b++) {
+                    var v1 = new Hyper((3.23 * a + b + 0.3) + "e" + (a + 1))
+                    var v2 = new Hyper((4.23 * a + b + 0.4) + "e" + (b - 2))
+                    var result = v1[func](v2)
+                    if (testHyper(result) === false) {
+                        console.warn(v1 + "." + func + "(" + v2 + ") failed, resulting in " + result.$ + "(data: '" + ((3.23 * a + b + 0.3) + "e" + (a + 1)) + "' | '" + ((4.23 * a + b + 0.4) + "e" + (b - 2)) + "')")
+                    }
+                }
+            }
+        }
+
+        // generateTests("add")
+        // generateTests("mul")
+        // generateTests("div")
+        // generateTests("sub")
+        // generateTests("pow")
     </script>
 </body>
 
