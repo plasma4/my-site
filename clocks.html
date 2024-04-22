@@ -14423,7 +14423,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         // Returns the amount and property name as a string and automatically considers plural and singular forms
         function getAmount(id, overrideAmount) {
             var issue = "This happened while formatting name and quantity information."
-            var actualAmount = C(id).min(matterLimit)
+            var actualAmount = C(id)
             var amount = actualAmount
             if (overrideAmount != null && (overrideAmount.slice(0, 3) === "EXP" || overrideAmount.slice(0, 3) === "EX3")) {
                 var comma = overrideAmount.indexOf(",")
@@ -18350,6 +18350,211 @@ c`.split("\n")
             metaCap = Hyper(2).pow(C("influence").mul(5).add(1024))
             limit(metaLimited, metaCap)
 
+            // Update the hover element
+            var hoverElem = ID("hover")
+            if (hovered !== null) {
+                var parent = null
+                var text = hovered.getAttribute("data-desc")
+                if (text === null) {
+                    // Check the parent element
+                    parent = hovered.parentElement
+                    if (parent !== null) {
+                        text = parent.getAttribute("data-desc")
+                    }
+                }
+                if (hovered.id === "increaseCap") {
+                    text = '[Increase the maximum speed that you spend crystals!]<br><b class="valuable2">This effect stays through shard resets!</b>'
+                }
+                if (text === null) {
+                    if (previousHTML.length !== 0) {
+                        hoverElem.innerHTML = ""
+                        previousHTML = ""
+                        hoverElem.removeAttribute("class")
+                        hoverElem.removeAttribute("style")
+                    }
+                } else {
+                    text = text.replace(/\\n/g, "<br>")
+                    var id = hovered.id
+                    if (id.length !== 0 && properties.includes(id)) {
+                        var lastPart = id.length - 3
+                        if (id.slice(lastPart) === "ore") {
+                            var normalId = id.slice(0, lastPart)
+                            if (properties.includes(normalId)) {
+                                text += "<br>You have " + format(C(id, "This happened while checking for the amount of ore you have of an item.")) + " " + normalId + " in ore form and " + getAmount(normalId) + "."
+                            } else {
+                                text += "<br>(You have " + getAmount(id) + ")"
+                            }
+                        } else {
+                            text += "<br>(You have " + getAmount(id) + ")"
+                        }
+                    }
+
+                    if (hoverElem.style.display !== "block") {
+                        hoverElem.style.display = "block"
+                    }
+
+                    // Detect variables stuck between dollar signs (like "$clocks$")
+                    var matches = /\$\w+?\$/.exec(text)
+                    if (matches !== null) {
+                        var match = matches[0]
+                        var type = match.slice(1, match.length - 1)
+                        text = text.slice(0, matches.index) + "<br>(You have " + getAmount(type)
+                        if (defaultWattagePriority.includes(type)) {
+                            var consumption = machineConsumption[type]
+                            text += (optionalConsumption.includes(type) ? " that [may be powered but DO NOT HAVE TO with " : " that [require ") + formatValue(typeof consumption === "number" ? consumption : consumption[0]) + " watts]"
+                        }
+                        text += ")"
+                    }
+
+                    var lastPart = id.length - 3
+                    if (id.slice(lastPart) === "ore" && stuff.hasOwnProperty(id.slice(0, lastPart))) {
+                        text += "<br>(The number on the left is the amount of ore you have, and the amount on the right is the useable form.)"
+                    }
+                    if (isRemoving && hovered.hasAttribute("data-earn") && hovered.parentElement.id !== "spells") {
+                        text += '<br><b class="red">(You are REMOVING an amount of this item when you click it' + (shiftDown ? " because you are holding the Shift key" : "") + '.<br>You will be prompted on how much you want to remove!)</b>'
+                    }
+                    var hoveredParent = hovered.parentElement
+                    if ((hoveredParent.className === "study" && hovered.style.opacity == 0.5) || (hoveredParent.parentElement.id === "research" && hoveredParent.style.opacity == 0.5)) {
+                        text += "<br>{You have [insufficient] science or creativity to get this research! These resources are BOTH generated from scientists.}"
+                    } else if (hoveredParent.id === "spells") {
+                        var cooldown = hovered.getAttribute("data-cooldown")
+                        if (cooldown === null) {
+                            console.warn("A child of the element with ID 'spells' should have the 'data-cooldown' attribute.")
+                        } else {
+                            var t = Number(cooldown)
+                            if (isFinite(t) && t % 1 === 0) {
+                                text += "<br>This " + hovered.getAttribute("data-id") + " spell takes "
+                                if (t >= 86400) {
+                                    text += Math.floor(t / 86400) + "d " + Math.floor((t / 3600) % 60) + "h"
+                                } else if (t >= 3600) {
+                                    text += Math.floor(t / 3600) + "h " + Math.floor((t / 60) % 60) + "m"
+                                } else if (t >= 60) {
+                                    text += Math.floor(t / 60) + "m " + Math.floor(t % 60) + "s"
+                                } else {
+                                    text += t + "s"
+                                }
+                                text += " to cast."
+                            }
+                        }
+                    } else if (hovered.id === "autosell" || hovered.id === "addAutosell" || hovered.id === "minusAutosell") {
+                        text += "<br>[Autosell is currently " + (autosellOn ? "ENABLED and sells " + sellPercent + "% of clocks you make" : "DISABLED") + "]"
+                    } else if (hovered.id.slice(0, 12) === "autoClicking") {
+                        text += autoClick ? "<br>[Autoclicking is currently ENABLED. (Autoclicking on this button is disabled by default!)]" : "<br>[Autoclicking is currently DISABLED.]"
+                    } else if (hovered.id === "cps" && currentTab === "warp") {
+                        text = "[Look, this isn't CPS text anymore. Stop staring at me!]"
+                    } else if (hovered.id === "shardAscend") {
+                        var newShards = C("gc").mul(1e-9)
+                        if (hasResearch("shardboost")) {
+                            newShards = newShards.mul(Hyper(true).add(C("shards").add(1).log10()))
+                        }
+                        if (hasResearch("doubleshard")) {
+                            newShards = newShards.add(newShards)
+                        }
+                        text += newShards.isLess(1) ? "<br>[Ascending will NOT earn you ANY SHARDS and will also decrease crystal power!]" : "<br>[Ascending will earn you a total of " + newShards.format() + " shards but reset significant progress.]"
+                    }
+
+                    if (parent !== null && hovered.tagName !== "BUTTON" && parent.tagName === "BUTTON") {
+                        hovered = parent
+                    }
+
+                    if (hovered.tagName === "BUTTON") {
+                        var cost = hovered.getAttribute("data-cost")
+                        if (cost !== null) {
+                            text += "<br>{Clicking on this button will cost you "
+                            var noEXP = !cost.includes("EXP")
+                            var costs = cost.split("|")
+                            var len = costs.length
+
+                            var maxClicks = null
+                            if (noEXP && len >= 2) {
+                                for (var t = 0; t < len; t++) {
+                                    var c = costs[t]
+                                    var cIndex = c.indexOf("-")
+                                    var divValue = C(c.slice(0, cIndex)).min(matterLimit).div(c.slice(cIndex + 1))
+                                    maxClicks = maxClicks === null ? divValue : maxClicks.min(divValue)
+                                }
+                            }
+
+                            if (len === 1) {
+                                var c = costs[0]
+                                var cIndex = c.indexOf("-")
+                                text += getAmount(c.slice(0, cIndex), c.slice(cIndex + 1))
+                            } else if (len === 2) {
+                                var c1 = costs[0]
+                                var cIndex1 = c1.indexOf("-")
+                                var c2 = costs[1]
+                                var cIndex2 = c2.indexOf("-")
+                                text += getAmount(c1.slice(0, cIndex1), c1.slice(cIndex1 + 1)) + " and " + getAmount(c2.slice(0, cIndex2), c2.slice(cIndex2 + 1))
+                            } else {
+                                var lenMinusOne = len - 1
+                                for (var t = 0; t < lenMinusOne; t++) {
+                                    var c = costs[t]
+                                    var cIndex = c.indexOf("-")
+                                    text += getAmount(c.slice(0, cIndex), c.slice(cIndex + 1)) + ", "
+                                }
+                                c = costs[lenMinusOne]
+                                cIndex = c.indexOf("-")
+                                text += "and " + getAmount(c.slice(0, cIndex), c.slice(cIndex + 1))
+                            }
+                            text += text.charCodeAt(text.length - 1) === 33 ? " You have " : ". You currently have "
+
+                            if (len === 1) {
+                                var c = costs[0]
+                                text += getAmount(c.slice(0, c.indexOf("-")))
+                            } else if (len === 2) {
+                                var c1 = costs[0]
+                                var c2 = costs[1]
+                                text += getAmount(c1.slice(0, c1.indexOf("-"))) + " and " + getAmount(c2.slice(0, c2.indexOf("-")))
+                            } else {
+                                len--
+                                for (var t = 0; t < len; t++) {
+                                    var c = costs[t]
+                                    text += getAmount(c.slice(0, c.indexOf("-"))) + ", "
+                                }
+                                c = costs[len]
+                                cIndex = c.indexOf("-")
+                                text += "and " + getAmount(c.slice(0, cIndex))
+                            }
+
+                            if (text.charCodeAt(text.length - 1) !== 33) {
+                                text += "."
+                            }
+                            if (maxClicks !== null && maxClicks.isLess("1e50")) {
+                                text += "<br>You could click on this " + maxClicks.format(3) + " times" + (maxClicks.isLess("1e7") ? " [(including incomplete clicks)] with those items.}" : ".}")
+                            }
+                        }
+                    }
+
+                    text = text.replace(/clock/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "tree" : "clock"))
+                    var formattedText = text.replace(/\{/g, "<i>").replace(/\}|\]/g, "</i>").replace(/\[/g, '<i class="orange inherit">')
+                    if (!sleekMode) {
+                        formattedText = formattedText.replace(/WORMHOLES/g, '<span class="small wormhole">WORMHOLES</span>').replace(/WORMHOLE(?!"|<)/g, '<span class="small wormhole">WORMHOLE</span>')
+                    }
+                    text = formattedText.replace(/<br>/g, " ").replace(/<.+?>/g, "")
+
+                    if (previousHTML !== formattedText) {
+                        hoverElem.innerHTML = formattedText
+                        previousHTML = formattedText
+                        var children = hovered.children
+                        var miniButtons = 0
+                        for (i = 0; i < children.length; i++) {
+                            if (children[i].className.includes("mini")) {
+                                miniButtons++
+                            }
+                        }
+
+                        if (miniButtons !== 0) {
+                            if (text.includes("(You have $")) {
+                                text = text.replace("(You have $", "(You have a total of ")
+                                text = text.slice(0, text.length - 1) + " dollars)"
+                            }
+                            text += "; (This button has " + miniButtons + " smaller button" + (miniButtons === 1 ? "" : "s") + " inside it that can also be selected.)"
+                            hovered.setAttribute("aria-description", text)
+                        }
+                    }
+                }
+            }
+
             var money = C("money", "This happened while updating the amount of money that you have.")
 
             // Items without references in buttons are ignored!
@@ -18873,211 +19078,6 @@ c`.split("\n")
                             }
                         } else if (button.style.display === "none") {
                             button.style.display = "inline-block"
-                        }
-                    }
-                }
-            }
-
-            // Update the hover element
-            var hoverElem = ID("hover")
-            if (hovered !== null) {
-                var parent = null
-                var text = hovered.getAttribute("data-desc")
-                if (text === null) {
-                    // Check the parent element
-                    parent = hovered.parentElement
-                    if (parent !== null) {
-                        text = parent.getAttribute("data-desc")
-                    }
-                }
-                if (hovered.id === "increaseCap") {
-                    text = '[Increase the maximum speed that you spend crystals!]<br><b class="valuable2">This effect stays through shard resets!</b>'
-                }
-                if (text === null) {
-                    if (previousHTML.length !== 0) {
-                        hoverElem.innerHTML = ""
-                        previousHTML = ""
-                        hoverElem.removeAttribute("class")
-                        hoverElem.removeAttribute("style")
-                    }
-                } else {
-                    text = text.replace(/\\n/g, "<br>")
-                    var id = hovered.id
-                    if (id.length !== 0 && properties.includes(id)) {
-                        var lastPart = id.length - 3
-                        if (id.slice(lastPart) === "ore") {
-                            var normalId = id.slice(0, lastPart)
-                            if (properties.includes(normalId)) {
-                                text += "<br>You have " + format(C(id, "This happened while checking for the amount of ore you have of an item.")) + " " + normalId + " in ore form and " + getAmount(normalId) + "."
-                            } else {
-                                text += "<br>(You have " + getAmount(id) + ")"
-                            }
-                        } else {
-                            text += "<br>(You have " + getAmount(id) + ")"
-                        }
-                    }
-
-                    if (hoverElem.style.display !== "block") {
-                        hoverElem.style.display = "block"
-                    }
-
-                    // Detect variables stuck between dollar signs (like "$clocks$")
-                    var matches = /\$\w+?\$/.exec(text)
-                    if (matches !== null) {
-                        var match = matches[0]
-                        var type = match.slice(1, match.length - 1)
-                        text = text.slice(0, matches.index) + "<br>(You have " + getAmount(type)
-                        if (defaultWattagePriority.includes(type)) {
-                            var consumption = machineConsumption[type]
-                            text += (optionalConsumption.includes(type) ? " that [may be powered but DO NOT HAVE TO with " : " that [require ") + formatValue(typeof consumption === "number" ? consumption : consumption[0]) + " watts]"
-                        }
-                        text += ")"
-                    }
-
-                    var lastPart = id.length - 3
-                    if (id.slice(lastPart) === "ore" && stuff.hasOwnProperty(id.slice(0, lastPart))) {
-                        text += "<br>(The number on the left is the amount of ore you have, and the amount on the right is the useable form.)"
-                    }
-                    if (isRemoving && hovered.hasAttribute("data-earn") && hovered.parentElement.id !== "spells") {
-                        text += '<br><b class="red">(You are REMOVING an amount of this item when you click it' + (shiftDown ? " because you are holding the Shift key" : "") + '.<br>You will be prompted on how much you want to remove!)</b>'
-                    }
-                    var hoveredParent = hovered.parentElement
-                    if ((hoveredParent.className === "study" && hovered.style.opacity == 0.5) || (hoveredParent.parentElement.id === "research" && hoveredParent.style.opacity == 0.5)) {
-                        text += "<br>{You have [insufficient] science or creativity to get this research! These resources are BOTH generated from scientists.}"
-                    } else if (hoveredParent.id === "spells") {
-                        var cooldown = hovered.getAttribute("data-cooldown")
-                        if (cooldown === null) {
-                            console.warn("A child of the element with ID 'spells' should have the 'data-cooldown' attribute.")
-                        } else {
-                            var t = Number(cooldown)
-                            if (isFinite(t) && t % 1 === 0) {
-                                text += "<br>This " + hovered.getAttribute("data-id") + " spell takes "
-                                if (t >= 86400) {
-                                    text += Math.floor(t / 86400) + "d " + Math.floor((t / 3600) % 60) + "h"
-                                } else if (t >= 3600) {
-                                    text += Math.floor(t / 3600) + "h " + Math.floor((t / 60) % 60) + "m"
-                                } else if (t >= 60) {
-                                    text += Math.floor(t / 60) + "m " + Math.floor(t % 60) + "s"
-                                } else {
-                                    text += t + "s"
-                                }
-                                text += " to cast."
-                            }
-                        }
-                    } else if (hovered.id === "autosell" || hovered.id === "addAutosell" || hovered.id === "minusAutosell") {
-                        text += "<br>[Autosell is currently " + (autosellOn ? "ENABLED and sells " + sellPercent + "% of clocks you make" : "DISABLED") + "]"
-                    } else if (hovered.id.slice(0, 12) === "autoClicking") {
-                        text += autoClick ? "<br>[Autoclicking is currently ENABLED. (Autoclicking on this button is disabled by default!)]" : "<br>[Autoclicking is currently DISABLED.]"
-                    } else if (hovered.id === "cps" && currentTab === "warp") {
-                        text = "[Look, this isn't CPS text anymore. Stop staring at me!]"
-                    } else if (hovered.id === "shardAscend") {
-                        var newShards = C("gc").mul(1e-9)
-                        if (hasResearch("shardboost")) {
-                            newShards = newShards.mul(Hyper(true).add(C("shards").add(1).log10()))
-                        }
-                        if (hasResearch("doubleshard")) {
-                            newShards = newShards.add(newShards)
-                        }
-                        text += newShards.isLess(1) ? "<br>[Ascending will NOT earn you ANY SHARDS and will also decrease crystal power!]" : "<br>[Ascending will earn you a total of " + newShards.format() + " shards but reset significant progress.]"
-                    }
-
-                    if (parent !== null && hovered.tagName !== "BUTTON" && parent.tagName === "BUTTON") {
-                        hovered = parent
-                    }
-
-                    if (hovered.tagName === "BUTTON") {
-                        var cost = hovered.getAttribute("data-cost")
-                        if (cost !== null) {
-                            text += "<br>{Clicking on this button will cost you "
-                            var noEXP = !cost.includes("EXP")
-                            var costs = cost.split("|")
-                            var len = costs.length
-
-                            var maxClicks = null
-                            if (noEXP && len >= 2) {
-                                for (var t = 0; t < len; t++) {
-                                    var c = costs[t]
-                                    var cIndex = c.indexOf("-")
-                                    var divValue = C(c.slice(0, cIndex)).min(matterLimit).div(c.slice(cIndex + 1))
-                                    maxClicks = maxClicks === null ? divValue : maxClicks.min(divValue)
-                                }
-                            }
-
-                            if (len === 1) {
-                                var c = costs[0]
-                                var cIndex = c.indexOf("-")
-                                text += getAmount(c.slice(0, cIndex), c.slice(cIndex + 1))
-                            } else if (len === 2) {
-                                var c1 = costs[0]
-                                var cIndex1 = c1.indexOf("-")
-                                var c2 = costs[1]
-                                var cIndex2 = c2.indexOf("-")
-                                text += getAmount(c1.slice(0, cIndex1), c1.slice(cIndex1 + 1)) + " and " + getAmount(c2.slice(0, cIndex2), c2.slice(cIndex2 + 1))
-                            } else {
-                                var lenMinusOne = len - 1
-                                for (var t = 0; t < lenMinusOne; t++) {
-                                    var c = costs[t]
-                                    var cIndex = c.indexOf("-")
-                                    text += getAmount(c.slice(0, cIndex), c.slice(cIndex + 1)) + ", "
-                                }
-                                c = costs[lenMinusOne]
-                                cIndex = c.indexOf("-")
-                                text += "and " + getAmount(c.slice(0, cIndex), c.slice(cIndex + 1))
-                            }
-                            text += text.charCodeAt(text.length - 1) === 33 ? " You have " : ". You currently have "
-
-                            if (len === 1) {
-                                var c = costs[0]
-                                text += getAmount(c.slice(0, c.indexOf("-")))
-                            } else if (len === 2) {
-                                var c1 = costs[0]
-                                var c2 = costs[1]
-                                text += getAmount(c1.slice(0, c1.indexOf("-"))) + " and " + getAmount(c2.slice(0, c2.indexOf("-")))
-                            } else {
-                                len--
-                                for (var t = 0; t < len; t++) {
-                                    var c = costs[t]
-                                    text += getAmount(c.slice(0, c.indexOf("-"))) + ", "
-                                }
-                                c = costs[len]
-                                cIndex = c.indexOf("-")
-                                text += "and " + getAmount(c.slice(0, cIndex))
-                            }
-
-                            if (text.charCodeAt(text.length - 1) !== 33) {
-                                text += "."
-                            }
-                            if (maxClicks !== null && maxClicks.isLess("1e50")) {
-                                text += "<br>You could click on this " + maxClicks.format(3) + " times" + (maxClicks.isLess("1e7") ? " [(including incomplete clicks)] with those items.}" : ".}")
-                            }
-                        }
-                    }
-
-                    text = text.replace(/clock/g, season === HALLOWEEN ? "pumpkin" : (season === CHRISTMAS ? "tree" : "clock"))
-                    var formattedText = text.replace(/\{/g, "<i>").replace(/\}|\]/g, "</i>").replace(/\[/g, '<i class="orange inherit">')
-                    if (!sleekMode) {
-                        formattedText = formattedText.replace(/WORMHOLES/g, '<span class="small wormhole">WORMHOLES</span>').replace(/WORMHOLE(?!"|<)/g, '<span class="small wormhole">WORMHOLE</span>')
-                    }
-                    text = formattedText.replace(/<br>/g, " ").replace(/<.+?>/g, "")
-
-                    if (previousHTML !== formattedText) {
-                        hoverElem.innerHTML = formattedText
-                        previousHTML = formattedText
-                        var children = hovered.children
-                        var miniButtons = 0
-                        for (i = 0; i < children.length; i++) {
-                            if (children[i].className.includes("mini")) {
-                                miniButtons++
-                            }
-                        }
-
-                        if (miniButtons !== 0) {
-                            if (text.includes("(You have $")) {
-                                text = text.replace("(You have $", "(You have a total of ")
-                                text = text.slice(0, text.length - 1) + " dollars)"
-                            }
-                            text += "; (This button has " + miniButtons + " smaller button" + (miniButtons === 1 ? "" : "s") + " inside it that can also be selected.)"
-                            hovered.setAttribute("aria-description", text)
                         }
                     }
                 }
