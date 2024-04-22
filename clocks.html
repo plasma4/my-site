@@ -13985,8 +13985,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                     let isImproveAI = button.id === "improveAI"
                     let isBrainyAI = button.id === "brainyAI"
+                    let singleClick = clickData.includes("$") || clickData.includes("EXP")
                     function eventFunction(e) {
-                        var loopAmount = clickData.includes("$") ? 1 : buttonLoops
+                        var loopAmount = singleClick ? 1 : buttonLoops
                         for (var loops = 0; loops < loopAmount; loops++) {
                             var multiplier = multiplierAttribute === null ? Hyper(true) : C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
                             if (multiplierAttribute === "franciummakers") {
