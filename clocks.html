@@ -18826,7 +18826,7 @@ c`.split("\n")
             // Update all the values that are within the game
             updateGame()
 
-            var divSpeed = speed.div(60)
+            var divSpeed = Number(speed.div(60))
             // Update all of the magic spells
             for (var i = 0; i < spellLen;) {
                 if (spellFunctions[i](divSpeed, i)) {
