@@ -17127,6 +17127,20 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 updateId("supershard", supershards.isPositive() ? "Your " + format(supershards, "supershard") + " multiply your time machine production by " + supershardPower.format(2) + (supershardCapped ? supershardSupercapped ? supershardHardcapped ? supershardCap.isMoreOrEqual(trueSupercap) ? "× (actually, truly, genuinely hardcapped, er, well, maybe not...)" : "× (HARDCAPPED at " + supershardCap.format() + " supershards until you have more HyperClocks)." : "× (softcapped FURTHER past 30.000M supershards)." : "× (softcapped)." : "×.") + (superBonus !== null && !supershardHardcapped ? " You also gain an extra " + superBonus.mul(hasResearch("bonus5") ? 25 : 1).mul(hasResearch("bonus7") ? 7 : 1).format() + " supershards at no additional cost!" : "") : "You don't have supershards right now. very. sad.")
 
+                var spellLen = spellFunctions.length
+                var divSpeed = Number(speed.div(60))
+                // Update all of the magic spells
+                for (var i = 0; i < spellLen;) {
+                    if (spellFunctions[i](divSpeed, i)) {
+                        spellFunctions.splice(i, 1)
+                        cooldownTimes.splice(i, 1)
+                        cooldownNames.splice(i, 1)
+                        spellLen--
+                    } else {
+                        i++
+                    }
+                }
+
                 Game.triggerEventListeners("draw", { inWarp: false, startingWatts: startingWatts, endingWatts: watts, remainingWatts: subtracted })
             }
 
@@ -18811,7 +18825,6 @@ c`.split("\n")
                 update(speedElements[0], "Speed multiplier: " + speed.format(speed.isLess(100) ? 2 : 0) + "×")
             }
 
-            var spellLen = spellFunctions.length
             earlySpeed = speed
             lagData = new Hyper(true)
             if (diff > 18) {
@@ -18825,19 +18838,6 @@ c`.split("\n")
 
             // Update all the values that are within the game
             updateGame()
-
-            var divSpeed = Number(speed.div(60))
-            // Update all of the magic spells
-            for (var i = 0; i < spellLen;) {
-                if (spellFunctions[i](divSpeed, i)) {
-                    spellFunctions.splice(i, 1)
-                    cooldownTimes.splice(i, 1)
-                    cooldownNames.splice(i, 1)
-                    spellLen--
-                } else {
-                    i++
-                }
-            }
 
             // Update dungeons (no dragons)
             if ((currentTab === "dungeon" || currentTab === "finale") && hasResearch("dungeon")) {
