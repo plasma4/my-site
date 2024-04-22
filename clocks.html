@@ -14911,7 +14911,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                 }
                                 element.className = "disabled"
                                 cooldownNames.push(S)
-                                cooldownTimes.push(parseInt(B.slice(0, L)))
+                                var cooldownNum = parseInt(B.slice(0, L))
+                                cooldownTimes.push(isFinite(cooldownNum) ? cooldownNum : 0)
                                 let frames = element.getAttribute("data-cooldown")
                                 if (frames === null) {
                                     console.warn("A child of the element with ID 'spells' should have the 'data-cooldown' attribute.")
