@@ -8774,7 +8774,7 @@
                         <span class="mini special" data-show="$fireboost" data-cost="silverwood-1e500000"
                             data-earn="$wormboost" data-fade="$wormboost" data-sound="transaction">
                             -1.000e500,000 <span class="swood" aria-label="silver wood"></span> to increase wormhole
-                            research point production based on silver wood amount
+                            research point production based on silver wood amount (hardcapped at 1.000e50×)
                         </span>
 
                         <br><br>
@@ -8892,9 +8892,9 @@
                                 <span class="move4">Time travel</span>: <span class="glow">$ee1.000e360</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="eee100" data-rp="1e325" data-iq="F76543210" data-show="$aliens"
+                            <div data-cost="eee100" data-rp="1e320" data-iq="F76543210" data-show="$aliens"
                                 data-research="fields"
-                                data-desc="[You need 1.000e325 wormhole research points AS WELL AS F76,543,210 digital knowledge to purchase this research!]\nLet your wormhole teams harness the power of quantum fields, further boosting your already uncanny wormhole knowledge!\n(Each qubit increases your wormhole research point gain by +10%.)">
+                                data-desc="[You need 1.000e320 wormhole research points AS WELL AS F76,543,210 digital knowledge to purchase this research!]\nLet your wormhole teams harness the power of quantum fields, further boosting your already uncanny wormhole knowledge!\n(Each qubit increases your wormhole research point gain by +10%.)">
                                 <span class="move4">Quantum fields</span>: <span class="glow">$ee1.000e100</span>
                                 <span class="big money"></span>
                             </div>
@@ -16479,7 +16479,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var copperTowers = C("coppertowers")
                 var fireBarPower = hasResearch("copper") ? copperTowers.div(60) : Hyper()
                 var copperTowerPower = copperTowers.mul(hasResearch("fireboost") ? 10 : 0.01).div(60)
-                var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr() : 1)
+                var wormholeBoost = (hasResearch("wormy3") ? Hyper(true).add(C("wormholes").mul(0.5)) : Hyper(true)).mul(hasResearch("wormy7") ? Hyper(true).add(shards.mul(100)) : 1).mul(hasResearch("wormboost") ? C("silverwood").add(1).log2().sqr().min("1e50") : 1)
                 var qubitProduction = C("qubitmachines").div(hasResearch("timetravel") ? 60 : 120).add(C("supercoolers").div(3)).mul(hasResearch("shardy") ? C("shards").add(1).sqrt().sqrt() : 1).mul(hasResearch("hyperqubit") ? 100 : 1).pow(hasResearch("time4") ? 125 : 1)
                 if (hasResearch("qubit")) {
                     qubitProduction = qubitProduction.pow10Repeat(Hyper(hasResearch("supergrowth") ? hasResearch("hypergrowth") ? 500 : 100 : 3).mul(hasResearch("shardgrowth") ? C("supershards").add(10).ln().sqrt() : 1).mul(hasResearch("overcap") ? speed : lagData).mul(hasResearch("light2") ? Hyper(true).add(C("light").sqr()) : 1))
