@@ -6475,7 +6475,7 @@
                     }
                     var part1 = this.$[2]
                     var part2 = this.$[3].toString()
-                    if (category >= 4 || (category === 3 && this.$[2] >= 10000000n)) {
+                    if (category >= 5 || (category === 4 && this.$[2] >= 10000000n)) {
                         var finalPart
                         var hyperData = new Hyper(part2)
                         hyperData.$[2] -= DIGITSMINUSONE
@@ -10156,7 +10156,7 @@
                             Golden enemies
                         </span>
                         <span class="mini special" data-cost="coins-5000" data-earn="$coin" data-fade="$coin"
-                            data-desc="[Costs 5,000 coins.] Gain a {+0.1% sell multiplier that stacks with other multipliers} for EVERY SINGLE coin that you currently own!\nIt's just that good! (Except that it caps out at +100,000%, anyway.)">
+                            data-desc="[Costs 5,000 coins.] Gain a {+0.1% sell multiplier that stacks with other multipliers} for EVERY SINGLE coin that you currently own!\nIt's just that good! (Except that it caps out at +100,000%, anyway.)\n[Additionally, all coins are salvaged through golden shard resets. However, you still need enough money to purchase the research.]">
                             Not selling
                         </span>
                         <span class="mini special" data-cost="coins-5e38" data-show="$coin" data-earn="$yellow"
@@ -13384,6 +13384,9 @@
                 stuff.meta2factories = new Hyper(oldStuff.meta2factories)
                 stuff.metabuilders = new Hyper(oldStuff.metabuilders)
                 stuff.metacloners = new Hyper(oldStuff.metacloners)
+                if (hasResearch("coin")) {
+                    stuff.coins = new Hyper(oldStuff.coins)
+                }
 
                 add("shards", newShards.add(oldShards))
                 add("crystal1", purpleCrystals.mul(0.25).ceil(true))
