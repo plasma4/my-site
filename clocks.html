@@ -4844,20 +4844,21 @@
                             string = string.slice(1)
                         }
 
-                        if (firstCode !== 45) {
-                            if (/[^0-9]/.test(string)) {
-                                if (!noWarnings) {
-                                    console.error("The value given could not be converted to a Hyper.")
-                                }
-                                dollar = [sign, 0, 0, 0n]
-                                return
+                        var absString = string
+                        if (firstCode === 45) {
+                            absString = string.slice(1)
+                        }
+                        if (/[^0-9]/.test(absString)) {
+                            if (!noWarnings) {
+                                console.error("The value given could not be converted to a Hyper.")
                             }
+                            dollar = [sign, 0, 0, 0n]
+                            return
+                        }
 
-                            var match = string.match(/[^0]/)
-                            if (match !== null) {
-                                var firstNonZero = match.index
-                                string = string.slice(firstNonZero)
-                            }
+                        var match = absString.match(/[^0]/)
+                        if (match !== null) {
+                            absString = absString.slice(match.index + (firstCode === 45))
                         }
 
                         var dot = beforeE.indexOf("."), digits = 0
@@ -4962,6 +4963,9 @@
                             eTotal++
                         }
 
+                        if (bigPart < BIGONE) {
+                            bigPart = bigPart * (10n ** BigInt(50 - bigPart.toString().length))
+                        }
                         if (digits <= -9007199254740992) {
                             dollar = [sign, 0, 0, 0n]
                         } else if (digits >= 9007199254740992) {
@@ -5002,7 +5006,7 @@
                         dollar[1] = Number(category)
                     }
                     if (dollar[3] !== 0n && dollar[3].toString().length !== 50) {
-                        alert(dollar[3])
+                        alert(dollar[3] + "|" + dollar[3].toString().length)
                     }
                     // Ignore the limit
                     // else if (category > BIGLIMIT) {
@@ -8519,6 +8523,11 @@
                             data-earn="$firebars" data-fade="$firebars" data-sound="transaction">
                             -1.000e50 <span class="fwood" aria-label="fiery wood"></span> for each firebar to DOUBLE
                             fiery wood gain from fiery wood wizards
+                        </span>
+                        <span class="mini special" data-show="$morefwood2" data-cost="fierywood-1e100"
+                            data-earn="$glue" data-fade="$glue" data-sound="transaction">
+                            -1.000e100 <span class="fwood" aria-label="fiery wood"></span> for glue to no longer
+                            be required in the production of flying clocks
                         </span>
 
                         <br><br>
@@ -16806,7 +16815,11 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 var computerScience = (hasResearch("madgpt") ? Hyper(true).add(useableData.computers.mul(10)) : Hyper(true)).mul(hasResearch("bingol") ? Hyper(true).add(useableData.computers.mul(0.5)) : Hyper(true)).mul(hasResearch("shardsci2") ? 25 : 1)
                 multiExchange(["science", "creativity"], [scientists.mul(computerScience).mul(hasResearch("smart") ? 0.0006 : 0.0003), scientists.mul(computerScience).mul(hasResearch("creative") ? 0.000375 : 0.000125)], "money", scientists.mul(2))
 
-                multiExchange("fc", fcMakers.mul(0.008), ["feathers", "gc", "glue"], [fcMakers.mul(0.016), fcMakers.mul(0.008), fcMakers.mul(0.0002)])
+                if (hasResearch("glue")) {
+                    multiExchange("fc", fcMakers.mul(0.008), ["feathers", "gc"], [fcMakers.mul(0.016), fcMakers.mul(0.008)])
+                } else {
+                    multiExchange("fc", fcMakers.mul(0.008), ["feathers", "gc", "glue"], [fcMakers.mul(0.016), fcMakers.mul(0.008), fcMakers.mul(0.0002)])
+                }
 
                 exchange("arms", constructors.mul(0.0000888777), "steel", 125)
                 if (hasResearch("factories")) {
