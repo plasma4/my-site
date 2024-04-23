@@ -8793,6 +8793,14 @@
                             Construct a <span class="wormhole">WORMHOLE</span>
                         </button>
 
+                        <br>
+                        <div class="small orange">
+                            You can also increase Magical Fire production by obtaining firebars.
+                            Each firebar increases production by +10% (multiplicatively).
+                            <br>
+                            <b class="small">This means exponential growth!</b>
+                        </div>
+
                         <br><br>
                         <b>Wormhole Research:</b>
                         <br>
@@ -8879,10 +8887,15 @@
                                 <span class="move4">Quantum genius</span>: <span class="glow">$ee1.000e1,000</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="eee100" data-rp="1e250" data-iq="F76543210" data-show="$aliens"
-                                data-research="timetravel"
-                                data-desc="[You need 1.000e250 wormhole research points AS WELL AS F76,543,210 digital knowledge to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!\n[You will see a new menu pop up.] {This also doubles qubit production, as an extra bonus.}">
-                                <span class="move4">Time travel</span>: <span class="glow">$ee1.000e100</span>
+                            <div data-cost="eee360" data-rp="1e360" data-show="$aliens" data-research="timetravel"
+                                data-desc="[You need 1.000e360 wormhole research points to purchase this research!]\nUnlock LITERAL TIME TRAVEL with the power of advanced {quantum computing} technology!\n[You will see a new menu pop up.] {This also doubles qubit production, as an extra bonus.}">
+                                <span class="move4">Time travel</span>: <span class="glow">$ee1.000e360</span>
+                                <span class="big money"></span>
+                            </div>
+                            <div data-cost="eee100" data-rp="1e325" data-iq="F76543210" data-show="$aliens"
+                                data-research="fields"
+                                data-desc="[You need 1.000e325 wormhole research points AS WELL AS F76,543,210 digital knowledge to purchase this research!]\nLet your wormhole teams harness the power of quantum fields, further boosting your already uncanny wormhole knowledge!\n(Each qubit increases your wormhole research point gain by +10%.)">
+                                <span class="move4">Quantum fields</span>: <span class="glow">$ee1.000e100</span>
                                 <span class="big money"></span>
                             </div>
                             <div data-cost="eee12" data-iq="F10000" data-show="$aliens" data-research="superbrain"
@@ -8915,9 +8928,9 @@
                                 <span class="move5">Dark information</span>: <span class="glow">$2.000S</span>
                                 <span class="big money"></span>
                             </div>
-                            <div data-cost="1e24" data-rp="2.3e230" data-iq="12345" data-show="$aliens"
+                            <div data-cost="1e24" data-rp="1e250" data-iq="12345" data-show="$aliens"
                                 data-research="darkness"
-                                data-desc="[You need 2.300e230 research points AND 12,345 digital knowledge to purchase this research!]\nWant dark towers to actually DO something? Get them to increase digital knowledge production!">
+                                data-desc="[You need 1.000e250 research points AND 12,345 digital knowledge to purchase this research!]\nWant dark towers to actually DO something? Get them to increase digital knowledge production!">
                                 <span class="move5">Dark tower smarts</span>: <span class="glow">$1.000S</span>
                                 <span class="big money"></span>
                             </div>
@@ -9007,15 +9020,10 @@
                             and <span class="small green" id="researchPoints"></span>
                             <span class="small glow2">WORMHOLE research points</span>!
                             <br>
-                            <b>If you're having a hard time with researches, consider getting more golden shards.</b>
-                        </div>
-
-                        <br>
-                        <div class="small orange">
-                            You can also increase Magical Fire production by obtaining firebars.
-                            Each firebar increases production by +10% (multiplicatively).
-                            <br>
-                            <b class="small">This means exponential growth!</b>
+                            <b>
+                                If you're having a hard time with this section, consider getting more golden shards.
+                                You will need a whole lot of them if you want to get past quantum insanity!
+                            </b>
                         </div>
                     </div>
                 </div>
@@ -16773,7 +16781,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                 var basePointGain = C("wormholeteams")
                 var researchPoints = C("wscience")
-                var wormholeExtra = (hasResearch("wormy4") ? Hyper(true).add(C("clocks").mul("1e-15")) : Hyper(true)).mul(hasResearch("wormy2") ? 2 : 1).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60))
+                var wormholeExtra = (hasResearch("wormy4") ? Hyper(true).add(C("clocks").mul("1e-15")) : Hyper(true)).mul(hasResearch("fields") ? Hyper(true).add(C("qubits").mul(0.1)) : 1).mul(hasResearch("wormy2") ? 2 : 1).mul(Hyper(hasResearch("wormy") ? 0.02 : 0.01).div(60))
                 add("wscience", (hasResearch("wormy8") ? basePointGain.sqr() : basePointGain).mul(wormholeBoost).mul(hasResearch("wormy6") ? Hyper(true).add(researchPoints.sqrt()) : 1).mul(hasResearch("wormy5") ? Hyper(true).add(researchPoints.sqrt().sqrt()) : 1).mul(wormholeExtra))
 
                 add("qubits", qubitProduction)
