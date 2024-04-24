@@ -4692,7 +4692,7 @@
         var HDIGITS = 50
         var Hyper
         (function () {
-            var BIGDIGITS = 50n, DIGITSMINUSONE = 49, BIGDIGITSMINUSONE = 49n, REPEATSTR = "0000000000000000000000000000000000000000000000000", BIGONE = 10000000000000000000000000000000000000000000000000n, BIGONEDIVTEN = 1000000000000000000000000000000000000000000000000n, BIGONEDIVTENPOWTEN = 1000000000000000000000000000000000000000n, DIGITSOFDIGITS = 2, BIGLIMIT = 100000000000000000000000000000000000000000000000000n, FOURLIMIT = 400000000000000000000000000000000000000000000000000n, TWOBIG = 20000000000000000000000000000000000000000000000000n, LIMITMINUSONE = 99999999999999999999999999999999999999999999999999n, DOUBLELIMITDIVTEN = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DOUBLELIMIT = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DIGITSODD = false, RANDOMSIZE = 8, RANDOMMODULO = 0, RANDOMREPEAT = 1
+            var BIGDIGITS = 50n, DIGITSMINUSONE = 49, BIGDIGITSMINUSONE = 49n, REPEATSTR = "0000000000000000000000000000000000000000000000000", BIGONE = 10000000000000000000000000000000000000000000000000n, BIGONETENTH = 1000000000000000000000000000000000000000000000000n, BIGONETENTHPOWTEN = 1000000000000000000000000000000000000000n, DIGITSOFDIGITS = 2, BIGLIMIT = 100000000000000000000000000000000000000000000000000n, FOURLIMIT = 400000000000000000000000000000000000000000000000000n, TWOBIG = 20000000000000000000000000000000000000000000000000n, LIMITMINUSONE = 99999999999999999999999999999999999999999999999999n, DOUBLELIMITDIVTEN = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DOUBLELIMIT = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000n, DIGITSODD = false, RANDOMSIZE = 8, RANDOMMODULO = 0, RANDOMREPEAT = 1
 
             /**
              * Creates an Hyper (also called a "hyper-number") instance that represents a POSITIVE finite integer, which can handle high-quality values anywhere from above 10^(-9007199254740992) to 10^^(10^50) with default precision by using BigInt.
@@ -4926,9 +4926,9 @@
                                 return
                             } else if (digits === 1) {
                                 if (eTotal === 1n) {
-                                    dollar = [sign, 0, Number(bigPart / BIGONEDIVTEN), BIGONE]
+                                    dollar = [sign, 0, Number(bigPart / BIGONETENTH), BIGONE]
                                 } else {
-                                    var value = bigPart / BIGONEDIVTEN
+                                    var value = bigPart / BIGONETENTH
                                     if (eTotal === 2n && value < 16n) {
                                         dollar = [sign, 0, 10 ** Number(value), BIGONE]
                                     } else if (value < BIGDIGITS) {
@@ -5005,9 +5005,6 @@
                     if (category < 9007199254740992n) {
                         dollar[1] = Number(category)
                     }
-                    if (dollar[3] !== 0n && dollar[3].toString().length !== 50) {
-                        alert(dollar[3] + "|" + dollar[3].toString().length)
-                    }
                     // Ignore the limit
                     // else if (category > BIGLIMIT) {
                     //     if (!noWarnings) {
@@ -5038,8 +5035,8 @@
                 BIGDIGITSMINUSONE = BigInt(DIGITSMINUSONE)
                 REPEATSTR = "0".repeat(DIGITSMINUSONE)
                 BIGONE = 10n ** BIGDIGITSMINUSONE
-                BIGONEDIVTEN = BIGONE / 10n
-                BIGONEDIVTENPOWTEN = BIGONE / 10000000000n
+                BIGONETENTH = BIGONE / 10n
+                BIGONETENTHPOWTEN = BIGONE / 10000000000n
                 BIGLIMIT = 10n * BIGONE
                 FOURLIMIT = BIGLIMIT << 2n
                 TWOBIG = BIGONE << 1n
@@ -5325,7 +5322,7 @@
                         b.$[3] = multiplied / BIGLIMIT
                     } else {
                         if (digits >= BIGLIMIT) {
-                            b.$ = [sign, 2, BIGDIGITS, digits / 10n]
+                            b.$ = [sign, 2, BIGDIGITS, digits]
                             return b
                         }
                         b.$[3] = multiplied / BIGONE
@@ -5371,7 +5368,7 @@
                     } else {
                         digits += BigInt(start.$[2])
                         if (digits >= BIGLIMIT) {
-                            b.$ = [sign, 2, BIGDIGITS, digits / 10n]
+                            b.$ = [sign, 2, BIGDIGITS, digits]
                             return b
                         }
                         b.$[3] = multiplied / BIGONE
@@ -5394,7 +5391,7 @@
                     } else {
                         digits = BigInt(digits) + start.$[2]
                         if (digits >= BIGLIMIT) {
-                            b.$ = [sign, 2, BIGDIGITS, digits / 10n]
+                            b.$ = [sign, 2, BIGDIGITS, digits]
                             return b
                         } else {
                             b.$[1] = 1
@@ -5432,7 +5429,7 @@
                     if (diff > DIGITSMINUSONE) {
                         return b
                     }
-                    var sum = b.$[3] / (10n ** diff) + minorPart
+                    var sum = b.$[3] + minorPart / (10n ** diff)
                     if (sum >= BIGLIMIT) {
                         if (d2 === LIMITMINUSONE) {
                             b.$ = [sign, 3, BIGDIGITS, BIGONE]
@@ -5453,6 +5450,7 @@
                     return c1 > c2 ? new Hyper(start) : b
                 }
 
+                if (b.$[3].toString().length !== 50) alert(b.$[3].toString().length)
                 b.$[0] = sign
                 b.$[2] = digits
                 return b
@@ -6541,13 +6539,21 @@
              */
             Hyper.pow10Repeat = function (value, iterations) {
                 if (typeof iterations === "number") {
-                    iterations = BigInt(exponent)
+                    iterations = BigInt(iterations)
                 } else if (typeof iterations !== "bigint") {
                     var repeats = new Hyper(iterations)
-                    iterations = repeats.$[3] / (10n ** (BIGDIGITSMINUSONE - BigInt(repeats.$[2])))
+                    var digits = repeats.$[2]
+                    // Ignore the limit and modify the function a bit
+                    // if (digits >= BIGDIGITS) {
+                    //     throw new RangeError("The amount of iterations is too large!")
+                    // }
+                    // iterations = repeats.$[3] / (10n ** (BIGDIGITSMINUSONE - BigInt(digits)))
+                    var diff = BIGDIGITSMINUSONE - BigInt(digits)
+                    iterations = diff <= 0n ? repeats.$[3] * (10n ** -diff) : repeats.$[3] / (10n ** diff)
                 } else {
                     iterations = BigInt(iterations)
                 }
+
                 for (var i = iterations; i !== 0n && value.$[1] < 2; i--) {
                     value = HyperPower(TEN, value)
                 }
@@ -9232,7 +9238,7 @@
                         <span class="mini stripe4" data-cost="money-80F5" data-show="$power10" data-earn="$power11"
                             data-fade="$power11"
                             data-desc="[Costs $1.9030F6.] You gain 1,000 Quantum Labs every second.">
-                            Replicating quantum
+                            Meta-Quantum
                         </span>
                         <span class="mini stripe4" data-cost="money-115F5" data-show="$power11" data-earn="$power12"
                             data-fade="$power12"
@@ -19293,21 +19299,15 @@ rrrrrrrrrr`.split("\n")]
         function generateTests(func) {
             for (var a = 0; a < 100; a++) {
                 for (var b = 0; b < 100; b++) {
-                    var v1 = new Hyper((3.23 * a + b + 0.3) + "e" + (a + 1))
-                    var v2 = new Hyper((4.23 * a + b + 0.4) + "e" + (b - 2))
+                    var v1 = new Hyper("e" + (3.23 * a + b + 0.3) + "e" + (a + 1))
+                    var v2 = new Hyper("e" + (4.23 * a + b + 0.4) + "e" + (b + 2))
                     var result = v1[func](v2)
                     if (testHyper(result) === false) {
-                        console.warn(v1 + "." + func + "(" + v2 + ") failed, resulting in " + result.$ + "(data: '" + ((3.23 * a + b + 0.3) + "e" + (a + 1)) + "' | '" + ((4.23 * a + b + 0.4) + "e" + (b - 2)) + "')")
+                        console.warn(v1 + "." + func + "(" + v2 + ") failed, resulting in " + result.$ + " and digit length of " + result.$[3].toString().length)
                     }
                 }
             }
         }
-
-        // generateTests("add")
-        // generateTests("mul")
-        // generateTests("div")
-        // generateTests("sub")
-        // generateTests("pow")
     </script>
 </body>
 
