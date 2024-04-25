@@ -3023,8 +3023,6 @@
 
         button,
         .mini {
-            -webkit-user-select: none;
-            user-select: none;
             text-align: center;
             font-size: 16px;
             cursor: pointer;
@@ -3034,6 +3032,8 @@
             transition: transform 500ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, border-radius 500ms, filter 1s;
             border-radius: 5px;
             color: black;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .mini {
@@ -3284,47 +3284,30 @@
     <div style="color: #ddd" data-s="helium" data-p="helium" id="helium"></div>
     <div style="color: #3d4" data-s="strange matter" data-p="strange matter" id="exotic"></div>
     <button class="red" data-earn="atoms+1">Get hydrogen atoms</button>
-    <button class="orange" data-cost="atoms-50" data-earn="molecules+1" data-stat="molecules" data-show="atoms>10">Get a
-        molecule for 50 hydrogen</button>
+    <button class="orange" data-cost="atoms-50" data-earn="molecules+1" data-stat="molecules" data-show="atoms>10">Get a molecule for 50 hydrogen</button>
     <br>
-    <button class="yellow" data-cost="atoms-50000" data-earn="stars+1" data-stat="stars">Form a star for 50,000
-        hydrogen</button>
-    <button class="yellow" data-cost="stars-10" data-earn="starmakers+1" data-stat="starmakers">Get a star synthesizer
-        for 10 stars</button>
-    <p>Molecules are made from a chunk of hydrogen and boost manual hydrogen gain. They also produce an additional 1
-        hydrogen per second. Much more powerful stars produce 100 hydrogen/sec.</p>
+    <button class="yellow" data-cost="atoms-50000" data-earn="stars+1" data-stat="stars">Form a star for 50,000 hydrogen</button>
+    <button class="yellow" data-cost="stars-10" data-earn="starmakers+1" data-stat="starmakers">Get a star synthesizer for 10 stars</button>
+    <p>Molecules are made from a chunk of hydrogen and boost manual hydrogen gain. They also produce an additional 1 hydrogen per second. Much more powerful stars produce 100 hydrogen/sec.</p>
     <hr>
-    <button class="gray" data-cost="stars-all|starmakers-all|molecules-all|atoms-all" data-earn="clouds+*1"
-        data-stat="clouds">Go SUPERNOVA and get gas clouds</button>
-    <button class="green" data-cost="clouds-25" data-earn="helium+1" data-stat="helium">Condense 25 gas clouds into
-        helium</button>
-    <button class="orange" data-cost="stars-250000" data-earn="nstars+1" data-stat="nstars" data-show="clouds>0">Fuse
-        250,000 stars into a neutron star</button>
+    <button class="gray" data-cost="stars-all|starmakers-all|molecules-all|atoms-all" data-earn="clouds+*1" data-stat="clouds">Go SUPERNOVA and get gas clouds</button>
+    <button class="green" data-cost="clouds-25" data-earn="helium+1" data-stat="helium">Condense 25 gas clouds into helium</button>
+    <button class="orange" data-cost="stars-250000" data-earn="nstars+1" data-stat="nstars" data-show="clouds>0">Fuse 250,000 stars into a neutron star</button>
     <br>
-    <button class="blue" data-cost="clouds-50000|stars-100000" data-earn="reactors+1" data-stat="reactors"
-        data-show="clouds>0">Make a neutron condenser from 50,000 gas clouds and 100,000 stars</button>
-    <button class="porply" data-cost="exotic-25000" data-earn="magnets+1" data-stat="magnets" data-show="clouds>0">Make
-        a strange magnet with 25,000 strange matter</button>
-    <p>You need at least 50 stars to go SUPERNOVA. It will convert all stars to gas clouds and reset previous progress.
-    </p>
+    <button class="blue" data-cost="clouds-50000|stars-100000" data-earn="reactors+1" data-stat="reactors" data-show="clouds>0">Make a neutron condenser from 50,000 gas clouds and 100,000 stars</button>
+    <button class="porply" data-cost="exotic-25000" data-earn="magnets+1" data-stat="magnets" data-show="clouds>0">Make a strange magnet with 25,000 strange matter</button>
+    <p>You need at least 50 stars to go SUPERNOVA. It will convert all stars to gas clouds and reset previous progress.</p>
     <div class="hide" data-show="helium>0">
-        <p>Helium increases star gain by <span style="color: #fdd" id="heliumBoost"></span>, and neutron stars produce
-            helium.</p>
-        <p>Strange matter boosts molecule and neutron star effect by <span style="color: #79b"
-                id="strangeBoost"></span>. You make strange matter from neutron condensers and strange stars.</p>
-        <p>Strange magnets attract more strange matter and increase their production by <span style="color: #2b5"
-                id="magnetBoost"></span>.</p>
+        <p>Helium increases star gain by <span style="color: #fdd" id="heliumBoost"></span>, and neutron stars produce helium.</p>
+        <p>Strange matter boosts molecule and neutron star effect by <span style="color: #79b" id="strangeBoost"></span>. You make strange matter from neutron condensers and strange stars.</p>
+        <p>Strange magnets attract more strange matter and increase their production by <span style="color: #2b5" id="magnetBoost"></span>.</p>
     </div>
     <div class="hide" data-show="magnets>0">
         <hr>
-        <button class="porply" data-cost="exotic-1e7" data-earn="planets+1" data-stat="planets">Make a strange planet
-            with 10M strange matter</button>
-        <button class="diamond" data-cost="planets-5" data-earn="sstars+1" data-stat="sstars">Make a strange star with 5
-            strange planets</button>
-        <p>Fuse an entire planet of strange matter together, which in turn increases automated hydrogen and helium gain
-            by <span style="color: #aaa" id="planetBoost"></span>.</p>
-        <p>You can also take 5 strange planets and smash them together to make a strange star, which produces massive
-            amounts of strange matter, as well as 1 star synthesizer every second.</p>
+        <button class="porply" data-cost="exotic-1e7" data-earn="planets+1" data-stat="planets">Make a strange planet with 10M strange matter</button>
+        <button class="diamond" data-cost="planets-5" data-earn="sstars+1" data-stat="sstars">Make a strange star with 5 strange planets</button>
+        <p>Fuse an entire planet of strange matter together, which in turn increases automated hydrogen and helium gain by <span style="color: #aaa" id="planetBoost"></span>.</p>
+        <p>You can also take 5 strange planets and smash them together to make a strange star, which produces massive amounts of strange matter, as well as 1 star synthesizer every second.</p>
     </div>
     <div class="hide" data-show="sstars>0">
         <hr>
@@ -3332,91 +3315,59 @@
         <div style="color: #d38" data-s="quark" id="quarks"></div>
         <div style="color: #f64" data-s="spin" data-p="spin" id="spin"></div>
         <button class="green" data-cost="atoms-all" data-earn="money+*0.01">Sell all hydrogen for $0.01 each</button>
-        <button class="quark" data-cost="money-1e13" data-earn="quarkgen+1" data-stat="quarkgen">Create a strange quark
-            generator for $10T</button>
-        <button class="quark" data-show="quarkgen>=10" data-cost="money-all" data-earn="quarkgen+*1e-13">Get max strange
-            quark generators</button>
-        <button class="gray" data-show="quarkgen>=100" data-cost="exotic-all" data-earn="planets+*1e-7">Max all strange
-            planets</button>
-        <button class="gray" data-show="quarkgen>=100|planets>=1000" data-cost="planets-all" data-earn="sstars+*0.2">Max
-            all strange stars</button>
-        <p>You can create strange quarks by separting individual particles from strange matter. These increase the speed
-            that gas is created by speeding up internal reactions and boost hydrogen and helium production by <span
-                style="color: #d1b" id="quarkBoost"></span>.</p>
+        <button class="quark" data-cost="money-1e13" data-earn="quarkgen+1" data-stat="quarkgen">Create a strange quark generator for $10T</button>
+        <button class="quark" data-show="quarkgen>=10" data-cost="money-all" data-earn="quarkgen+*1e-13">Get max strange quark generators</button>
+        <button class="gray" data-show="quarkgen>=100" data-cost="exotic-all" data-earn="planets+*1e-7">Max all strange planets</button>
+        <button class="gray" data-show="quarkgen>=100|planets>=1000" data-cost="planets-all" data-earn="sstars+*0.2">Max all strange stars</button>
+        <p>You can create strange quarks by separting individual particles from strange matter. These increase the speed that gas is created by speeding up internal reactions and boost hydrogen and helium production by <span style="color: #d1b" id="quarkBoost"></span>.</p>
     </div>
     <div class="hide" data-show="planets>=1000">
         <hr>
-        <button class="black" data-cost="atoms-1e24" data-earn="blackholes+1" data-stat="blackholes">Make a black
-            hole</button>
-        <button class="black" data-show="blackholes>0" data-cost="blackholes-100" data-earn="superholes+1"
-            data-stat="superholes">Make a SUPERMASSIVE black hole from 100 black holes</button>
+        <button class="black" data-cost="atoms-1e24" data-earn="blackholes+1" data-stat="blackholes">Make a black hole</button>
+        <button class="black" data-show="blackholes>0" data-cost="blackholes-100" data-earn="superholes+1" data-stat="superholes">Make a SUPERMASSIVE black hole from 100 black holes</button>
         <br>
-        <button class="wow" data-show="superholes>0"
-            data-cost="atoms-all|stars-all|starmakers-all|molecules-all|clouds-all|helium-all|nstars-all|exotic-all|reactors-all|magnets-all|planets-all|sstars-all|money-all|quarkgen-all|blackholes-all|superholes-all|quarks-all|spin-all"
-            data-earn="neon+*1e-9" data-stat="neon">Go HYPERNOVA and gain neon based on hydrogen</button>
-        <button class="wow" data-show="superholes>0" data-cost="neon-1e39|stars-1" data-earn="dwarfs+1"
-            data-stat="dwarfs">Create a white dwarf for 1.000Dd neon and 1 star</button>
-        <p>A black hole...now THAT's powerful. Spend 1.000S hydrogen for a single one! They boost helium production
-            speed by <span style="color: #1db" id="holeBoost"></span> by sucking in nearby gas rapidly.</p>
-        <p class="hide" data-show="blackholes>0">Supermassive black holes, meanwhile, have immense spin speed and
-            generate spin. Your spin increases quark production by <span style="color: #f42" id="spinBoost"></span>.</p>
-        <p class="hide" data-show="superholes>0">You can also go HYPERNOVA, which resets previous progress in exchange
-            for neon. Your neon multiplies automated hydrogen and star gain by <span style="color: #db3"
-                id="neonBoost"></span>.</p>
-        <p class="hide" data-show="neon>0">White dwarfs are made from a bunch of neon and the remnants of a former star.
-            They increase helium and exotic matter gain by <span style="color: #fab" id="dwarfBoost"></span>.</p>
+        <button class="wow" data-show="superholes>0" data-cost="atoms-all|stars-all|starmakers-all|molecules-all|clouds-all|helium-all|nstars-all|exotic-all|reactors-all|magnets-all|planets-all|sstars-all|money-all|quarkgen-all|blackholes-all|superholes-all|quarks-all|spin-all" data-earn="neon+*1e-9" data-stat="neon">Go HYPERNOVA and gain neon based on hydrogen</button>
+        <button class="wow" data-show="superholes>0" data-cost="neon-1e39|stars-1" data-earn="dwarfs+1" data-stat="dwarfs">Create a white dwarf for 1.000Dd neon and 1 star</button>
+        <p>A black hole...now THAT's powerful. Spend 1.000S hydrogen for a single one! They boost helium production speed by <span style="color: #1db" id="holeBoost"></span> by sucking in nearby gas rapidly.</p>
+        <p class="hide" data-show="blackholes>0">Supermassive black holes, meanwhile, have immense spin speed and generate spin. Your spin increases quark production by <span style="color: #f42" id="spinBoost"></span>.</p>
+        <p class="hide" data-show="superholes>0">You can also go HYPERNOVA, which resets previous progress in exchange for neon. Your neon multiplies automated hydrogen and star gain by <span style="color: #db3" id="neonBoost"></span>.</p>
+        <p class="hide" data-show="neon>0">White dwarfs are made from a bunch of neon and the remnants of a former star. They increase helium and exotic matter gain by <span style="color: #fab" id="dwarfBoost"></span>.</p>
     </div>
     <div class="hide" data-show="dwarfs>0">
         <hr>
-        <button class="wow" data-show="superholes>0" data-cost="spin-3POWtickspeed" data-earn="tickspeed+1"
-            id="getTickspeed"></button>
-        <p>Want things to go faster? Get tickspeed by accelerating and use Einstein's theory of relativity to your
-            advantage! (Currently increasing all pre-slime production speed by <span style="color: #d72"
-                id="tickBoost"></span>.)</p>
+        <button class="wow" data-show="superholes>0" data-cost="spin-3POWtickspeed" data-earn="tickspeed+1" id="getTickspeed"></button>
+        <p>Want things to go faster? Get tickspeed by accelerating and use Einstein's theory of relativity to your advantage! (Currently increasing all pre-slime production speed by <span style="color: #d72" id="tickBoost"></span>.)</p>
         <p>You'll unlock something new at 1.000e100 neon...</p>
     </div>
     <div class="hide" data-show="neon>1e100">
         <hr>
         <div style="color: #7d5" data-s="slime" data-p="slime" id="slime"></div>
         <button class="green" data-cost="neon-1e10POWvortexes" data-earn="vortexes+1" id="getVortex"></button>
-        <button class="quark" data-cost="slime-1e9" data-earn="vortex4+1" data-stat="vortex4">Get a 4D vortex for 1.000B
-            slime</button>
+        <button class="quark" data-cost="slime-1e9" data-earn="vortex4+1" data-stat="vortex4">Get a 4D vortex for 1.000B slime</button>
         <br>
-        <button data-show="vortex4>0" class="black" data-cost="slime-2.5e16" data-earn="producer4+1"
-            data-stat="producer4">Get a 4D producer for 25q slime</button>
+        <button data-show="vortex4>0" class="black" data-cost="slime-2.5e16" data-earn="producer4+1" data-stat="producer4">Get a 4D producer for 25q slime</button>
         <br>
-        <button data-show="producer4>0" class="blue" data-cost="producer4-10" data-earn="producer5+1"
-            data-stat="producer5">Get a 5D producer for 10 4D producers</button>
-        <button data-show="producer5>0" class="blue" data-cost="producer5-100" data-earn="producer6+1"
-            data-stat="producer6">Get a 6D producer for 100 5D producers</button>
-        <p>Ooh...a vortex...Vortexes produce strange slime, which boosts automated hydrogen gain by <span
-                style="color: #7d5" id="slimeBoost"></span>.</p>
-        <p data-show="vortex4>0">4D vortexes are hyperdimensional and boost vortex power by <span style="color: #bd5"
-                id="vortexBoost"></span> and spin production by <span style="color: #ec6" id="vortexSpinBoost"></span>.
-        </p>
+        <button data-show="producer4>0" class="blue" data-cost="producer4-10" data-earn="producer5+1" data-stat="producer5">Get a 5D producer for 10 4D producers</button>
+        <button data-show="producer5>0" class="blue" data-cost="producer5-100" data-earn="producer6+1" data-stat="producer6">Get a 6D producer for 100 5D producers</button>
+        <p>Ooh...a vortex...Vortexes produce strange slime, which boosts automated hydrogen gain by <span style="color: #7d5" id="slimeBoost"></span>.</p>
+        <p data-show="vortex4>0">4D vortexes are hyperdimensional and boost vortex power by <span style="color: #bd5" id="vortexBoost"></span> and spin production by <span style="color: #ec6" id="vortexSpinBoost"></span>.</p>
         <p>4D producers create 10 vortexes a second. 5D producers create 10 4D producers a second, and so on.</p>
     </div>
     <div class="hide" data-show="producer6>0">
         <hr>
-        <button class="orange" data-show="superholes>0" data-cost="slime-1e26" data-earn="rockets+1"
-            data-stat="rockets">Get a rocket for 100.00S slime</button>
-        <button class="red" data-show="superholes>0" data-cost="atoms-e27000" data-earn="arms+1" data-stat="arms">Get a
-            galactic robot arm for 1e27,000 hydrogen</button>
+        <button class="orange" data-show="superholes>0" data-cost="slime-1e26" data-earn="rockets+1" data-stat="rockets">Get a rocket for 100.00S slime</button>
+        <button class="red" data-show="superholes>0" data-cost="atoms-e27000" data-earn="arms+1" data-stat="arms">Get a galactic robot arm for 1e27,000 hydrogen</button>
         <br>
-        <button class="brown" data-show="arms>0" data-cost="arms-10" data-earn="ezclickers+1"
-            data-stat="ezclickers">Create an EZClicker with 10 robot arms</button>
-        <button class="yellow" data-show="superholes>0" data-cost="rockets-1e8" data-earn="hyperrockets+1"
-            data-stat="hyperrockets">Create an HyperRocket from 100M rockets</button>
+        <button class="brown" data-show="arms>0" data-cost="arms-10" data-earn="ezclickers+1" data-stat="ezclickers">Create an EZClicker with 10 robot arms</button>
+        <button class="yellow" data-show="superholes>0" data-cost="rockets-1e8" data-earn="hyperrockets+1" data-stat="hyperrockets">Create a HyperRocket from 100M rockets</button>
+        <button class="quark" data-show="superholes>0" data-cost="spin-1e120|hyperrockets-10" data-earn="superticks+1" data-stat="superticks">Create super-tickspeed from 1e120 spin and 10 HyperRockets</button>
         <br><br>
-        <button class="orange" data-show="superholes>0" data-cost="ezclickers-all" data-earn="arms+*10">Dismantle ALL
-            EZClickers</button>
-        <p>Rockets boost your spin gain by <span style="color: #b72" id="rocketBoost"></span>. Yay tickspeed! (Rockets
-            also boost slime production by <span style="color: #5b3" id="rocketSlimeBoost"></span>.)</p>
+        <button class="orange" data-show="superholes>0" data-cost="ezclickers-all" data-earn="arms+*10">Dismantle ALL EZClickers (and get galactic robot arms back)</button>
+        <p>Rockets boost your spin gain by <span style="color: #b72" id="rocketBoost"></span>. Yay tickspeed! (Rockets also boost slime production by <span style="color: #5b3" id="rocketSlimeBoost"></span>.)</p>
         <p class="hide" data-show="rockets>0">You can use galactic robot arms to purchase various upgrades...</p>
-        <p class="hide" data-show="arms>0">EZClickers increase easyclick speed of most buttons by <span
-                style="color: #4d2" id="ezBoost"></span>.</p>
-        <p class="hide" data-show="hyperrockets>0">HyperRockets increase tickspeed effect by <span style="color: #f42"
-                id="hyperBoost"></span>.</p>
+        <p class="hide" data-show="arms>0">EZClickers increase easyclick speed of most buttons by <span style="color: #4d2" id="ezBoost"></span>.</p>
+        <p class="hide" data-show="hyperrockets>0">HyperRockets increase tickspeed effect by <span style="color: #f42" id="hyperBoost"></span>.</p>
+        <p class="hide" data-show="hyperrockets>0">Super-tickspeed boosts HyperRocket effect by <span style="color: #a48" id="superBoost"></span>.</p>
     </div>
 
     <script id="main">
@@ -3835,7 +3786,8 @@
             var holeBoost = C("blackholes").mul(5.3).add(1).log2().pow(7).add(1)
             var neonBoost = C("neon").sqrt().sqrt().add(0.02).mul(50).log10().pow(10).add(1)
             var dwarfBoost = C("dwarfs").add(1).ln().sqr().add(1)
-            var hyperBoost = C("hyperrockets").mul(436).add(1).pow(3)
+            var superBoost = C("superticks").mul(125).add(1).sqr()
+            var hyperBoost = C("hyperrockets").mul(superBoost).mul(436).add(1).pow(3)
             var tickBoost = C("tickspeed").mul(0.327).sqr().mul(hyperBoost).add(1)
             var slimeBoost = C("slime").mul(0.327).add(1).log2().pow(7777).add(1)
             var vortexBoost = C("vortex4").mul(6.2).add(1).sqr()
@@ -3873,6 +3825,7 @@
             update(ID("rocketSlimeBoost"), calculateBoost(rocketSlimeBoost))
             update(ID("ezBoost"), calculateBoost(ezBoost))
             update(ID("hyperBoost"), calculateBoost(hyperBoost))
+            update(ID("superBoost"), calculateBoost(superBoost))
         }
 
         var frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickRepeats = Hyper(1)
