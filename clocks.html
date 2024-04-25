@@ -9979,9 +9979,14 @@
                             data-desc="[Costs 1e10.000M Void, again.]\nThe maximum amount of Void is now increased to 1e100.00M.">
                             100,000,000
                         </span>
-                        <span class="mini pure" data-cost="void-e2.5e7" data-show="$voidcap" data-earn="$voidcap2"
+                        <span class="mini pure" data-cost="void-e2.5e7" data-show="$tenmillion" data-earn="$voidstart"
+                            data-fade="$voidstart"
+                            data-desc="[Costs 1e25.000M Void, again.]\nYour MINIMUM void gain from defeating an enemy is now 1e25.000M Void.">
+                            Starting point
+                        </span>
+                        <span class="mini pure" data-cost="void-e5e7" data-show="$voidstart" data-earn="$voidcap2"
                             data-fade="$voidcap2"
-                            data-desc="[Costs 1e25.000M Void and 1 time machine.] {Time machines are unlocked by gaining wormhole research points and digital knowledge.}\nThe limit to Void is now 1e10.000B, but Void gain is decreased past 1e100.00M.">
+                            data-desc="[Costs 1e50.000M Void and 1 time machine.] {Time machines are unlocked by gaining wormhole research points and digital knowledge.}\nThe limit to Void is now 1e10.000B, but Void gain is decreased past 1e100.00M.">
                             &omega;
                         </span>
                         <span class="mini pure" data-cost="void-e1.12e8" data-show="$voidcap2" data-earn="$voidcap3"
@@ -17875,7 +17880,7 @@ c`.split("\n")
                     if (voidGain.isMore("e1e13")) {
                         voidGain = Hyper(10).pow(voidGain.log10().mul(hasResearch("voidcap3") ? 0.475 : 0.15).add("8.5e12"))
                     }
-                    rawAdd("void", voidGain)
+                    rawAdd("void", voidGain.max(hasResearch("voidstart") ? "e2.5e7" : 0))
                     limit("void", hasResearch("voidcap") ? hasResearch("voidcap2") ? hasResearch("voidcap4") ? hasResearch("voidcap5") ? hasResearch("voidcap6") ? hasResearch("voidcap8") ? "e1e14" : "e2.5e13" : "e1e13" : "e1e12" : "e1e10" : "e1e8" : "e1e7")
                 }
                 if (hasResearch("collector")) {
