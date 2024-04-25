@@ -6545,11 +6545,6 @@
                 } else if (typeof iterations !== "bigint") {
                     var repeats = new Hyper(iterations)
                     var digits = repeats.$[2]
-                    // Ignore the limit and modify the function a bit
-                    // if (digits >= BIGDIGITS) {
-                    //     throw new RangeError("The amount of iterations is too large!")
-                    // }
-                    // iterations = repeats.$[3] / (10n ** (BIGDIGITSMINUSONE - BigInt(digits)))
                     var diff = BIGDIGITSMINUSONE - BigInt(digits)
                     iterations = diff <= 0n ? repeats.$[3] * (10n ** -diff) : repeats.$[3] / (10n ** diff)
                 } else {
@@ -6579,11 +6574,6 @@
                 } else if (typeof iterations !== "bigint") {
                     var repeats = new Hyper(iterations)
                     var digits = repeats.$[2]
-                    // Ignore the limit and modify the function a bit
-                    // if (digits >= BIGDIGITS) {
-                    //     throw new RangeError("The amount of iterations is too large!")
-                    // }
-                    // iterations = repeats.$[3] / (10n ** (BIGDIGITSMINUSONE - BigInt(digits)))
                     var diff = BIGDIGITSMINUSONE - BigInt(digits)
                     iterations = diff <= 0n ? repeats.$[3] * (10n ** -diff) : repeats.$[3] / (10n ** diff)
                 } else {
