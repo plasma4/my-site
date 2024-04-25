@@ -9935,7 +9935,7 @@
                             Two
                         </span>
                         <span class="mini pure" data-cost="void-1e17" data-show="$one" data-earn="$three"
-                            data-fade="$three" data-desc="[Costs 1.000Q Void.]\nVoid gain is increased again.">
+                            data-fade="$three" data-desc="[Costs 100.00q Void.]\nVoid gain is increased again.">
                             Three
                         </span>
                         <span class="mini pure" data-cost="void-1e27" data-show="$one" data-earn="$four"
@@ -14002,7 +14002,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                     let isImproveAI = button.id === "improveAI"
                     let isBrainyAI = button.id === "brainyAI"
-                    let singleClick = clickData.includes("$") || clickData.includes("bunnies")
+                    let singleClick = clickData.includes("$")
                     function eventFunction(e) {
                         var loopAmount = singleClick ? 1 : buttonLoops
                         for (var loops = 0; loops < loopAmount; loops++) {
@@ -18382,6 +18382,7 @@ c`.split("\n")
                 }
             }
             limit("gcarrots", Hyper(10000))
+            limit("bunnies", Hyper(100))
             limit(newLimited, matterLimit)
 
             // Also update the meta item caps
