@@ -18382,7 +18382,7 @@ c`.split("\n")
                 }
             }
             limit("gcarrots", Hyper(10000))
-            limit("bunnies", Hyper(100))
+            limit("bunnies", Hyper(hasResearch("morebunnies") ? 250 : 100))
             limit(newLimited, matterLimit)
 
             // Also update the meta item caps
