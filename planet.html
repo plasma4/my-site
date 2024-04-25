@@ -3007,6 +3007,9 @@
             font-size: 30px;
             font-family: Calibri, "Trebuchet MS";
             color: white;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            touch-action: manipulation;
         }
 
         html {
@@ -3020,6 +3023,8 @@
 
         button,
         .mini {
+            -webkit-user-select: none;
+            user-select: none;
             text-align: center;
             font-size: 16px;
             cursor: pointer;
