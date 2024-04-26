@@ -13534,7 +13534,7 @@
         }
 
         function shouldAutoClick(elem) {
-            return !shiftDown && elem !== null && elem.tagName !== "U" && elem.tagName !== "LABEL" && elem.id.slice(0, 12) !== "autoClicking" && !(["removeButton", "addMod", "wipe", "crystal", "secret", "cheat", "autosell", "toggleStats", "exitWarp", "hyperReset", "metaReset", "fireReset", "silverReset"].includes(elem.id))
+            return !shiftDown && elem !== null && elem.id !== null && elem.tagName !== "U" && elem.tagName !== "LABEL" && elem.id.slice(0, 12) !== "autoClicking" && !(["removeButton", "addMod", "wipe", "crystal", "secret", "cheat", "autosell", "toggleStats", "exitWarp", "hyperReset", "metaReset", "fireReset", "silverReset"].includes(elem.id))
         }
 
         var currentTab = "main"
@@ -14018,7 +14018,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
 
                     let isImproveAI = button.id === "improveAI"
                     let isBrainyAI = button.id === "brainyAI"
-                    let singleClick = clickData.includes("$")
+                    let singleClick = clickData.includes("$") || containsSpell
                     function eventFunction(e) {
                         var loopAmount = singleClick ? 1 : buttonLoops
                         for (var loops = 0; loops < loopAmount; loops++) {
