@@ -7703,7 +7703,7 @@
                 </div>
 
                 <div id="finale" style="display: none">
-                    <b>Endgame is BROKEN. You'll have to wait for updates!</b>
+                    <b>Endgame is useless currently. You'll have to wait for updates!</b>
                     <br>
                     <span class="light"></span> &nbsp; Endgame when?
                     (Use the keyboard/buttons to move, use Shift to sprint)
@@ -17224,9 +17224,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         }
 
         var endgameMap = `cccccccccccccccccccccccccc
-cgg       g  g      3            g
+cgg       g  gg     3            g
 cg             g          2
-c       g                g             1111111
+c       g                   g             1111111
 c    .              gggg          1111111
 c  AA
 c122222             2   gg                          B
@@ -17234,10 +17234,10 @@ c133211                              ccccccccccccccccccc2222222222222
 c133211            g                  cccccccccccccccccccccccc222222222
 c122222     g                                 CCCCC     CCC
 c                                               g 111111111111111
-c                       gggg  111111111111111111
+c                       gggg  11111113
 c           111111111111111111   AA                   AB
-c             g 222222222333333333331111111111111111111111111
-c                    111111111111111111111111111111111111111111
+c             g 22222222233333333
+c                    1111
 c                       333
 c`.split("\n")
         var spriteW = 999, playerX = 5, playerY = 5, endX = 0, endY = 0, effect = -1, endgameCollide = "cgABC"
@@ -17250,20 +17250,20 @@ c`.split("\n")
                 var ctx = document.getElementById("underground2").getContext("2d")
                 if (endgameLoaded) {
                     if (endX === -1) {
-                        if (playerY < 0 || !endgameCollide.includes(getTile(Math.ceil(playerX) - 1, playerY))) {
+                        if (playerY < 0 || (!endgameCollide.includes(getTile(Math.ceil(playerX) - 1, playerY)) && !endgameCollide.includes(getTile(Math.ceil(playerX) - 1, playerY + 1)))) {
                             playerX -= 0.0625
                         }
                     } else if (endX === 1) {
-                        if (playerY < 0 || !endgameCollide.includes(getTile(playerX + 1, playerY))) {
+                        if (playerY < 0 || (!endgameCollide.includes(getTile(playerX + 1, playerY)) && !endgameCollide.includes(getTile(playerX + 1, playerY + 1)))) {
                             playerX += 0.0625
                         }
                     }
                     if (endY === -1) {
-                        if (playerY < 1 || !endgameCollide.includes(getTile(playerX, Math.ceil(playerY) - 1))) {
+                        if (playerY < 1 || (!endgameCollide.includes(getTile(playerX, Math.ceil(playerY) - 1)) && !endgameCollide.includes(getTile(playerX + 1, Math.ceil(playerY) - 1)))) {
                             playerY -= 0.0625
                         }
                     } else if (endY === 1) {
-                        if (playerY < -1 || !endgameCollide.includes(getTile(playerX, playerY + 1))) {
+                        if (playerY < -1 || (!endgameCollide.includes(getTile(playerX, playerY + 1)) && !endgameCollide.includes(getTile(playerX + 1, playerY + 1)))) {
                             playerY += 0.0625
                         }
                     }
