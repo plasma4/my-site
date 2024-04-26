@@ -7707,10 +7707,10 @@
                     <br>
                     <canvas id="underground2" width="320" height="320"></canvas>
                     <br>
-                    <span class="mini special nosel" id="moveUp">UP</span>
-                    <span class="mini special nosel" id="moveDown">DOWN</span>
-                    <span class="mini special nosel" id="moveLeft">LEFT</span>
-                    <span class="mini special nosel" id="moveRight">RIGHT</span>
+                    <span class="mini special nosel" id="moveUp2">UP</span>
+                    <span class="mini special nosel" id="moveDown2">DOWN</span>
+                    <span class="mini special nosel" id="moveLeft2">LEFT</span>
+                    <span class="mini special nosel" id="moveRight2">RIGHT</span>
                     <span class="mini special nosel" id="stopMoving">STOP MOVING</span>
                     <span class="mini warn2" id="die2">Respawn</span>
                 </div>
@@ -18121,6 +18121,18 @@ c`.split("\n")
             moveCharacter(LEFT)
         })
         attachEvent("moveRight", function () {
+            moveCharacter(RIGHT)
+        })
+        attachEvent("moveUp2", function () {
+            moveCharacter(UP)
+        })
+        attachEvent("moveDown2", function () {
+            moveCharacter(DOWN)
+        })
+        attachEvent("moveLeft2", function () {
+            moveCharacter(LEFT)
+        })
+        attachEvent("moveRight2", function () {
             moveCharacter(RIGHT)
         })
         attachEvent("stopMoving", function () {
