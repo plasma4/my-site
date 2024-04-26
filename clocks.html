@@ -57,7 +57,8 @@
         .mini,
         button,
         #navigation,
-        #underground {
+        #underground,
+        #spells {
             -webkit-user-select: none;
             user-select: none;
         }
@@ -12771,15 +12772,15 @@
                             enterDown = true
                         }
                         if (target.parentElement) {
-                            easyButton = target
-                            easyTime = Date.now() + 500
                             if (target.parentElement.id === "spells") {
                                 var doRun = true
                                 target.onmousedown({ target: target, fakeEvent: true, stopPropagation: function () { doRun = false } })
                                 if (doRun) {
-                                    ID("spells").onmousedown({ target: target, fakeEvent: true, stopPropagation: function () { doRun = false } })
+                                    ID("spells").onmousedown({ target: target, fakeEvent: true, stopPropagation: function () { } })
                                 }
                             } else {
+                                easyButton = target
+                                easyTime = Date.now() + 500
                                 target.click()
                             }
                         }
