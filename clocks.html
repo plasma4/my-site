@@ -13534,7 +13534,7 @@
         }
 
         function shouldAutoClick(elem) {
-            return !shiftDown && elem !== null && elem.id !== null && elem.tagName !== "U" && elem.tagName !== "LABEL" && elem.id.slice(0, 12) !== "autoClicking" && !(["removeButton", "addMod", "wipe", "crystal", "secret", "cheat", "autosell", "toggleStats", "exitWarp", "hyperReset", "metaReset", "fireReset", "silverReset"].includes(elem.id))
+            return !shiftDown && elem !== null && elem.id != null && elem.tagName !== "U" && elem.tagName !== "LABEL" && elem.id.slice(0, 12) !== "autoClicking" && !(["removeButton", "addMod", "wipe", "crystal", "secret", "cheat", "autosell", "toggleStats", "exitWarp", "hyperReset", "metaReset", "fireReset", "silverReset"].includes(elem.id))
         }
 
         var currentTab = "main"
@@ -14011,7 +14011,9 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     let containsSpell = button.parentElement.id === "spells"
                     if (containsSpell) {
                         button.onmousedown = eventFunction
-                        button.ontouchstart = eventFunction
+                        button.ontouchstart = function (e) {
+                            eventFunction(e, true)
+                        }
                     } else {
                         button.onclick = eventFunction
                     }
@@ -14019,7 +14021,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                     let isImproveAI = button.id === "improveAI"
                     let isBrainyAI = button.id === "brainyAI"
                     let singleClick = clickData.includes("$") || containsSpell
-                    function eventFunction(e) {
+                    function eventFunction(e, wasTouch) {
                         var loopAmount = singleClick ? 1 : buttonLoops
                         for (var loops = 0; loops < loopAmount; loops++) {
                             var multiplier = multiplierAttribute === null ? Hyper(true) : C(multiplierAttribute, "This happened while trying to check for purchasing multipliers.").add(1)
@@ -14127,6 +14129,10 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                                 }
 
                                 if (containsSpell) {
+                                    if (wasTouch) {
+                                        ID("spells").onmousedown({ target: button, fakeEvent: true, stopPropagation: function () { } })
+                                        e.stopPropagation()
+                                    }
                                     return
                                 }
 
