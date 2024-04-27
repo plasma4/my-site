@@ -3467,7 +3467,7 @@
 
         .gray {
             color: white;
-            background-color: #4444;
+            background-color: #aaa4;
             border-color: white;
         }
 
@@ -3625,18 +3625,44 @@
         </div>
     </div>
     <div id="aliens" class="noEZ">
-        <button class="green2" id="goHome">Go back home</button>
         <div style="color: #5dee4a" data-s="alien currency unit" data-precision="6" id="cash"></div>
+        <div style="color: #735b5f" data-s="alien metal" data-p="alien metal" id="metal"></div>
+        <div style="color: #f1c814" data-s="kWh" data-p="kWh" id="watts"></div>
         <br>
         Hi, earthling! As a worker in the Interplanetary Unit, your job is to sort packages. Your balance will automatically increase thanks to our state-of-the-art communication software. Should you wish to leave, we shall provide free transportation for you. However, it's your job to get back here again!
-        <p>EZClickers do not do anything here. THIS PART OF THE GAME IS NOT COMPLETE!</p>
-        <button class="yellow" data-earn="packages+1|cash+0.000025" data-stat="packages">Sort a package</button>
+        <p>EZClickers do not do anything here.</p>
+        <button class="green2" id="goHome">Go back home</button>
+        <hr>
+        <button class="yellow" data-earn="packages+1|cash+0.000025" data-stat="packages" id="package">Sort a package</button>
+        <button class="orange" data-earn="sorters+1" data-cost="cash-0.005" data-stat="sorters">Build an autosorter for 0.05 alien currency units</button>
+        <br>
+        <button class="red" data-earn="printers+1" data-cost="cash-50" data-stat="printers">Purchase a machine printer for 50 alien currency units</button>
+        <br>
+        <button class="green" data-show="printers>0" data-earn="cash+1000000" data-cost="printers-50">Ship 25 machine printers for 1,000,000 alien currency units</button>
+        <br>
+        <button class="brown" data-show="printers>0" data-earn="metal+1" data-cost="cash-2500000">Buy a hunk of alien metal for 2,500,000 alien currency units</button>
+        <br>
+        <button class="gray" data-show="metal>0" data-earn="drones+1" data-cost="cash-1e7|metal-5" data-stat="drones">Obtain a superdrone sorter for 10M alien currency units and 5 alien metal</button>
+        <div class="hide noEZ" data-show="drones>0">
+            <hr>
+            <button class="quark" data-cost="cash-2.5e9|metal-100" data-earn="dysons+1" data-stat="dysons">Get a dyson sphere around a star for 2.5B alien currency units and 100 alien metal</button>
+            <button class="quark" data-show="dysons>0" data-cost="cash-1e10" data-earn="fusers+1" data-stat="fusers">Get an electric fuser for 10B alien currency units</button>
+            <br>
+            <button class="brown" data-show="dysons>0" data-cost="cash-2e10" data-earn="metalcenters+1" data-stat="metalcenters">Get an alien metal center for 20B alien currency units</button>
+            <button class="blue" data-show="dysons>0" data-cost="cash-5e10" data-earn="factories+1" data-stat="factories">Get a drone factory for 50B alien currency units</button>
+            <br>
+            <button class="purple" data-show="metalcenters>0|factories>0" data-cost="metal-2.5e7" data-earn="alienmoons+1" data-stat="alienmoons">Make an alien moon using 25M alien metal</button>
+            <button class="purple" data-show="alienmoons>0" data-cost="metal-1e11" data-earn="alienplanets+1" data-stat="alienplanets">Make an alien planet using 100B alien metal</button>
+            <p class="hide" data-show="fusers>0">Electric fusers and kWh boost your hydrogen gain by <span style="color: #fcc650" id="fuserBoost"></span>. (You have <span style="color: #da4" id="atoms2"></span> hydrogen!)</p>
+            <p class="hide" data-show="alienmoons>0">Alien moons are giant hunks of metal that radiate special energy and produce massive quantities of alien metal. Your alien moons boost helium gain by <span style="color: #817dd0" id="moonBoost"></span>. (You have <span style="color: #ddd" id="helium2"></span> helium!)</p>
+            <p class="hide" data-show="alienplanets>0">Alien planets are giant hunks of metal that radiate special energy. Your alien planets also boost helium gain by <span style="color: #817dd0" id="alienBoost"></span>.</p>
+        </div>
     </div>
 
     <script id="main">
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = []
+        var baseProperties = ["watts"]
 
         var buttons = null, buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
@@ -3818,6 +3844,7 @@
                 }
             }
 
+            zone = 0
             updateProperties()
             for (i = 0; i < properties.length; i++) {
                 var property = properties[i]
@@ -3871,6 +3898,7 @@
             buttonsAndUnlocks = buttons.concat(Array.from(document.getElementsByClassName("hide")))
         }
 
+        // Adds a certain amount of a property, with an optional multiplier
         function add(item, amount, multiplier) {
             if (multiplier != null) {
                 amount = amount.mul(multiplier)
@@ -3881,6 +3909,7 @@
             return newSum
         }
 
+        // Removes a certain amount of a property, with an optional multiplier. Returns true if it worked and false if resources were insufficient.
         function remove(item, amount, multiplier) {
             if (multiplier != null) {
                 amount = amount.mul(multiplier)
@@ -3891,6 +3920,29 @@
                 return true
             }
             return false
+        }
+
+        function clearAmount(data, clearTotals) {
+            if (clearTotals) {
+                if (data instanceof Array) {
+                    for (var i = 0; i < data.length; i++) {
+                        var property = data[i]
+                        stuff[property] = new Hyper()
+                        stuffTotals[property] = new Hyper()
+                    }
+                } else {
+                    stuff[data] = new Hyper()
+                    stuffTotals[data] = new Hyper()
+                }
+            } else {
+                if (data instanceof Array) {
+                    for (var i = 0; i < data.length; i++) {
+                        stuff[data[i]] = new Hyper()
+                    }
+                } else {
+                    stuff[data] = new Hyper()
+                }
+            }
         }
 
         function C(item) {
@@ -3943,7 +3995,7 @@
                 } else {
                     var raw = button.getAttribute("data-raw")
                     if (raw !== null) {
-                        update(button, button.getAttribute("data-raw") + " (you have " + C(button.getAttribute("data-stat")).format() + ")")
+                        update(button, button.getAttribute("data-raw") + " (you have " + C(button.getAttribute("data-stat")).format() + (button.id === "package" ? " sorted packages)" : ")"))
                     }
                 }
             }
@@ -4026,7 +4078,7 @@
         }
 
         var strangeBoost
-        function updateGame(speed) {
+        function updateGame(render, speed) {
             for (var i = 0; i < buttonsAndUnlocks.length; i++) {
                 var child = buttonsAndUnlocks[i]
                 var requirements = child.getAttribute("data-show")
@@ -4045,6 +4097,9 @@
             }
 
             // Increase numbers
+            var fuserBoost = C("fusers").mul(C("watts").sqrt()).add(10).log10().pow(90000)
+            var moonBoost = C("alienmoons").mul(32).add(10).pow(1550000)
+            var alienBoost = C("alienplanets").mul(392).add(10).pow(37500000)
             var heliumBoost = C("helium").sqrt().mul(0.3).mul(C("helium").add(10).log10()).add(1)
             strangeBoost = C("exotic").add(1).log2().mul(49).add(1)
             var magnetBoost = C("magnets").add(1).ln().mul(19).add(1)
@@ -4066,34 +4121,48 @@
             add("producer5", C("producer6").div(6), speed)
             add("producer4", C("producer5").div(6), speed)
             add("vortexes", C("producer4").div(6), speed)
-            add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost), speed)
+            add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost).mul(fuserBoost), speed)
             add("slime", C("vortexes").mul("321.678").mul(vortexBoost).mul(rocketSlimeBoost), speed)
             add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost).mul(vortexSpinBoost).mul(rocketBoost), speed)
             add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost), speed)
             add("starmakers", C("sstars").div(60).mul(tickBoost), speed)
             add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost).mul(tickBoost), speed)
-            add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost).mul(tickBoost), speed)
+            add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost).mul(tickBoost).mul(moonBoost).mul(alienBoost), speed)
             add("exotic", C("reactors").div(120).add(C("sstars").mul(700)).mul(magnetBoost).mul(dwarfBoost).mul(tickBoost), speed)
+            add("metal", C("metalcenters").div(0.15).add(C("alienmoons").mul(32250)))
+            add("drones", C("factories").div(0.0275))
+            add("sorters", C("printers").div(0.3))
+            var packageGain = C("sorters").div(3).add(C("drones").mul("1e9"))
+            add("packages", packageGain)
+            add("cash", packageGain.div(40000))
+            add("watts", C("dysons").mul("1e32").div(60))
 
-            // Update text
-            update(ID("heliumBoost"), calculateBoost(heliumBoost))
-            update(ID("strangeBoost"), calculateBoost(strangeBoost))
-            update(ID("magnetBoost"), calculateBoost(magnetBoost))
-            update(ID("planetBoost"), calculateBoost(planetBoost))
-            update(ID("quarkBoost"), calculateBoost(quarkBoost))
-            update(ID("holeBoost"), calculateBoost(holeBoost))
-            update(ID("spinBoost"), calculateBoost(spinBoost))
-            update(ID("neonBoost"), calculateBoost(neonBoost))
-            update(ID("dwarfBoost"), calculateBoost(dwarfBoost))
-            update(ID("tickBoost"), calculateBoost(tickBoost))
-            update(ID("slimeBoost"), calculateBoost(slimeBoost))
-            update(ID("vortexBoost"), calculateBoost(vortexBoost))
-            update(ID("vortexSpinBoost"), calculateBoost(vortexSpinBoost))
-            update(ID("rocketBoost"), calculateBoost(rocketBoost))
-            update(ID("rocketSlimeBoost"), calculateBoost(rocketSlimeBoost))
-            update(ID("ezBoost"), calculateBoost(ezBoost))
-            update(ID("hyperBoost"), calculateBoost(hyperBoost))
-            update(ID("superBoost"), calculateBoost(superBoost))
+            // Update text if needed
+            if (render) {
+                update(ID("heliumBoost"), calculateBoost(heliumBoost))
+                update(ID("strangeBoost"), calculateBoost(strangeBoost))
+                update(ID("magnetBoost"), calculateBoost(magnetBoost))
+                update(ID("planetBoost"), calculateBoost(planetBoost))
+                update(ID("quarkBoost"), calculateBoost(quarkBoost))
+                update(ID("holeBoost"), calculateBoost(holeBoost))
+                update(ID("spinBoost"), calculateBoost(spinBoost))
+                update(ID("neonBoost"), calculateBoost(neonBoost))
+                update(ID("dwarfBoost"), calculateBoost(dwarfBoost))
+                update(ID("tickBoost"), calculateBoost(tickBoost))
+                update(ID("slimeBoost"), calculateBoost(slimeBoost))
+                update(ID("vortexBoost"), calculateBoost(vortexBoost))
+                update(ID("vortexSpinBoost"), calculateBoost(vortexSpinBoost))
+                update(ID("rocketBoost"), calculateBoost(rocketBoost))
+                update(ID("rocketSlimeBoost"), calculateBoost(rocketSlimeBoost))
+                update(ID("ezBoost"), calculateBoost(ezBoost))
+                update(ID("hyperBoost"), calculateBoost(hyperBoost))
+                update(ID("superBoost"), calculateBoost(superBoost))
+                update(ID("fuserBoost"), calculateBoost(fuserBoost))
+                update(ID("moonBoost"), calculateBoost(moonBoost))
+                update(ID("alienBoost"), calculateBoost(alienBoost))
+                update(ID("atoms2"), C("atoms").format())
+                update(ID("helium2"), C("helium").format())
+            }
         }
 
         var lightMode = false, font = 0, zone = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickRepeats = Hyper(1)
@@ -4101,12 +4170,11 @@
             var newTime = Date.now()
             var diff = newTime - time
             if (diff < 500) {
-                updateNumbers()
-                updateGame()
+                updateGame(true)
 
                 var clickBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
                 if (easyButton !== null && easyTime.isLess(newTime) && easyButton.id !== "reset") {
-                    clickRepeats = easyButton.parentElement.className === "noEZ" ? Hyper(1) : clickBoost.mul(diff).div(20).floor().max(1)
+                    clickRepeats = (easyButton.parentElement !== null && easyButton.parentElement.className.includes("noEZ")) ? Hyper(1) : clickBoost.mul(diff).div(20).floor().max(1)
                     alreadyClicked = false
                     easyButton.click()
                     easyTime = easyTime.add(50)
@@ -4114,18 +4182,22 @@
                 }
             } else {
                 easyTime = Hyper(newTime + 50)
-                var iterations = Math.floor(diff * 60 / 1000)
-                if (iterations <= 50) {
+                var iterations = Math.floor(diff * 60 / 1000) - 1
+                if (iterations <= 49) {
                     for (var i = 0; i < iterations; i++) {
-                        updateGame()
+                        updateGame(false)
                     }
                 } else {
                     var customSpeed = Hyper(diff * 60).div(1000).floor().div(50)
                     for (var i = 0; i < 50; i++) {
-                        updateGame(customSpeed)
+                        updateGame(false, customSpeed)
                     }
                 }
+
+                updateGame(true)
             }
+            updateNumbers()
+
             alreadyClicked = false
             if (++frame % 30 === 0) {
                 saveLocally()
@@ -4303,7 +4375,7 @@
         ID("reset").addEventListener("click", function () {
             if (confirmReset) {
                 if (confirm("Are you ABSOLUTELY sure you want to reset? You will lose ALL progress!")) {
-                    setup()
+                    setup(true)
                     ID("reset").textContent = "RESET"
                 }
                 confirmReset = false
@@ -4414,9 +4486,10 @@
         document.body.removeAttribute("style")
         draw()
 
-        function getEverything() {
+        function getEverything(addAmount) {
+            addAmount = Hyper(addAmount == null ? 1000 : addAmount)
             for (var i = 0; i < properties.length; i++) {
-                add(properties[i], Hyper("100"))
+                add(properties[i], addAmount)
             }
         }
     </script>
