@@ -4097,8 +4097,8 @@
 
             // Increase numbers
             var fuserBoost = C("fusers").mul(C("watts").sqrt()).add(10).log10().pow(90000)
-            var moonBoost = C("alienmoons").mul(32).add(10).pow(1550000)
-            var alienBoost = C("alienplanets").mul(392).add(10).pow(37500000)
+            var moonBoost = C("alienmoons").mul(32).add(1).pow(1550000)
+            var alienBoost = C("alienplanets").mul(392).add(1).pow(37500000)
             var heliumBoost = C("helium").sqrt().mul(0.3).mul(C("helium").add(10).log10()).add(1)
             strangeBoost = C("exotic").add(1).log2().mul(49).add(1)
             var magnetBoost = C("magnets").add(1).ln().mul(19).add(1)
