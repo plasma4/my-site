@@ -3720,11 +3720,18 @@
         <p>OmegaCloners multiply quark cloners by <span class="rainbow" id="omegaBoost"></span> each second.</p>
         <p>OmegaBoosters exponentiate OmegaCloner effect by <span class="rainbow" id="boosterBoost"></span> each second.</p>
     </div>
+    <div class="hide noEZ" data-show="omegaboosters>0">
+        <hr>
+        <div style="color: #f11486" data-s="qubit" id="qubits"></div>
+        <button class="blue" data-cost="omegaboosters-50" data-earn="prismgen+1" data-stat="prismgen">Create a prism generator to generate prisms based on quarks by using 50 OmegaBoosters</button>
+        <button class="quark" data-cost="prisms-1e23" data-earn="qprisms+1" data-stat="qprisms">Create a quantum prism for 100s prisms</button>
+        <p>Prism generators generate prisms rapidly based on your quarks. Quantum prisms produce qubits, which multiply quark cloner effect by <span class="rainbow" id="quantumBoost"></span>.</p>
+    </div>
 
     <script id="main">
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = ["watts"]
+        var baseProperties = ["qubits"]
 
         var buttons = null, buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
@@ -4170,9 +4177,10 @@
             }
 
             // Increase numbers
+            var quantumBoost = C("qubits").mul(7.25).add(1).pow("1.5e30").floor()
             var boosterBoost = C("omegaboosters").mul(3.25).add(1).pow(5).floor()
             var omegaBoost = C("omegacloners").mul(2.7).add(10).log10().sqrt().sqrt().pow(boosterBoost)
-            mul("cloners", omegaBoost)
+            mul("cloners", omegaBoost.mul(quantumBoost))
             var cloneBoost = C("cloners").mul(3).add(1).pow("5.45e13")
             var prismBoost = C("prisms").mul(6.35).add(1).sqr().floor()
             var radiantBoost = C("radiantholes").mul(4.7).add(2).log2().pow(150)
@@ -4198,6 +4206,8 @@
             var rocketBoost = C("rockets").pow(13).add(1)
             var rocketSlimeBoost = C("rockets").pow(5).add(1)
             var ezBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
+            add("qubits", C("qprisms").div(0.00000325), speed)
+            add("prisms", C("prismgen").mul(C("quarks").add(1).log10()).div(35000000000), speed)
             add("producer5", C("producer6").div(6), speed)
             add("producer4", C("producer5").div(6), speed)
             add("vortexes", C("producer4").div(6), speed)
@@ -4221,6 +4231,7 @@
 
             // Update text if needed
             if (render) {
+                update(ID("quantumBoost"), calculateBoost(quantumBoost))
                 update(ID("boosterBoost"), calculateBoost(boosterBoost))
                 update(ID("omegaBoost"), calculateBoost(omegaBoost.pow(60), 6))
                 update(ID("cloneBoost"), calculateBoost(cloneBoost))
@@ -4588,7 +4599,7 @@
         draw()
 
         function getEverything(addAmount) {
-            addAmount = Hyper(addAmount == null ? 1000 : addAmount)
+            addAmount = Hyper(addAmount == null ? 10 : addAmount)
             for (var i = 0; i < properties.length; i++) {
                 add(properties[i], addAmount)
             }
