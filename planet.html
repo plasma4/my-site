@@ -3703,7 +3703,8 @@
             <button class="wow" data-show="alienplanets>0" data-cost="alienplanets-5" data-earn="anti+1" data-stat="anti">Make an anti-star with 5 alien planets</button>
             <button class="white" data-show="alienplanets>0" data-cost="anti-2" data-earn="whiteholes+1" data-stat="whiteholes">Fuse 2 anti-stars to produce a white hole</button>
             <button class="black" data-show="whiteholes>0" data-cost="metal-2.5e13|watts-1.5e48" data-earn="radiantholes+1" data-stat="radiantholes">Make a superradiant black hole using 25T alien metal and 1.5Qd megajoules</button>
-            <button class="red" data-show="radiantholes>0" data-cost="cash-7.5e16|watts-1e150" data-earn="prisms+1" data-stat="prisms">Create an antimatter prism with 75q alien currency and 1e150 megajoules</button>
+            <button class="red" data-show="radiantholes>0" data-cost="cash-7.5e16|watts-1e150" data-earn="prisms+1" data-stat="prisms">Create an antimatter prism with 75q alien currency units and 1e150 megajoules</button>
+            <button class="green" data-show="radiantholes>0" data-cost="atoms-e1.6e10|radiantholes-25" data-earn="cash+2.5e19" data-stat="cash">Sell 1e16B hydrogen and 25 superradiant black holes for 25.000Q alien currency units</button>
             <p class="hide" data-show="anti>0">Anti-stars radiate energy intensely and increase your megajoule gain by <span style="color: #ea412a" id="electricBoost"></span>.</p>
             <p class="hide" data-show="whiteholes>0">White holes spit out matter and each produce 10 alien moons and planets every second.</p>
             <p class="hide" data-show="radiantholes>0">Superradiant black holes have a ridiculous amount of energy and boost megajoule production by a stunning <span style="color: #e6a551" id="radiantBoost"></span>.</p>
@@ -4542,9 +4543,11 @@
                     var item = localData[i]
                     var colonKey = item.indexOf(":")
                     var key = item.slice(0, colonKey)
-                    var firstSplit = item.indexOf("#")
-                    stuff[key] = new Hyper(item.slice(colonKey + 1, firstSplit))
-                    stuffTotals[key] = new Hyper(item.slice(firstSplit + 1))
+                    if (properties.includes(key)) {
+                        var firstSplit = item.indexOf("#")
+                        stuff[key] = new Hyper(item.slice(colonKey + 1, firstSplit))
+                        stuffTotals[key] = new Hyper(item.slice(firstSplit + 1))
+                    }
                 }
             }
         }
