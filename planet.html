@@ -3711,6 +3711,15 @@
             <p class="hide" data-show="prisms>0">Antimatter prisms exponentiate megajoule's effect on hydrogen by a powerful <span class="rainbow" id="prismBoost"></span>.</p>
         </div>
     </div>
+    <div class="hide noEZ" data-show="prisms>0">
+        <hr>
+        <button class="orange" data-cost="prisms-12|quarks-e3e12" data-earn="cloners+1" data-stat="cloners">Create a quark cloner using 12 prisms and 1e30T quarks</button>
+        <button class="yellow" data-cost="cloners-144|watts-2e200" data-earn="omegacloners+1" data-stat="omegacloners">Create an OmegaCloner using 144 quark cloners and 2e200 megajoules</button>
+        <button class="green" data-cost="omegacloners-10|cloners-1e1000|prisms-25" data-earn="omegaboosters+1" data-stat="omegaboosters">Create an OmegaBooster using 10 OmegaCloners, 1e1,000 quark cloners, and 25 prisms</button>
+        <p>Quark cloners are extremely powerful and multiply quark gain by <span class="rainbow" id="cloneBoost"></span>. Each one also produces quarks based on your quarks. (You have <span style="color: #d38" id="quarks2"></span> quarks!)</p>
+        <p>OmegaCloners multiply quark cloners by <span class="rainbow" id="omegaBoost"></span> each second.</p>
+        <p>OmegaBoosters exponentiate OmegaCloner effect by <span class="rainbow" id="boosterBoost"></span> each second.</p>
+    </div>
 
     <script id="main">
         ID("main").remove()
@@ -3962,6 +3971,17 @@
             return newSum
         }
 
+        // Multiplies instead of adds, with the optional multiplier rounded down
+        function mul(item, amount, multiplier) {
+            if (multiplier != null) {
+                amount = amount.pow(multiplier)
+            }
+            var newSum = stuff[item].mul(amount)
+            stuff[item] = newSum
+            stuffTotals[item] = stuffTotals[item].mul(amount.sub(1))
+            return newSum
+        }
+
         // Removes a certain amount of a property, with an optional multiplier. Returns true if it worked and false if resources were insufficient.
         function remove(item, amount, multiplier) {
             if (multiplier != null) {
@@ -4054,8 +4074,8 @@
             }
         }
 
-        function calculateBoost(number) {
-            return number.isMoreOrEqual(10) ? (number.format(2) + "×") : ("+" + number.mul(100).sub(100).format(2) + "%")
+        function calculateBoost(number, formatAmount) {
+            return number.isMoreOrEqual(10) || formatAmount ? (number.format(formatAmount == null ? 2 : formatAmount) + "×") : ("+" + number.mul(100).sub(100).format(formatAmount == null ? 2 : formatAmount) + "%")
         }
 
         function meetsRequirements(conditions) {
@@ -4150,6 +4170,10 @@
             }
 
             // Increase numbers
+            var boosterBoost = C("omegaboosters").mul(3.25).add(1).pow(5).floor()
+            var omegaBoost = C("omegacloners").mul(2.7).add(10).log10().sqrt().sqrt().pow(boosterBoost)
+            mul("cloners", omegaBoost)
+            var cloneBoost = C("cloners").mul(3).add(1).pow("5.45e13")
             var prismBoost = C("prisms").mul(6.35).add(1).sqr().floor()
             var radiantBoost = C("radiantholes").mul(4.7).add(2).log2().pow(150)
             var electricBoost = C("anti").mul(1.8).add(1).pow(7).sqrt()
@@ -4180,7 +4204,7 @@
             add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost).mul(fuserBoost), speed)
             add("slime", C("vortexes").mul("321.678").mul(vortexBoost).mul(rocketSlimeBoost), speed)
             add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost).mul(vortexSpinBoost).mul(rocketBoost), speed)
-            add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost), speed)
+            add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost).mul(C("quarks").sqrt().sqrt().sqrt().sqrt().pow(15).div(60)).mul(cloneBoost), speed)
             add("starmakers", C("sstars").div(60).mul(tickBoost), speed)
             add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost).mul(tickBoost), speed)
             add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost).mul(tickBoost).mul(moonBoost).mul(alienBoost), speed)
@@ -4197,6 +4221,9 @@
 
             // Update text if needed
             if (render) {
+                update(ID("boosterBoost"), calculateBoost(boosterBoost))
+                update(ID("omegaBoost"), calculateBoost(omegaBoost.pow(60), 6))
+                update(ID("cloneBoost"), calculateBoost(cloneBoost))
                 update(ID("prismBoost"), calculateBoost(prismBoost))
                 update(ID("radiantBoost"), calculateBoost(radiantBoost))
                 update(ID("electricBoost"), calculateBoost(electricBoost))
@@ -4223,6 +4250,7 @@
                 update(ID("alienBoost"), calculateBoost(alienBoost))
                 update(ID("atoms2"), C("atoms").format())
                 update(ID("helium2"), C("helium").format())
+                update(ID("quarks2"), C("quarks").format())
             }
         }
 
@@ -4527,7 +4555,7 @@
                 convertedResult = convertedSplit[0]
 
                 if (convertedSplit.length > 1) {
-                    time = convertedSplit[1]
+                    time = Number(convertedSplit[1])
                 }
 
                 // Clear previous stats
