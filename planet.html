@@ -3499,6 +3499,23 @@
             color: white;
         }
 
+        .white {
+            color: black;
+            background-color: white;
+            border-color: black;
+        }
+
+        .white:hover,
+        .white:focus {
+            background-color: #444;
+            color: white;
+        }
+
+        .white:active {
+            background-color: black;
+            color: white;
+        }
+
         body.light .black {
             color: white;
             background-color: black;
@@ -3520,6 +3537,27 @@
         .wow:active {
             background-color: white;
             color: black;
+        }
+
+        .rainbow {
+            background: linear-gradient(90deg, #e41a1a, #f5a30c, #e7fa15, #2ccf4a, #1a98c2, #2270e6, #891fed, #9b24b6, #e0116b, #e41a1a, #f5a30c, #e7fa15, #2ccf4a, #1a98c2, #2270e6, #891fed, #9b24b6, #e0116b, #e41a1a);
+            background-size: 200% 100%;
+            animation: gradient2 15s linear infinite;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 1px #fff8;
+            animation: gradient 2s linear infinite;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: 100% 100%;
+            }
         }
     </style>
 </head>
@@ -3630,7 +3668,7 @@
     <div id="aliens" class="noEZ">
         <div style="color: #5dee4a" data-s="alien currency unit" data-precision="6" id="cash"></div>
         <div style="color: #735b5f" data-s="alien metal" data-p="alien metal" id="metal"></div>
-        <div style="color: #f1c814" data-s="kWh" data-p="kWh" id="watts"></div>
+        <div style="color: #f1c814" data-s="megajoules" data-p="megajoules" id="watts"></div>
         <br>
         Hi, earthling! As a worker in the Interplanetary Unit, your job is to sort packages. Your balance will automatically increase thanks to our state-of-the-art communication software. Should you wish to leave, we shall provide free transportation for you. However, it's your job to get back here again!
         <p>EZClickers do not do anything here.</p>
@@ -3654,11 +3692,22 @@
             <button class="brown" data-show="dysons>0" data-cost="cash-2e10" data-earn="metalcenters+1" data-stat="metalcenters">Get an alien metal center for 20B alien currency units</button>
             <button class="blue" data-show="dysons>0" data-cost="cash-5e10" data-earn="factories+1" data-stat="factories">Get a drone factory for 50B alien currency units</button>
             <br>
-            <button class="purple" data-show="metalcenters>0|factories>0" data-cost="metal-2.5e7" data-earn="alienmoons+1" data-stat="alienmoons">Make an alien moon using 25M alien metal</button>
-            <button class="purple" data-show="alienmoons>0" data-cost="metal-1e11" data-earn="alienplanets+1" data-stat="alienplanets">Make an alien planet using 100B alien metal</button>
-            <p class="hide" data-show="fusers>0">Electric fusers and kWh boost your hydrogen gain by <span style="color: #fcc650" id="fuserBoost"></span>. (You have <span style="color: #da4" id="atoms2"></span> hydrogen!)</p>
+            <button data-show="metalcenters>0|factories>0" data-cost="metal-2.5e7" data-earn="alienmoons+1" data-stat="alienmoons">Make an alien moon using 25M alien metal</button>
+            <button data-show="alienmoons>0" data-cost="metal-1e11" data-earn="alienplanets+1" data-stat="alienplanets">Make an alien planet using 100B alien metal</button>
+            <p class="hide" data-show="fusers>0">Electric fusers and megajoules boost your hydrogen gain by <span style="color: #fcc650" id="fuserBoost"></span>. (You have <span style="color: #da4" id="atoms2"></span> hydrogen!)</p>
             <p class="hide" data-show="alienmoons>0">Alien moons are giant hunks of metal that radiate special energy and produce massive quantities of alien metal. Your alien moons boost helium gain by <span style="color: #817dd0" id="moonBoost"></span>. (You have <span style="color: #ddd" id="helium2"></span> helium!)</p>
-            <p class="hide" data-show="alienplanets>0">Alien planets are giant hunks of metal that radiate special energy. Your alien planets also boost helium gain by <span style="color: #817dd0" id="alienBoost"></span>.</p>
+            <p class="hide" data-show="alienplanets>0">Alien planets are giant hunks of metal that radiate special energy. Your alien planets also boost helium gain by <span style="color: #f3c082" id="alienBoost"></span>.</p>
+        </div>
+        <div class="hide noEZ" data-show="alienplanets>0">
+            <hr>
+            <button class="wow" data-show="alienplanets>0" data-cost="alienplanets-5" data-earn="anti+1" data-stat="anti">Make an anti-star with 5 alien planets</button>
+            <button class="white" data-show="alienplanets>0" data-cost="anti-2" data-earn="whiteholes+1" data-stat="whiteholes">Fuse 2 anti-stars to produce a white hole</button>
+            <button class="black" data-show="whiteholes>0" data-cost="metal-2.5e13|watts-1.5e48" data-earn="radiantholes+1" data-stat="radiantholes">Make a superradiant black hole using 25T alien metal and 1.5Qd megajoules</button>
+            <button class="red" data-show="radiantholes>0" data-cost="cash-7.5e16|watts-1e150" data-earn="prisms+1" data-stat="prisms">Create an antimatter prism with 75q alien currency and 1e150 megajoules</button>
+            <p class="hide" data-show="anti>0">Anti-stars radiate energy intensely and increase your megajoule gain by <span style="color: #ea412a" id="electricBoost"></span>.</p>
+            <p class="hide" data-show="whiteholes>0">White holes spit out matter and each produce 10 alien moons and planets every second.</p>
+            <p class="hide" data-show="radiantholes>0">Superradiant black holes have a ridiculous amount of energy and boost megajoule production by a stunning <span style="color: #e6a551" id="radiantBoost"></span>.</p>
+            <p class="hide" data-show="prisms>0">Antimatter prisms exponentiate megajoule's effect on hydrogen by a powerful <span class="rainbow" id="prismBoost"></span>.</p>
         </div>
     </div>
 
@@ -4100,7 +4149,10 @@
             }
 
             // Increase numbers
-            var fuserBoost = C("fusers").mul(C("watts").sqrt()).add(10).log10().pow(90000)
+            var prismBoost = C("prisms").mul(6.35).add(1).sqr().floor()
+            var radiantBoost = C("radiantholes").mul(4.7).add(2).log2().pow(150)
+            var electricBoost = C("anti").mul(1.8).add(1).pow(7).sqrt()
+            var fuserBoost = C("fusers").mul(C("watts").sqrt()).add(10).log10().pow(90000).pow(prismBoost)
             var moonBoost = C("alienmoons").mul(32).add(1).pow(1550000)
             var alienBoost = C("alienplanets").mul(392).add(1).pow(37500000)
             var heliumBoost = C("helium").sqrt().mul(0.3).mul(C("helium").add(10).log10()).add(1)
@@ -4132,16 +4184,21 @@
             add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost).mul(tickBoost), speed)
             add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost).mul(tickBoost).mul(moonBoost).mul(alienBoost), speed)
             add("exotic", C("reactors").div(120).add(C("sstars").mul(700)).mul(magnetBoost).mul(dwarfBoost).mul(tickBoost), speed)
+            add("alienplanets", C("whiteholes").div(6))
+            add("alienmoons", C("whiteholes").div(6))
             add("metal", C("metalcenters").div(0.15).add(C("alienmoons").mul(32250)))
             add("drones", C("factories").div(0.0275))
             add("sorters", C("printers").div(0.3))
             var packageGain = C("sorters").div(3).add(C("drones").mul("1e9"))
             add("packages", packageGain)
             add("cash", packageGain.mul(0.000025))
-            add("watts", C("dysons").mul("1e32").div(60))
+            add("watts", C("dysons").mul("1e32").div(60).mul(electricBoost).mul(radiantBoost))
 
             // Update text if needed
             if (render) {
+                update(ID("prismBoost"), calculateBoost(prismBoost))
+                update(ID("radiantBoost"), calculateBoost(radiantBoost))
+                update(ID("electricBoost"), calculateBoost(electricBoost))
                 update(ID("heliumBoost"), calculateBoost(heliumBoost))
                 update(ID("strangeBoost"), calculateBoost(strangeBoost))
                 update(ID("magnetBoost"), calculateBoost(magnetBoost))
