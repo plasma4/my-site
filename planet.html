@@ -3010,6 +3010,10 @@
             touch-action: manipulation;
         }
 
+        .small {
+            font-size: 14px;
+        }
+
         /* 
                                         Apache License
                                 Version 2.0, January 2004
@@ -3522,7 +3526,8 @@
 </head>
 
 <body style="display: none">
-    <p>The game was made by me (Leo Zhang), and Gavin. All rights are reserved! Have fun...</p>
+    <p>The game was made by me (Leo Zhang). All rights are reserved! Have fun...</p>
+    <p class="small">(Original concept by Gavin)</p>
     <button class="bold red" id="reset">RESET</button>
     <button class="bold orange" id="import">Import</button>
     <button class="bold orange" id="export">Export</button>
@@ -4133,7 +4138,7 @@
             add("sorters", C("printers").div(0.3))
             var packageGain = C("sorters").div(3).add(C("drones").mul("1e9"))
             add("packages", packageGain)
-            add("cash", packageGain.div(40000))
+            add("cash", packageGain.mul(0.000025))
             add("watts", C("dysons").mul("1e32").div(60))
 
             // Update text if needed
@@ -4255,6 +4260,8 @@
                     result += item + ":" + stuff[item] + "#" + total + "%"
                 }
             }
+
+            result += "|||" + time
 
             // Do some silly encoding
             var len = result.length
@@ -4395,6 +4402,7 @@
 
         ID("import").addEventListener("click", function () {
             loadSave(prompt("Enter your save below:"))
+            easyButton = null
         })
 
         ID("export").addEventListener("click", function () {
@@ -4428,7 +4436,7 @@
         })
 
         function loadSave(localData) {
-            if (localData === null || localData.trim().length < 10) {
+            if (localData === null || localData.slice(0, 9) !== "atomicly ") {
                 return
             }
             var convertedResult = ""
@@ -4456,6 +4464,13 @@
                         code = Math.sqrt(code - 3)
                     }
                     convertedResult += String.fromCharCode(code)
+                }
+
+                var convertedSplit = convertedResult.split("|||")
+                convertedResult = convertedSplit[0]
+
+                if (convertedSplit.length > 1) {
+                    time = convertedSplit[1]
                 }
 
                 // Clear previous stats
