@@ -4214,7 +4214,7 @@
             add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost).mul(fuserBoost), speed)
             add("slime", C("vortexes").mul("321.678").mul(vortexBoost).mul(rocketSlimeBoost), speed)
             add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost).mul(vortexSpinBoost).mul(rocketBoost), speed)
-            add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost).mul(C("quarks").sqrt().sqrt().sqrt().sqrt().pow(15).div(60)).mul(cloneBoost), speed)
+            add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost).add(C("quarks").sqrt().sqrt().sqrt().sqrt().pow(15).div(60)).mul(cloneBoost), speed)
             add("starmakers", C("sstars").div(60).mul(tickBoost), speed)
             add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost).mul(tickBoost), speed)
             add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost).mul(tickBoost).mul(moonBoost).mul(alienBoost), speed)
