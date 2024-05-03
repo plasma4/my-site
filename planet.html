@@ -3619,7 +3619,7 @@
             <div style="color: #f64" data-s="spin" data-p="spin" id="spin"></div>
             <button class="green" data-cost="atoms-all" data-earn="money+*0.01">Sell all hydrogen for $0.01 each</button>
             <button class="quark" data-cost="money-1e13" data-earn="quarkgen+1" data-stat="quarkgen">Create a strange quark generator for $10T</button>
-            <button class="quark" data-show="quarkgen>=10" data-cost="money-all" data-earn="quarkgen+*1e-13">Get max strange quark generators</button>
+            <button class="quark" data-show="quarkgen>=10" data-cost="money-all" data-earn="quarkgen+*1e-13">Get max strange quark generators (capped at 1e2,500)</button>
             <button class="gray" data-show="quarkgen>=100" data-cost="exotic-all" data-earn="planets+*1e-7">Max all strange planets</button>
             <button class="gray" data-show="quarkgen>=100|planets>=1000" data-cost="planets-all" data-earn="sstars+*0.2">Max all strange stars</button>
             <p>You can create strange quarks by separting individual particles from strange matter. These increase the speed that gas is created by speeding up internal reactions and boost hydrogen and helium production by <span style="color: #d1b" id="quarkBoost"></span>.</p>
@@ -3744,6 +3744,7 @@
 
         var buttons = null, buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
+            easyUpgrades = 0
             var elements = document.getElementsByTagName("*")
             buttons = []
             for (var i = 0; i < elements.length; i++) {
@@ -3814,112 +3815,111 @@
                         }
 
                         alreadyClicked = true
-                        for (var loops = 0; loops < clickLoops; loops++) {
-                            var multiplier = new Hyper(true)
 
-                            var noPow = true
-                            var types = Array(len)
-                            var amounts = Array(len)
+                        // Change this to increase the multiplier
+                        var multiplier = new Hyper(true)
 
-                            if (len !== 0) {
-                                var multipliedAmount = null
-                                for (var t = 0; t < len; t++) {
-                                    var item = costs[t]
-                                    var minus = item.indexOf("-")
-                                    var type = item.slice(0, minus)
-                                    if (!stuff.hasOwnProperty(type)) {
-                                        console.error("The property '" + type.replace(/'/g, "\\'") + "' doesn't exist.")
+                        var noPow = true
+                        var types = Array(len)
+                        var amounts = Array(len)
+
+                        if (len !== 0) {
+                            var multipliedAmount = null
+                            for (var t = 0; t < len; t++) {
+                                var item = costs[t]
+                                var minus = item.indexOf("-")
+                                var type = item.slice(0, minus)
+                                if (!stuff.hasOwnProperty(type)) {
+                                    console.error("The property '" + type.replace(/'/g, "\\'") + "' doesn't exist.")
+                                    return
+                                }
+
+                                var quantity = Hyper(stuff[type])
+
+                                var str = item.slice(minus + 1)
+                                var amount
+
+                                if (str === "all") {
+                                    amount = quantity
+                                    if (type === "stars" && amount.isLess(50)) {
                                         return
                                     }
 
-                                    var quantity = Hyper(stuff[type])
-
-                                    var str = item.slice(minus + 1)
-                                    var amount
-
-                                    if (str === "all") {
-                                        amount = quantity
-                                        if (type === "stars" && amount.isLess(50)) {
-                                            return
-                                        }
-
-                                        if (multipliedAmount === null) {
-                                            multipliedAmount = new Hyper(amount)
-                                        }
-                                    } else {
-                                        var powIndex = str.indexOf("POW")
-                                        if (powIndex !== -1) {
-                                            noPow = false
-                                            amount = Hyper(str.slice(0, powIndex)).pow(C(str.slice(powIndex + 3))).mul(multiplier)
-                                        } else {
-                                            var lenSub = str.length - 1
-                                            if (str.charCodeAt(lenSub) === 37) {
-                                                // The string ends with a percent sign:
-                                                multipliedAmount = quantity.mul(0.01).mul(str.slice(0, lenSub)).ceil(true)
-
-                                                if (multipliedAmount === null) {
-                                                    amount = multipliedAmount
-                                                }
-                                            } else {
-                                                amount = Hyper(str).mul(multiplier)
-                                            }
-                                        }
-                                    }
-
-                                    if (multipliedAmount === null && noPow) {
-                                        amount = amount.mul(clickRepeats)
-                                    }
-
-                                    if (quantity.isLess(amount)) {
-                                        e.stopPropagation()
-                                        return
-                                    }
-
-                                    types[t] = type
-                                    amounts[t] = amount
-                                }
-
-                                for (t = 0; t < len; t++) {
-                                    // No need to consider multipliers, as they've already been multiplied in
-                                    remove(types[t], amounts[t])
-                                }
-                            }
-
-                            e.stopPropagation()
-
-                            for (t = 0; t < onclicks.length; t++) {
-                                var action = onclicks[t]
-                                var plus = action.indexOf("+")
-                                if (plus === -1) {
-                                    var sign = action.indexOf("*")
-                                    if (sign === -1) {
-                                        sign = action.indexOf("^")
-                                        if (sign === -1) {
-                                            console.warn("A normal item should use a '+' or '*' or '^' sign. Note that only '^2' is supported for exponents currently. A rocket part ID should start with a '$' and can use either the '-' or '+' sign.")
-                                            continue
-                                        }
-                                        sqr(action.slice(0, sign))
-                                    }
-                                    mul(action.slice(0, sign), Hyper(action.slice(sign + 1)))
-                                    continue
-                                }
-
-                                var part1 = action.slice(0, plus)
-                                var part2 = action.slice(plus + 1)
-
-                                if (part2.charCodeAt(0) === 42) {
                                     if (multipliedAmount === null) {
-                                        console.warn("To have a multiplier for the amount to add, you first have to have an 'all' or percentage cost included.")
-                                    } else {
-                                        multipliedAmount = multipliedAmount
-                                        // * sign: multiply the amount of the item with "%" or "all" spent (so a data-cost of "gold-1%" with the playing having 200 gold as well as an data-earn of "money+*4" means that the user earns 2 * 4 = 8 dollars)
-                                        add(part1, multipliedAmount.mul(part2.slice(1)))
+                                        multipliedAmount = new Hyper(amount)
                                     }
                                 } else {
-                                    add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost.add(1)).add(1)) : multiplier).mul((multipliedAmount === null && noPow) ? clickRepeats : 1))
+                                    var powIndex = str.indexOf("POW")
+                                    if (powIndex !== -1) {
+                                        noPow = false
+                                        amount = Hyper(str.slice(0, powIndex)).pow(C(str.slice(powIndex + 3))).mul(multiplier)
+                                    } else {
+                                        var lenSub = str.length - 1
+                                        if (str.charCodeAt(lenSub) === 37) {
+                                            // The string ends with a percent sign:
+                                            multipliedAmount = quantity.mul(0.01).mul(str.slice(0, lenSub)).ceil(true)
+
+                                            if (multipliedAmount === null) {
+                                                amount = multipliedAmount
+                                            }
+                                        } else {
+                                            amount = Hyper(str).mul(multiplier)
+                                        }
+                                    }
                                 }
+
+                                if (multipliedAmount === null && noPow) {
+                                    amount = amount.mul(clickRepeats)
+                                }
+
+                                if (quantity.isLess(amount)) {
+                                    e.stopPropagation()
+                                    return
+                                }
+
+                                types[t] = type
+                                amounts[t] = amount
+                            }
+
+                            for (t = 0; t < len; t++) {
+                                // No need to consider multipliers, as they've already been multiplied in
+                                remove(types[t], amounts[t])
                             }
                         }
+
+                        for (t = 0; t < onclicks.length; t++) {
+                            var action = onclicks[t]
+                            var plus = action.indexOf("+")
+                            if (plus === -1) {
+                                var sign = action.indexOf("*")
+                                if (sign === -1) {
+                                    sign = action.indexOf("^")
+                                    if (sign === -1) {
+                                        console.warn("A normal item should use a '+' or '*' or '^' sign. Note that only '^2' is supported for exponents currently. A rocket part ID should start with a '$' and can use either the '-' or '+' sign.")
+                                        continue
+                                    }
+                                    sqr(action.slice(0, sign))
+                                }
+                                mul(action.slice(0, sign), Hyper(action.slice(sign + 1)))
+                                continue
+                            }
+
+                            var part1 = action.slice(0, plus)
+                            var part2 = action.slice(plus + 1)
+
+                            if (part2.charCodeAt(0) === 42) {
+                                if (multipliedAmount === null) {
+                                    console.warn("To have a multiplier for the amount to add, you first have to have an 'all' or percentage cost included.")
+                                } else {
+                                    multipliedAmount = multipliedAmount
+                                    // * sign: multiply the amount of the item with "%" or "all" spent (so a data-cost of "gold-1%" with the playing having 200 gold as well as an data-earn of "money+*4" means that the user earns 2 * 4 = 8 dollars)
+                                    add(part1, multipliedAmount.mul(part2.slice(1)))
+                                }
+                            } else {
+                                add(part1, Hyper(part2).mul(part1 === "atoms" ? multiplier.mul(C("molecules").mul(strangeBoost.add(1)).add(1)) : multiplier).mul((multipliedAmount === null && noPow) ? clickRepeats : 1))
+                            }
+                        }
+                        e.stopPropagation()
                     }
                 }
             }
@@ -4188,6 +4188,7 @@
             }
 
             // Increase numbers
+            stuff.quarkgen = stuff.quarkgen.min("e2500")
             var quantumBoost = C("qubits").mul(7.25).add(1).pow("1.5e30").floor()
             var boosterBoost = C("omegaboosters").mul(3.25).add(1).pow(5).floor()
             var omegaBoost = C("omegacloners").mul(2.7).add(10).log10().sqrt().sqrt().pow(boosterBoost)
@@ -4225,7 +4226,7 @@
             add("atoms", C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost).mul(fuserBoost), speed)
             add("slime", C("vortexes").mul("321.678").mul(vortexBoost).mul(rocketSlimeBoost), speed)
             add("spin", C("superholes").mul("5.4321234e8").mul(tickBoost).mul(vortexSpinBoost).mul(rocketBoost), speed)
-            add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost).mul(C("quarks").sqrt().sqrt().sqrt().sqrt().pow(15).div(60)).mul(cloneBoost), speed)
+            add("quarks", C("quarkgen").div(0.0000357).mul(spinBoost).mul(tickBoost).mul(cloneBoost), speed)
             add("starmakers", C("sstars").div(60).mul(tickBoost), speed)
             add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost).mul(tickBoost), speed)
             add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost).mul(tickBoost).mul(moonBoost).mul(alienBoost), speed)
@@ -4281,32 +4282,24 @@
         function draw() {
             var newTime = Date.now()
             var diff = newTime - time
-            if (diff < 500) {
+            if (diff < 1000) {
                 updateGame(true)
 
                 var clickBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
                 if (easyButton !== null && easyTime.isLess(newTime) && easyButton.id !== "reset") {
-                    clickRepeats = (easyButton.parentElement !== null && easyButton.parentElement.className.includes("noEZ")) ? Hyper(1) : clickBoost.mul(diff).div(20).floor().max(1)
-                    clickLoops = easyUpgrades + 1
+                    clickRepeats = ((easyButton.parentElement !== null && easyButton.parentElement.className.includes("noEZ")) ? Hyper(1) : clickBoost.mul(diff).div(20).floor().max(1)).mul(easyUpgrades + 1)
                     alreadyClicked = false
                     easyButton.click()
                     easyTime = easyTime.add(50)
                     clickRepeats = Hyper(1)
-                    clickLoops = 1
                 }
             } else {
                 easyTime = Hyper(newTime + 50)
                 var iterations = Math.floor(diff * 60 / 1000) - 1
-                if (iterations <= 49) {
-                    for (var i = 0; i < iterations; i++) {
-                        updateGame(false)
-                    }
-                } else {
                     var customSpeed = Hyper(diff * 60).div(1000).floor().div(50)
                     for (var i = 0; i < 50; i++) {
                         updateGame(false, customSpeed)
                     }
-                }
 
                 updateGame(true)
             }
@@ -4623,11 +4616,12 @@
         draw()
 
         function getEverything(addAmount) {
-            addAmount = Hyper(addAmount == null ? 10 : addAmount)
+            addAmount = Hyper(addAmount == null ? 1000 : addAmount)
             for (var i = 0; i < properties.length; i++) {
                 add(properties[i], addAmount)
             }
         }
+        getEverything(10)
     </script>
 </body>
 
