@@ -4354,6 +4354,10 @@
             saveLocally()
         }
 
+        onblur = function () {
+            easyButton = null
+        }
+
         function getSave() {
             var result = ""
             for (var i = 0; i < properties.length; i++) {
