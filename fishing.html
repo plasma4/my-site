@@ -3439,8 +3439,9 @@
     <button class="green" id="sellFish" data-earn="money+all" data-wait="4">Sell all fish</button>
     <button class="blue" id="catchFish" data-earn="carp+1" data-wait="3">Catch a carp</button>
     <br>
-    <button class="wow" data-show="line>0" data-cost="f2-125" data-earn="autoreels+1" data-wait="30">
-        Trade 125 common carp for an automatic fishing reel to catch cap gradually over time
+    <button class="wow" data-show="line>0" data-cost="f2-125" data-earn="autoreels+1" data-stat="autoreels"
+        data-wait="30">
+        Trade 125 common carp for an automatic fishing reel
     </button>
     <br>
     <button class="purple" data-cost="money-50" data-earn="rodupgrades+1" data-hide="rodupgrades>0">
@@ -3858,7 +3859,7 @@
                 if (element !== null) {
                     var amount = C(property)
                     if (property === "money") {
-                        update(element, "$" + amount.format(2))
+                        update(element, "You have $" + amount.format(2))
                     } else if (T(property).isPositive()) {
                         element.style.display = null
                         var accuracy = Number(element.getAttribute("data-precision"))
@@ -3998,8 +3999,8 @@
             }
 
             // Increase numbers
-            add("f1", C("autoreels").mul(0.021))
-            add("f2", C("autoreels").mul(0.009))
+            add("f1", C("autoreels").mul(0.0021))
+            add("f2", C("autoreels").mul(0.0009))
 
             // Update text if needed
             if (render) {
