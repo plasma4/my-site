@@ -3058,19 +3058,19 @@
         }
 
         .outline1 {
-            -webkit-text-stroke: 1px #efcecf;
+            -webkit-text-stroke: 1px #efcecf93;
         }
 
         .outline2 {
-            -webkit-text-stroke: 1px #f8b991;
+            -webkit-text-stroke: 1px #f8b99193;
         }
 
         .outline3 {
-            -webkit-text-stroke: 1px #ceefda;
+            -webkit-text-stroke: 1px #ceefda93;
         }
 
         .outline4 {
-            -webkit-text-stroke: 1px #31a3e5;
+            -webkit-text-stroke: 1px #31a3e593;
         }
 
         .outline5 {
@@ -3298,18 +3298,18 @@
             border-color: #3c0761;
         }
 
-        .quark {
+        .purple {
             background-color: #c130e944;
             border-color: #f94fb8;
         }
 
-        .quark:hover,
-        .quark:focus {
+        .purple:hover,
+        .purple:focus {
             background-color: #ee9db966;
             border-color: #7448b5;
         }
 
-        .quark:active {
+        .purple:active {
             background-color: #e43e4c99;
             border-color: #240962;
         }
@@ -3417,8 +3417,8 @@
 
 <body style="display: none">
     <br>
-    <p>The game was made by me (Leo Zhang). All rights are reserved! Have fun...</p>
-    <p>Note that if you press and hold on a button, it will be automatically clicked on.</p>
+    <p>The game was made by me (Leo Zhang). Have fun...</p>
+    <p>Note that if you press and hold on a button, it will be pressed repeatedly, automatically!</p>
     <button class="red" id="reset">RESET</button>
     <button class="orange" id="import">Import</button>
     <button class="orange" id="export">Export</button>
@@ -3433,9 +3433,40 @@
     <div style="color: #139b33" id="money"></div>
     <div style="color: #bbb" data-s="silver carp $1" id="f1"></div>
     <div style="color: #87746e" data-s="common carp $2" id="f2"></div>
-    <p>Catch fish to increase your fish collection!</p>
+    <p>Catch fish to increase your fish collection! The best rod, line, and bait will automatically be used.</p>
     <button class="green" id="sellFish" data-earn="money+all" data-wait="4">Sell all fish</button>
-    <button class="blue" id="catchFish" data-earn="carp+1" data-wait="0.5">Catch a carp</button>
+    <button class="blue" id="catchFish" data-earn="carp+1" data-wait="3">Catch a carp</button>
+    <br>
+    <button class="wow" data-show="line>0" data-cost="f2-125" data-earn="autoreels+1" data-wait="30">
+        Trade 125 common carp for an automatic fishing reel to catch fish slowly over time
+    </button>
+    <br>
+    <button class="purple" data-cost="money-50" data-earn="rodupgrades+1" data-hide="rodupgrades>0">
+        Purchase a higher quality rod for $50 to increase catch rate
+    </button>
+    <button class="purple" data-show="rodupgrades>0" data-cost="money-125" data-earn="rodupgrades+1"
+        data-hide="rodupgrades>1">
+        Purchase a professional rod for $125 to increase catch rate
+    </button>
+    <button class="purple" data-show="rodupgrades>1" data-cost="money-1000" data-earn="rodupgrades+1"
+        data-hide="rodupgrades>2">
+        Purchase a specially designed rod for $1,000 to increase catch rate
+    </button>
+    <button class="white" data-cost="money-25" data-earn="line+1" data-hide="line>0">
+        Purchase artificial line for $25 to increase catch rate
+    </button>
+    <hr>
+    <p>Bait is automatically taken every time you try to catch a fish.</p>
+    <button class="yellow" data-cost="money-7.5" data-earn="corn+1000" data-stat="corn">
+        Purchase 1,000 corn bait for $7.50
+    </button>
+    <br>
+    <button class="orange" data-cost="money-40" data-earn="worms+100" data-stat="worms">
+        Purchase 100 worm bait for $40
+    </button>
+    <button class="red" data-cost="money-500" data-earn="boilies+200" data-stat="boilies">
+        Purchase 200 special boilies from Europe for $500
+    </button>
 
     <script id="main">
         ID("main").remove()
@@ -3620,8 +3651,9 @@
                             var part1 = action.slice(0, plus)
                             var part2 = action.slice(plus + 1)
                             if (part1 === "money" && part2 === "all") {
-                                add("money", C("f1").add(C("f2")))
-                                clearAmount(["f1", "f2"])
+                                add("money", C("f1").floor().add(C("f2").floor()).mul(4))
+                                stuff.f1 = C("f1").sub(C("f1").floor())
+                                stuff.f2 = C("f2").sub(C("f2").floor())
                                 continue
                             }
 
@@ -3721,6 +3753,13 @@
             }
             if (item === "carp") {
                 item = ["f1", "f2"][P(0.3) ? 1 : 0]
+                if (C("boilies").isMoreOrEqual(1)) {
+                    remove("boilies", Hyper(true))
+                } else if (C("worms").isMoreOrEqual(1)) {
+                    remove("worms", Hyper(true))
+                } else if (C("corn").isMoreOrEqual(1)) {
+                    remove("corn", Hyper(true))
+                }
             }
             var newSum = stuff[item].add(amount)
             stuff[item] = newSum
@@ -3938,18 +3977,19 @@
                 }
             }
 
-            // Increase numbers
-            // var fishGain = C("autofishers").mul(fishAmount).mul(0.25)
-            // add("fish", fishGain, speed)
+            // Increase numbers (TODO)
+            add("f1", C("autoreels").mul(0.009))
+            add("f2", C("autoreels").mul(0.021))
 
             // Update text if needed
             if (render) {
-                // update(ID("quarks2"), C("quarks").format())
+                // TODO
             }
         }
 
         var lightMode = false, outlineMode = 0, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
         function draw() {
+            totalTimes[1] = Hyper(0.6).pow(C("rodupgrades")).mul(C("line").isPositive() ? 2.5 : 3).mul(C("boilies").isMoreOrEqual(1) ? 0.275 : (C("worms").isMoreOrEqual(1) ? 0.5 : (C("corn").isMoreOrEqual(1) ? 0.75 : 1)))
             var newTime = Date.now()
             var diff = newTime - time
             if (diff < 1000) {
@@ -4056,7 +4096,7 @@
                 }
             }
 
-            return (lightMode ? "fishing light " : "fishing ") + (outlineMode === 0 ? "" : "outline" + outlineMode) + ([" ", " styleA ", " styleB "][font]) + newResult.join(" ")
+            return (lightMode ? "fishing light " : "fishing ") + (outlineMode === 0 ? "" : "outline" + (outlineMode + " ")) + (["", "styleA ", "styleB "][font]) + newResult.join(" ")
         }
 
         function saveLocally() {
@@ -4213,7 +4253,6 @@
             if (localData === null || localData.slice(0, 8) !== "fishing ") {
                 return
             }
-            var convertedResult = ""
             localData = localData.slice(8).split(" ")
             if (localData[0] === "light") {
                 lightMode = true
@@ -4227,7 +4266,8 @@
                 font = localData[0] === "styleA" ? 1 : 2
                 localData = localData.slice(1)
             }
-            if (localData[0] !== "") {
+            if (localData.length !== 0) {
+                var convertedResult = ""
                 for (i = 0; i < localData.length; i++) {
                     var item = localData[i]
                     var modulo4 = "flb-".indexOf(item[0])
