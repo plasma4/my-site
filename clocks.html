@@ -17479,7 +17479,7 @@ c`.split("\n")
                         ctx.fillRect(0, 0, 320, 320)
                         return
                     }
-                    darknessAmount = 1
+                    darknessAmount = Math.pow(darknessAmount, 0.7)
 
                     for (var h = 0; h < mapHeight; h++) {
                         var mapLine = endgameMap[h]
@@ -17501,9 +17501,9 @@ c`.split("\n")
                     var gradient = ctx.createRadialGradient(160, 160, 0, 160, 160, 320)
                     gradient.addColorStop(0, "#0000")
                     gradient.addColorStop(0.15 * darknessAmount, "#0005")
-                    gradient.addColorStop(0.3 * darknessAmount, "#000c")
-                    gradient.addColorStop(0.425 * darknessAmount, "#000e")
-                    gradient.addColorStop(1 * darknessAmount, "#000")
+                    gradient.addColorStop(0.3 * darknessAmount, "#0009")
+                    gradient.addColorStop(0.425 * darknessAmount, "#000b")
+                    gradient.addColorStop(0.8 * darknessAmount, "#000")
                     ctx.fillStyle = gradient
                     ctx.arc(160, 160, 320, 0, 6.283185307179586)
                     ctx.fill()
