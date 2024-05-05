@@ -3057,12 +3057,27 @@
             font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
         }
 
-        .caps {
-            text-transform: uppercase;
+        .outline1 {
+            -webkit-text-stroke: 1px #efcecf;
+        }
+
+        .outline2 {
+            -webkit-text-stroke: 1px #f8b991;
+        }
+
+        .outline3 {
+            -webkit-text-stroke: 1px #ceefda;
+        }
+
+        .outline4 {
+            -webkit-text-stroke: 1px #31a3e5;
+        }
+
+        .outline5 {
+            -webkit-text-stroke: 0;
         }
 
         .light {
-            -webkit-text-stroke: 0;
             background-color: white;
             color: black;
         }
@@ -3407,7 +3422,7 @@
     <button class="red" id="reset">RESET</button>
     <button class="orange" id="import">Import</button>
     <button class="orange" id="export">Export</button>
-    <button class="yellow" id="caps">Toggle caps mode</button>
+    <button class="yellow" id="outline">Switch outline mode</button>
     <button class="yellow" id="themes">Switch themes</button>
     <button class="yellow" id="font">Switch fonts</button>
     <hr>
@@ -3933,7 +3948,7 @@
             }
         }
 
-        var lightMode = false, capsMode = false, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
+        var lightMode = false, outlineMode = 0, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
         function draw() {
             var newTime = Date.now()
             var diff = newTime - time
@@ -3974,12 +3989,13 @@
                 document.body.classList.remove("light")
             }
 
-            if (capsMode) {
-                if (!document.body.classList.contains("caps")) {
-                    document.body.classList.add("caps")
+            if (outlineMode > 0) {
+                if (!document.body.classList.contains("outline" + outlineMode)) {
+                    document.body.classList.remove("outline" + (outlineMode - 1))
+                    document.body.classList.add("outline" + outlineMode)
                 }
             } else {
-                document.body.classList.remove("caps")
+                document.body.classList.remove("outline5")
             }
 
             if (font !== 0) {
@@ -4040,7 +4056,7 @@
                 }
             }
 
-            return (lightMode ? "fishing light " : "fishing ") + (capsMode ? "caps " : "") + (["", "styleA ", "styleB "][font]) + newResult.join(" ")
+            return (lightMode ? "fishing light " : "fishing ") + (outlineMode === 0 ? "" : "outline" + outlineMode) + ([" ", " styleA ", " styleB "][font]) + newResult.join(" ")
         }
 
         function saveLocally() {
@@ -4181,8 +4197,8 @@
             alert("Copied in " + (newSave.length / 1000).toFixed(2) + "KB!")
         })
 
-        ID("caps").addEventListener("click", function () {
-            capsMode = !capsMode
+        ID("outline").addEventListener("click", function () {
+            outlineMode = outlineMode >= 5 ? 0 : (outlineMode + 1)
         })
 
         ID("themes").addEventListener("click", function () {
@@ -4203,8 +4219,8 @@
                 lightMode = true
                 localData = localData.slice(1)
             }
-            if (localData[0] === "caps") {
-                capsMode = true
+            if (localData[0].slice(0, 7) === "outline") {
+                outlineMode = Number(localData[0].slice(7))
                 localData = localData.slice(1)
             }
             if (localData[0] === "styleA" || localData[0] === "styleB") {
