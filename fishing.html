@@ -3426,10 +3426,12 @@
     <button class="yellow" id="themes">Switch themes</button>
     <button class="yellow" id="font">Switch fonts</button>
     <hr>
-    <p class="small">
+    <div class="small">
         Despite being hailed as the <span style="color: #87746e">common carp</span>,
         the <span style="color: #bbb">silver carp</span> is actually more common.
-    </p>
+        <br>
+        Your fish are worth <span style="color: #139b33" id="fishValue"></span> when uncooked.
+    </div>
     <div style="color: #139b33" id="money"></div>
     <div style="color: #bbb" data-s="silver carp $1" id="f1"></div>
     <div style="color: #87746e" data-s="common carp $2" id="f2"></div>
@@ -3438,7 +3440,7 @@
     <button class="blue" id="catchFish" data-earn="carp+1" data-wait="3">Catch a carp</button>
     <br>
     <button class="wow" data-show="line>0" data-cost="f2-125" data-earn="autoreels+1" data-wait="30">
-        Trade 125 common carp for an automatic fishing reel to catch fish slowly over time
+        Trade 125 common carp for an automatic fishing reel to catch cap gradually over time
     </button>
     <br>
     <button class="purple" data-cost="money-50" data-earn="rodupgrades+1" data-hide="rodupgrades>0">
@@ -3467,11 +3469,28 @@
     <button class="red" data-cost="money-500" data-earn="boilies+200" data-stat="boilies">
         Purchase 200 special boilies from Europe for $500
     </button>
+    <hr>
+    <p>You are also able to cook your carp and sell them for extra value!</p>
+    <div style="color: #e0a606" data-s="cooked carp" id="cooked"></div>
+    <button class="red" data-cost="money-6000" data-earn="cookers+1" data-hide="cookers>0">
+        Get a powerful fish cooker for $6,000
+    </button>
+    <button class="yellow" data-cost="money-1|f1-1|f2-1" data-earn="cooked+2" data-wait="0.5">
+        Cook a silver carp and a common carp for $1
+    </button>
+    <br>
+    <button class="green" data-cost="cooked-10" data-earn="money+50" data-show="cookers>0" data-wait="4"
+        data-stat="money">
+        Sell 10 cooked fish to a local store for $50
+    </button>
+    <button class="blue" data-cost="cooked-100" data-earn="money+400" data-show="cookers>0" data-wait="4">
+        Sell 100 cooked fish to a small warehouse for $400
+    </button>
 
     <script id="main">
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = ["f1", "f2"]
+        var baseProperties = []
 
         var buttons = null, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
@@ -3865,7 +3884,8 @@
                 var button = buttons[i]
                 var raw = button.getAttribute("data-raw")
                 if (raw !== null) {
-                    update(button, button.getAttribute("data-raw") + " (you have " + C(button.getAttribute("data-stat")).format() + (button.id === "package" ? " sorted packages)" : ")"))
+                    var statItem = button.getAttribute("data-stat")
+                    update(button, button.getAttribute("data-raw") + (statItem === "money" ? " (you currently have $" + C(statItem).format(2) + ")" : (" (you have " + C(statItem).format() + ")")))
                 }
             }
         }
@@ -3977,13 +3997,13 @@
                 }
             }
 
-            // Increase numbers (TODO)
-            add("f1", C("autoreels").mul(0.009))
-            add("f2", C("autoreels").mul(0.021))
+            // Increase numbers
+            add("f1", C("autoreels").mul(0.021))
+            add("f2", C("autoreels").mul(0.009))
 
             // Update text if needed
             if (render) {
-                // TODO
+                update(ID("fishValue"), "$" + C("f1").floor().add(C("f2").floor()).mul(4).format(2))
             }
         }
 
