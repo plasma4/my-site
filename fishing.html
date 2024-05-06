@@ -3426,7 +3426,7 @@
 <body style="display: none">
     <br>
     <p>The game was made by me (Leo Zhang). Have fun...</p>
-    <p>Note that if you press and hold on a button, it will be pressed repeatedly, automatically!</p>
+    <p>Note that if you press and hold on a button, it will be pressed repeatedly.</p>
     <button class="red" id="reset">RESET</button>
     <button class="orange" id="import">Import</button>
     <button class="orange" id="export">Export</button>
@@ -3444,17 +3444,20 @@
     <div style="color: #bbb" data-s="silver carp $0" id="f1"></div>
     <div style="color: #87746e" data-s="common carp $1" id="f2"></div>
     <p>Catch fish to increase your fish collection! The best rod, line, and bait will automatically be used.</p>
-    <button class="green" data-earn="money+all" data-wait="4">Sell ALL fish</button>
+    <button class="red" data-earn="money+all" data-wait="8">Sell ALL carp</button>
+    <button class="green" data-cost="f1-all" data-earn="money+*4" data-wait="4">Sell ALL silver carp</button>
+    <button class="green" data-cost="f2-all" data-earn="money+*4" data-wait="4">Sell ALL common carp</button>
+    <hr>
     <button class="blue" data-earn="carp+1" data-wait="3">Catch a carp</button>
     <br>
-    <button class="wow" data-show="line>0" data-cost="f2-125" data-earn="autoreels+1" data-stat="autoreels"
+    <button class="wow" data-show="line>0" data-cost="f2-25|money-1000" data-earn="autoreels+1" data-stat="autoreels"
         data-wait="30">
-        Trade 125 common carp for an automatic fishing reel
+        Trade 25 common carp and $1,000 for an automatic fishing reel
     </button>
     <br>
-    <button class="purple" data-show="autoreels>0" data-cost="autoreels-1|money-1000" data-earn="autoreels2+1"
+    <button class="purple" data-show="autoreels>0" data-cost="autoreels-1|money-2250" data-earn="autoreels2+1"
         data-stat="autoreels2" data-wait="5">
-        Upgrade an automatic fisher significantly for $1,000
+        Upgrade an automatic fisher significantly for $2,250
     </button>
     <br>
     <button class="purple" data-cost="money-50" data-earn="rodupgrades+1" data-hide="rodupgrades>0">
@@ -3502,12 +3505,12 @@
         Cook 10 common carp for $4.00
     </button>
     <br>
-    <button class="green" data-cost="cooked-10" data-earn="money+50" data-show="cookers>0" data-wait="4"
+    <button class="green" data-cost="cooked-10" data-earn="money+80" data-show="cookers>0" data-wait="4"
         data-stat="money">
-        Sell 10 cooked fish to a local store for $50
+        Sell 10 cooked fish to a local store for $80
     </button>
-    <button class="blue" data-cost="cooked-100" data-earn="money+400" data-show="cookers>0" data-wait="4">
-        Sell 100 cooked fish to a small warehouse for $400
+    <button class="blue" data-cost="cooked-100" data-earn="money+725" data-show="cookers>0" data-wait="4">
+        Sell 100 cooked fish to a small warehouse for $725
     </button>
     <div class="hide" data-show="cookers>0">
         <hr>
@@ -3515,20 +3518,24 @@
             You can purchase a small lake and boat to unlock new features and fish!
             Grass carp here sell for 50% more than normal carp.
         </p>
+        <div style="color: #f19515" data-s="other fish" id="otherFish"></div>
+        <div style="color: #d2d2c5" data-s="bait fish" id="small"></div>
         <div style="color: #7e987b" data-s="grass carp $2" id="f3"></div>
         <button class="blue" data-cost="money-8000" data-earn="lakes+1" data-hide="lakes>0">
             Get a small lake for $8,000
         </button>
-        <button class="white" data-cost="money-15000" data-earn="boats+1" data-hide="boats>0">
-            Get a small boat for $15,000
+        <button class="purple" data-show="lakes>0" data-earn="small+10" data-wait="6">
+            Catch 10 small fish by using a net
         </button>
-        <button class="green" data-show="lakes>0|boats>0" data-earn="money+all" data-wait="4" data-stat="money">
-            Sell ALL fish
+        <button class="white" data-show="lakes>0" data-cost="money-15000" data-earn="boats+1" data-hide="boats>0">
+            Buy a small boat for $15,000
         </button>
-        <button class="green" data-show="lakes>0|boats>0" data-cost="f3-all" data-earn="money+*6" data-wait="4">
+        <br>
+        <button class="green" data-show="lakes>0|boats>0" data-cost="f3-all" data-earn="money+*6" data-stat="money"
+            data-wait="4">
             Sell all grass carp
         </button>
-        <button class="blue" data-show="lakes>0|boats>0" data-earn="fish+3" data-wait="3">Catch 3 fish</button>
+        <button class="blue" data-show="lakes>0|boats>0" data-earn="fish+5" data-wait="6">Catch 5 carp</button>
     </div>
 
     <script id="main">
@@ -3818,7 +3825,9 @@
             }
             if (item === "carp" || item === "fish") {
                 item = (item === "fish" ? ["f1", "f2", "f3"][P(0.7) ? 2 : (P(0.35) ? 1 : 0)] : ["f1", "f2"][P(0.3) ? 1 : 0])
-                if (C("boilies").isMoreOrEqual(1)) {
+                if (C("small").isMoreOrEqual(1)) {
+                    remove("small", Hyper(true))
+                } else if (C("boilies").isMoreOrEqual(1)) {
                     remove("boilies", Hyper(true))
                 } else if (C("worms").isMoreOrEqual(1)) {
                     remove("worms", Hyper(true))
@@ -3926,6 +3935,8 @@
                 }
             }
 
+            update(ID("otherFish"), "You have " + C("f1").floor().add(C("f2").floor()).format() + " other fish")
+
             for (i = 0; i < buttons.length; i++) {
                 var button = buttons[i]
                 var raw = button.getAttribute("data-raw")
@@ -3949,7 +3960,7 @@
         }
 
         function calculateBoost(number, formatAmount) {
-            return number.isMoreOrEqual(10) || formatAmount ? (number.format(formatAmount == null ? 2 : formatAmount) + "×") : ("+" + number.mul(100).sub(100).format(formatAmount == null ? 2 : formatAmount) + "%")
+            return number.isMoreOrEqual(10) || (formatAmount != null) ? (number.format(formatAmount) + "/sec") : ("+" + number.mul(100).sub(100).format(formatAmount == null ? 2 : formatAmount) + "%")
         }
 
         function meetsRequirements(conditions) {
@@ -4056,9 +4067,18 @@
 
         var lightMode = false, outlineMode = 0, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
         function draw() {
-            var fishSpeed = Hyper(0.6).pow(C("rodupgrades")).mul(C("line").isPositive() ? 2.5 : 3).mul(C("boilies").isMoreOrEqual(1) ? 0.275 : (C("worms").isMoreOrEqual(1) ? 0.5 : (C("corn").isMoreOrEqual(1) ? 0.75 : 1)))
-            totalTimes[1] = fishSpeed
-            totalTimes[10] = new Hyper(fishSpeed)
+            var fishSpeed = Hyper(0.6).pow(C("rodupgrades")).mul(C("line").isPositive() ? 2.5 : 3)
+            if (C("small").isMoreOrEqual(1)) {
+                fishSpeed = fishSpeed.mul(0.2)
+            } else if (C("boilies").isMoreOrEqual(1)) {
+                fishSpeed = fishSpeed.mul(0.275)
+            } else if (C("worms").isMoreOrEqual(1)) {
+                fishSpeed = fishSpeed.mul(0.5)
+            } else if (C("corn").isMoreOrEqual(1)) {
+                fishSpeed = fishSpeed.mul(0.775)
+            }
+            totalTimes[3] = fishSpeed
+            totalTimes[13] = new Hyper(fishSpeed).mul(2)
             var newTime = Date.now()
             var diff = newTime - time
             if (diff < 1000) {
