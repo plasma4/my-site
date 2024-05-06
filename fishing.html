@@ -3490,7 +3490,7 @@
         Purchase artificial line for $25 to increase catch rate
     </button>
     <hr>
-    <p>Bait is automatically taken every time you try to catch a fish.</p>
+    <p>Bait is automatically taken every time you try to catch a fish, but increases catch rate.</p>
     <button class="yellow" data-cost="money-7.5" data-earn="corn+1000" data-stat="corn">
         Purchase 1,000 corn bait for $7.50
     </button>
@@ -3498,8 +3498,8 @@
     <button class="orange" data-cost="money-40" data-earn="worms+100" data-stat="worms">
         Purchase 100 worm bait for $40
     </button>
-    <button class="red" data-cost="money-500" data-earn="boilies+200" data-stat="boilies">
-        Purchase 200 special boilies from Europe for $500
+    <button class="red" data-cost="money-300" data-earn="boilies+300" data-stat="boilies">
+        Purchase 200 special boilies from Europe for $300
     </button>
     <hr>
     <p>You are also able to cook your carp and sell them for extra value! Get a fish cooker to unlock new features.</p>
@@ -3557,6 +3557,26 @@
             Sell all grass carp
         </button>
         <button class="blue" data-show="lakes>0|boats>0" data-earn="fish+5" data-wait="6">Catch 5 carp</button>
+    </div>
+    <div class="hide" data-show="f3>0">
+        <hr>
+        <p>By joining a fishing group, you can unlock more trades!</p>
+        <button class="black" data-cost="money-15000" data-earn="groups+1" data-hide="groups>0">
+            Join the local fishing group for $15,000
+        </button>
+        <button class="white" data-show="groups>0" data-cost="f3-250" data-earn="nets+1" data-stat="nets"
+            data-wait="2.5">
+            Trade 250 grass carp for a bait fish net
+        </button>
+        <button class="aqua" data-show="groups>0" data-cost="small-200" data-earn="money+150" data-stat="money"
+            data-wait="1.5">
+            Trade 200 bait fish for $150
+        </button>
+        <br>
+        <button class="yellow" data-show="groups>0" data-cost="f3-15" data-earn="cooked+25" data-stat="cooked"
+            data-wait="0.75">
+            Trade 15 grass carp for 25 cooked fish
+        </button>
     </div>
 
     <script id="main">
@@ -4098,10 +4118,10 @@
                 fishSpeed = fishSpeed.mul(0.275)
                 baitUsed = "European boilies"
             } else if (C("worms").isMoreOrEqual(1)) {
-                fishSpeed = fishSpeed.mul(0.5)
+                fishSpeed = fishSpeed.mul(0.48)
                 baitUsed = "worms"
             } else if (C("corn").isMoreOrEqual(1)) {
-                fishSpeed = fishSpeed.mul(0.775)
+                fishSpeed = fishSpeed.mul(0.725)
                 baitUsed = "corn ears"
             } else {
                 baitUsed = "literally nothing"
@@ -4217,7 +4237,11 @@
         }
 
         function saveLocally() {
-            localStorage.setItem("fishingSave", getSave())
+            try {
+                localStorage.setItem("fishingSave", getSave())
+            } catch (e) {
+
+            }
         }
 
         var mouseDown, mouseX, mouseY, noTouching = true, hovered = null, spaceDown = false, enterDown = false
@@ -4432,15 +4456,20 @@
             }
         }
 
-        var localData = localStorage.getItem("fishingSave")
         setup()
-        loadSave(localData)
+        var loadedSave = null
+        try {
+            loadedSave = localStorage.getItem("fishingSave")
+        } catch (e) {
+            alert("There appears to be an issue with saving or loading data. You may want to export your save before exiting the tab!")
+        }
+        loadSave(loadedSave)
 
         document.body.removeAttribute("style")
         draw()
 
         function getEverything(addAmount) {
-            addAmount = Hyper(addAmount == null ? 1000 : addAmount)
+            addAmount = Hyper(addAmount == null ? 1 : addAmount)
             for (var i = 0; i < properties.length; i++) {
                 add(properties[i], addAmount)
             }
