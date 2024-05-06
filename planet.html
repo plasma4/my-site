@@ -3619,7 +3619,7 @@
             <div style="color: #f64" data-s="spin" data-p="spin" id="spin"></div>
             <button class="green" data-cost="atoms-all" data-earn="money+*0.01">Sell all hydrogen for $0.01 each</button>
             <button class="quark" data-cost="money-1e13" data-earn="quarkgen+1" data-stat="quarkgen">Create a strange quark generator for $10T</button>
-            <button class="quark" data-show="quarkgen>=10" data-cost="money-all" data-earn="quarkgen+*1e-13">Get max strange quark generators (capped at 1e2,500)</button>
+            <button class="quark" data-show="quarkgen>=10" data-cost="money-all" data-earn="quarkgen+*1e-13">Get max strange quark generators (capped at 1e10,000)</button>
             <button class="gray" data-show="quarkgen>=100" data-cost="exotic-all" data-earn="planets+*1e-7">Max all strange planets</button>
             <button class="gray" data-show="quarkgen>=100|planets>=1000" data-cost="planets-all" data-earn="sstars+*0.2">Max all strange stars</button>
             <p>You can create strange quarks by separting individual particles from strange matter. These increase the speed that gas is created by speeding up internal reactions and boost hydrogen and helium production by <span style="color: #d1b" id="quarkBoost"></span>.</p>
@@ -4188,7 +4188,7 @@
             }
 
             // Increase numbers
-            stuff.quarkgen = stuff.quarkgen.min("e2500")
+            stuff.quarkgen = stuff.quarkgen.min("1e10000")
             var quantumBoost = C("qubits").mul(7.25).add(1).pow("1.5e30").floor()
             var boosterBoost = C("omegaboosters").mul(3.25).add(1).pow(5).floor()
             var omegaBoost = C("omegacloners").mul(2.7).add(10).log10().sqrt().sqrt().pow(boosterBoost)
