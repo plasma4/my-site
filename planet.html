@@ -4231,15 +4231,15 @@
             add("stars", C("starmakers").div(60).mul(heliumBoost).mul(neonBoost).mul(tickBoost), speed)
             add("helium", C("nstars").div(60).mul(strangeBoost).mul(quarkBoost).mul(holeBoost).mul(dwarfBoost).mul(tickBoost).mul(moonBoost).mul(alienBoost), speed)
             add("exotic", C("reactors").div(65).add(C("sstars").mul(700)).mul(magnetBoost).mul(dwarfBoost).mul(tickBoost), speed)
-            add("alienplanets", C("whiteholes").div(6))
-            add("alienmoons", C("whiteholes").div(6))
-            add("metal", C("metalcenters").div(0.15).add(C("alienmoons").mul(32250)))
-            add("drones", C("factories").div(0.0275))
-            add("sorters", C("printers").div(0.3))
+            add("alienplanets", C("whiteholes").div(6), speed)
+            add("alienmoons", C("whiteholes").div(6), speed)
+            add("metal", C("metalcenters").div(0.15).add(C("alienmoons").mul(32250)), speed)
+            add("drones", C("factories").div(0.0275), speed)
+            add("sorters", C("printers").div(0.3), speed)
             var packageGain = C("sorters").div(3).add(C("drones").mul("1e9"))
-            add("packages", packageGain)
-            add("cash", packageGain.mul(0.000025))
-            add("watts", C("dysons").mul("1e32").div(60).mul(electricBoost).mul(radiantBoost))
+            add("packages", packageGain, speed)
+            add("cash", packageGain.mul(0.000025), speed)
+            add("watts", C("dysons").mul("1e32").div(60).mul(electricBoost).mul(radiantBoost), speed)
 
             // Update text if needed
             if (render) {
@@ -4282,7 +4282,7 @@
         function draw() {
             var newTime = Date.now()
             var diff = newTime - time
-            if (diff < 1000) {
+            if (diff < 800) {
                 updateGame(true)
 
                 var clickBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
@@ -4294,10 +4294,10 @@
                     clickRepeats = Hyper(1)
                 }
             } else {
-                easyTime = Hyper(newTime + 50)
+                easyTime = Hyper(newTime + 36)
                 var iterations = Math.floor(diff * 60 / 1000) - 1
-                    var customSpeed = Hyper(diff * 60).div(1000).floor().div(50)
-                    for (var i = 0; i < 50; i++) {
+                    var customSpeed = Hyper(diff * 60).div(1000).floor().div(36)
+                    for (var i = 0; i < 36; i++) {
                         updateGame(false, customSpeed)
                     }
 
