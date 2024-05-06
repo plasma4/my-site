@@ -3117,7 +3117,7 @@
             transition: border-radius 500ms;
             content: "";
             position: absolute;
-            border-radius: 8px;
+            border-radius: 5px;
             background: linear-gradient(90deg, #fff6 0%, #fff6 var(--wait), #fff0 var(--wait), #fff0 100%);
             font-size: var(--wait);
             top: 0;
@@ -3273,6 +3273,20 @@
 
         .blue:active {
             background-color: #14e6ae99;
+        }
+
+        .aqua {
+            background-color: #38f0f444;
+            border-color: #024758;
+        }
+
+        .aqua:hover,
+        .aqua:focus {
+            background-color: #44a6f166;
+        }
+
+        .aqua:active {
+            background-color: #4decc199;
         }
 
         .diamond {
@@ -3439,6 +3453,7 @@
         the <span style="color: #bbb">silver carp</span> is actually more common.
         <br>
         Your fish are worth <span style="color: #139b33" id="fishValue"></span> when uncooked.
+        You are using <span style="color: #e07450" id="bait"></span> as bait.
     </div>
     <div style="color: #139b33" id="money"></div>
     <div style="color: #bbb" data-s="silver carp $0" id="f1"></div>
@@ -3498,37 +3513,43 @@
     <button class="yellow" data-show="cookers>0" data-cost="money-1|f1-1|f2-1" data-earn="cooked+2" data-wait="0.6">
         Cook a silver carp and a common carp for $1.00
     </button>
-    <button class="orange" data-show="cookers>1" data-cost="money-4|f1-10" data-earn="cooked+10" data-wait="1">
-        Cook 10 silver carp for $4.00
+    <button class="orange" data-show="cookers>1" data-cost="money-8|f1-25" data-earn="cooked+25" data-wait="1">
+        Cook 25 silver carp for $8.00
     </button>
-    <button class="orange" data-show="cookers>1" data-cost="money-4|f2-10" data-earn="cooked+10" data-wait="1">
-        Cook 10 common carp for $4.00
+    <button class="orange" data-show="cookers>1" data-cost="money-8|f2-25" data-earn="cooked+25" data-wait="1">
+        Cook 25 common carp for $8.00
     </button>
     <br>
     <button class="green" data-cost="cooked-10" data-earn="money+80" data-show="cookers>0" data-wait="4"
         data-stat="money">
-        Sell 10 cooked fish to a local store for $80
+        Sell 10 cooked carp to a local store for $80
     </button>
     <button class="blue" data-cost="cooked-100" data-earn="money+725" data-show="cookers>0" data-wait="4">
-        Sell 100 cooked fish to a small warehouse for $725
+        Sell 100 cooked carp to a small warehouse for $725
     </button>
     <div class="hide" data-show="cookers>0">
         <hr>
         <p>
-            You can purchase a small lake and boat to unlock new features and fish!
+            You can purchase a small lake to unlock a new type of bait.
+            Get a boat to unlock new features and fish!
             Grass carp here sell for 50% more than normal carp.
         </p>
         <div style="color: #f19515" data-s="other fish" id="otherFish"></div>
         <div style="color: #d2d2c5" data-s="bait fish" id="small"></div>
         <div style="color: #7e987b" data-s="grass carp $2" id="f3"></div>
-        <button class="blue" data-cost="money-8000" data-earn="lakes+1" data-hide="lakes>0">
-            Get a small lake for $8,000
+        <button class="aqua" data-cost="money-4000" data-earn="lakes+1" data-hide="lakes>0">
+            Get a small part of a lake for $4,000
         </button>
-        <button class="purple" data-show="lakes>0" data-earn="small+10" data-wait="6">
+        <button class="aqua" data-show="lakes>0" data-earn="small+10" data-wait="6">
             Catch 10 small fish by using a net
         </button>
-        <button class="white" data-show="lakes>0" data-cost="money-15000" data-earn="boats+1" data-hide="boats>0">
-            Buy a small boat for $15,000
+        <button class="aqua" data-show="small>0" data-cost="money-500" data-earn="nets+1" data-stat="nets"
+            data-wait="25">
+            Hire someone to set up a bait fish net for $500
+        </button>
+        <br>
+        <button class="white" data-show="small>0" data-cost="money-2500" data-earn="boats+1" data-hide="boats>0">
+            Purchase a tiny used boat for $2,500
         </button>
         <br>
         <button class="green" data-show="lakes>0|boats>0" data-cost="f3-all" data-earn="money+*6" data-stat="money"
@@ -3913,7 +3934,7 @@
                 if (element !== null) {
                     var amount = C(property)
                     if (property === "money") {
-                        update(element, "You have $" + amount.format(2))
+                        update(element, (amount.isLess(0.01) ? "You have no money." : ("You have $" + amount.format(2) + " currently.")))
                     } else if (T(property).isPositive()) {
                         element.style.display = null
                         var accuracy = Number(element.getAttribute("data-precision"))
@@ -3935,7 +3956,7 @@
                 }
             }
 
-            update(ID("otherFish"), "You have " + C("f1").floor().add(C("f2").floor()).format() + " other fish")
+            update(ID("otherFish"), (C("small").isZero() ? "There are other types of fish you can unlock..." : "You have " + C("f1").floor().add(C("f2").floor()).format() + " other fish."))
 
             for (i = 0; i < buttons.length; i++) {
                 var button = buttons[i]
@@ -4058,30 +4079,41 @@
             var reelPower = C("autoreels").add(C("autoreels2").mul(2))
             add("f1", reelPower.mul(0.0021), speed)
             add("f2", reelPower.mul(0.0009), speed)
+            add("small", C("nets").div(120))
 
             // Update text if needed
             if (render) {
                 update(ID("fishValue"), "$" + C("f1").floor().add(C("f2").floor()).mul(4).add(C("f3").floor().mul(6)).format(2))
+                update(ID("bait"), baitUsed)
             }
         }
 
-        var lightMode = false, outlineMode = 0, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
+        var baitUsed = "", lightMode = false, outlineMode = 0, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
         function draw() {
             var fishSpeed = Hyper(0.6).pow(C("rodupgrades")).mul(C("line").isPositive() ? 2.5 : 3)
             if (C("small").isMoreOrEqual(1)) {
                 fishSpeed = fishSpeed.mul(0.2)
+                baitUsed = "bait fish"
             } else if (C("boilies").isMoreOrEqual(1)) {
                 fishSpeed = fishSpeed.mul(0.275)
+                baitUsed = "European boilies"
             } else if (C("worms").isMoreOrEqual(1)) {
                 fishSpeed = fishSpeed.mul(0.5)
+                baitUsed = "worms"
             } else if (C("corn").isMoreOrEqual(1)) {
                 fishSpeed = fishSpeed.mul(0.775)
+                baitUsed = "corn ears"
+            } else {
+                baitUsed = "literally nothing"
             }
             totalTimes[3] = fishSpeed
             totalTimes[13] = new Hyper(fishSpeed).mul(2)
             var newTime = Date.now()
             var diff = newTime - time
-            if (diff < 1000) {
+            if (!document.hasFocus()) {
+                easyButton = null
+            }
+            if (diff < 400) {
                 updateGame(true)
 
                 var clickBoost = Hyper(1)
@@ -4154,10 +4186,6 @@
 
         onpagehide = function () {
             saveLocally()
-        }
-
-        onblur = function () {
-            easyButton = null
         }
 
         function getSave() {
