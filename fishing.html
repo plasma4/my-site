@@ -3507,11 +3507,11 @@
     <hr>
     <p>You are also able to cook your carp and sell them for extra value! Get a fish cooker to unlock new features.</p>
     <div style="color: #e0a606" data-s="cooked carp" id="cooked"></div>
-    <button class="red" data-cost="money-2500" data-earn="cookers+1" data-hide="cookers>0">
-        Get a decent fish cooker for $2,500
+    <button class="red" data-cost="money-1500" data-earn="cookers+1" data-hide="cookers>0">
+        Get a decent fish cooker for $1,500
     </button>
-    <button class="red" data-show="cookers>0" data-cost="money-6000" data-earn="cookers+1" data-hide="cookers>1">
-        Get a more powerful and efficient fish cooker for $6,000
+    <button class="red" data-show="cookers>0" data-cost="money-3000" data-earn="cookers+1" data-hide="cookers>1">
+        Get a more powerful and efficient fish cooker for $3,000
     </button>
     <button class="yellow" data-show="cookers>0" data-cost="money-1|f1-1|f2-1" data-earn="cooked+2" data-wait="0.6">
         Cook a silver carp and a common carp for $1.00
@@ -3559,18 +3559,26 @@
             data-wait="4">
             Sell all grass carp
         </button>
-        <button class="blue" data-show="lakes>0|boats>0" data-earn="fish+5" data-wait="6">Catch 5 carp</button>
+        <button class="blue" data-show="lakes>0|boats>0" data-earn="fish+5" data-wait="6">
+            Catch 5 carp with 2 bait
+        </button>
     </div>
     <div class="hide" data-show="f3>0">
         <hr>
-        <div>By joining a fishing group, you can unlock more trades!</div>
+        <div>By joining a fishing group, you can unlock more trades! Get 100 trades to unlock a better boat.</div>
         (You have made <span style="color: #b365ea" data-s="total trade" data-p="total trades" id="trades"></span>)
         <button class="black" data-cost="money-15000" data-earn="groups+1" data-hide="groups>0">
             Join the local fishing group for $15,000
         </button>
+        <br>
+        <button class="black" data-show="trades>=100" data-cost="money-60000" data-earn="boats+1" data-hide="boats>1">
+            Get a better boat for $60,000 to catch more carp at once
+        </button>
+        <button class="blue" data-show="boats>1" data-earn="fish+50" data-wait="12">Catch 50 carp with 15 bait</button>
+        <hr>
         <p>Superfishers are 6 times more effective than an upgraded automatic fisher!</p>
-        <button class="wow" data-cost="autoreels-3|money-60000" data-earn="autoreels3+1|trades+1" data-stat="autoreels3"
-            data-wait="5">
+        <button class="wow" data-show="groups>0" data-cost="autoreels-3|money-60000" data-earn="autoreels3+1|trades+1"
+            data-stat="autoreels3" data-wait="5">
             Exchange 3 upgraded automatic fishers and $60,000 for 1 superfisher
         </button>
         <button class="purple" data-show="groups>0" data-cost="f3-1500" data-earn="autoreels2+1|trades+1"
@@ -3874,20 +3882,21 @@
 
         // Adds a certain amount of a property, with an optional multiplier
         function add(item, amount, multiplier) {
-            if (multiplier != null) {
-                amount = amount.mul(multiplier)
-            }
             if (item === "carp" || item === "fish") {
                 item = (item === "fish" ? ["f1", "f2", "f3"][P(0.7) ? 2 : (P(0.35) ? 1 : 0)] : ["f1", "f2"][P(0.3) ? 1 : 0])
+                removeAmount = Hyper(amount.isMore(5) ? 15 : amount.isMore(1) ? 2 : 1)
                 if (C("small").isMoreOrEqual(1)) {
-                    remove("small", Hyper(true))
+                    remove("small", removeAmount)
                 } else if (C("boilies").isMoreOrEqual(1)) {
-                    remove("boilies", Hyper(true))
+                    remove("boilies", removeAmount)
                 } else if (C("worms").isMoreOrEqual(1)) {
-                    remove("worms", Hyper(true))
+                    remove("worms", removeAmount)
                 } else if (C("corn").isMoreOrEqual(1)) {
-                    remove("corn", Hyper(true))
+                    remove("corn", removeAmount)
                 }
+            }
+            if (multiplier != null) {
+                amount = amount.mul(multiplier)
             }
             var newSum = stuff[item].add(amount)
             stuff[item] = newSum
@@ -4141,6 +4150,7 @@
             }
             totalTimes[3] = fishSpeed
             totalTimes[14] = new Hyper(fishSpeed).mul(2)
+            totalTimes[15] = new Hyper(fishSpeed).mul(4)
             var newTime = Date.now()
             var diff = newTime - time
             if (!document.hasFocus()) {
