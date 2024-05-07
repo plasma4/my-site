@@ -3565,7 +3565,7 @@
     </div>
     <div class="hide" data-show="f3>0">
         <hr>
-        <div>By joining a fishing group, you can unlock more trades! Get 100 trades to unlock a better boat.</div>
+        <div>By joining a fishing group, you can unlock more trades! Get 100 trades to unlock more</div>
         (You have made <span style="color: #b365ea" data-s="total trade" data-p="total trades" id="trades"></span>)
         <button class="black" data-cost="money-15000" data-earn="groups+1" data-hide="groups>0">
             Join the local fishing group for $15,000
@@ -3574,7 +3574,18 @@
         <button class="black" data-show="trades>=100" data-cost="money-60000" data-earn="boats+1" data-hide="boats>1">
             Get a better boat for $60,000 to catch more carp at once
         </button>
+        <button class="aqua" data-show="trades>=100" data-cost="money-5000" data-earn="fakebait+250"
+            data-stat="fakebait">
+            Purchase 250 effective artificial bait for $5,000
+        </button>
         <button class="blue" data-show="boats>1" data-earn="fish+50" data-wait="12">Catch 50 carp with 15 bait</button>
+        <br>
+        <button class="red" data-show="boats>1" data-cost="money-500000" data-earn="cookers2+1" data-hide="cookers2>0">
+            Get a few high quality fish cookers for $500,000
+        </button>
+        <button class="red" data-show="cookers2>0" data-cost="f3-500" data-earn="money+7500" data-wait="6">
+            Cook and trade 500 grass carp in exchange for $7,500
+        </button>
         <hr>
         <p>Superfishers are 6 times more effective than an upgraded automatic fisher!</p>
         <button class="wow" data-show="groups>0" data-cost="autoreels-3|money-60000" data-earn="autoreels3+1|trades+1"
@@ -3594,7 +3605,7 @@
             Trade 200 bait fish for $150
         </button>
         <br>
-        <button class="yellow" data-show="groups>0" data-cost="f3-15" data-earn="cooked+25" data-stat="cooked"
+        <button class="yellow" data-show="groups>0" data-cost="f3-15" data-earn="cooked+25|trades+1" data-stat="cooked"
             data-wait="0.3">
             Trade 15 grass carp for 25 cooked fish
         </button>
@@ -3885,14 +3896,26 @@
             if (item === "carp" || item === "fish") {
                 item = (item === "fish" ? ["f1", "f2", "f3"][P(0.7) ? 2 : (P(0.35) ? 1 : 0)] : ["f1", "f2"][P(0.3) ? 1 : 0])
                 removeAmount = Hyper(amount.isMore(5) ? 15 : amount.isMore(1) ? 2 : 1)
-                if (C("small").isMoreOrEqual(1)) {
-                    remove("small", removeAmount)
+                if (C("fakebait").isMoreOrEqual(1)) {
+                    if (!remove("fakebait", removeAmount)) {
+                        clearAmount("fakebait")
+                    }
+                } else if (C("small").isMoreOrEqual(1)) {
+                    if (!remove("small", removeAmount)) {
+                        clearAmount("small")
+                    }
                 } else if (C("boilies").isMoreOrEqual(1)) {
-                    remove("boilies", removeAmount)
+                    if (!remove("boilies", removeAmount)) {
+                        clearAmount("boilies")
+                    }
                 } else if (C("worms").isMoreOrEqual(1)) {
-                    remove("worms", removeAmount)
+                    if (!remove("worms", removeAmount)) {
+                        clearAmount("worms")
+                    }
                 } else if (C("corn").isMoreOrEqual(1)) {
-                    remove("corn", removeAmount)
+                    if (!remove("corn", removeAmount)) {
+                        clearAmount("corn")
+                    }
                 }
             }
             if (multiplier != null) {
@@ -4133,7 +4156,10 @@
         var baitUsed = "", lightMode = false, outlineMode = 0, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
         function draw() {
             var fishSpeed = Hyper(0.6).pow(C("rodupgrades")).mul(C("line").isPositive() ? 2.5 : 3)
-            if (C("small").isMoreOrEqual(1)) {
+            if (C("fakebait").isMoreOrEqual(1)) {
+                fishSpeed = fishSpeed.mul(0.125)
+                baitUsed = "artificial bait"
+            } else if (C("small").isMoreOrEqual(1)) {
                 fishSpeed = fishSpeed.mul(0.2)
                 baitUsed = "bait fish"
             } else if (C("boilies").isMoreOrEqual(1)) {
