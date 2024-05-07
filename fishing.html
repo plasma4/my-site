@@ -3039,8 +3039,9 @@
 
         body {
             overflow-x: hidden;
-            transition: background-color 1s, color 750ms 250ms;
+            transition: letter-spacing 250ms, background-color 1s, color 750ms 250ms;
             font-family: Fredoka, "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
+            letter-spacing: 1px;
             font-weight: 600;
             -webkit-text-stroke: 1px white;
             background-color: #052437;
@@ -3075,9 +3076,11 @@
 
         .outline5 {
             -webkit-text-stroke: 0;
+            letter-spacing: 0;
         }
 
         .outline5 {
+            font-weight: 500;
             color: white;
         }
 
@@ -3560,21 +3563,31 @@
     </div>
     <div class="hide" data-show="f3>0">
         <hr>
-        <p>By joining a fishing group, you can unlock more trades!</p>
+        <div>By joining a fishing group, you can unlock more trades!</div>
+        (You have made <span style="color: #b365ea" data-s="total trade" data-p="total trades" id="trades"></span>)
         <button class="black" data-cost="money-15000" data-earn="groups+1" data-hide="groups>0">
             Join the local fishing group for $15,000
         </button>
-        <button class="white" data-show="groups>0" data-cost="f3-250" data-earn="nets+1" data-stat="nets"
-            data-wait="2.5">
+        <p>Superfishers are 6 times more effective than an upgraded automatic fisher!</p>
+        <button class="wow" data-cost="autoreels-3|money-60000" data-earn="autoreels3+1|trades+1" data-stat="autoreels3"
+            data-wait="5">
+            Exchange 3 upgraded automatic fishers and $60,000 for 1 superfisher
+        </button>
+        <button class="purple" data-show="groups>0" data-cost="f3-1500" data-earn="autoreels2+1|trades+1"
+            data-stat="autoreels2" data-wait="3">
+            Trade 1,500 grass carp for an upgraded automatic fisher
+        </button>
+        <button class="white" data-show="groups>0" data-cost="f3-250" data-earn="nets+1|trades+1" data-stat="nets"
+            data-wait="1">
             Trade 250 grass carp for a bait fish net
         </button>
-        <button class="aqua" data-show="groups>0" data-cost="small-200" data-earn="money+150" data-stat="money"
-            data-wait="1.5">
+        <button class="aqua" data-show="groups>0" data-cost="small-200" data-earn="money+150|trades+1" data-stat="money"
+            data-wait="0.5">
             Trade 200 bait fish for $150
         </button>
         <br>
         <button class="yellow" data-show="groups>0" data-cost="f3-15" data-earn="cooked+25" data-stat="cooked"
-            data-wait="0.75">
+            data-wait="0.3">
             Trade 15 grass carp for 25 cooked fish
         </button>
     </div>
@@ -3955,7 +3968,7 @@
                     var amount = C(property)
                     if (property === "money") {
                         update(element, (amount.isLess(0.01) ? "You have no money." : ("You have $" + amount.format(2) + " currently.")))
-                    } else if (T(property).isPositive()) {
+                    } else if (T(property).isPositive() || property === "trades") {
                         element.style.display = null
                         var accuracy = Number(element.getAttribute("data-precision"))
                         var string = amount.format(accuracy) + " "
@@ -4096,7 +4109,7 @@
             }
 
             // Increase numbers
-            var reelPower = C("autoreels").add(C("autoreels2").mul(2))
+            var reelPower = C("autoreels").add(C("autoreels2").mul(2)).add(C("autoreels3").mul(12))
             add("f1", reelPower.mul(0.0021), speed)
             add("f2", reelPower.mul(0.0009), speed)
             add("small", C("nets").div(120))
