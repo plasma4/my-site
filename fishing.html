@@ -3204,35 +3204,35 @@
         }
 
         .orange {
-            background-color: #e36e0e44;
+            background-color: #e36e0eaa;
             border-color: #f57c30;
         }
 
         .orange:hover,
         .orange:focus {
-            background-color: #f4934366;
+            background-color: #f4934399;
         }
 
         .orange:active {
-            background-color: #e4741999;
+            background-color: #e4741966;
         }
 
         .brown {
-            background-color: #8304;
+            background-color: #830a;
             border-color: #310;
         }
 
         .brown:hover,
         .brown:focus {
-            background-color: #6b320366;
+            background-color: #6b320388;
         }
 
         .brown:active {
-            background-color: #31180499;
+            background-color: #31180466;
         }
 
         .yellow {
-            background-color: #efac0e44;
+            background-color: #efac0e99;
             border-color: #eed193;
         }
 
@@ -3242,7 +3242,7 @@
         }
 
         .yellow:active {
-            background-color: #f7dda299;
+            background-color: #f7dda244;
         }
 
         .green {
@@ -3516,10 +3516,10 @@
     <button class="yellow" data-show="cookers>0" data-cost="money-1|f1-1|f2-1" data-earn="cooked+2" data-wait="0.6">
         Cook a silver carp and a common carp for $1.00
     </button>
-    <button class="orange" data-show="cookers>1" data-cost="money-8|f1-25" data-earn="cooked+25" data-wait="1">
+    <button class="brown" data-show="cookers>1" data-cost="money-8|f1-25" data-earn="cooked+25" data-wait="1">
         Cook 25 silver carp for $8.00
     </button>
-    <button class="orange" data-show="cookers>1" data-cost="money-8|f2-25" data-earn="cooked+25" data-wait="1">
+    <button class="brown" data-show="cookers>1" data-cost="money-8|f2-25" data-earn="cooked+25" data-wait="1">
         Cook 25 common carp for $8.00
     </button>
     <br>
@@ -3574,21 +3574,45 @@
         <button class="black" data-show="trades>=100" data-cost="money-60000" data-earn="boats+1" data-hide="boats>1">
             Get a better boat for $60,000 to catch more carp at once
         </button>
-        <button class="aqua" data-show="trades>=100" data-cost="money-5000" data-earn="fakebait+250"
+        <div style="color: #ede61a" data-s="reputation (unlocks new items)" id="rep"></div>
+        <div style="color: #d52" data-s="shrimp" id="shrimp"></div>
+        <button class="aqua" data-show="trades>=100" data-cost="money-1200" data-earn="fakebait+250"
             data-stat="fakebait">
-            Purchase 250 effective artificial bait for $5,000
+            Purchase 250 powerful artificial bait for $1,200
         </button>
+        <br>
         <button class="blue" data-show="boats>1" data-earn="fish+50" data-wait="12">Catch 50 carp with 15 bait</button>
         <br>
         <button class="red" data-show="boats>1" data-cost="money-500000" data-earn="cookers2+1" data-hide="cookers2>0">
             Get a few high quality fish cookers for $500,000
         </button>
         <button class="red" data-show="cookers2>0" data-cost="f3-500" data-earn="money+7500" data-wait="6">
-            Cook and trade 500 grass carp in exchange for $7,500
+            Cook 500 grass carp in exchange for $7,500
+        </button>
+        <button class="white" data-show="cookers2>0" data-cost="f3-1500" data-earn="rep+1" data-wait="2">
+            Donate 1,500 grass carp for 1 reputation
+        </button>
+        <button class="white" data-show="cookers2>0" data-cost="f3-5000" data-earn="rep+5" data-wait="15">
+            Donate 5,000 grass carp for 5 reputation
+        </button>
+        <br><br>
+        <button class="yellow" data-show="rep>0" data-cost="rep-25" data-earn="lakes+1" data-hide="lakes>1">
+            Get a shrimp-filled river for 25 reputation
+        </button>
+        <button class="red" data-show="snets>0" data-cost="shrimp-all" data-earn="money+*0.25" data-wait="4">
+            Sell ALL shrimp
+        </button>
+        <button class="wow" data-show="lakes>1" data-cost="rep-10|nets-3" data-earn="snets+1" data-stat="snets"
+            data-wait="4">
+            Convert 3 bait nets into a shrimp catcher for 5 reputation
+        </button>
+        <button class="orange" data-show="lakes>1" data-cost="shrimp-100000" data-earn="rep+20" data-stat="snets"
+            data-wait="4">
+            Donate 100,000 shrimp for 20 reputation
         </button>
         <hr>
         <p>Superfishers are 6 times more effective than an upgraded automatic fisher!</p>
-        <button class="wow" data-show="groups>0" data-cost="autoreels-3|money-60000" data-earn="autoreels3+1|trades+1"
+        <button class="aqua" data-show="groups>0" data-cost="autoreels2-3|money-60000" data-earn="autoreels3+1|trades+1"
             data-stat="autoreels3" data-wait="5">
             Exchange 3 upgraded automatic fishers and $60,000 for 1 superfisher
         </button>
@@ -3726,8 +3750,8 @@
                                 var amount
 
                                 if (str === "all") {
-                                    amount = quantity
-                                    if (type === "stars" && amount.isLess(50)) {
+                                    amount = quantity.floor()
+                                    if (amount.isEqual(0)) {
                                         return
                                     }
 
@@ -4144,7 +4168,8 @@
             var reelPower = C("autoreels").add(C("autoreels2").mul(2)).add(C("autoreels3").mul(12))
             add("f1", reelPower.mul(0.0021), speed)
             add("f2", reelPower.mul(0.0009), speed)
-            add("small", C("nets").div(120))
+            add("small", C("nets").div(120), speed)
+            add("shrimp", C("snets").div(0.9), speed)
 
             // Update text if needed
             if (render) {
