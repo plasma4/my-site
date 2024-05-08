@@ -3460,8 +3460,8 @@
     <div id="menus">
         <button>Main</button>
         <button>Bait and Cooking</button>
-        <button>Boating</button>
-        <button>Fishing Group</button>
+        <button data-show="cookers>0">Boating</button>
+        <button data-show="f3>0">Fishing Group</button>
     </div>
     <hr>
     <div id="menu1">
@@ -3549,7 +3549,7 @@
             Sell 100 cooked carp to a small warehouse for $725
         </button>
     </div>
-    <div id="menu3" class="hide" data-show="cookers>0">
+    <div id="menu3" class="hide">
         <p>
             You can purchase a small lake to unlock a new type of bait.
             Get a boat to unlock new features and fish!
@@ -3581,7 +3581,7 @@
             Catch 5 carp with 2 bait
         </button>
     </div>
-    <div id="menu4" class="hide" data-show="f3>0">
+    <div id="menu4" class="hide">
         <div>By joining a fishing group, you can unlock more trades! Get 100 trades to unlock more.</div>
         (You have made <span style="color: #b365ea" data-s="total trade" data-p="total trades" id="trades"></span>)
         <button class="black" data-cost="money-15000" data-earn="groups+1" data-hide="groups>0">
@@ -4181,7 +4181,7 @@
                         child.style.display = "none"
                     }
                 } else if (requirements !== null) {
-                    if (meetsRequirements(requirements) && (child.id.slice(0, 4) !== "menu" || currentMenu === Number(child.id.slice(4)))) {
+                    if (meetsRequirements(requirements)) {
                         child.removeAttribute("style")
                     } else if (child.style.display !== "none") {
                         child.style.display = "none"
@@ -4189,16 +4189,12 @@
                 }
             }
 
-            if (currentMenu === 1) {
-                ID("menu1").removeAttribute("style")
-            } else {
-                ID("menu1").style.display = "none"
-            }
-
-            if (currentMenu === 2) {
-                ID("menu2").removeAttribute("style")
-            } else {
-                ID("menu2").style.display = "none"
+            for (i = 1; i <= menuLength; i++) {
+                if (currentMenu === i) {
+                    ID("menu" + i).removeAttribute("style")
+                } else {
+                    ID("menu" + i).style.display = "none"
+                }
             }
 
             // Increase numbers
