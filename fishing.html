@@ -3636,6 +3636,7 @@
             data-stat="autoreels2" data-wait="3">
             Trade 1,500 grass carp for an upgraded automatic fisher
         </button>
+        <br>
         <button class="white" data-show="groups>0" data-cost="f3-250" data-earn="nets+1|trades+1" data-stat="nets"
             data-wait="1">
             Trade 250 grass carp for a bait fish net
@@ -3658,6 +3659,7 @@
 
         var buttons = null, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
+            currentMenu = 1
             easyUpgrades = 0
             var elements = document.getElementsByTagName("*")
             buttons = []
@@ -4325,7 +4327,7 @@
                 }
             }
 
-            result += "|||" + time + "|||" + easyUpgrades + "|||" + waitLength + "|||" + timeData.join(" ")
+            result += "|||" + time + "|||" + easyUpgrades + "|||" + waitLength + "|||" + timeData.join(" ") + "|||" + currentMenu
 
             // Do some silly encoding
             var len = result.length
@@ -4542,6 +4544,7 @@
                         timeData[i] = Hyper(timeData[i])
                     }
                 }
+                currentMenu = Number(convertedSplit[5])
 
                 // Clear previous stats
                 for (i = 0; i < properties.length; i++) {
