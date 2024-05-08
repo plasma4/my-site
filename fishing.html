@@ -3009,6 +3009,11 @@
             touch-action: manipulation;
         }
 
+        ::selection {
+            background-color: #bb42e066;
+            color: #fff;
+        }
+
         .small {
             font-size: 24px;
         }
@@ -4065,7 +4070,9 @@
                         if (dollarIndex !== -1) {
                             string = string.slice(0, dollarIndex) + '<span class="fish" style="background-position-x:-' + (string.slice(dollarIndex + 1) * 32) + 'px"></span>'
                         }
-                        element.innerHTML = string
+                        if (element.innerHTML !== string) {
+                            element.innerHTML = string
+                        }
                     } else {
                         element.style.display = "none"
                     }
