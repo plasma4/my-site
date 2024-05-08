@@ -4211,7 +4211,7 @@
             }
         }
 
-        var baitUsed = "", lightMode = false, outlineMode = 0, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
+        var baitUsed = "", lightMode = false, outlineMode = 5, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
         function draw() {
             var fishSpeed = Hyper(0.6).pow(C("rodupgrades")).mul(C("line").isPositive() ? 2.5 : 3)
             if (C("fakebait").isMoreOrEqual(1)) {
@@ -4509,6 +4509,8 @@
             if (localData[0].slice(0, 7) === "outline") {
                 outlineMode = Number(localData[0].slice(7))
                 localData = localData.slice(1)
+            } else {
+                outlineMode = 0
             }
             if (localData[0] === "styleA" || localData[0] === "styleB") {
                 font = localData[0] === "styleA" ? 1 : 2
