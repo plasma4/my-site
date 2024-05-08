@@ -3495,7 +3495,7 @@
         <br>
         <button class="purple" data-show="autoreels>0" data-cost="autoreels-1|money-2250" data-earn="autoreels2+1"
             data-stat="autoreels2" data-wait="5">
-            Upgrade an automatic fisher significantly for $2,250
+            Upgrade an automatic fisher to make it 3× faster for $2,250
         </button>
         <br>
         <button class="purple" data-cost="money-50" data-earn="rodupgrades+1" data-hide="rodupgrades>0">
@@ -4209,8 +4209,8 @@
 
             // Increase numbers
             var reelPower = C("autoreels").add(C("autoreels2").mul(2)).add(C("autoreels3").mul(12))
-            add("f1", reelPower.mul(0.0021), speed)
-            add("f2", reelPower.mul(0.0009), speed)
+            add("f1", reelPower.mul(0.7).div(240), speed)
+            add("f2", reelPower.div(800), speed)
             add("small", C("nets").div(120), speed)
             add("shrimp", C("snets").div(0.9), speed)
 
