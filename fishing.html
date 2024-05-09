@@ -3491,13 +3491,6 @@
             overflow: hidden;
         }
 
-        input[type="range"]::-webkit-slider-runnable-track,
-        input[type="range"]::-moz-range-track {
-            height: 16px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, #15c332, #f0d611, #f6ab08, #ed3e04);
-        }
-
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -3518,6 +3511,18 @@
             background-color: #fff8;
             border-radius: 999px;
             border: 1px solid black;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 16px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #15c332, #f0d611, #f6ab08, #ed3e04);
+        }
+
+        input[type="range"]::-moz-range-track {
+            height: 16px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #15c332, #f0d611, #f6ab08, #ed3e04);
         }
     </style>
 </head>
