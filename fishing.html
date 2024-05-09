@@ -3009,6 +3009,10 @@
             touch-action: manipulation;
         }
 
+        .all {
+            font-size: inherit;
+        }
+
         #noSelect {
             -webkit-user-select: none;
             user-select: none;
@@ -3471,6 +3475,50 @@
                 background-position: 100% 100%;
             }
         }
+
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            padding-left: 2px;
+            padding-right: 2px;
+            height: 20px;
+            width: 20px;
+            appearance: none;
+            cursor: pointer;
+            border-radius: 999px;
+            width: 60%;
+            max-width: 300px;
+            overflow: hidden;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track,
+        input[type="range"]::-moz-range-track {
+            height: 16px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #15c332, #f0d611, #f6ab08, #ed3e04);
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: move;
+            height: 16px;
+            width: 16px;
+            box-shadow: 99999px 0 0 99991px white;
+            background-color: #fff8;
+            border-radius: 999px;
+            border: 2px solid black;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            cursor: move;
+            height: 16px;
+            width: 16px;
+            box-shadow: 99999px 0 0 99991px white;
+            background-color: #fff8;
+            border-radius: 999px;
+            border: 1px solid black;
+        }
     </style>
 </head>
 
@@ -3492,6 +3540,7 @@
             <button data-show="f3>0">Fishing Group</button>
         </div>
         <hr>
+        Sell amount: <input id="sellAmount" type="range" min="1" max="100">
     </div>
     <div class="small">
         <div style="color: #139b33" id="money"></div>
@@ -3506,9 +3555,15 @@
         <div style="color: #bbb" data-s="silver carp $0" id="f1"></div>
         <div style="color: #87746e" data-s="common carp $1" id="f2"></div>
         <p>Catch fish to increase your fish collection! The best rod, line, and bait will automatically be used.</p>
-        <button class="red" data-earn="money+all" data-wait="8">Sell ALL carp</button>
-        <button class="green" data-cost="f1-all" data-earn="money+*4" data-wait="4">Sell ALL silver carp</button>
-        <button class="green" data-cost="f2-all" data-earn="money+*4" data-wait="4">Sell ALL common carp</button>
+        <button class="sell red" data-earn="money+all" data-wait="8">
+            Sell <span class="all"></span> of carp
+        </button>
+        <button class="sell green" data-cost="f1-all" data-earn="money+*4" data-wait="4">
+            Sell <span class="all"></span> of silver carp
+        </button>
+        <button class="sell green" data-cost="f2-all" data-earn="money+*4" data-wait="4">
+            Sell <span class="all"></span> of common carp
+        </button>
         <hr>
         <button class="blue" data-earn="carp+1" data-wait="3">Catch a carp</button>
         <br>
@@ -3603,9 +3658,9 @@
             Purchase a tiny used boat for $2,500
         </button>
         <br>
-        <button class="green" data-show="lakes>0|boats>0" data-cost="f3-all" data-earn="money+*6" data-stat="money"
+        <button class="sell green" data-show="lakes>0|boats>0" data-cost="f3-all" data-earn="money+*6" data-stat="money"
             data-wait="4">
-            Sell all grass carp
+            Sell <span class="all"></span> of grasscarp
         </button>
         <button class="blue" data-show="lakes>0|boats>0" data-earn="fish+5" data-wait="6">
             Catch 5 carp with 2 bait
@@ -3648,9 +3703,9 @@
         <button class="yellow" data-show="rep>0" data-cost="rep-25" data-earn="lakes+1" data-hide="lakes>1">
             Get a shrimp-filled river for 25 reputation
         </button>
-        <button class="wow" id="sellShrimp" data-show="snets>0" data-cost="shrimp-all" data-earn="money+*0.25"
+        <button class="sell wow" id="sellShrimp" data-show="snets>0" data-cost="shrimp-all" data-earn="money+*0.25"
             data-wait="4">
-            Sell ALL shrimp
+            Sell <span class="all"></span> of shrimp
         </button>
         <button class="wow2" data-show="lakes>1" data-cost="rep-5|nets-3" data-earn="snets+1" data-stat="snets"
             data-wait="4">
@@ -3701,8 +3756,9 @@
         ID("bigScript").remove()
         var baseProperties = []
 
-        var buttons = null, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = [], stuffTotals = [], alreadyClicked = true
+        var buttons = null, sellPercent = 100, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
+            sellPercent = 100
             currentMenu = 1
             easyUpgrades = 0
             var elements = document.getElementsByTagName("*")
@@ -3769,6 +3825,7 @@
                     }
 
                     var costData = button.getAttribute("data-cost")
+                    let isAll = button.classList.contains("sell")
                     let isShrimp = button.id === "sellShrimp"
                     let len = 0
                     let costs = []
@@ -3810,6 +3867,9 @@
                                 var amount
 
                                 if (str === "all") {
+                                    if (isAll) {
+                                        quantity = quantity.mul(0.01 * sellPercent)
+                                    }
                                     amount = quantity.floor()
                                     if (amount.isEqual(0)) {
                                         return
@@ -3879,9 +3939,9 @@
                             var part1 = action.slice(0, plus)
                             var part2 = action.slice(plus + 1)
                             if (part1 === "money" && part2 === "all") {
-                                add("money", C("f1").floor().add(C("f2").floor()).mul(4).add(C("f3").floor().mul(6)))
-                                stuff.f1 = C("f1").sub(C("f1").floor())
-                                stuff.f2 = C("f2").sub(C("f2").floor())
+                                add("money", C("f1").mul(sellPercent * 0.01).floor().add(C("f2").mul(sellPercent * 0.01).floor()).mul(4).add(C("f3").mul(sellPercent * 0.01).floor().mul(6)))
+                                stuff.f1 = C("f1").sub(C("f1").mul(sellPercent * 0.01).floor())
+                                stuff.f2 = C("f2").sub(C("f2").mul(sellPercent * 0.01).floor())
                                 continue
                             }
 
@@ -4253,6 +4313,11 @@
                 }
             }
 
+            var sellClass = document.getElementsByClassName("all")
+            for (i = 0; i < sellClass.length; i++) {
+                sellClass[i].textContent = sellPercent + "%"
+            }
+
             // Increase numbers
             var reelPower = C("autoreels").add(C("autoreels2").mul(2)).add(C("autoreels3").mul(12))
             add("f1", reelPower.mul(0.7).div(240), speed)
@@ -4321,6 +4386,10 @@
             updateNumbers()
             updateWaits(Hyper(diff).div(1000))
 
+            if (sellPercent != ID("sellAmount").value) {
+                ID("sellAmount").value = sellPercent
+            }
+
             alreadyClicked = false
             if (++frame % 30 === 0) {
                 saveLocally()
@@ -4382,7 +4451,7 @@
                 }
             }
 
-            result += "|||" + time + "|||" + easyUpgrades + "|||" + waitLength + "|||" + timeData.join(" ") + "|||" + currentMenu
+            result += "|||" + time + "|||" + easyUpgrades + "|||" + waitLength + "|||" + timeData.join(" ") + "|||" + currentMenu + "|||" + sellPercent
 
             // Do some silly encoding
             var len = result.length
@@ -4554,6 +4623,10 @@
             font = font >= 2 ? 0 : (font + 1)
         })
 
+        ID("sellAmount").addEventListener("input", function () {
+            sellPercent = Number(ID("sellAmount").value)
+        })
+
         function loadSave(localData) {
             if (localData === null || localData.slice(0, 8) !== "fishing ") {
                 return
@@ -4586,6 +4659,9 @@
                 }
 
                 var convertedSplit = convertedResult.split("|||")
+                if (convertedSplit.length < 4) {
+                    return
+                }
                 convertedResult = convertedSplit[0]
 
                 time = Number(convertedSplit[1])
@@ -4600,6 +4676,10 @@
                     }
                 }
                 currentMenu = Number(convertedSplit[5])
+                sellPercent = Number(convertedSplit[6])
+                if (sellPercent === 0) {
+                    sellPercent = 100
+                }
 
                 // Clear previous stats
                 for (i = 0; i < properties.length; i++) {
