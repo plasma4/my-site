@@ -3665,7 +3665,7 @@
             Get a boat to unlock new features and fish!
             Grass carp here sell for 50% more than normal carp.
         </p>
-        <div style="color: #f19515" data-s="other fish" id="otherFish"></div>
+        <div style="color: #f19515" id="otherFish"></div>
         <div style="color: #d2d2c5" data-s="bait fish" id="small"></div>
         <div style="color: #7e987b" data-s="grass carp $2" id="f3"></div>
         <button class="aqua" data-cost="money-4000" data-earn="lakes+1" data-hide="lakes>0">
@@ -3699,7 +3699,8 @@
         Get <span style="color: #5d1094">100</span> trades to unlock more.
         <br>
         (You have made <span style="color: #b365ea" data-s="total trade" data-p="total trades" id="trades"></span>
-        and have <span style="color: #7e987b" id="carp"></span>)
+        own <span style="color: #7e987b" id="carp"></span>,
+        and have <span style="color: #f19515" id="otherFish2"></span>)
         <button class="black" data-cost="money-15000" data-earn="groups+1" data-hide="groups>0">
             Join the local fishing group for $15,000
         </button>
@@ -4238,6 +4239,7 @@
             }
 
             update(ID("otherFish"), (C("small").isZero() ? "There are other types of fish you can unlock..." : "You have " + C("f1").floor().add(C("f2").floor()).format() + " other fish."))
+            update(ID("otherFish2"), C("f1").floor().add(C("f2").floor()).format() + " other fish")
 
             for (i = 0; i < buttons.length; i++) {
                 var button = buttons[i]
