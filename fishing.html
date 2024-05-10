@@ -3787,12 +3787,25 @@
         <button class="black" data-cost="money-1000000" data-earn="boats+1" data-hide="boats>2">
             Get a small ocean yacht for $1,000,000
         </button>
-        <button class="sell wow4" data-show="boats>2" data-cost="f4-all" data-earn="money+*3" data-wait="4">
-            Sell <span class="all"></span> of tropical fish for $3 each
+        <button id="sellTropical" class="sell wow4" data-show="boats>2" data-cost="f4-all" data-earn="money+*10"
+            data-wait="4">
+            Sell <span class="all"></span> of tropical fish
         </button>
         <br>
         <button class="orange" data-show="boats>2" data-cost="fakebait-250" data-earn="f4+4000" data-wait="18">
             Catch 4,000 tropical fish by using 250 artificial bait
+        </button>
+        <div class="small">
+            Your aquariums and superaquariums cause your tropical fish to sell for
+            <span style="color: #dce70d" id="f4Boost"></span> more.
+        </div>
+        <button class="wow2" data-cost="f4-40000|money-10000000" data-earn="aquariums+1" data-stat="aquariums"
+            data-wait="10">
+            Create an interactive aquarium for $10,000,000 and 40,000 tropical fish
+        </button>
+        <button class="wow2" data-cost="f4-250000|money-25000000" data-earn="saquariums+1" data-stat="saquariums"
+            data-wait="50">
+            Create a superaquarium for $25,000,000 and 250,000 tropical fish
         </button>
         <hr>
         <button class="wow3" data-cost="money-1200" data-earn="fakebait+250" data-stat="fakebait">
@@ -3878,6 +3891,7 @@
 
                     var costData = button.getAttribute("data-cost")
                     let isSelling = button.classList.contains("sell")
+                    let isTropical = button.id === "sellTropical"
                     let isShrimp = button.id === "sellShrimp"
                     let len = 0
                     let costs = []
@@ -3997,7 +4011,9 @@
                                 continue
                             }
 
-                            if (isShrimp) {
+                            if (isTropical) {
+                                multipliedAmount = multipliedAmount.mul(C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(1))
+                            } else if (isShrimp) {
                                 multipliedAmount = multipliedAmount.mul(C("rep").mul(3.8).add(10).ln())
                             }
 
@@ -4381,9 +4397,12 @@
             // Update text if needed
             if (render) {
                 var shrimpPower = C("rep").mul(3.8).add(10).ln()
+                var aquariumPower = C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(2)
                 update(ID("shrimpBoost"), calculateBoost(shrimpPower))
                 update(ID("shrimpValue"), "$" + C("shrimp").floor().mul(shrimpPower).div(4).format(2))
-                update(ID("fishValue"), "$" + C("f1").floor().add(C("f2").floor()).mul(4).add(C("f3").floor().mul(6)).add(C("f4").floor().mul(3)).format(2))
+                update(ID("f4Boost"), "+$" + aquariumPower.mul(10).format(2))
+
+                update(ID("fishValue"), "$" + C("f1").floor().add(C("f2").floor()).mul(4).add(C("f3").floor().mul(6)).add(C("f4").floor().mul(aquariumPower.add(1))).format(2))
                 update(ID("bait"), baitUsed)
             }
         }
@@ -4687,7 +4706,7 @@
             if (localData === null || localData.slice(0, 8) !== "fishing ") {
                 return
             }
-            localData = localData.slice(8).split(" ")
+            localData = localData.slice(8).trim().split(" ")
             if (localData[0] === "light") {
                 lightMode = true
                 localData = localData.slice(1)
