@@ -3593,12 +3593,12 @@
         <button class="blue" data-earn="carp+1" data-wait="3">Catch a carp</button>
         <br>
         <button class="wow" data-show="line>0" data-cost="f2-25|money-1000" data-earn="autoreels+1"
-            data-stat="autoreels" data-wait="30">
+            data-stat="autoreels" data-wait="2">
             Trade 25 common carp and $1,000 for an automatic fishing reel
         </button>
         <br>
         <button class="purple" data-show="autoreels>0" data-cost="autoreels-1|money-2250" data-earn="autoreels2+1"
-            data-stat="autoreels2" data-wait="5">
+            data-stat="autoreels2" data-wait="2">
             Upgrade an automatic fisher to make it 3× faster for $2,250
         </button>
         <br>
@@ -3651,11 +3651,11 @@
             Cook 25 common carp for $8.00
         </button>
         <br>
-        <button class="green" data-cost="cooked-10" data-earn="money+80" data-show="cookers>0" data-wait="4"
+        <button class="green" data-cost="cooked-10" data-earn="money+80" data-show="cookers>0" data-wait="1"
             data-stat="money">
             Sell 10 cooked carp to a local store for $80
         </button>
-        <button class="blue" data-cost="cooked-100" data-earn="money+725" data-show="cookers>0" data-wait="4">
+        <button class="blue" data-cost="cooked-100" data-earn="money+725" data-show="cookers>0" data-wait="1">
             Sell 100 cooked carp to a small warehouse for $725
         </button>
     </div>
@@ -3675,7 +3675,7 @@
             Catch 10 small fish by using a net
         </button>
         <button class="aqua" data-show="small>0" data-cost="money-500" data-earn="nets+1" data-stat="nets"
-            data-wait="25">
+            data-wait="10">
             Hire someone to set up a bait fish net for $500
         </button>
         <br>
@@ -3721,13 +3721,13 @@
         <button class="red" data-show="boats>1" data-cost="money-500000" data-earn="cookers2+1" data-hide="cookers2>0">
             Get a few high quality fish cookers for $500,000
         </button>
-        <button class="red" data-show="cookers2>0" data-cost="f3-500" data-earn="money+7500" data-wait="6">
+        <button class="red" data-show="cookers2>0" data-cost="f3-500" data-earn="money+7500" data-wait="5">
             Cook 500 grass carp in exchange for $7,500
         </button>
         <button class="white" data-show="cookers2>0" data-cost="f3-1500" data-earn="rep+1" data-wait="2">
             Donate 1,500 grass carp for 1 reputation
         </button>
-        <button class="white" data-show="cookers2>0" data-cost="f3-5000" data-earn="rep+5" data-wait="15">
+        <button class="white" data-show="cookers2>0" data-cost="f3-5000" data-earn="rep+5" data-wait="6">
             Donate 5,000 grass carp for 5 reputation
         </button>
         <br><br>
@@ -3739,7 +3739,7 @@
             Sell <span class="all"></span> of shrimp
         </button>
         <button class="wow2" data-show="lakes>1" data-cost="rep-5|nets-3" data-earn="snets+1" data-stat="snets"
-            data-wait="4">
+            data-wait="2.5">
             Convert 3 bait nets into a shrimp catcher for 5 reputation
         </button>
         <button class="green" data-show="lakes>1" data-cost="shrimp-100000" data-earn="rep+20" data-wait="4">
@@ -3784,15 +3784,15 @@
     <div id="menu5">
         <p>The ocean...how much further can we go?</p>
         <div style="color: #e7890d" data-s="tropical fish$4" id="f4"></div>
-        <button class="black" data-cost="money-1000000" data-earn="boats+1" data-hide="boats>2">
-            Get a small ocean yacht for $1,000,000
+        <button class="black" data-cost="money-1250000" data-earn="boats+1" data-hide="boats>2">
+            Get a small ocean yacht for $1,250,000
         </button>
         <button id="sellTropical" class="sell wow4" data-show="boats>2" data-cost="f4-all" data-earn="money+*10"
             data-wait="4">
             Sell <span class="all"></span> of tropical fish
         </button>
         <br>
-        <button class="orange" data-show="boats>2" data-cost="fakebait-250" data-earn="f4+4000" data-wait="18">
+        <button class="orange" data-show="boats>2" data-cost="fakebait-250" data-earn="f4+4000" data-wait="24">
             Catch 4,000 tropical fish by using 250 artificial bait
         </button>
         <div class="small">
@@ -3800,18 +3800,18 @@
             <span style="color: #dce70d" id="f4Boost"></span> more.
         </div>
         <button class="wow2" data-cost="f4-40000|money-10000000" data-earn="aquariums+1" data-stat="aquariums"
-            data-wait="10">
+            data-wait="2">
             Create an interactive aquarium for $10,000,000 and 40,000 tropical fish
         </button>
         <button class="wow2" data-cost="f4-250000|money-25000000" data-earn="saquariums+1" data-stat="saquariums"
-            data-wait="50">
+            data-wait="5">
             Create a superaquarium for $25,000,000 and 250,000 tropical fish
         </button>
         <hr>
-        <button class="wow3" data-cost="money-1200" data-earn="fakebait+250" data-stat="fakebait">
+        <button class="wow3" data-cost="money-1200" data-earn="fakebait+250" data-stat="fakebait" data-wait="0.25">
             Purchase 250 powerful artificial bait for $1,200
         </button>
-        <button class="wow3" data-cost="money-40000" data-earn="fakebait+10000" data-stat="fakebait">
+        <button class="wow3" data-cost="money-40000" data-earn="fakebait+10000" data-stat="fakebait" data-wait="0.25">
             Purchase 10,000 powerful artificial bait for $40,000
         </button>
     </div>
@@ -4014,7 +4014,7 @@
                             if (isTropical) {
                                 multipliedAmount = multipliedAmount.mul(C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(1))
                             } else if (isShrimp) {
-                                multipliedAmount = multipliedAmount.mul(C("rep").mul(3.8).add(10).ln())
+                                multipliedAmount = multipliedAmount.mul(C("rep").mul(3.8).add(10).ln().sqr())
                             }
 
                             if (part2.charCodeAt(0) === 42) {
@@ -4280,7 +4280,7 @@
         }
 
         function calculateBoost(number, formatAmount) {
-            return number.isMoreOrEqual(10) || (formatAmount != null) ? (number.format(formatAmount) + "/sec") : ("+" + number.mul(100).sub(100).format(formatAmount == null ? 2 : formatAmount) + "%")
+            return number.isMoreOrEqual(10) || (formatAmount != null) ? (number.format(formatAmount) + "×") : ("+" + number.mul(100).sub(100).format(formatAmount == null ? 2 : formatAmount) + "%")
         }
 
         function meetsRequirements(conditions) {
@@ -4396,7 +4396,7 @@
 
             // Update text if needed
             if (render) {
-                var shrimpPower = C("rep").mul(3.8).add(10).ln()
+                var shrimpPower = C("rep").mul(3.8).add(10).ln().sqr()
                 var aquariumPower = C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(2)
                 update(ID("shrimpBoost"), calculateBoost(shrimpPower))
                 update(ID("shrimpValue"), "$" + C("shrimp").floor().mul(shrimpPower).div(4).format(2))
@@ -4687,7 +4687,10 @@
         })
 
         ID("outline").addEventListener("click", function () {
-            outlineMode = outlineMode >= 5 ? 0 : (outlineMode + 1)
+            if (!alreadyClicked) {
+                alreadyClicked = true
+                outlineMode = outlineMode >= 5 ? 0 : (outlineMode + 1)
+            }
         })
 
         ID("themes").addEventListener("click", function () {
@@ -4695,7 +4698,10 @@
         })
 
         ID("font").addEventListener("click", function () {
-            font = font >= 2 ? 0 : (font + 1)
+            if (!alreadyClicked) {
+                alreadyClicked = true
+                font = font >= 2 ? 0 : (font + 1)
+            }
         })
 
         ID("sellAmount").addEventListener("input", function () {
