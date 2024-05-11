@@ -4054,8 +4054,8 @@
                 amount = amount.pow(multiplier)
             }
             var newSum = stuff[item].mul(amount)
+            stuffTotals[item] = stuffTotals[item].add(newSum).sub(stuff[item])
             stuff[item] = newSum
-            stuffTotals[item] = stuffTotals[item].mul(amount.sub(1))
             return newSum
         }
 
