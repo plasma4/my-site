@@ -3786,6 +3786,7 @@
         <br>
         <button class="wow4" data-show="ffoam>0" data-cost="atoms-eee175000" data-earn="fmakers+1" data-stat="fmakers">Create a fundamental particle maker for ee1e175,000 hydrogen</button>
         <button class="wow2" data-show="ffoam>0" data-cost="atoms-eee4000000" data-earn="higgs+1" data-stat="higgs">Create a HyperHiggs Boson using ee1e4,000,000 hydrogen</button>
+        <button class="wow2" data-show="ffoam>0" data-cost="atoms-eeee7" data-earn="higgs+50000" data-stat="higgs">Create 50,000 HyperHiggs Boson using eee10M hydrogen</button>
         <p>Each quantum foam increases the exponent of prism cloner effects by 1.</p>
         <p>Each super foam increases the exponent of quantum foam effects by 10.</p>
         <p>Each fundamental foam increases multiplies super foam effect by 1,000. (Your fundamental boosters are increasing this multiplier to <span style="color: #2dadf2" id="fundamentalBoost"></span>.)</p>
@@ -4053,8 +4054,10 @@
             if (multiplier != null) {
                 amount = amount.pow(multiplier)
             }
+            if (amount.isMore(1)) {
+                stuffTotals[item] = stuffTotals[item].add(stuff[item].mul(amount.sub(1)))
+            }
             var newSum = stuff[item].mul(amount)
-            stuffTotals[item] = stuffTotals[item].add(newSum).sub(stuff[item])
             stuff[item] = newSum
             return newSum
         }
