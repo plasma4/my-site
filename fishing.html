@@ -4279,8 +4279,8 @@
             }
         }
 
-        function calculateBoost(number, formatAmount) {
-            return number.isMoreOrEqual(10) || (formatAmount != null) ? (number.format(formatAmount) + "×") : ("+" + number.mul(100).sub(100).format(formatAmount == null ? 2 : formatAmount) + "%")
+        function calculateBoost(number) {
+            return number.isMoreOrEqual(10) ? (number.format(2) + "×") : ("+" + number.mul(100).sub(100).format(2) + "%")
         }
 
         function meetsRequirements(conditions) {
