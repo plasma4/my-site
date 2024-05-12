@@ -3779,22 +3779,42 @@
     </div>
     <div class="hide noEZ" data-show="cprisms>0">
         <hr>
-        <button class="wow3" data-cost="atoms-ee250000" data-earn="foam+1" data-stat="foam">Create a quantum foam for e1e250,000 hydrogen</button>
-        <button class="wow3" data-cost="atoms-eee8" data-earn="sfoam+1" data-stat="sfoam">Create a super foam for ee100M hydrogen</button>
-        <button class="wow3" data-cost="atoms-ee2e75" data-earn="ffoam+1" data-stat="ffoam">Create a fundamental foam for ee2e75 hydrogen</button>
+        <button class="wow3" data-cost="atoms-ee250000" data-earn="foam+1" data-stat="foam">Create a piece of quantum foam for e1e250,000 hydrogen</button>
+        <button class="wow3" data-cost="atoms-eee8" data-earn="sfoam+1" data-stat="sfoam">Create a piece of super foam for ee100M hydrogen</button>
+        <button class="wow3" data-cost="atoms-ee2e75" data-earn="ffoam+1" data-stat="ffoam">Create a piece of fundamental foam for ee2e75 hydrogen</button>
         <button class="wow3" data-show="ffoam>0" data-cost="atoms-eee2500" data-earn="fboosters+1" data-stat="fboosters">Create a fundamental booster for ee1e2,500 hydrogen</button>
         <br>
-        <button class="wow4" data-show="ffoam>0" data-cost="atoms-eee175000" data-earn="fmakers+1" data-stat="fmakers">Create a fundamental particle maker for ee1e175,000 hydrogen</button>
+        <button class="wow4" data-show="ffoam>0" data-cost="atoms-eee175000" data-earn="fmakers+1" data-stat="fmakers">Create a fundamental booster maker for ee1e175,000 hydrogen</button>
         <button class="wow2" data-show="ffoam>0" data-cost="atoms-eee4000000" data-earn="higgs+1" data-stat="higgs">Create a HyperHiggs Boson using ee1e4,000,000 hydrogen</button>
-        <button class="wow2" data-show="ffoam>0" data-cost="atoms-eeee7" data-earn="higgs+50000" data-stat="higgs">Create 50,000 HyperHiggs Boson using eee10M hydrogen</button>
+        <button class="wow2" data-show="higgs>0" data-cost="atoms-eeee7" data-earn="higgs+50000" data-stat="higgs">Create 50,000 HyperHiggs Boson using eee10M hydrogen</button>
+        <br>
+        <button class="black" data-show="higgs>=50000" data-cost="higgs-1e8" data-earn="hc+1" data-stat="hc">Create 1 HyperClicker with 100,000,000 HyperHiggs Bosons, which increases click power by +200%</button>
+        <button class="black" data-show="hc>0" data-cost="higgs-all" data-earn="hc+*1e-8" data-stat="hc">Max ALL HyperClickers with 100,000,000 HyperHiggs Bosons, which increases click power by +200%</button>
+        <br><br>
+        <button class="white" data-show="higgs>=50000" data-cost="hc-all" data-earn="higgs+*1e8">Dismantle ALL HyperClickers (and get HyperHiggs Bosons back)</button>
         <p>Each quantum foam increases the exponent of prism cloner effects by 1.</p>
         <p>Each super foam increases the exponent of quantum foam effects by 10.</p>
-        <p>Each fundamental foam increases multiplies super foam effect by 1,000. (Your fundamental boosters are increasing this multiplier to <span style="color: #2dadf2" id="fundamentalBoost"></span>.)</p>
+        <p>Each fundamental foam multiplies super foam effect by 10^180 each second. (Your fundamental boosters are increasing this multiplier to <span style="color: #2dadf2" id="fundamentalBoost"></span>.)</p>
         <p class="hide" data-show="fboosters>0">Fundamental makers each make 6,000,000 fundamental boosters every second. HyperHiggs Bosons produce 6 BILLION fundamental boosters a second.</p>
         <hr>
         <b>Your hydrogen gain will become SOFTCAPPED past <span style="color: #da4">ee1e75 hydrogen</span>, as the fundamental properties of physics begin to break down hydrogen rapidly.</b>
         <p>(Your raw hydrogen gain is <span style="color: #feac12" id="rawHydrogen"></span>/sec, but the softcap is making it <span style="color: #ee5420" id="softHydrogen"></span>/sec.)</p>
         <button class="wow" data-cost="atoms-eee1200000" data-earn="softcap+1" data-hide="softcap>0">Reshape the laws of matter to decrease the softcap (costs ee1,200,000 hydrogen)</button>
+        <button class="wow" data-show="softcap>0" data-cost="atoms-eee2.5e8" data-earn="softcap+1" data-hide="softcap>1">Reshape the laws of matter to decrease the softcap again (costs ee1e250M hydrogen)</button>
+        <hr>
+        <button class="wow4" data-cost="atoms-eee2e9" data-earn="fcloners+1" data-stat="fcloners">Create a fundamental cloner for ee1e200B hydrogen</button>
+        <button class="wow4" data-show="fcloners>0" data-cost="atoms-eee5e14" data-earn="fpcloners+1" data-stat="fpcloners">Create a fundamental particle cloner for ee1e500T hydrogen</button>
+        <button class="gray" data-show="fcloners>0" data-cost="atoms-eeee1000000" data-earn="ftickspeed+1" data-stat="ftickspeed">Create a fundamental tickspeed for eee1e1,000,000 hydrogen</button>
+        <button class="gray" data-show="fcloners>0" data-cost="atoms-F6|ftickspeed-1e10" data-earn="fgen+1" data-stat="fgen">Create a fundamental tickspeed generator for 1F6 hydrogen and 10B fundamental tickspeed</button>
+        <br>
+        <button class="quark" data-show="fcloners>0" data-cost="atoms-2F6|ftickspeed-1e51" data-earn="fmul+1" data-stat="fmul">Create a tickspeed multigenerator for 2F6 hydrogen and 1e52 fundamental tickspeed</button>
+        <button class="quark" data-show="fmul>0" data-cost="atoms-3F6|fmul-1e10" data-earn="fmul2+1" data-stat="fmul2">Create a tickspeed megagenerator for 3F6 hydrogen and 10B tickspeed multigenerators</button>
+        <button class="quark" data-show="fmul2>0" data-cost="fmul2-2e10" data-earn="fmul3+1" data-stat="fmul3">Create a tickspeed hypergenerator for 20B tickspeed megagenerators</button>
+        <button class="quark" data-show="fmul3>0" data-cost="fmul3-3e10" data-earn="fmul4+1" data-stat="fmul4">Create a tickspeed OmegaGenerator for 30B tickspeed megagenerators</button>
+        <p>Fundamental cloners are multiplying your fundamental boosters by <span style="color: #777" id="fclonerBoost"></span> every single second.</p>
+        <p data-show="fcloners>0">Fundamental particle cloners are multiplying your fundamental foam by <span style="color: #cfbcbc" id="fpclonerBoost"></span> every single second.</p>
+        <p data-show="fpcloners>0">Fundamental tickspeed is currently exponentiating the two effects above by a constant of <span style="color: #b3795e" id="ftickspeedBoost"></span>. This fundamental tickspeed is generated by fundamental tickspeed generators at a rate of <span style="color: #e2af18" id="fgenBoost"></span> every second.</p>
+        <p data-show="fgen>0">Want to speed things up? Get tickspeed multigenerators, which each give you an astounding 10^70 fundamental tickspeed generators every second! Each tier after that generates 10^70 of the previous tier every second.</p>
     </div>
 
     <script id="main">
@@ -4155,7 +4175,7 @@
         }
 
         function calculateBoost(number, formatAmount) {
-            return number.isMoreOrEqual(10) || formatAmount ? (number.format(formatAmount == null ? 2 : formatAmount) + "×") : ("+" + number.mul(100).sub(100).format(formatAmount == null ? 2 : formatAmount) + "%")
+            return number.isMoreOrEqual(10) || formatAmount != null ? (number.format(formatAmount == null ? 2 : formatAmount) + "×") : ("+" + number.mul(100).sub(100).format(formatAmount == null ? 2 : formatAmount) + "%")
         }
 
         function meetsRequirements(conditions) {
@@ -4251,18 +4271,30 @@
 
             // Increase numbers
             stuff.quarkgen = stuff.quarkgen.min("1e125000")
-            add("fmakers", C("higgs").mul(100000000))
-            add("fboosters", C("fmakers").mul(100000))
+
+            add("fmul3", C("fmul4").mul("1e70").div(60), speed)
+            add("fmul2", C("fmul3").mul("1e70").div(60), speed)
+            add("fmul", C("fmul2").mul("1e70").div(60), speed)
+            add("fgen", C("fmul").mul("1e70").div(60), speed)
+            var fgenBoost = C("fgen").pow(18).sqrt().sqrt().mul(5650882)
+            add("ftickspeed", fgenBoost.div(60), speed)
+            var ftickspeedBoost = C("ftickspeed").pow(7).sqrt().add(1)
+            var fclonerBoost = C("fcloners").mul(1.4).pow(5).sqrt().add(1).pow(ftickspeedBoost)
+            var fpclonerBoost = C("fpcloners").mul(1.4).add(10).log10().pow(350).add(1).pow(ftickspeedBoost)
+            mul("ffoam", fpclonerBoost, speed)
+            mul("fboosters", fclonerBoost, speed)
+            add("fmakers", C("higgs").mul(100000000), speed)
+            add("fboosters", C("fmakers").mul(100000), speed)
             var fundamentalBoost = C("fboosters").mul(7).pow(35).add(1000)
             var foamEffect = C("foam").add(1).pow(C("sfoam").mul(fundamentalBoost.pow(C("ffoam"))).add(1))
             var cprismBoost = C("cprisms").mul(50000000).add(1).sqrt().sqrt().pow(foamEffect)
             var cprism2Boost = C("cprisms").mul(1.15).add(1).pow(foamEffect.mul(5))
-            mul("qprisms", cprism2Boost)
-            mul("prisms", cprismBoost)
+            mul("qprisms", cprism2Boost, speed)
+            mul("prisms", cprismBoost, speed)
             var quantumBoost = C("qubits").mul(7.25).add(1)
             var boosterBoost = C("omegaboosters").mul(3.25).add(1).pow(5).floor()
             var omegaBoost = C("omegacloners").mul(2.7).add(10).log10().sqrt().sqrt().pow(boosterBoost)
-            mul("cloners", omegaBoost.pow(quantumBoost))
+            mul("cloners", omegaBoost.pow(quantumBoost), speed)
             var cloneBoost = C("cloners").mul(3).add(1).pow("5.45e18")
             var prismBoost = C("prisms").mul(6.35).add(1).sqr().floor()
             var radiantBoost = C("radiantholes").mul(4.7).add(2).log2().pow(150)
@@ -4290,7 +4322,7 @@
             var ezBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
 
             var atomGain = C("stars").add(C("molecules").mul(0.01)).div(0.6).mul(planetBoost).mul(quarkBoost).mul(neonBoost).mul(tickBoost).mul(slimeBoost).mul(fuserBoost)
-            var softGain = atomGain.isMore("eee75") ? atomGain.log10().log10().log10().sqrt().sqrt().sqrt().pow(C("softcap").isPositive() ? 3 : 1).mul("5.82931255783583e74").pow10Repeat(2) : atomGain
+            var softGain = atomGain.isMore("eee75") ? atomGain.log10().log10().log10().sqrt().sqrt().sqrt().pow(C("softcap").isPositive() ? C("softcap").isMoreOrEqual(2) ? 5 : 3 : 1).mul("5.82931255783583e74").pow10Repeat(2) : atomGain
             add("qubits", C("qprisms").div(0.00000325), speed)
             add("prisms", C("prismgen").mul(C("quarks").add(1).log10()).div(35000000000), speed)
             add("producer5", C("producer6").div(6), speed)
@@ -4317,6 +4349,10 @@
             // Update text if needed
             if (render) {
                 update(ID("upgradeEasy"), "Boost easyclick rate for " + Hyper(easyclickCost[easyUpgrades]).format() + " hydrogen")
+                update(ID("fgenBoost"), "+" + fgenBoost.format(), 0)
+                update(ID("ftickspeedBoost"), "^" + ftickspeedBoost.format(), 0)
+                update(ID("fpclonerBoost"), calculateBoost(fpclonerBoost.pow(60), 0))
+                update(ID("fclonerBoost"), calculateBoost(fclonerBoost.pow(60), 0))
                 update(ID("rawHydrogen"), atomGain.format(2))
                 update(ID("softHydrogen"), softGain.format(2))
                 update(ID("fundamentalBoost"), calculateBoost(fundamentalBoost, 0))
@@ -4360,12 +4396,16 @@
         function draw() {
             var newTime = Date.now()
             var diff = newTime - time
-            if (diff < 800) {
-                updateGame(true)
+            if (diff < 4000) {
+                if (diff > 20) {
+                    updateGame(true, Hyper(diff * 60).div(1000))
+                } else {
+                    updateGame(true)
+                }
 
                 var clickBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
                 if (easyButton !== null && easyTime.isLess(newTime) && easyButton.id !== "reset") {
-                    clickRepeats = ((easyButton.parentElement !== null && easyButton.parentElement.className.includes("noEZ")) ? Hyper(1) : clickBoost.mul(diff).div(20).floor().max(1)).mul(easyUpgrades + 1)
+                    clickRepeats = ((easyButton.parentElement !== null && easyButton.parentElement.className.includes("noEZ")) ? Hyper(1) : clickBoost.mul(diff).div(20).floor().max(1)).mul(C("hc").mul(2).add(1)).mul(easyUpgrades + 1)
                     alreadyClicked = false
                     easyButton.click()
                     easyTime = easyTime.add(50)
