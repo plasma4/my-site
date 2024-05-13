@@ -995,8 +995,7 @@
                     var multiplied = start.$[3] * b.$[3]
                     digits += start.$[2]
                     if (multiplied >= DOUBLELIMIT) {
-                        digits++
-                        if (digits >= BIGLIMIT) {
+                        if (++digits >= BIGLIMIT) {
                             b.$ = [sign, 2, BIGDIGITS, digits / 10n]
                             return b
                         }
