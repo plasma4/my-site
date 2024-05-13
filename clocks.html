@@ -13740,7 +13740,7 @@
         }
 
         function shouldAutoClick(elem) {
-            return !shiftDown && elem !== null && elem.id != null && elem.tagName !== "U" && elem.tagName !== "LABEL" && elem.id.slice(0, 12) !== "autoClicking" && !(["removeButton", "addMod", "wipe", "crystal", "secret", "cheat", "autosell", "toggleStats", "exitWarp", "hyperReset", "metaReset", "fireReset", "silverReset"].includes(elem.id))
+            return !shiftDown && elem !== null && elem.id != null && elem.tagName !== "U" && elem.tagName !== "LABEL" && elem.id.slice(0, 12) !== "autoClicking" && !(["removeButton", "addMod", "wipe", "crystal", "secret", "cheat", "autosell", "toggleStats", "exitWarp", "hyperReset", "metaReset", "fireReset", "silverReset"].includes(elem.id)) && elem.style.display !== "none"
         }
 
         var currentTab = "main"

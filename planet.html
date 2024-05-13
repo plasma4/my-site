@@ -1475,8 +1475,16 @@
                     } else {
                         value.$ = new Hyper(value.$[2] + 1).$
                     }
+                } else if (value.$[1] === 2) {
+                    var digitValue = value.$[2]
+                    if (digitValue < 9007199254740992n) {
+                        value.$[1] = 0
+                        value.$[2] = Number(digitValue)
+                    } else {
+                        value.$[1] = 1
+                    }
                 } else {
-                    value.$[1] = value.$[1]
+                    value.$[1]--
                 }
                 return value
             }
@@ -2818,7 +2826,7 @@
              * @returns {Hyper}
              */
             Hyper.prototype.digits = function (noClone) {
-                return HyperDigits(this, value)
+                return HyperDigits(this, noClone)
             }
 
             /**
@@ -3827,10 +3835,32 @@
         <button class="white" data-show="ezboost>0" data-cost="atoms-2F7" data-earn="ezboost+1" data-hide="ezboost>1">Double your HyperClickers every second again for 2F7 hydrogen</button>
         <button class="wow3" data-show="ezboost>1" data-cost="ftickspeed-ee50" data-earn="faccel+1" data-stat="faccel">Create a fundamental tickspeed accelerator for e1e50 fundamental tickspeed</button>
         <button class="wow4" data-show="faccel>0" data-cost="faccel-e2500" data-earn="haccel+1" data-stat="haccel">Create a HyperAccelerator for 1e2,500 fundamental tickspeed accelerators</button>
+        <button class="wow4" data-show="faccel>0" data-cost="atoms-1F8|haccel-ee33" data-earn="oaccel+1" data-stat="oaccel">Create an OmegaAccelerator for 1F8 hydrogen and 1e1D HyperAccelerators</button>
         <p class="hide" data-show="ezboost>1">Your fundamental tickspeed accelerators are exponentiating fundamental tickspeed's effect by a constant of <span style="color: #e2187a" id="faccelBoost"></span> and increasing HyperClicker's cloning speed by <span style="color: #c4b5bc" id="faccelCloneBoost"></span>.</p>
         <p class="hide" data-show="faccel>0">HyperAccelerators are increasing HyperClicker's cloning speed by <span style="color: #eaad74" id="haccelBoost"></span>.</p>
+        <p class="hide" data-show="haccel>0">OmegaAccelerators will rapidly multiply your HyperAccelerators by themselves, making them overpowered! However, your HyperAccelerator cloning speed will be SOFTCAPPED after ee1e50 due to the speed of light.</p>
     </div>
-
+    <div class="hide" data-show="oaccel>0">
+        <hr>
+        Your HyperClickers are being multiplied by <span style="color: #f83b6a" id="ezEffect"></span> each second (<span style="color: #e2c905" id="ezRaw"></span> before the softcap).
+        <br>
+        <button class="yellow" data-cost="atoms-1F9|oaccel-ee48" data-earn="qaccel+1" data-stat="qaccel">Create a Quantum Accelerator for 1F9 hydrogen and 1e1Qd OmegaAccelerators</button>
+        <button class="green" data-cost="qaccel-ee1.015e50" data-earn="sqaccel+1" data-stat="sqaccel">Create a SuperQuantum Accelerator for ee1.015e50 Quantum Accelerators</button>
+        <button class="blue" data-cost="sqaccel-ee1.03e50" data-earn="hqaccel+1" data-stat="hqaccel">Create a HyperQuantum Accelerator for ee1.030e50 SuperQuantum Accelerators</button>
+        <button class="quark" data-cost="sqaccel-ee1.03e50" data-earn="maccel+1" data-stat="maccel">Create a HyperQuantum Machine for 1.7F9 HyperQuantum Accelerators</button>
+        <br>
+        <button class="wow" data-cost="fcloners2-ee2.336e50" data-earn="softcap2+1" data-hide="softcap2>0">Make the HyperClicker softcap weaker using ee2.336e50 tickspeed OmegaCloners</button>
+        <button class="wow" data-cost="fcloners2-ee3.35e1410" data-earn="softcap3+1" data-hide="softcap3>0">Make the HyperClicker softcap even weaker using ee3.350e1,410 tickspeed OmegaCloners, which may make it more powerful than BEFORE the softcap for a while</button>
+        <br>
+        <p>Quantum Accelerators rapidly multiply your OmegaAccelerators by themselves, providing a minor boost. SuperQuantum Accelerators do the same thing to Quantum Accelerators instead. HyperQuantum Accelerators also have the same effect on SuperQuantum Accelerators, but more powerful.</p>
+        <p class="hide" data-show="hqaccel>0">HyperQuantum Machines produce HyperQuantum Accelerators at a rapid pace. But there's also something new after that...</p>
+    </div>
+    <div class="hide" data-show="softcap3>0">
+        <hr>
+        <button class="wow3" data-earn="omachines+1" data-stat="omachines">Get an OmegaQuantum machine whose click speed is not affected by easyclick rate boosting</button>
+        <button class="wow4" data-cost="omachines-100" data-earn="oboosters+1" data-stat="oboosters">Get an OmegaQuantum booster whose click speed is not affected by easyclick rate boosting for 100 OmegaQuantum machines</button>
+        <button class="wow4" data-cost="oboosters-3" data-earn="obmakers+1" data-stat="obmakers">Get an OmegaQuantum boostermaker whose click speed is not affected by easyclick rate boosting for 3 OmegaQuantum boosters</button>
+    </div>
     <script id="main">
         ID("main").remove()
         ID("bigScript").remove()
@@ -4073,6 +4103,9 @@
 
         // Adds a certain amount of a property, with an optional multiplier
         function add(item, amount, multiplier) {
+            if (item === "omachines" || item === "oboosters" || item === "obmakers") {
+                amount = Hyper(true)
+            }
             if (multiplier != null) {
                 amount = amount.mul(multiplier)
             }
@@ -4285,12 +4318,35 @@
             // Increase numbers
             stuff.quarkgen = stuff.quarkgen.min("1e125000")
 
+            var doubleFormula = Hyper("1.011619440301922484686230567045487045303558802374")
+            stuff.oboosters = stuff.oboosters.add(C("obmakers").div(2.4))
+            if (C("omachines").isPositive()) {
+                add("maccel", C("maccel").pow(C("omachines").pow(C("oboosters").mul(8).add(19)).pow10Repeat(2)))
+            }
+            if (C("maccel").isPositive()) {
+                mul("hqaccel", C("hqaccel").pow(C("maccel").add(2).log2().pow("3e43255")))
+            }
+            if (C("hqaccel").isPositive()) {
+                mul("sqaccel", C("sqaccel").pow(C("hqaccel").add(2).log2().pow("5e1030")))
+            }
+            if (C("sqaccel").isPositive()) {
+                mul("qaccel", C("qaccel").pow(C("sqaccel").add(2).log2().pow(1016)))
+            }
+            if (C("qaccel").isPositive()) {
+                mul("oaccel", C("oaccel").pow(C("qaccel").add(2).log2().sqrt()))
+            }
+            if (C("oaccel").isPositive()) {
+                mul("haccel", C("haccel").pow(C("oaccel").add(10).log10().sqrt().sqrt()))
+            }
             var haccelBoost = C("haccel").mul(5555).add(1).log10().mul(4).add(1).sqrt().floor()
             var faccelCloneBoost = C("faccel").mul(5555).add(1).log2().mul(6).add(1).sqrt().floor()
             var faccelBoost = C("faccel").mul(5).pow(19).add(1)
-            var doubleFormula = Hyper("1.011619440301922484686230567045487045303558802374")
+            var ezEffect = Hyper(1)
+            var ezRaw = Hyper(1)
             if (C("ezboost").isPositive()) {
-                mul("hc", (C("ezboost").isMore(1) ? doubleFormula.sqr() : doubleFormula).pow(faccelCloneBoost.mul(haccelBoost)))
+                ezRaw = (C("ezboost").isMore(1) ? doubleFormula.sqr() : doubleFormula).pow(faccelCloneBoost.mul(haccelBoost))
+                ezEffect = ezRaw.isMore("eee50") ? ezRaw.log10().log10().log10().sqrt().sqrt().sqrt().pow(C("softcap2").isPositive() ? C("softcap3").isPositive() ? 335014100 : 2336 : 1).mul("6.13237563517304e49").pow10Repeat(2) : ezRaw
+                mul("hc", ezEffect)
             }
             mul("fmul4", doubleFormula.pow(C("fcloners2")))
             add("fmul3", C("fmul4").mul("1e70").div(60), speed)
@@ -4370,8 +4426,15 @@
             // Update text if needed
             if (render) {
                 update(ID("upgradeEasy"), "Boost easyclick rate for " + Hyper(easyclickCost[easyUpgrades]).format() + " hydrogen")
-                update(ID("haccelBoost"), "" + calculateBoost(haccelBoost, 0), 0)
-                update(ID("faccelCloneBoost"), "" + calculateBoost(faccelCloneBoost, 0), 0)
+                update(ID("ezRaw"), calculateBoost(ezRaw, 2), 0)
+                if (ezEffect.isLess("eee10000") && ezEffect.isMore("eee50")) {
+                    var x = ezEffect.log10().log10()
+                    update(ID("ezEffect"), "ee" + Hyper(ezEffect.log10().log10().$[3]).mul("1e-49").format(6) + "e" + x.digits().sub(1).format(), 0)
+                } else {
+                    update(ID("ezEffect"), calculateBoost(ezEffect, 2), 0)
+                }
+                update(ID("haccelBoost"), calculateBoost(haccelBoost, 0), 0)
+                update(ID("faccelCloneBoost"), calculateBoost(faccelCloneBoost, 0), 0)
                 update(ID("faccelBoost"), "^" + faccelBoost.format(), 0)
                 update(ID("fgenBoost"), "+" + fgenBoost.format(), 0)
                 update(ID("ftickspeedBoost"), "^" + ftickspeedBoost.format(), 0)
@@ -4428,7 +4491,7 @@
                 }
 
                 var clickBoost = C("ezclickers").mul(60000).add(1).sqrt().floor()
-                if (easyButton !== null && easyTime.isLess(newTime) && easyButton.id !== "reset") {
+                if (easyButton !== null && easyButton.style.display !== "none" && easyTime.isLess(newTime) && easyButton.id !== "reset") {
                     clickRepeats = ((easyButton.parentElement !== null && easyButton.parentElement.className.includes("noEZ")) ? Hyper(1) : clickBoost.mul(diff).div(20).floor().max(1)).mul(C("hc").mul(2).add(1)).mul(easyUpgrades + 1)
                     alreadyClicked = false
                     easyButton.click()

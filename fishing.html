@@ -4444,7 +4444,7 @@
                 updateGame(true)
 
                 var clickBoost = Hyper(1)
-                if (easyButton !== null && easyTime.isLess(newTime) && easyButton.id !== "reset") {
+                if (easyButton !== null && easyButton.style.display !== "none" && easyTime.isLess(newTime) && easyButton.id !== "reset") {
                     clickRepeats = clickBoost.mul(diff).div(20).floor().max(1)
                     alreadyClicked = false
                     easyButton.click()
