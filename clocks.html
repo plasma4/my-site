@@ -6052,19 +6052,21 @@
                     return HyperPower(start, power).recip(true)
                 } else if (power.$[2] >= HDIGITS) {
                     power = HyperMultiply(power, HyperLog10(start))
-                    var category = power.$[1]
-                    if (category < 2) {
-                        power.$[1] = 2
-                        power.$[2] = BigInt(power.$[2])
-                    } else {
-                        // var category = power.$[1]
-                        // Ignore the limit
-                        // if (category === LIMITMINUSONE) {
-                        //     throw new RangeError("The resulting value is too large!")
-                        // }
-                        power.$[1]++
+                    var powerDigits = power.$[2]
+                    if (powerDigits >= HDIGITS) {
+                        var category = power.$[1]
+                        if (category < 2) {
+                            power.$[1] = 2
+                            power.$[2] = BigInt(power.$[2])
+                        } else {
+                            var category = power.$[1]
+                            if (category === LIMITMINUSONE) {
+                                throw new RangeError("The resulting value is too large!")
+                            }
+                            power.$[1]++
+                        }
+                        return power
                     }
-                    return power
                 }
 
                 if (typeof exponent === "number") {
