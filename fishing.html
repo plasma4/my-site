@@ -3837,6 +3837,10 @@
             data-stat="leeches" data-wait="0.25">
             Purchase 10,000 leeches for bait for $120,000
         </button>
+        <button class="black" data-show="leeches>0" data-cost="money-2500000" data-earn="leeches+150000"
+            data-stat="leeches" data-wait="1">
+            Purchase 150,000 leeches for bait for $2,500,000
+        </button>
     </div>
 
     <script id="main">
@@ -4036,7 +4040,7 @@
                             }
 
                             if (isTropical) {
-                                multipliedAmount = multipliedAmount.mul(C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(2).mul(C("marketing").mul(3.8).add(C("ads").floor()).add(2).log2().sqr()).add(1))
+                                multipliedAmount = multipliedAmount.mul(0.1).mul(C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(2).mul(C("marketing").mul(3.8).add(C("ads").floor()).add(2).log2().sqr()).add(1))
                             } else if (isShrimp) {
                                 multipliedAmount = multipliedAmount.mul(C("rep").mul(3.8).add(10).ln().sqr())
                             }
