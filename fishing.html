@@ -3441,7 +3441,7 @@
         }
 
         .wow3 {
-            background-color: #e78ef3;
+            background-color: #de60ef;
             color: black;
             border-color: white;
         }
@@ -3701,8 +3701,9 @@
         Get <span style="color: #5d1094">100</span> trades to unlock more.
         <br>
         (You have made <span style="color: #b365ea" data-s="total trade" data-p="total trades" id="trades"></span>
-        own <span style="color: #7e987b" id="carp"></span>,
-        and have <span style="color: #f19515" id="otherFish2"></span>)
+        and own <span style="color: #7e987b" id="carp"></span>)
+        <br>
+        You also currently have <span style="color: #f19515" id="otherFish2"></span>.
         <button class="black" data-cost="money-15000" data-earn="groups+1" data-hide="groups>0">
             Join the local fishing group for $15,000
         </button>
@@ -3759,14 +3760,15 @@
         </button>
         <p>Your current reputation is increasing shrimp value by <span style="color: #f72" id="shrimpBoost"></span>.</p>
         <hr>
-        <p>Superfishers are 6 times more effective than an upgraded automatic fisher!</p>
+        <p>Superfishers are 10 times more effective than an upgraded automatic fisher!</p>
         <button class="wow2" data-show="groups>0" data-cost="autoreels2-3|money-60000" data-earn="autoreels3+1|trades+1"
             data-stat="autoreels3" data-wait="5">
             Exchange 3 upgraded automatic fishers and $60,000 for 1 superfisher
         </button>
+        <br>
         <button class="purple" data-show="groups>0" data-cost="f3-1500" data-earn="autoreels2+1|trades+1"
             data-stat="autoreels2" data-wait="3">
-            Trade 1,500 grass carp for an upgraded automatic fisher
+            Trade 1,500 grass carp for an upgraded automatic fisher, which will also slowly catch grass carp
         </button>
         <br>
         <button class="white" data-show="groups>0" data-cost="f3-250" data-earn="nets+1|trades+1" data-stat="nets"
@@ -3786,6 +3788,7 @@
     <div id="menu5">
         <p>The ocean...how much further can we go?</p>
         <div style="color: #e7890d" data-s="tropical fish$4" id="f4"></div>
+        <div style="color: #e03cc0" data-s="advertisement" data-p="advertisements" id="ads"></div>
         <button class="black" data-cost="money-1250000" data-earn="boats+1" data-hide="boats>2">
             Get a small ocean yacht for $1,250,000
         </button>
@@ -3797,17 +3800,31 @@
         <button class="orange" data-show="boats>2" data-cost="fakebait-250" data-earn="f4+4000" data-wait="24">
             Catch 4,000 tropical fish by using 250 artificial bait
         </button>
+        <button class="orange" data-show="boats>2" data-cost="leeches-3250" data-earn="f4+50000" data-wait="48">
+            Catch 50,000 tropical fish by using 3,250 leeches
+        </button>
+        <button class="white" data-cost="f4-50000" data-earn="line+2" data-hide="line>1">
+            Get an extremely powerful fishing net for 50,000 tropical fish
+        </button>
         <div class="small">
             Your aquariums and superaquariums cause your tropical fish to sell for
             <span style="color: #dce70d" id="f4Boost"></span> more.
+            <br>
+            Your marketing campaigns and ads multiply this boost by <span style="color: #eba967"
+                id="marketBoost"></span>.
         </div>
-        <button class="wow2" data-cost="f4-40000|money-10000000" data-earn="aquariums+1" data-stat="aquariums"
-            data-wait="2">
-            Create an interactive aquarium for $10,000,000 and 40,000 tropical fish
+        <button class="wow2" data-cost="f4-40000|money-1e7" data-earn="aquariums+1" data-stat="aquariums">
+            Create an interactive aquarium for $10M and 40,000 tropical fish
         </button>
-        <button class="wow2" data-cost="f4-250000|money-25000000" data-earn="saquariums+1" data-stat="saquariums"
-            data-wait="5">
-            Create a superaquarium for $25,000,000 and 250,000 tropical fish
+        <button class="wow2" data-cost="f4-250000|money-2.5e7" data-earn="saquariums+1" data-stat="saquariums">
+            Create a superaquarium for $25M and 250,000 tropical fish
+        </button>
+        <button class="wow" data-cost="f4-1000000" data-earn="marketing+1" data-stat="marketing">
+            Create a marketing campaign by donating 1,000,000 tropical fish
+        </button>
+        <button class="white" data-show="marketing>0" data-cost="money-5000000" data-earn="baitunlock+1"
+            data-hide="baitunlock>0">
+            Unlock a new type of bait for $5,000,000
         </button>
         <hr>
         <button class="wow3" data-cost="money-1200" data-earn="fakebait+250" data-stat="fakebait" data-wait="0.25">
@@ -3816,12 +3833,16 @@
         <button class="wow3" data-cost="money-40000" data-earn="fakebait+10000" data-stat="fakebait" data-wait="0.25">
             Purchase 10,000 powerful artificial bait for $40,000
         </button>
+        <button class="black" data-show="baitunlock>0" data-cost="money-120000" data-earn="leeches+10000"
+            data-stat="leeches" data-wait="0.25">
+            Purchase 10,000 leeches for bait for $120,000
+        </button>
     </div>
 
     <script id="main">
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = []
+        var baseProperties = ["ads"]
 
         var buttons = null, sellPercent = 100, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = [], stuffTotals = [], alreadyClicked = true
         function setup(removeCSS) {
@@ -4015,7 +4036,7 @@
                             }
 
                             if (isTropical) {
-                                multipliedAmount = multipliedAmount.mul(C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(1))
+                                multipliedAmount = multipliedAmount.mul(C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(2).mul(C("marketing").mul(3.8).add(C("ads").floor()).add(2).log2().sqr()).add(1))
                             } else if (isShrimp) {
                                 multipliedAmount = multipliedAmount.mul(C("rep").mul(3.8).add(10).ln().sqr())
                             }
@@ -4125,7 +4146,11 @@
             if (item === "carp" || item === "fish") {
                 item = (item === "fish" ? ["f1", "f2", "f3"][P(0.7) ? 2 : (P(0.35) ? 1 : 0)] : ["f1", "f2"][P(0.3) ? 1 : 0])
                 removeAmount = Hyper(amount.isMore(5) ? 15 : amount.isMore(1) ? 2 : 1)
-                if (C("fakebait").isMoreOrEqual(1)) {
+                if (C("leeches").isMoreOrEqual(1)) {
+                    if (!remove("leeches", removeAmount)) {
+                        clearAmount("leeches")
+                    }
+                } else if (C("fakebait").isMoreOrEqual(1)) {
                     if (!remove("fakebait", removeAmount)) {
                         clearAmount("fakebait")
                     }
@@ -4258,7 +4283,7 @@
             }
 
             update(ID("otherFish"), (C("small").isZero() ? "There are other types of fish you can unlock..." : "You have " + C("f1").floor().add(C("f2").floor()).format() + " other fish."))
-            update(ID("otherFish2"), C("f1").floor().add(C("f2").floor()).format() + " other fish")
+            update(ID("otherFish2"), C("f1").floor().add(C("f2").floor()).format() + " other carp")
 
             for (i = 0; i < buttons.length; i++) {
                 var button = buttons[i]
@@ -4394,15 +4419,19 @@
             var reelPower = C("autoreels").add(C("autoreels2").mul(2)).add(C("autoreels3").mul(12))
             add("f1", reelPower.mul(0.7).div(240), speed)
             add("f2", reelPower.div(800), speed)
+            add("f3", C("autoreels3").div(60), speed)
+            add("ads", C("marketing").div(1200), speed)
             add("small", C("nets").div(120), speed)
             add("shrimp", C("snets").div(0.9), speed)
 
             // Update text if needed
             if (render) {
-                var shrimpPower = C("rep").mul(3.8).add(10).ln().sqr()
-                var aquariumPower = C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(2)
+                var shrimpPower = C("rep").mul(3.8).add(10).log10().sqr()
+                var marketPower = C("marketing").mul(3.8).add(C("ads").floor()).add(2).log2().sqr()
+                var aquariumPower = C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(2).mul(marketPower)
                 update(ID("shrimpBoost"), calculateBoost(shrimpPower))
                 update(ID("shrimpValue"), "$" + C("shrimp").floor().mul(shrimpPower).div(4).format(2))
+                update(ID("marketBoost"), calculateBoost(marketPower))
                 update(ID("f4Boost"), "+$" + aquariumPower.mul(10).format(2))
 
                 update(ID("fishValue"), "$" + C("f1").floor().add(C("f2").floor()).mul(4).add(C("f3").floor().mul(6)).add(C("f4").floor().mul(aquariumPower.add(1))).format(2))
@@ -4412,8 +4441,11 @@
 
         var baitUsed = "", lightMode = false, outlineMode = 5, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
         function draw() {
-            var fishSpeed = Hyper(0.6).pow(C("rodupgrades")).mul(C("line").isPositive() ? 2.5 : 3)
-            if (C("fakebait").isMoreOrEqual(1)) {
+            var fishSpeed = Hyper(0.6).pow(C("rodupgrades")).mul(C("line").isPositive() ? C("line").isMore(1) ? 1.25 : 2.5 : 3)
+            if (C("leeches").isMoreOrEqual(1)) {
+                fishSpeed = fishSpeed.mul(0.06)
+                baitUsed = "leeches"
+            } else if (C("fakebait").isMoreOrEqual(1)) {
                 fishSpeed = fishSpeed.mul(0.125)
                 baitUsed = "artificial bait"
             } else if (C("small").isMoreOrEqual(1)) {
@@ -4435,6 +4467,7 @@
             totalTimes[14] = new Hyper(fishSpeed).mul(2)
             totalTimes[15] = new Hyper(fishSpeed).mul(4)
             totalTimes[31] = new Hyper(fishSpeed).mul(8)
+            totalTimes[32] = new Hyper(fishSpeed).mul(16)
             var newTime = Date.now()
             var diff = newTime - time
             if (!document.hasFocus()) {
