@@ -4794,7 +4794,7 @@
                 }
                 currentMenu = Number(convertedSplit[5])
                 sellPercent = Number(convertedSplit[6])
-                if (sellPercent === 0) {
+                if (sellPercent === 0 || !isFinite(sellPercent)) {
                     sellPercent = 100
                 }
 
