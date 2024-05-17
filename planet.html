@@ -3860,6 +3860,7 @@
         <button class="wow3" data-earn="omachines+1" data-stat="omachines">Get an OmegaQuantum machine whose click speed is not affected by easyclick rate boosting</button>
         <button class="wow4" data-cost="omachines-100" data-earn="oboosters+1" data-stat="oboosters">Get an OmegaQuantum booster whose click speed is not affected by easyclick rate boosting for 100 OmegaQuantum machines</button>
         <button class="wow4" data-cost="oboosters-3" data-earn="obmakers+1" data-stat="obmakers">Get an OmegaQuantum boostermaker whose click speed is not affected by easyclick rate boosting for 3 OmegaQuantum boosters</button>
+        <button class="wow4" data-cost="oboosters-1000000" data-earn="osmakers+1" data-stat="osmakers">Get an OmegaQuantum supermaker whose click speed is not affected by easyclick rate boosting for 1,000,000 OmegaQuantum boosters</button>
     </div>
     <script id="main">
         ID("main").remove()
@@ -4103,7 +4104,7 @@
 
         // Adds a certain amount of a property, with an optional multiplier
         function add(item, amount, multiplier) {
-            if (item === "omachines" || item === "oboosters" || item === "obmakers") {
+            if (item === "omachines" || item === "oboosters" || item === "obmakers" || item === "osmakers") {
                 amount = Hyper(true)
             }
             if (multiplier != null) {
@@ -4319,7 +4320,7 @@
             stuff.quarkgen = stuff.quarkgen.min("1e125000")
 
             var doubleFormula = Hyper("1.011619440301922484686230567045487045303558802374")
-            stuff.oboosters = stuff.oboosters.add(C("obmakers").mul(speed).div(2.4))
+            stuff.oboosters = stuff.oboosters.add(C("obmakers").add(C("osmakers").mul(3000)).mul(speed == null ? 1 : speed).div(2.4))
             if (C("omachines").isPositive()) {
                 add("maccel", C("maccel").pow(C("omachines").pow(C("oboosters").mul(8).add(19)).pow10Repeat(2)), speed)
             }
