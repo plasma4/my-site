@@ -3851,12 +3851,21 @@
         <button class="sell wow2" data-show="f5>0" data-cost="f5-all" data-earn="money+*400000" data-wait="4">
             Sell <span class="all"></span> of space fish
         </button>
-        <button class="gray" data-cost="sbait-100" data-earn="f5+20000" data-wait="96">
+        <button class="gray" data-cost="sbait-100" data-earn="f5+20000" data-wait="96" data-hide="lakes>2">
             Catch 20,000 space fish by using 100 space bait
+        </button>
+        <button class="gray" data-cost="sbait-250" data-earn="f5+120000" data-wait="192" data-show="lakes>2">
+            Catch 120,000 space fish by using 250 space bait
         </button>
         <br>
         <button class="black" data-cost="money-1e9" data-earn="sbait+1000" data-stat="sbait">
             Get 1,000 space bait for $1B
+        </button>
+        <button class="wow3" data-cost="money-1e12" data-earn="spacefishers+1" data-stat="spacefishers">
+            Buy a sturdy spacefisher for $1T
+        </button>
+        <button class="wow2" data-show="spacefishers>0" data-cost="money-6e11" data-earn="lakes+1" data-hide="lakes>2">
+            Get a space lake for $600B to improve manual catch rate significantly
         </button>
     </div>
 
@@ -4445,6 +4454,7 @@
             add("f1", reelPower.mul(0.7).div(240), speed)
             add("f2", reelPower.div(800), speed)
             add("f3", C("autoreels3").div(60), speed)
+            add("f5", C("spacefishers").div(0.0535), speed)
             add("ads", C("marketing").div(1200), speed)
             add("small", C("nets").div(120), speed)
             add("shrimp", C("snets").div(0.9), speed)
@@ -4497,6 +4507,7 @@
             totalTimes[31] = new Hyper(fishSpeed).mul(8)
             totalTimes[32] = new Hyper(fishSpeed).mul(16)
             totalTimes[38] = new Hyper(fishSpeed).mul(32)
+            totalTimes[39] = new Hyper(fishSpeed).mul(64)
             var newTime = Date.now()
             var diff = newTime - time
             if (!document.hasFocus()) {
