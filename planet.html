@@ -4321,22 +4321,22 @@
             var doubleFormula = Hyper("1.011619440301922484686230567045487045303558802374")
             stuff.oboosters = stuff.oboosters.add(C("obmakers").div(2.4))
             if (C("omachines").isPositive()) {
-                add("maccel", C("maccel").pow(C("omachines").pow(C("oboosters").mul(8).add(19)).pow10Repeat(2)))
+                add("maccel", C("maccel").pow(C("omachines").pow(C("oboosters").mul(8).add(19)).pow10Repeat(2)), speed)
             }
             if (C("maccel").isPositive()) {
-                mul("hqaccel", C("hqaccel").pow(C("maccel").add(2).log2().pow("3e43255")))
+                mul("hqaccel", C("hqaccel").pow(C("maccel").add(2).log2().pow("3e43255")), speed)
             }
             if (C("hqaccel").isPositive()) {
-                mul("sqaccel", C("sqaccel").pow(C("hqaccel").add(2).log2().pow("5e1030")))
+                mul("sqaccel", C("sqaccel").pow(C("hqaccel").add(2).log2().pow("5e1030")), speed)
             }
             if (C("sqaccel").isPositive()) {
-                mul("qaccel", C("qaccel").pow(C("sqaccel").add(2).log2().pow(1016)))
+                mul("qaccel", C("qaccel").pow(C("sqaccel").add(2).log2().pow(1016)), speed)
             }
             if (C("qaccel").isPositive()) {
-                mul("oaccel", C("oaccel").pow(C("qaccel").add(2).log2().sqrt()))
+                mul("oaccel", C("oaccel").pow(C("qaccel").add(2).log2().sqrt()), speed)
             }
             if (C("oaccel").isPositive()) {
-                mul("haccel", C("haccel").pow(C("oaccel").add(10).log10().sqrt().sqrt()))
+                mul("haccel", C("haccel").pow(C("oaccel").add(10).log10().sqrt().sqrt()), speed)
             }
             var haccelBoost = C("haccel").mul(5555).add(1).log10().mul(4).add(1).sqrt().floor()
             var faccelCloneBoost = C("faccel").mul(5555).add(1).log2().mul(6).add(1).sqrt().floor()
@@ -4346,9 +4346,9 @@
             if (C("ezboost").isPositive()) {
                 ezRaw = (C("ezboost").isMore(1) ? doubleFormula.sqr() : doubleFormula).pow(faccelCloneBoost.mul(haccelBoost))
                 ezEffect = ezRaw.isMore("eee50") ? ezRaw.log10().log10().log10().sqrt().sqrt().sqrt().pow(C("softcap2").isPositive() ? C("softcap3").isPositive() ? 335014100 : 2336 : 1).mul("6.13237563517304e49").pow10Repeat(2) : ezRaw
-                mul("hc", ezEffect)
+                mul("hc", ezEffect, speed)
             }
-            mul("fmul4", doubleFormula.pow(C("fcloners2")))
+            mul("fmul4", doubleFormula.pow(C("fcloners2")), speed)
             add("fmul3", C("fmul4").mul("1e70").div(60), speed)
             add("fmul2", C("fmul3").mul("1e70").div(60), speed)
             add("fmul", C("fmul2").mul("1e70").div(60), speed)
