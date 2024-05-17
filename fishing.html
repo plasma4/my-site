@@ -3565,6 +3565,7 @@
             <button data-show="cookers>0">Boating</button>
             <button data-show="f3>0">Fishing Group</button>
             <button data-show="snets>0">The Ocean</button>
+            <button data-show="marketing>0">The Moon</button>
         </div>
         <hr>
         Sell amount: <input id="sellAmount" type="range" min="1" max="100">
@@ -3840,6 +3841,22 @@
         <button class="black" data-show="leeches>0" data-cost="money-2500000" data-earn="leeches+150000"
             data-stat="leeches" data-wait="1">
             Purchase 150,000 leeches for bait for $2,500,000
+        </button>
+    </div>
+    <div id="menu6">
+        <div style="color: #999" data-s="space fish" id="f5"></div>
+        <button class="black" data-show="leeches>0" data-cost="money-1.2e11" data-earn="moon+1" data-hide="moon>0">
+            Get a rocket to the moon for $120B
+        </button>
+        <button class="sell wow2" data-show="f5>0" data-cost="f5-all" data-earn="money+*400000" data-wait="4">
+            Sell <span class="all"></span> of space fish
+        </button>
+        <button class="gray" data-cost="sbait-100" data-earn="f5+20000" data-wait="96">
+            Catch 20,000 space fish by using 100 space bait
+        </button>
+        <br>
+        <button class="black" data-cost="money-1e9" data-earn="sbait+1000" data-stat="sbait">
+            Get 1,000 space bait for $1B
         </button>
     </div>
 
@@ -4150,7 +4167,11 @@
             if (item === "carp" || item === "fish") {
                 item = (item === "fish" ? ["f1", "f2", "f3"][P(0.7) ? 2 : (P(0.35) ? 1 : 0)] : ["f1", "f2"][P(0.3) ? 1 : 0])
                 removeAmount = Hyper(amount.isMore(5) ? 15 : amount.isMore(1) ? 2 : 1)
-                if (C("leeches").isMoreOrEqual(1)) {
+                if (C("sbait").isMoreOrEqual(1)) {
+                    if (!remove("sbait", removeAmount)) {
+                        clearAmount("sbait")
+                    }
+                } else if (C("leeches").isMoreOrEqual(1)) {
                     if (!remove("leeches", removeAmount)) {
                         clearAmount("leeches")
                     }
@@ -4438,7 +4459,7 @@
                 update(ID("marketBoost"), calculateBoost(marketPower))
                 update(ID("f4Boost"), "+$" + aquariumPower.mul(10).format(2))
 
-                update(ID("fishValue"), "$" + C("f1").floor().add(C("f2").floor()).mul(4).add(C("f3").floor().mul(6)).add(C("f4").floor().mul(aquariumPower.add(1))).format(2))
+                update(ID("fishValue"), "$" + C("f1").floor().add(C("f2").floor()).mul(4).add(C("f3").floor().mul(6)).add(C("f4").floor().mul(aquariumPower.add(1))).add(C("f5").mul(400000)).format(2))
                 update(ID("bait"), baitUsed)
             }
         }
@@ -4446,7 +4467,10 @@
         var baitUsed = "", lightMode = false, outlineMode = 5, font = 0, frame = 0, easyButton = null, easyTime = Hyper(-1), time = Date.now(), clickBoosts = Hyper(1), clickRepeats = Hyper(1), clickLoops = 1
         function draw() {
             var fishSpeed = Hyper(0.6).pow(C("rodupgrades")).mul(C("line").isPositive() ? C("line").isMore(1) ? 1.25 : 2.5 : 3)
-            if (C("leeches").isMoreOrEqual(1)) {
+            if (C("sbait").isMoreOrEqual(1)) {
+                fishSpeed = fishSpeed.mul(0.04)
+                baitUsed = "space bait"
+            } else if (C("leeches").isMoreOrEqual(1)) {
                 fishSpeed = fishSpeed.mul(0.06)
                 baitUsed = "leeches"
             } else if (C("fakebait").isMoreOrEqual(1)) {
@@ -4472,6 +4496,7 @@
             totalTimes[15] = new Hyper(fishSpeed).mul(4)
             totalTimes[31] = new Hyper(fishSpeed).mul(8)
             totalTimes[32] = new Hyper(fishSpeed).mul(16)
+            totalTimes[38] = new Hyper(fishSpeed).mul(32)
             var newTime = Date.now()
             var diff = newTime - time
             if (!document.hasFocus()) {
