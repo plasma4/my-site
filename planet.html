@@ -4319,7 +4319,7 @@
             stuff.quarkgen = stuff.quarkgen.min("1e125000")
 
             var doubleFormula = Hyper("1.011619440301922484686230567045487045303558802374")
-            stuff.oboosters = stuff.oboosters.add(C("obmakers").div(2.4))
+            stuff.oboosters = stuff.oboosters.add(C("obmakers").mul(speed).div(2.4))
             if (C("omachines").isPositive()) {
                 add("maccel", C("maccel").pow(C("omachines").pow(C("oboosters").mul(8).add(19)).pow10Repeat(2)), speed)
             }
