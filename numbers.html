@@ -781,9 +781,25 @@
         φ(1,a,b+1)=\underset{n\ φ\text{'s}}{\underbrace{φ(1,a,φ(1,a,⋯φ(1,a,b)+1⋯))}}\newline
         φ(1,0,0,0)=\underset{n\ φ\text{'s}}{\underbrace{φ(φ(φ(0,0,0)⋯,0,0),0,0)}}=\underset{n\ φ\text{'s}}{\underbrace{φ(φ(1⋯,0,0),0,0)}}#
         You can imagine how the pattern continues, right? This type of recusion is quite powerful, so our next step would be $φ(1,0,0,0,0)=\underset{n\ φ\text{'s}}{\underbrace{φ(φ(φ(0,0,0,0)⋯,0,0,0),0,0,0)}}$, $φ(1,0,0,0,0,0)$, and so on. Until we get to $φ(1@n)$.
-        #φ(1@n)=\underset{n\ 0\text{'s}}{\underbrace{φ(1,0,0⋯0,0,0)}}#
+        #φ(1@n)=\underset{n\ 0\text{'s}}{\underbrace{φ(1,0,0⋯0,0,0)}}\newline
+        φ(a@b)=\underset{b\ 0\text{'s}}{\underbrace{φ(a,0,0⋯0,0,0)}}#
+        This can be extended much further:
+        #φ(1@ω)[k]=\underset{k\ 0\text{'s}}{\underbrace{φ(1,0,0⋯0,0,0)}}\newline
+        φ(1@10@2)[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(9,φ(1@(9,φ(1@(9,⋯,0,0)),0,0)),0,0)),0,0))}}\newline
+        φ(1@(a+1)@2)[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(a,φ(1@(a,φ(1@(a,⋯,0,0)),0,0)),0,0)),0,0))}}\newline
+        φ(1@(a+1)@3)[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(a,φ(1@(a,φ(1@(a,⋯,0,0,0)),0,0,0)),0,0,0)),0,0,0))}}\newline
+        φ(n@(a+1)@3)[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(n@(4,φ(n@(a,φ(n@(a,φ(n@(a,⋯,0,0,0)),0,0,0)),0,0,0)),0,0,0))}}\newline
+        φ(n@(a+1)@b)[k]=\underset{k\ φ\text{'s with each one containing b zeroes inside}}{\underbrace{φ(n@(4,φ(n@(a,φ(n@(a,φ(n@(a,⋯,0,0⋯0)),0,0⋯0)),0,0⋯0)),0,0⋯0))}}\newline#
+        If that's strange, here are a few examples:
+        #φ(1@5@2)[4]=φ(1@φ(5@2))[4]=φ(1@(4,φ(1@(4,φ(1@(4,φ(1@(4,0,0)),0)),0)),0))\newline
+        φ(5@10@2)[4]=φ(5@(9,φ(5@(9,φ(5@(9,φ(5@(4,0,0)),0,0)),0,0)),0,0))\newline
+        φ(5@10@4)[3]=φ(5@(9,φ(5@(9,φ(5@(9,0,0,0,0)),0,0,0,0)),0,0,0,0))\newline
+        φ(x@(y+1)@4)[3]=φ(x@(y,φ(x@(y,φ(x@(y,0,0,0,0)),0,0,0,0)),0,0,0,0))\newline
+        φ(x@(y+2)@4)[2]=φ(x@(y,φ(x@(y+1,0,0,0,0)),0,0,0,0))[2]=φ\biggr(x@\Bigl(y,φ\bigl(x@(y,φ(x@(y+1,0,0,0,0)),0,0,0,0)\bigr),0,0,0,0\Bigr)\biggr)[2]=⋯\newline#
+        Well, those numbers sure are huge!
         <br>
-        Well, that was kind of fun, but these functions are hurting my head, so we'll stop talking about them for now.
+        These functions are hurting my head though, so we'll stop talking about them for now.
+        <small>@@@@@@@@@@@@@@@@@@@@@@@@⋯@@@@@@@@@@@@@@@@@@@@@@@@</small>
         <big>The Beastly Hydra: Larger than Ever</big>
         <br>
         This also has to do with trees, but this time one called a <i>hydra.</i> A hydra is an infinite tree, and the game involves a hero who cuts off branches of the tree. Your hydra, or monster in this case, has a large amount of heads. However, the monster can have other heads attached to it! (If you're having a hard time, just imagine the TREE diagram, but with only one color.)
