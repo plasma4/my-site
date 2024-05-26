@@ -4443,7 +4443,7 @@
                 update(ID("fclonerBoost"), calculateBoost(fclonerBoost.pow(60), 0))
                 update(ID("rawHydrogen"), atomGain.format(2))
                 update(ID("softHydrogen"), softGain.format(2))
-                update(ID("fundamentalBoost"), calculateBoost(fundamentalBoost, 0))
+                update(ID("fundamentalBoost"), calculateBoost(fundamentalBoost.pow(60), 0))
                 update(ID("cprism2Boost"), calculateBoost(cprism2Boost.pow(60), 6))
                 update(ID("cprismBoost"), calculateBoost(cprismBoost.pow(60), 6))
                 update(ID("quantumBoost"), calculateBoost(quantumBoost))
