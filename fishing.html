@@ -4463,11 +4463,11 @@
             if (render) {
                 var shrimpPower = C("rep").mul(3.8).add(10).log10().sqr()
                 var marketPower = C("marketing").mul(3.8).add(C("ads").floor()).add(2).log2().sqr()
-                var aquariumPower = C("aquariums").mul(2).add(C("saquariums").mul(13)).add(4).sqrt().sub(2).mul(marketPower)
+                var aquariumPower = C("aquariums").mul(2.1).add(C("saquariums").mul(13)).add(4).sqrt().sub(2).mul(marketPower)
                 update(ID("shrimpBoost"), calculateBoost(shrimpPower))
                 update(ID("shrimpValue"), "$" + C("shrimp").floor().mul(shrimpPower).div(4).format(2))
                 update(ID("marketBoost"), calculateBoost(marketPower))
-                update(ID("f4Boost"), "+$" + aquariumPower.mul(10).format(2))
+                update(ID("f4Boost"), "+$" + aquariumPower.format(2))
 
                 update(ID("fishValue"), "$" + C("f1").floor().add(C("f2").floor()).mul(4).add(C("f3").floor().mul(6)).add(C("f4").floor().mul(aquariumPower.add(1))).add(C("f5").mul(400000)).format(2))
                 update(ID("bait"), baitUsed)
