@@ -568,6 +568,13 @@
                 effect: "grandmas*2"
             },
             {
+                name: "Grandma university",
+                sprite: [3, 0],
+                description: "As old as grandmas are, they can still learn. You can set up a university to make them work harder! <i>The production of grandmas is doubled.</i>",
+                cost: 1e6,
+                effect: "grandmas*2"
+            },
+            {
                 name: "Crop cultivation",
                 sprite: [3, 2],
                 description: "Your farms can grow gems out of the ground billions of times quicker than natural formations by taking nutrients from the ground. Start growing crops to increase the nutrients in the ground! <i>The production of farms is doubled.</i>",
@@ -1005,15 +1012,19 @@
             }
         }
 
+        /** @type {number} The time in milliseconds. Used to calculate offline time. */
+        var time = Date.now()
         /** @type {number} The current frame that the game is at. The game runs at 60 frames a second. */
         var frame = 0
         /** @type {string[]} An array with the names of all upgrades that you own. */
         var upgradesDone = []
-        /** Updates everything: is excecuted 60 times a second. */
+
+        /** This function updates everything and is excecuted 60 times a second. */
         function update() {
-            var time = Date.now()
+            var newTime = Date.now()
             var cps = getCPS()
-            add("crystals", cps.div(60))
+            var speed = (newTime - time) * 16 / 1000
+            add("crystals", cps.div(60).mul(speed))
 
             setElem("cps", cps.eq(0) ? "no crystals/second" : plural(cps, "crystals") + "/second")
             setElem("cpc", plural(getCPC(), "crystals"))
@@ -1024,6 +1035,7 @@
             renderProperties()
             renderCosts()
 
+            time = newTime
             buttonClicked = false
             if (frame++ % 30 === 0) {
                 saveLocally()
@@ -1077,6 +1089,10 @@
                 }
                 convertedResult = convertedSplit[0]
                 var upgradeStats = convertedSplit[1]
+                time = Number(convertedSplit[2])
+                if (time === 0 || !isFinite(time)) {
+                    time = Date.now()
+                }
                 if (upgradeStats.length !== 0) {
                     upgradesDone = upgradeStats.split("@")
                 }
