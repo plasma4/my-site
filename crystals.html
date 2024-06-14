@@ -511,7 +511,7 @@
 
         /**
          * The data for an upgrade.
-         * @typedef {{name: string, sprite: [number, number], description: string, cost: number | string | Decimal, unlock?: string, effect: string}} Upgrade
+         * @typedef {{name: string, sprite: [number, number], description: string, cost: number | string | Decimal, effect: string}} Upgrade
          */
 
         /**
@@ -538,21 +538,21 @@
             {
                 name: "Infinite bag",
                 sprite: [1, 6],
-                description: "Get an infinite bag to store as many gems as you want! <i>The production of cursors is tripled.</i>",
+                description: "Get an infinite bag to store as many gems as you want! <i>The effect of cursors is tripled.</i>",
                 cost: 10000,
                 effect: "cursors*3"
             },
             {
                 name: "Gem magnet",
                 sprite: [1, 3],
-                description: "Get a special magnet to boost your gem gain even more! <i>The production of cursors is tripled.</i>",
+                description: "Get a special magnet to boost your gem gain even more! <i>The effect of cursors is tripled.</i>",
                 cost: 1e7,
                 effect: "cursors*3"
             },
             {
                 name: "Regular exercise",
                 sprite: [0, 4],
-                description: "Grandmas work harder and bake gems faster after they've had a good run outside. <i>The production of grandmas is doubled.</i>",
+                description: "Grandmas work harder and bake gems much faster after they've had a good run outside. <i>The production of grandmas is doubled.</i>",
                 cost: 1000,
                 effect: "grandmas*2"
             },
@@ -611,12 +611,26 @@
                 description: "Although golden carrots are more expensive, you find that they work great with the stomachs of your miners! <i>The production of mines is doubled.</i>",
                 cost: 1e8,
                 effect: "mines*2"
+            },
+            {
+                name: "Cave drilling",
+                sprite: [1, 0],
+                description: "Drill directly through caves to boost the effect of miners future! <i>The production of mines is doubled.</i>",
+                cost: 5e8,
+                effect: "mines*2"
+            },
+            {
+                name: "Protective gear",
+                sprite: [3, 1],
+                description: "Your factory workers constantly fear falling objects. Give your miners the best protective gear on the market to make them feel better. <i>The production of factories is doubled.</i>",
+                cost: 5e8,
+                effect: "factories*2"
             }
         ]
 
-        /** @type {number} The number of upgrades that there are. */
+        /** @type {number} The number of upgrades that there are in total. */
         var upgradeLength = upgradeData.length
-        /** @type {object} An object containing a list of Upgrades, where the key is the upgrade name. */
+        /** @type {object} An object with all of the upgrades, where the key is the upgrade name and the value is an Upgrade. */
         var upgradeObject = {}
         setupUpgradeObject()
         function setupUpgradeObject() {
@@ -659,6 +673,8 @@
             return costScale.add(costSelfScale.mul(building)).pow(t).mul(HUNDRED.pow(building)).floor()
         }
 
+        /** @type {boolean} Determines if a button was clicked already in the same frame. Prevents various issues and overpowered autoclicking. */
+        var buttonClicked = false
         /** @type {object} An object where the key represents the name of the data. Each value is an HTML <b> element corresponding to that key. */
         var dataElements = {}
         /** @type {string[]} The list of properties that are in the game. */
@@ -673,7 +689,10 @@
         var totals = {}
 
         document.getElementById("gainCrystals").addEventListener("click", function () {
-            add("crystals", getCPC())
+            if (!buttonClicked) {
+                add("crystals", getCPC())
+                buttonClicked = true
+            }
         })
 
         /**
@@ -704,15 +723,17 @@
                 costElems[i] = elem.children[2]
                 elem.setAttribute("tabindex", 0)
                 elem.addEventListener("click", function clickFunction() {
-                    if (remove("crystals", getCost(i))) {
+                    if (!buttonClicked && remove("crystals", getCost(i))) {
                         add(building)
                     }
+                    buttonClicked = true
                 })
                 elem.addEventListener("keydown", function (e) {
-                    if (!e.repeat && (e.keyCode === 32 || e.keyCode === 13)) {
+                    if (!buttonClicked && !e.repeat && (e.keyCode === 32 || e.keyCode === 13)) {
                         if (remove("crystals", getCost(i))) {
                             add(building)
                         }
+                        buttonClicked = true
                     }
                 })
             }
@@ -731,17 +752,17 @@
                 let cost = upgrade.cost
                 let name = upgrade.name
                 elem.addEventListener("click", function clickFunction() {
-                    if (remove("crystals", D(cost))) {
+                    if (!buttonClicked && remove("crystals", D(cost))) {
                         upgradesDone.push(name)
-                        elem.style.display = "none"
                     }
+                    buttonClicked = true
                 })
                 elem.addEventListener("keydown", function (e) {
-                    if (!e.repeat && (e.keyCode === 32 || e.keyCode === 13)) {
+                    if (!buttonClicked && !e.repeat && (e.keyCode === 32 || e.keyCode === 13)) {
                         if (remove("crystals", D(cost))) {
                             upgradesDone.push(name)
-                            elem.style.display = "none"
                         }
+                        buttonClicked = true
                     }
                 })
             }
@@ -957,6 +978,29 @@
             return multiplier
         }
 
+        /**
+         * Update the visibility of upgrades.
+         */
+        function updateVisibility() {
+            // Hide any upgrades already obtained
+            var children = document.getElementById("upgrades").children
+            for (var i = 0; i < upgradeLength; i++) {
+                var upgrade = upgradeData[i]
+                var child = children[i]
+                if (upgradesDone.includes(upgrade.name)) {
+                    if (child.style.display !== "none") {
+                        child.style.display = "none"
+                    }
+                } else if (stuff[upgrade.effect.slice(0, upgrade.effect.indexOf("*"))].eq(0)) {
+                    if (child.style.display !== "none") {
+                        child.style.display = "none"
+                    }
+                } else if (child.style.display === "none") {
+                    child.removeAttribute("style")
+                }
+            }
+        }
+
         /** @type {number} The current frame that the game is at. The game runs at 60 frames a second. */
         var frame = 0
         /** @type {string[]} An array with the names of all upgrades that you own. */
@@ -972,9 +1016,11 @@
             var totalUpgrades = upgradesDone.length
             setElem("upgDone", totalUpgrades === 1 ? "1 upgrade" : totalUpgrades + " upgrades")
 
+            updateVisibility()
             renderProperties()
             renderCosts()
 
+            buttonClicked = false
             if (frame++ % 30 === 0) {
                 saveLocally()
             }
@@ -1056,14 +1102,6 @@
                             }
                         }
                     }
-                }
-            }
-
-            // Hide any upgrades already obtained
-            var children = document.getElementById("upgrades").children
-            for (var i = 0; i < upgradeLength; i++) {
-                if (upgradesDone.includes(upgradeData[i].name)) {
-                    children[i].style.display = "none"
                 }
             }
         }
