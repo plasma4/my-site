@@ -576,7 +576,7 @@
         <span class="building"><b>%farms</b><br>Provides 100 crystals/sec. <i></i></span>
         <span class="building"><b>%mines</b><br>Provides 1,000 crystals/sec. <i></i></span>
         <span class="building"><b>%factories</b><br>Provides 10,000 crystals/sec. <i></i></span>
-        <span class="building"><b>%banks</b><br>Provides 100,000 crystals/sec. <i></i></span>
+        <span class="building"><b>%banks</b><br>Provides 250,000 crystals/sec. <i></i></span>
     </div>
 
     <script id="mainScript">
@@ -746,7 +746,7 @@
         var costScale = D(1.05)
         /** @type {Decimal} The number that is multiplied by the building index to add to the cost scale (so the third building would have a cost scale of costScale + 3*costSelfScale) */
         var costSelfScale = D(0.02)
-        var buildingPower = [1, 5, 100, 1000, 10000, 100000]
+        var buildingPower = [1, 5, 100, 1000, 10000, 250000]
 
         /**
          * Returns the cost of a specific building.
@@ -1087,17 +1087,17 @@
             for (var i = 0; i < upgradeLength; i++) {
                 var upgrade = upgradeData[i]
                 var child = children[i]
-                // if (upgradesDone.includes(upgrade.name)) {
-                //     if (child.style.display !== "none") {
-                //         child.style.display = "none"
-                //     }
-                // } else if (stuff[upgrade.effect.slice(0, upgrade.effect.indexOf("*"))].eq(0)) {
-                //     if (child.style.display !== "none") {
-                //         child.style.display = "none"
-                //     }
-                // } else if (child.style.display === "none") {
-                //     child.removeAttribute("style")
-                // }
+                if (upgradesDone.includes(upgrade.name)) {
+                    if (child.style.display !== "none") {
+                        child.style.display = "none"
+                    }
+                } else if (stuff[upgrade.effect.slice(0, upgrade.effect.indexOf("*"))].eq(0)) {
+                    if (child.style.display !== "none") {
+                        child.style.display = "none"
+                    }
+                } else if (child.style.display === "none") {
+                    child.removeAttribute("style")
+                }
             }
         }
 
