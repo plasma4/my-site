@@ -370,6 +370,77 @@
             transform: scale(3);
         }
 
+        .wonder {
+            filter: none;
+            animation: questions 8s linear infinite;
+        }
+
+        @keyframes questions {
+            0% {
+                background-position: -32px 0px;
+            }
+
+            58% {
+                background-position: -32px -112px;
+            }
+
+            58.0001% {
+                background-position: -32px -16px;
+            }
+
+            64% {
+                background-position: -32px -16px;
+            }
+
+            64.0001% {
+                background-position: -32px -32px;
+            }
+
+            70% {
+                background-position: -32px -32px;
+            }
+
+            70.0001% {
+                background-position: -32px -48px;
+            }
+
+            76% {
+                background-position: -32px -48px;
+            }
+
+            76.0001% {
+                background-position: -32px -64px;
+            }
+
+            82% {
+                background-position: -32px -64px;
+            }
+
+            82.0001% {
+                background-position: -32px -80px;
+            }
+
+            88% {
+                background-position: -32px -80px;
+            }
+
+            88.0001% {
+                background-position: -32px -96px;
+            }
+
+            94% {
+                background-position: -32px -96px;
+            }
+
+            94.0001% {
+                background-position: -32px -112px;
+            }
+
+            100% {
+                background-position: -32px 0px;
+            }
+        }
+
         strong {
             font-family: "Roboto Mono", monospace;
             cursor: default;
@@ -578,14 +649,14 @@
                 name: "Crop cultivation",
                 sprite: [3, 2],
                 description: "Your farms can grow gems out of the ground billions of times quicker than natural formations by taking nutrients from the ground. Start growing crops to increase the nutrients in the ground! <i>The production of farms is doubled.</i>",
-                cost: 2000,
+                cost: 20000,
                 effect: "farms*2"
             },
             {
                 name: "Fertilizer",
                 sprite: [3, 3],
                 description: "Get some of the most toxic fertilizer on the market. It might not be healthy, but it works pretty well! <i>The production of farms is doubled.</i>",
-                cost: 10000,
+                cost: 100000,
                 effect: "farms*2"
             },
             {
@@ -636,6 +707,20 @@
                 description: "Your factory workers constantly fear falling objects. Give your miners the best protective gear on the market to make them feel better. <i>The production of factories is doubled.</i>",
                 cost: 5e8,
                 effect: "factories*2"
+            },
+            {
+                name: "Factory currency",
+                sprite: [0, 2],
+                description: "Lobby the government to allow you to have a custom currency just for your factory. <i>The production of factories is doubled.</i>",
+                cost: 1e10,
+                effect: "factories*2"
+            },
+            {
+                name: "Interesting",
+                sprite: [-1, -1],
+                description: "Make your banks have negative interest for savings and positive interest for loans. With this much funding, your bank is the only one around, so people have no choice. <i>The production of factories is doubled.</i>",
+                cost: 1e11,
+                effect: "banks*2"
             }
         ]
 
@@ -752,7 +837,11 @@
             var result = ""
             for (var i = 0; i < upgradeLength; i++) {
                 var item = upgradeData[i]
-                result += `<span tabindex="0"><span class="sprite" style="background-position-x:${-16 * item.sprite[0]}px;background-position-y:${-16 * item.sprite[1]}px"></span><div>${item.name}</div>${item.description + " Costs " + D(item.cost).format() + " crystals."}</span>`
+                if (item.sprite[0] === -1 && item.sprite[1] === -1) {
+                    result += `<span tabindex="0"><span class="sprite wonder"></span><div>${item.name}</div>${item.description + " Costs " + D(item.cost).format() + " crystals."}</span>`
+                } else {
+                    result += `<span tabindex="0"><span class="sprite" style="background-position-x:${-16 * item.sprite[0]}px;background-position-y:${-16 * item.sprite[1]}px"></span><div>${item.name}</div>${item.description + " Costs " + D(item.cost).format() + " crystals."}</span>`
+                }
             }
             var upgradesElem = document.getElementById("upgrades")
             upgradesElem.innerHTML = result
@@ -998,17 +1087,17 @@
             for (var i = 0; i < upgradeLength; i++) {
                 var upgrade = upgradeData[i]
                 var child = children[i]
-                if (upgradesDone.includes(upgrade.name)) {
-                    if (child.style.display !== "none") {
-                        child.style.display = "none"
-                    }
-                } else if (stuff[upgrade.effect.slice(0, upgrade.effect.indexOf("*"))].eq(0)) {
-                    if (child.style.display !== "none") {
-                        child.style.display = "none"
-                    }
-                } else if (child.style.display === "none") {
-                    child.removeAttribute("style")
-                }
+                // if (upgradesDone.includes(upgrade.name)) {
+                //     if (child.style.display !== "none") {
+                //         child.style.display = "none"
+                //     }
+                // } else if (stuff[upgrade.effect.slice(0, upgrade.effect.indexOf("*"))].eq(0)) {
+                //     if (child.style.display !== "none") {
+                //         child.style.display = "none"
+                //     }
+                // } else if (child.style.display === "none") {
+                //     child.removeAttribute("style")
+                // }
             }
         }
 
