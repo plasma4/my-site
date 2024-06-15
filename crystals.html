@@ -346,7 +346,8 @@
             color: white;
         }
 
-        .sprite {
+        .sprite,
+        .treasure {
             display: inline-block;
             filter: drop-shadow(2px 2px 1px #fffa);
             pointer-events: none;
@@ -368,6 +369,16 @@
             margin-left: 16px;
             margin-right: 16px;
             transform: scale(3);
+        }
+
+        .treasure {
+            pointer-events: auto;
+            cursor: pointer;
+            margin: 80px;
+            transform: scale(8);
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAn5JREFUWEdjZBhgwDjA9jOMOmA0BPCFwH8qJ1CsduFywP/Xm/lQ7F+9+B8Dn7giw8+vH1DEf355D+az8wgysLJzgdlCctoMTqEODIxsfAxMLEIMTNxyDKz8BiApDPuIdsCm9fwQi7gFGJiYWcBsLgFxMP3v7x+GL28eM/CIyDK8f3oT7BD/RH0GVmE7iCOYBRnYpXwpcwAoBEC+BFnOysEDDwUeYWmGbx9egh0BCp3f378w/Pv7myE8VYaBhV+PgVXIBuwITrkEyhxwajckBFi5BMD072+IqGBkZmHgEVNm+PnlLVju/98/DIbWD8FsNjE3cEhwqeRR5gBQCMDiGhbv2BIpKJRAwC/wI1yaTcyVgd98LXUcADIlc84XbHYzTE9BRE1oLBOKGlHfT9R1gF+0L8PPnz8ZhIWFGQQFBRmmdkyjrQN+yE+F+0hGIZbBwdeeYcc0KQYmXiOGhPJzDMtmLmd48mAxXA3Hw2zKQuDxJYRh6OENcoCVuyVDcQwrg7eDNIN/4VuGnWt2oTgAXY+sXixpUYDugM0tmXAzQWnAxNGYgY2NDYz5+PgYNi3djBIFvjXTUdxAsgOwlYQwEwc8EWLNAmiCVM8FsIKIGMtBasxcEeUAiE9yNry8kBdul4QQIwOsICLWARSHwK0FAgzfvjEx8HBArNy14xexdoPVBQexo6gXjwAX08TXhisKhcEGCPMyMYjyMTFsP/iFgZ+T+AZUkBtqdS6R8ow0B3RE8zPwczExCPIwgR0Bjkc+JgYJAWaSQgKmmGQHRFpzMegrsKI4gp4OADkco0nmZ83CsOnoH7JCAFv8Y40Tck0nVx/xqYpcGwjoG3XAaAgAAFLhzSGGg6FtAAAAAElFTkSuQmCC");
+            width: 32px;
+            height: 32px;
         }
 
         .wonder {
@@ -563,7 +574,8 @@
 <body>
     <span class="big sprite"></span>You have <b>%crystals</b>. You are making <b>cps</b>.
     <br>
-    <button id="gainCrystals">Gain <b>cpc</b></button>
+    <span id="gainCrystals" tabindex="0" class="treasure"></span>
+    <div>You gain <b>cpc</b> every time you click the treasure.</div>
     <hr>
     <strong>Upgrades:</strong>
     <div>You have completed <b>upgDone</b>.</div>
@@ -793,6 +805,12 @@
 
         document.getElementById("gainCrystals").addEventListener("click", function () {
             if (!buttonClicked) {
+                add("crystals", getCPC())
+                buttonClicked = true
+            }
+        })
+        document.getElementById("gainCrystals").addEventListener("keydown", function (e) {
+            if (!buttonClicked && !e.repeat && (e.keyCode === 32 || e.keyCode === 13)) {
                 add("crystals", getCPC())
                 buttonClicked = true
             }
@@ -1119,7 +1137,7 @@
         function update() {
             var newTime = Date.now()
             var cps = getCPS()
-            var speed = (newTime - time) * 16 / 1000
+            var speed = (newTime - time) * 0.06
             add("crystals", cps.div(60).mul(speed))
 
             setElem("cps", cps.eq(0) ? "no crystals/second" : plural(cps, "crystals") + "/second")
