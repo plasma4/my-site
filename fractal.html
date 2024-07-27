@@ -542,13 +542,13 @@
             var oldPixels = pixels
             palleteData = null
 
-            w = Math.round(innerWidth * devicePixelRatio) * aliasingFactor
-            h = Math.round(innerHeight * devicePixelRatio) * aliasingFactor
+            w = Math.round(innerWidth * devicePixelRatio * aliasingFactor)
+            h = Math.round(innerHeight * devicePixelRatio * aliasingFactor)
             pixels = w * h
             canvas.width = previous.width = hidden.width = w
             canvas.height = previous.height = hidden.height = h
-            canvas.style.width = previous.style.width = hidden.style.width = Math.ceil(innerWidth / aliasingFactor) + "px"
-            canvas.style.height = previous.style.height = hidden.style.height = Math.ceil(innerHeight / aliasingFactor) + "px"
+            canvas.style.width = previous.style.width = hidden.style.width = Math.ceil(innerWidth) + "px"
+            canvas.style.height = previous.style.height = hidden.style.height = Math.ceil(innerHeight) + "px"
 
             bytes = pixels * 4
             iterationEnd = bytes + palleteBytes
@@ -782,11 +782,11 @@
                         }
                         percent.style.color = color
                         // Update the progress line (which isn't rendered with the canvas to prevent the line from showing in the preview)
-                        line.style.top = Math.floor(pixel / w) + "px"
+                        line.style.top = Math.floor(pixel / w / aliasingFactor) + "px"
                         line.style.backgroundColor = color
                     } else {
                         previousGuess = mainDiff
-                        percent.textContent = "Took " + timeToString(mainDiff, true) + "."
+                        percent.textContent = "Took " + timeToString(mainDiff, true) + (aliasingFactor === 1 ? " (without anti-aliasing)." : " (with the anti-aliasing factor set to " + aliasingFactor + ").")
                         line.removeAttribute("style")
                         percent.style.color = "#1ad"
                         hideTime = Date.now() + 500
@@ -1051,8 +1051,7 @@
         }
 
         function switchAliasMode() {
-            aliasing = !aliasing
-            aliasingFactor = aliasing ? 1.1 : 1
+            aliasingFactor = aliasingFactor === 1.25 ? 1 : (aliasingFactor === 1 ? 1.1 : 1.25)
             resizeHandler()
         }
 
