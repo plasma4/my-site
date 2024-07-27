@@ -169,6 +169,14 @@
             width: calc(100% - 50px);
         }
 
+        #line {
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+        }
+
         .sheet {
             background-color: #222;
             opacity: 0.4;
@@ -285,6 +293,7 @@
     <canvas width="0" height="0" id="previous"></canvas>
     <div class="sheet" id="sheet"></div>
     <canvas width="0" height="0" id="canvas"></canvas>
+    <div id="line"></div>
     <div style="position: absolute; top: 20px; left: 20px; padding: 5px;">
         <button onclick="reset()" id="reset">Reset <b>(R)</b></button>
         <button onclick="toggleMenu()">More...</button>
@@ -304,12 +313,13 @@
         <button onclick="loadInfo(); closeMenu()">Info</button>
         <button onclick="switchFractals()">Switch Fractal <b>(C or Shift+C)</b></button>
         <button onclick="switchRenderMode()">Switch Render Mode <b>(M)</b></button>
+        <button onclick="switchAliasMode()">Switch Anti Aliasing Mode <b>(Z)</b></button>
         <button onclick="switchFlow(1)">Flow Colors Forward<b>(A)</b></button>
         <button onclick="switchFlow(-1)">Flow Colors Backward <b>(B)</b></button>
         <button onclick="switchPallete()">Switch Pallete <b>(P)</b></button>
         <button onclick="increaseSpeed()">Increase Pallete Change <b>(S)</b></button>
         <button onclick="decreaseSpeed()">Decrease Pallete Change <b>(Shift+S)</b></button>
-        <button onclick="changeCategory()">Switch Fractal Category <b>(X)</b></button>
+        <button onclick="switchCategory()">Switch Fractal Category <b>(X)</b></button>
         <button onclick="setIterations(iterations + 250)">Increase Iterations <b>(I)</b></button>
         <button onclick="download()">Download Image</button>
         <br>
@@ -336,7 +346,7 @@
         Well...that actually isn't implemented yet because I forgot to remove this, but that's my goal!
         <br>
         Well, what are you waiting for? Dive in or look at the recommended stuff in the menu.
-        <button onclick="help.style.display = null" id="infoClose">Okay</button>
+        <button onclick='help.removeAttribute("style")' id="infoClose">Okay</button>
     </div>
     <div id="copy" onclick="copyURL()">Copy data URI of current image</div>
 
@@ -357,6 +367,7 @@
         // audio.onpause = () => audio.play()
 
         const notice = document.getElementById("notice")
+        const line = document.getElementById("line")
         const sheet = document.getElementById("sheet")
         const select = document.getElementById("select")
         const canvas = document.getElementById("canvas")
@@ -371,11 +382,10 @@
         const workerCount = navigator.hardwareConcurrency
 
         var w, h, pixels, bytes, iterationEnd, colorStart, wasmLength, dataArray, colorArray, dataBits, palleteData, colorBits
-        var buffer, memory, handlePixels, resize, exports
+        var buffer, handlePixels, rescale, exports
         var centerX = 0, centerY = 0, flowRate = 0, flowed = 0
         var resizeW, resizeH
-
-        memory = new WebAssembly.Memory({
+        var memory = new WebAssembly.Memory({
             initial: (Math.round(innerWidth * devicePixelRatio) * Math.round(innerHeight * devicePixelRatio)) / 8192,
             maximum: 50000,
             shared: true
@@ -386,27 +396,29 @@
             notice.textContent = "IMPORTANT: Safari is significantly slower for this program than other browsers, and misses out on a few minor features. Try using a browser like Firefox or Chrome to get the best speed and performance."
         }
 
+        // var blob = new Blob([workerText], { type: "text/javascript" })
+        // var worker = new Worker(URL.createObjectURL(blob))
+        // worker.onmessage = function (e) {
+        //     var data = e.data
+        // }
+        // worker.postMessage(memory)
+
         var wasmInstance = WebAssembly.instantiateStreaming(fetch("data:application/wasm;base64,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"), {
             env: {
                 memory: memory
             }
         }).then(result => {
-            // var blob = new Blob([workerText], { type: "text/javascript" })
-            // var worker = new Worker(URL.createObjectURL(blob))
-            // worker.onmessage = function (e) {
-            //     var data = e.data
-            // }
-            // worker.postMessage(memory)
             exports = result.instance.exports
             memory = exports.memory
             buffer = memory.buffer
             handlePixels = exports.run
+            rescale = exports.rescale
             palleteData = getMemory(palleteBytes * 0.25, 0, 32)
             palleteData.set(pallete)
             window.addEventListener("resize", resizeHandler)
 
             // Firefox is weird about resizing
-            justSwitched = false
+            // justSwitched = false
             resizeHandler()
             panX = (-w * 0.5 - 0.5) * zoom - 0.74999
             panY = (-h * 0.5 - 0.5) * zoom + 1e-5
@@ -444,20 +456,20 @@
         const palleteBytes = 8000
 
         // The justSwitched stuff is JUST for Firefox, which sometimes calls weird false resizes when you switch tabs or windows.
-        var justSwitched = false
+        // var justSwitched = false
 
         document.addEventListener("focus", function () {
-            if (isFirefox) {
-                justSwitched = true
-                setTimeout(() => {
-                    justSwitched = false
-                    var newW = Math.round(innerWidth * devicePixelRatio)
-                    var newH = Math.round(innerHeight * devicePixelRatio)
-                    if (newW !== w || newH !== h) {
-                        resizeHandler()
-                    }
-                }, 250)
-            }
+            // if (isFirefox) {
+            //     justSwitched = true
+            //     setTimeout(() => {
+            //         justSwitched = false
+            //         var newW = Math.round(innerWidth * devicePixelRatio)
+            //         var newH = Math.round(innerHeight * devicePixelRatio)
+            //         if (newW !== w || newH !== h) {
+            //             resizeHandler()
+            //         }
+            //     }, 250)
+            // }
         })
 
         function hideWelcome() {
@@ -497,7 +509,9 @@
                     } else if (code === 83) {
                         increaseSpeed()
                     } else if (code === 88) {
-                        changeCategory()
+                        switchCategory()
+                    } else if (code === 90) {
+                        switchAliasMode()
                     }
                 } else if (code === 67) {
                     changeFractal(fractalType === 0 ? 15 : fractalType - 1)
@@ -508,10 +522,10 @@
         })
 
         function resizeHandler() {
-            if (isFirefox && justSwitched) {
-                // Ignore this resize
-                return
-            }
+            // if (isFirefox && justSwitched) {
+            //     // Ignore this resize
+            //     return
+            // }
             if (centerX === -1) {
                 centerX = w * 0.5
                 centerY = h * 0.5
@@ -528,13 +542,13 @@
             var oldPixels = pixels
             palleteData = null
 
-            w = Math.round(innerWidth * devicePixelRatio)
-            h = Math.round(innerHeight * devicePixelRatio)
+            w = Math.round(innerWidth * devicePixelRatio) * aliasingFactor
+            h = Math.round(innerHeight * devicePixelRatio) * aliasingFactor
             pixels = w * h
             canvas.width = previous.width = hidden.width = w
             canvas.height = previous.height = hidden.height = h
-            canvas.style.width = previous.style.width = hidden.style.width = innerWidth + "px"
-            canvas.style.height = previous.style.height = hidden.style.height = innerHeight + "px"
+            canvas.style.width = previous.style.width = hidden.style.width = Math.ceil(innerWidth / aliasingFactor) + "px"
+            canvas.style.height = previous.style.height = hidden.style.height = Math.ceil(innerHeight / aliasingFactor) + "px"
 
             bytes = pixels * 4
             iterationEnd = bytes + palleteBytes
@@ -543,9 +557,7 @@
             colorStart = Math.ceil(iterationEnd * 0.125) * 8
             wasmLength = colorStart + bytes
             expandMemory(wasmLength)
-            if (centerX !== 0) {
-                updateZoom((resizeW * resizeW + resizeH * resizeH) / (w * w + h * h), centerX, centerY)
-            }
+            // updateZoom((resizeW * resizeW + resizeH * resizeH) / (w * w + h * h), centerX, centerY)
             dataArray = getMemory(pixels, palleteBytes, -32)
             colorArray = getMemory(bytes, colorStart, -8)
             colorBits = getMemory(pixels, colorStart, 32)
@@ -676,6 +688,9 @@
         var panX, panY
         var rehandle = false
         var unfinished = true
+        var needsClearing = false
+        var aliasing = false
+        var aliasingFactor = 1
         var time = performance.now()
         var fps = 10
         var wantedFPS = 3.45
@@ -699,7 +714,7 @@
                     pixel = 0
                     rehandle = false
                 }
-                // Math.max() for if the pixel is negative; this function that takes a lot of variables is called within WASM for extra performance
+                // Math.max() for if the pixel is negative; this function that takes a lot of variables and updates with a bunch of WASM; see the fractal.c file for the code pre-compilation
                 pixel = handlePixels(fractalType, w, h, Math.max(pixel, 0), panX, panY, zoom, cost, palleteBytes, colorStart, iterations, 0, palleteEnd, interior, renderMode, speed, flowed)
                 unfinished = pixel !== -1
                 // Complicated zoom preview using previous data (Safari doesn't work for this, sadly)
@@ -718,6 +733,7 @@
                         }
                         ctx2.drawImage(hidden, zoomX, zoomY, w * zoomM, h * zoomM, 0, 0, w, h)
                     }
+                    needsClearing = true
                     doZoom = false
                 }
                 // Don't want to creep up the cost with setting changes
@@ -729,12 +745,12 @@
                     cost = 0.9 * cost + Math.max(Math.min(wantedFPS * ((cost + 5000) / (diff + 1)), cost * 0.25), 50000)
                 }
 
-                // If you have a 1 frame render, this prevents it from saying the score is zero.
+                // If you have a 1-frame render, this prevents it from saying the score is zero.
                 scoreSum += cost
                 // Frames is used for average score calculation, so we add 1000 instead of 1.
                 frames += 1000
                 if (!document.hidden) {
-                    // Update image
+                    // Update the image and scores
                     var imgTime = performance.now()
                     ctx.putImageData(new ImageData(colorArray, w, h), 0, 0)
                     if (unfinished) {
@@ -746,7 +762,7 @@
                         var timeGuess
                         // Additional ratio statement, because some places render too quickly.
                         if (frames < 15000) {
-                            // Add a bit of RNG to make it look more real!
+                            // Add a bit of RNG to make it look more real! (kind of silly though)
                             timeGuess = Math.max(previousGuess - mainDiff, 200) * (1 + 0.2 * Math.random())
                         } else {
                             // Save the guessed time left.
@@ -765,9 +781,13 @@
                             var color = "rgb(" + ((val - 256) >> 1) + ",255,0)"
                         }
                         percent.style.color = color
+                        // Update the progress line (which isn't rendered with the canvas to prevent the line from showing in the preview)
+                        line.style.top = Math.floor(pixel / w) + "px"
+                        line.style.backgroundColor = color
                     } else {
                         previousGuess = mainDiff
                         percent.textContent = "Took " + timeToString(mainDiff, true) + "."
+                        line.removeAttribute("style")
                         percent.style.color = "#1ad"
                         hideTime = Date.now() + 500
                         scoreSum = 0
@@ -894,7 +914,7 @@
 
         document.addEventListener("blur", function () {
             mouseDown = false
-            justSwitched = true
+            // justSwitched = true
         })
 
         // Passive event weirdness
@@ -938,7 +958,11 @@
 
         function clearBack() {
             zoomM = 1
-            ctx2.clearRect(0, 0, w, h)
+            if (needsClearing) {
+                ctx2.clearRect(0, 0, w, h)
+                ctx3.clearRect(0, 0, w, h)
+                needsClearing = false
+            }
         }
 
         function moveFractal(diffX, diffY) {
@@ -1026,6 +1050,12 @@
             clearBack()
         }
 
+        function switchAliasMode() {
+            aliasing = !aliasing
+            aliasingFactor = aliasing ? 1.1 : 1
+            resizeHandler()
+        }
+
         function switchFlow(rate) {
             flowRate = Math.min(10, Math.max(-10, flowRate + rate))
         }
@@ -1044,7 +1074,7 @@
             }
         }
 
-        function changeCategory() {
+        function switchCategory() {
             if (fractalType < 6) {
                 changeFractal(6)
             } else if (fractalType < 9) {
