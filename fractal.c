@@ -1,10 +1,16 @@
+/*
+Welcome to my code that helps run my fractal viewer!
+It is compiled into WASM, which is supported by JavaScript.
+
+
+Magic command: emcc fractal.c -O3 -o fractal.wasm -sEXPORT_KEEPALIVE
+-sIGNORE_MISSING_MAIN --no-entry -sEXPORTED_FUNCTIONS=_run -sALLOW_MEMORY_GROWTH
+*/
+
 #include <math.h>
 #include <stdint.h>
-// Welcome to my code that helps run my fractal viewer!
-// It is compiled into WASM, which is supported by JavaScript.
-
 // Fast mixing (smoothing) of 32-bit colors
-inline uint32_t mix(uint32_t colorStart, uint32_t colorEnd, uint32_t a) {
+static inline uint32_t mix(uint32_t colorStart, uint32_t colorEnd, uint32_t a) {
   uint32_t reverse = 0xff - a;
   return ((((colorStart & 0xff) * reverse + (colorEnd & 0xff) * a) >> 8)) ^
          (((((colorStart >> 8) & 0xff) * reverse +
@@ -17,19 +23,108 @@ inline uint32_t mix(uint32_t colorStart, uint32_t colorEnd, uint32_t a) {
          0xff000000;
 }
 
+// static inline uint32_t mixWhite(uint32_t colorStart, uint32_t a) {
+//   uint32_t reverse = 0xff - a;
+//   return ((((colorStart & 0xff) * reverse + 0xff * a) >> 8)) ^
+//          (((((colorStart >> 8) & 0xff) * reverse + 0xff * a)) & -0xff) ^
+//          (((((colorStart >> 16) & 0xff) * reverse + 0xff * a) << 8) &
+//          -0xffff) ^ 0xff000000;
+// }
+
+// static inline uint32_t mixBlack(uint32_t colorStart, uint32_t a) {
+//   uint32_t reverse = 0xff - a;
+//   return ((((colorStart & 0xff) * reverse * a) >> 8)) ^
+//          (((((colorStart >> 8) & 0xff) * reverse)) & -0xff) ^
+//          ((((colorStart >> 16) & 0xff) * reverse << 8) & -0xffff) ^
+//          0xff000000;
+// }
+
+static inline uint32_t toRGB(uint32_t r, uint32_t g, uint32_t b) {
+  return r ^ (g << 8) ^ (b << 16) ^ 0xff000000;
+}
+
+static inline float powThreeQuarters(float x) {
+  float t = sqrtf(x);
+  return t * sqrtf(t);
+}
+
+static inline uint32_t getR(uint32_t color) { return color & 0xff; }
+
+static inline uint32_t getG(uint32_t color) { return (color >> 8) & 0xff; }
+
+static inline uint32_t getB(uint32_t color) { return (color >> 16) & 0xff; }
+
 // Get a smoothed, looped, index of a pallete
-inline uint32_t getPallete(float position, uint32_t *pallete, int length) {
+uint32_t getPallete(float position, uint32_t *pallete, int length,
+                    int renderMode) {
   // Pallete used by handlePixels (last element=first element for looping).
   // Interestingly, you can get the hex representations with the middle six
   // letters (#a00a0a for the first one, for example)
-  int floor = (int)position;
-  int index = floor % length;
-  return mix(pallete[index], pallete[index + 1], (position - floor) * 0xff);
+  int id = (int)position;
+  float mod = position - (float)id;
+  int index = id % length;
+  if (renderMode == 1) {
+    uint32_t color =
+        mix(pallete[index], pallete[index + 1], mod * sqrtf(mod) * 0xff);
+    // Incredibly complicated, eh?
+    int newColor = toRGB(45.0f + 0.8f * getR(color), 45.0f + 0.8f * getG(color),
+                         45.0f + 0.8f * getB(color));
+    if (mod < 0.1) {
+      if (mod < 0.025) {
+        color = mix(color, newColor, mod * 100);
+      } else if (mod > 0.075) {
+        color = mix(color, newColor, (0.1f - mod) * 100);
+      } else {
+        color = newColor;
+      }
+    } else if (mod > 0.6) {
+      if (mod < 0.7) {
+        if (mod < 0.625) {
+          color = mix(color, newColor, (mod - 0.5f) * 100);
+        } else if (mod > 0.675) {
+          color = mix(color, newColor, (0.6f - mod) * 100);
+        } else {
+          color = newColor;
+        }
+      } else if (mod > 0.8 && mod < 0.99) {
+        newColor =
+            toRGB(64.0f + 0.75f * getR(color), 64.0f + 0.75f * getG(color),
+                  64.0f + 0.75f * getB(color));
+        if (mod < 0.825) {
+          color = mix(color, newColor, (mod - 0.8f) * 100);
+        } else if (mod > 0.875) {
+          color = mix(color, newColor, (0.9f - mod) * 100);
+        } else {
+          color = newColor;
+        }
+      }
+      float multiplier = powThreeQuarters(1.0f - (mod - 0.6f) * 2.5f);
+      color = toRGB(getR(color) * multiplier, getG(color) * multiplier,
+                    getB(color) * multiplier);
+    } else if (mod > 0.2 && mod < 0.3) {
+      if (mod < 0.225) {
+        color = mix(color, newColor, (mod - 0.2f) * 100);
+      } else if (mod > 0.275) {
+        color = mix(color, newColor, (0.3f - mod) * 100);
+      } else {
+        color = newColor;
+      }
+    } else if (mod > 0.4 && mod < 0.5) {
+      if (mod < 0.425) {
+        color = mix(color, newColor, (mod - 0.4f) * 100);
+      } else if (mod > 0.475) {
+        color = mix(color, newColor, (0.5f - mod) * 100);
+      } else {
+        color = newColor;
+      }
+    }
+    return color;
+  }
+  return mix(pallete[index], pallete[index + 1], mod * 0xff);
 }
 
-// Really efficient (wouldn't have used this if wasm supported log2; reduces
-// overhead)
-inline float flog2(float n) {
+// Really efficient (wouldn't be used if wasm supported log2; reduces overhead)
+static inline float flog2(float n) {
   union {
     float number;
     uint32_t integer;
@@ -45,30 +140,30 @@ inline float flog2(float n) {
          1.72588f / (0.35208873f + secondUnion.number);
 }
 
-inline float secondLog(float n) {
+static inline float secondLog(float n) {
   // Simpler to create a function for this, as it's used so much
   return flog2(flog2(n));
 }
 
-inline float cosq(float x) {
+static inline float cosq(float x) {
   x *= 1.5707963267949f;
   x -= 0.25f + floor(x + 0.25f);
-  x *= 16.0f * (abs(x) - 0.5f);
-  x += 0.225f * x * (abs(x) - 1.0f);
+  x *= 16.0f * (fabsf(x) - 0.5f);
+  x += 0.225f * x * (fabsf(x) - 1.0f);
   return x;
 }
 
-inline float sinq(float x) {
+static inline float sinq(float x) {
   x += 1.5707963267949f;
   x *= 0.1591549430919f;
   x -= 0.25f + floor(x + 0.25f);
-  x *= 16.0f * (abs(x) - 0.5f);
-  x += 0.225f * x * (abs(x) - 1.0f);
+  x *= 16.0f * (fabsf(x) - 0.5f);
+  x += 0.225f * x * (fabsf(x) - 1.0f);
   return x;
 }
 
 // All the fractal functions!
-inline float mand(int iterations, double x, double y) {
+float mand(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -86,7 +181,7 @@ inline float mand(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float mand3(int iterations, double x, double y) {
+float mand3(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -104,7 +199,7 @@ inline float mand3(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float mand4(int iterations, double x, double y) {
+float mand4(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -122,7 +217,7 @@ inline float mand4(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float mand5(int iterations, double x, double y) {
+float mand5(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -143,7 +238,7 @@ inline float mand5(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float mand6(int iterations, double x, double y) {
+float mand6(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -166,7 +261,7 @@ inline float mand6(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float mand7(int iterations, double x, double y) {
+float mand7(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -188,7 +283,7 @@ inline float mand7(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float ship(int iterations, double x, double y) {
+float ship(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -206,7 +301,7 @@ inline float ship(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float ship3(int iterations, double x, double y) {
+float ship3(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -224,7 +319,7 @@ inline float ship3(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float ship4(int iterations, double x, double y) {
+float ship4(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -242,7 +337,7 @@ inline float ship4(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float celt(int iterations, double x, double y) {
+float celt(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -260,7 +355,7 @@ inline float celt(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float prmb(int iterations, double x, double y) {
+float prmb(int iterations, double x, double y) {
   double r = fabs(x);
   double i = -y;
   double sr = r * r;
@@ -279,7 +374,7 @@ inline float prmb(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float buff(int iterations, double x, double y) {
+float buff(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -300,7 +395,7 @@ inline float buff(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float tric(int iterations, double x, double y) {
+float tric(int iterations, double x, double y) {
   double r = x;
   double i = y;
   double sr = r * r;
@@ -318,7 +413,7 @@ inline float tric(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float mbbs(int iterations, double x, double y) {
+float mbbs(int iterations, double x, double y) {
   int exchange = 1;
   double r = x;
   double i = y;
@@ -343,7 +438,7 @@ inline float mbbs(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float mbbs3(int iterations, double x, double y) {
+float mbbs3(int iterations, double x, double y) {
   int exchange = 1;
   double r = x;
   double i = y;
@@ -368,7 +463,7 @@ inline float mbbs3(int iterations, double x, double y) {
   return -999.0f;
 }
 
-inline float mbbs4(int iterations, double x, double y) {
+float mbbs4(int iterations, double x, double y) {
   int exchange = 1;
   double r = x;
   double i = y;
@@ -393,17 +488,18 @@ inline float mbbs4(int iterations, double x, double y) {
   return -999.0f;
 }
 
-int run(int type, int w, int h, int pixel, double posX, double posY,
-        double zoom, int max, float *iters, uint32_t *colors, int iterations,
-        uint32_t *pallete, int palleteLength, uint32_t interiorColor,
-        float speed) {
+extern int run(int type, int w, int h, int pixel, double posX, double posY,
+               double zoom, int max, float *iters, uint32_t *colors,
+               int iterations, uint32_t *pallete, int palleteLength,
+               uint32_t interiorColor, int renderMode, float speed,
+               float flowAmount) {
   // The boring stuff is here! We use 32-bit RGBA uint32_t instead of 8-bit
   // numbers for the coloring, because it's simpler and doesn't slow down JS at
   // all (we can access it with Uint8ClampedArray)
   int i = pixel;
   double x = i % w;
   double y = i / w;
-  double W = w;
+  int W = w;
   int score = 0;
   int limit = w * h;
   int biggerIterations = iterations + 2;
@@ -412,9 +508,8 @@ int run(int type, int w, int h, int pixel, double posX, double posY,
   float speed1 = sqrtf(sqrtf(speed));
   float speed2 = 0.035f * speed;
 
-  // Save this number as it's used a lot
-  uint32_t firstColor = pallete[0];
-  // do...while instead of while, so it doesn't increment the first time.
+  // we use a do...while rather than a simple while, so it doesn't increment the
+  // first time.
   do {
     if (x == W) {
       x = 0;
@@ -425,10 +520,14 @@ int run(int type, int w, int h, int pixel, double posX, double posY,
       if (t == -999.0f) {
         colors[i] = interiorColor;
       } else if (t == 1.0f) {
-        colors[i] = firstColor;
+        int index = flowAmount;
+        int indexModulo = index % palleteLength;
+        colors[i] = mix(pallete[indexModulo], pallete[indexModulo + 1],
+                        (flowAmount - index) * 0xff);
       } else {
-        colors[i] = getPallete(flog2(t) * speed1 + (t - 1) * speed2, pallete,
-                               palleteLength);
+        colors[i] =
+            getPallete(flog2(t) * speed1 + (t - 1) * speed2 + flowAmount,
+                       pallete, palleteLength, renderMode);
       }
       x++;
       continue;
@@ -481,13 +580,14 @@ int run(int type, int w, int h, int pixel, double posX, double posY,
     // What's this number? If flog2() has a value less than this, it gives a
     // negative number, which will cause problems.
     else if (n < 1.000004f) {
-      score += 6;
-      colors[i] = firstColor;
-      iters[i] = 1.0f;
+      int index = flowAmount;
+      int indexModulo = index % palleteLength;
+      colors[i] = mix(pallete[indexModulo], pallete[indexModulo + 1],
+                      (flowAmount - index) * 0xff);
     } else {
       score += 13 + (int)n;
-      colors[i] = getPallete(flog2(n) * speed1 + (n - 1) * speed2, pallete,
-                             palleteLength);
+      colors[i] = getPallete(flog2(n) * speed1 + (n - 1) * speed2 + flowAmount,
+                             pallete, palleteLength, renderMode);
       iters[i] = n;
     }
     if (score > max) {
