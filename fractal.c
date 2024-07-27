@@ -173,7 +173,7 @@ float mand(int iterations, double x, double y) {
     r = sr - si + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -191,7 +191,7 @@ float mand3(int iterations, double x, double y) {
     i = i * (3.0 * sr - si) + y;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.6309297535714575;
       return result;
     }
@@ -209,7 +209,7 @@ float mand4(int iterations, double x, double y) {
     r = sr * (sr - 6.0 * si) + si * si + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.5;
       return result;
     }
@@ -229,7 +229,7 @@ float mand5(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     fi = si * si;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result =
           (float)n - (secondLog(sqrt(sr + si))) * 0.43067655807339306;
       return result;
@@ -252,7 +252,7 @@ float mand6(int iterations, double x, double y) {
     si = i * i;
     fr = sr * sr;
     fi = si * si;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result =
           (float)n - (secondLog(sqrt(sr + si))) * 0.38685280723454163;
       return result;
@@ -275,7 +275,7 @@ float mand7(int iterations, double x, double y) {
     si = i * i;
     fr = sr * sr;
     fi = si * si;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.3562071871080222;
       return result;
     }
@@ -293,7 +293,7 @@ float ship(int iterations, double x, double y) {
     r = sr - si + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -311,7 +311,7 @@ float ship3(int iterations, double x, double y) {
     i = fabs(i) * (3.0 * sr - si) + y;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.6309297535714575;
       return result;
     }
@@ -329,7 +329,7 @@ float ship4(int iterations, double x, double y) {
     r = sr * sr - 6.0 * sr * si + si * si + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.5;
       return result;
     }
@@ -347,7 +347,7 @@ float celt(int iterations, double x, double y) {
     r = fabs(sr - si) + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -366,7 +366,7 @@ float prmb(int iterations, double x, double y) {
     i = -tr - y;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -387,7 +387,7 @@ float buff(int iterations, double x, double y) {
     i = tr - i + y;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -405,7 +405,7 @@ float tric(int iterations, double x, double y) {
     r = sr - si + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -430,7 +430,7 @@ float mbbs(int iterations, double x, double y) {
     }
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -455,7 +455,7 @@ float mbbs3(int iterations, double x, double y) {
     }
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.6309297535714575;
       return result;
     }
@@ -480,7 +480,7 @@ float mbbs4(int iterations, double x, double y) {
     }
     sr = r * r;
     si = i * i;
-    if (sr + si > 256.0) {
+    if (sr + si > 500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.5;
       return result;
     }
