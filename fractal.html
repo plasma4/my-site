@@ -301,10 +301,11 @@
     <b id="percent"></b>
     <div id="welcome">
         <div id="noteTitle">Welcome!</div>
-        <div id="noteContent">This online fractal viewer has many of the features that professional "fractal
-            creators" have, such as pertubation and lots of other features!
+        <div id="noteContent">
+            This online fractal viewer has a few of the features that professional "fractal creators" have, such as
+            custom pallete options and fractal types! Currently, it lacks multithreading support.
             Click <span onclick="loadInfo()" class="choice">here</span> to learn how it works.
-            Use the "More..." button to customize your keybinds.
+            Use the "More..." button to look at the options and shortcuts.
             <div id="notice">Anyways, hello!</div>
         </div>
     </div>
@@ -314,8 +315,8 @@
         <button onclick="switchFractals()">Switch Fractal <b>(C or Shift+C)</b></button>
         <button onclick="switchRenderMode()">Switch Render Mode <b>(M)</b></button>
         <button onclick="switchAliasMode()">Switch Anti Aliasing Mode <b>(Z)</b></button>
-        <button onclick="switchFlow(1)">Flow Colors Forward<b>(A)</b></button>
-        <button onclick="switchFlow(-1)">Flow Colors Backward <b>(B)</b></button>
+        <button onclick="switchFlow(-1)">Flow Colors Forward<b>(A)</b></button>
+        <button onclick="switchFlow(1)">Flow Colors Backward <b>(B)</b></button>
         <button onclick="switchPallete()">Switch Pallete <b>(P)</b></button>
         <button onclick="increaseSpeed()">Increase Pallete Change <b>(S)</b></button>
         <button onclick="decreaseSpeed()">Decrease Pallete Change <b>(Shift+S)</b></button>
@@ -381,14 +382,14 @@
         const help = document.getElementById("help")
         const workerCount = navigator.hardwareConcurrency
 
-        var w, h, pixels, bytes, iterationEnd, colorStart, wasmLength, dataArray, colorArray, dataBits, palleteData, colorBits
+        var w, h, pixels, iterationEnd, colorStart, wasmLength, dataArray, colorArray, dataBits, palleteData, colorBits
         var buffer, handlePixels, rescale, exports
         var centerX = 0, centerY = 0, flowRate = 0, flowed = 0
         var resizeW, resizeH
         var memory = new WebAssembly.Memory({
-            initial: (Math.round(innerWidth * devicePixelRatio) * Math.round(innerHeight * devicePixelRatio)) / 8192,
-            maximum: 50000,
-            shared: true
+            initial: (Math.round(innerWidth * devicePixelRatio) * Math.round(innerHeight * devicePixelRatio)) / 4096,
+            // maximum: 100000,
+            // shared: true
         })
 
         // Notes for welcome popup
@@ -550,7 +551,7 @@
             canvas.style.width = previous.style.width = hidden.style.width = Math.ceil(innerWidth) + "px"
             canvas.style.height = previous.style.height = hidden.style.height = Math.ceil(innerHeight) + "px"
 
-            bytes = pixels * 4
+            var bytes = pixels * 4
             iterationEnd = bytes + palleteBytes
 
             // Why? Becase JS won't let us create 32-bit numbers with offsets not a multiple of 4.
@@ -782,11 +783,11 @@
                         }
                         percent.style.color = color
                         // Update the progress line (which isn't rendered with the canvas to prevent the line from showing in the preview)
-                        line.style.top = Math.floor(pixel / w / aliasingFactor) + "px"
+                        line.style.top = (pixel / (w * devicePixelRatio * aliasingFactor)).toFixed(1) + "px"
                         line.style.backgroundColor = color
                     } else {
                         previousGuess = mainDiff
-                        percent.textContent = "Took " + timeToString(mainDiff, true) + (aliasingFactor === 1 ? " (without anti-aliasing)." : " (with the anti-aliasing factor set to " + aliasingFactor + ").")
+                        percent.textContent = "Took " + timeToString(mainDiff, true) + (aliasingFactor === 1 ? "." : " (with the anti-aliasing factor set to " + aliasingFactor + ").")
                         line.removeAttribute("style")
                         percent.style.color = "#1ad"
                         hideTime = Date.now() + 500
