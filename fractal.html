@@ -797,9 +797,11 @@
                     time = newTime
                 } else if (pixel === -1) {
                     ctx.putImageData(new ImageData(colorArray, w, h), 0, 0)
+                    line.removeAttribute("style")
                 }
                 setTimeout(draw, 4)
             } else {
+                line.removeAttribute("style")
                 if (flowRate != 0) {
                     flowed += flowRate / 60
                     retry()
