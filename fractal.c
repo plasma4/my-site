@@ -52,10 +52,10 @@ static inline uint32_t getB(uint32_t color) { return (color >> 16) & 0xff; }
 static inline uint32_t mix2(uint32_t colorStart, uint32_t colorEnd, float a,
                             int renderMode, float darkenAmount) {
   if (renderMode == 0) {
-    return mix(colorStart, colorEnd, a * 255);
+    uint32_t color = mix(colorStart, colorEnd, a * darkenAmount * 255);
   }
-  return mixBlack(mix(colorStart, colorEnd, (a * sqrt(a)) * 255),
-                  200 * darkenAmount);
+  uint32_t color = mix(colorStart, colorEnd, (a * sqrt(a)) * 255);
+  return mixBlack(color, 200 * darkenAmount);
 }
 
 // Get a smoothed, looped, index of a pallete
@@ -164,7 +164,10 @@ static inline float sinq(float x) {
   return x;
 }
 
-// All the fractal functions are below!
+// All the fractal functions are below! The first section has no shading, the
+// second section has directional shading, and the third section does some funky
+// weird shading that's a little hard to explain.
+
 float mand(int iterations, double x, double y) {
   double r = x;
   double i = y;
@@ -176,67 +179,7 @@ float mand(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si)));
-      return result;
-    }
-  }
-  return -999.0f;
-}
-
-float mandS(int iterations, double x, double y, float *ptr) {
-  double r = x;
-  double i = y;
-  double sr = r * r;
-  double si = i * i;
-  double dr = 1;
-  double di = 0;
-  for (int n = 1; n < iterations; n++) {
-    double tempdr = 2.0 * (dr * r - di * i) + 1.0;
-    di = 2.0 * (dr * i + di * r);
-    dr = tempdr;
-    i = 2 * r * i + y;
-    r = sr - si + x;
-    sr = r * r;
-    si = i * i;
-    if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si)));
-      double sqm = dr * dr + di * di;
-      double ur = (r * dr + i * di) / sqm;
-      double ui = (i * dr - r * di) / sqm;
-      double norm = sqrt(ur * ur + ui * ui);
-      ur /= norm;
-      ui /= norm;
-
-      float t = (ur + ui) * 0.7071067811865475f + 1.5f;
-      // t /= (1.0 + 1.5);
-      *ptr = t <= 0 ? 0 : (t * 0.4f);
-      return result;
-    }
-  }
-  return -999.0f;
-}
-
-float mandS2(int iterations, double x, double y, float *ptr) {
-  double r = x;
-  double i = y;
-  double sr = r * r;
-  double si = i * i;
-  for (int n = 1; n < iterations; n++) {
-    i = 2 * r * i + y;
-    r = sr - si + x;
-    sr = r * r;
-    si = i * i;
-    if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si)));
-      double ur = r + i;
-      double ui = i - r;
-      double norm = sqrt(ur * ur + ui * ui);
-      ur /= norm;
-      ui /= norm;
-
-      float t = (ur + ui) * 0.7071067811865475f + 1.5;
-      // t /= (1.0 + 1.5);
-      *ptr = t <= 0 ? 0 : t * 0.4f;
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
       return result;
     }
   }
@@ -254,7 +197,8 @@ float mand3(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si))) * 0.6309297535714575;
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.6309297535714575f;
       return result;
     }
   }
@@ -272,7 +216,7 @@ float mand4(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si))) * 0.5;
+      float result = (float)n - (secondLog(sqrtf(sr + si))) * 0.5f;
       return result;
     }
   }
@@ -293,7 +237,7 @@ float mand5(int iterations, double x, double y) {
     fi = si * si;
     if (sr + si > 2500.0) {
       float result =
-          (float)n - (secondLog(sqrt(sr + si))) * 0.43067655807339306;
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.43067655807339306f;
       return result;
     }
   }
@@ -316,7 +260,7 @@ float mand6(int iterations, double x, double y) {
     fi = si * si;
     if (sr + si > 2500.0) {
       float result =
-          (float)n - (secondLog(sqrt(sr + si))) * 0.38685280723454163;
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.38685280723454163f;
       return result;
     }
   }
@@ -338,7 +282,8 @@ float mand7(int iterations, double x, double y) {
     fr = sr * sr;
     fi = si * si;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si))) * 0.3562071871080222;
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.3562071871080222f;
       return result;
     }
   }
@@ -356,7 +301,7 @@ float ship(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si)));
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
       return result;
     }
   }
@@ -374,7 +319,8 @@ float ship3(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si))) * 0.6309297535714575;
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.6309297535714575f;
       return result;
     }
   }
@@ -392,7 +338,7 @@ float ship4(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si))) * 0.5;
+      float result = (float)n - (secondLog(sqrtf(sr + si))) * 0.5f;
       return result;
     }
   }
@@ -410,7 +356,7 @@ float celt(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si)));
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
       return result;
     }
   }
@@ -429,7 +375,7 @@ float prmb(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si)));
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
       return result;
     }
   }
@@ -450,7 +396,7 @@ float buff(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si)));
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
       return result;
     }
   }
@@ -468,7 +414,7 @@ float tric(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si)));
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
       return result;
     }
   }
@@ -493,7 +439,7 @@ float mbbs(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si)));
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
       return result;
     }
   }
@@ -518,7 +464,8 @@ float mbbs3(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si))) * 0.6309297535714575;
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.6309297535714575f;
       return result;
     }
   }
@@ -543,7 +490,485 @@ float mbbs4(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     if (sr + si > 2500.0) {
-      float result = (float)n - (secondLog(sqrt(sr + si))) * 0.5;
+      float result = (float)n - (secondLog(sqrtf(sr + si))) * 0.5f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+// -----
+
+float mandS(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  double dr = 1;
+  double di = 0;
+  for (int n = 1; n < iterations; n++) {
+    double tempdr = 2.0 * (dr * r - di * i) + 1.0;
+    di = 2.0 * (dr * i + di * r);
+    dr = tempdr;
+    i = 2 * r * i + y;
+    r = sr - si + x;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
+      double sqm = dr * dr + di * di;
+      double ur = (r * dr + i * di) / sqm;
+      double ui = (i * dr - r * di) / sqm;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5f;
+      *ptr = t <= 0 ? 0 : (t * 0.4f);
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float mand3S(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    r = r * (sr - 3.0 * si) + x;
+    i = i * (3.0 * sr - si) + y;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.6309297535714575f;
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float mand4S(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    i = 4.0 * (sr * r * i - r * si * i) + y;
+    r = sr * (sr - 6.0 * si) + si * si + x;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si))) * 0.5f;
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float mand5S(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  double fi = si * si;
+  for (int n = 1; n < iterations; n++) {
+    i = i * (sr * (5.0 * sr - 10.0 * si) + fi) + y;
+    r = r * (sr * (sr - 10.0 * si) + 5.0 * fi) + x;
+    sr = r * r;
+    si = i * i;
+    fi = si * si;
+    if (sr + si > 2500.0) {
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.43067655807339306f;
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float mand6S(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  double fr = sr * sr;
+  double fi = si * si;
+  for (int n = 1; n < iterations; n++) {
+    i = r * i * (6.0 * (fr + fi) - 20.0 * sr * si) + y;
+    r = sr * (fr + 15.0 * fi) - si * (15.0 * fr + fi) + x;
+    sr = r * r;
+    si = i * i;
+    fr = sr * sr;
+    fi = si * si;
+    if (sr + si > 2500.0) {
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.38685280723454163f;
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float mand7S(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  double fr = sr * sr;
+  double fi = si * si;
+  for (int n = 1; n < iterations; n++) {
+    r = r * (fr * (sr - 21.0 * si) + fi * (35.0 * sr - 7.0 * si)) + x;
+    i = i * (fr * (7.0 * sr - 35.0 * si) + fi * (21.0 * sr - si)) + y;
+    sr = r * r;
+    si = i * i;
+    fr = sr * sr;
+    fi = si * si;
+    if (sr + si > 2500.0) {
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.3562071871080222f;
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float shipS(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  double dr = 1;
+  double di = 0;
+  for (int n = 1; n < iterations; n++) {
+    i = fabs(2.0 * r * i) + y;
+    r = sr - si + x;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float ship3S(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    r = fabs(r) * (sr - 3.0 * si) + x;
+    i = fabs(i) * (3.0 * sr - si) + y;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.6309297535714575f;
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float ship4S(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    i = fabs(4.0 * r * i) * (sr - si) + y;
+    r = sr * sr - 6.0 * sr * si + si * si + x;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si))) * 0.5f;
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float celtS(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    i = 2.0 * r * i + y;
+    r = fabs(sr - si) + x;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float prmbS(int iterations, double x, double y, float *ptr) {
+  double r = fabs(x);
+  double i = -y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    double tr = 2.0 * r * i;
+    r = fabs(sr - i * i + x);
+    i = -tr - y;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float buffS(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    r = fabs(r);
+    i = fabs(i);
+    double tr = 2.0 * r * i;
+    r = sr - si - r + x;
+    i = tr - i + y;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float tricS(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    i = -2.0 * r * i + y;
+    r = sr - si + x;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float mbbsS(int iterations, double x, double y, float *ptr) {
+  int exchange = 1;
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    if (exchange++ == 10) {
+      exchange = 1;
+      i = fabs(2.0 * r * i) + y;
+      r = sr - si + x;
+    } else {
+      i = 2.0 * r * i + y;
+      r = sr - si + x;
+    }
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float mbbs3S(int iterations, double x, double y, float *ptr) {
+  int exchange = 1;
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    if (exchange++ == 10) {
+      exchange = 1;
+      r = fabs(r) * (sr - 3.0 * si) + x;
+      i = fabs(i) * (3.0 * sr - si) + y;
+    } else {
+      r = r * (sr - 3.0 * si) + x;
+      i = i * (3.0 * sr - si) + y;
+    }
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result =
+          (float)n - (secondLog(sqrtf(sr + si))) * 0.6309297535714575f;
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float mbbs4S(int iterations, double x, double y, float *ptr) {
+  int exchange = 1;
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    if (exchange++ == 10) {
+      exchange = 1;
+      i = fabs(4.0 * r * i) * (sr - si) + y;
+      r = sr * sr - 6.0 * sr * si + si * si + x;
+    } else {
+      i = 4.0 * (sr * r * i - r * si * i) + y;
+      r = sr * (sr - 6.0 * si) + si * si + x;
+    }
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si))) * 0.5f;
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+// ----- (there's only one function here for now but whatever...)
+
+float mandS2(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    i = 2 * r * i + y;
+    r = sr - si + x;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrtf(sr + si)));
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      *ptr = t <= 0 ? 0 : t * 0.4f;
       return result;
     }
   }
@@ -662,49 +1087,53 @@ extern int run(int type, int w, int h, int pixel, double posX, double posY,
             n = mandS2(iterations, coordinateX, coordinateY, ptr);
             break;
           case 1:
-            n = mand3(iterations, coordinateX, coordinateY);
+            n = mand3S(
+                iterations, coordinateX, coordinateY,
+                ptr);  // So, the silly thing is that I haven't got proper
+                       // shading working for any other fractals yet. So it
+                       // defaults to a wonky alternative to it!
             break;
           case 2:
-            n = mand4(iterations, coordinateX, coordinateY);
+            n = mand4S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 3:
-            n = mand5(iterations, coordinateX, coordinateY);
+            n = mand5S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 4:
-            n = mand6(iterations, coordinateX, coordinateY);
+            n = mand6S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 5:
-            n = mand7(iterations, coordinateX, coordinateY);
+            n = mand7S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 6:
-            n = ship(iterations, coordinateX, coordinateY);
+            n = shipS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 7:
-            n = ship3(iterations, coordinateX, coordinateY);
+            n = ship3S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 8:
-            n = ship4(iterations, coordinateX, coordinateY);
+            n = ship4S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 9:
-            n = celt(iterations, coordinateX, coordinateY);
+            n = celtS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 10:
-            n = prmb(iterations, coordinateX, coordinateY);
+            n = prmbS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 11:
-            n = buff(iterations, coordinateX, coordinateY);
+            n = buffS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 12:
-            n = tric(iterations, coordinateX, coordinateY);
+            n = tricS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 13:
-            n = mbbs(iterations, coordinateX, coordinateY);
+            n = mbbsS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 14:
-            n = mbbs3(iterations, coordinateX, coordinateY);
+            n = mbbs3S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 15:
-            n = mbbs4(iterations, coordinateX, coordinateY);
+            n = mbbs4S(iterations, coordinateX, coordinateY, ptr);
         }
         break;
       default:
@@ -713,49 +1142,49 @@ extern int run(int type, int w, int h, int pixel, double posX, double posY,
             n = mandS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 1:
-            n = mand3(iterations, coordinateX, coordinateY);
+            n = mand3S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 2:
-            n = mand4(iterations, coordinateX, coordinateY);
+            n = mand4S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 3:
-            n = mand5(iterations, coordinateX, coordinateY);
+            n = mand5S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 4:
-            n = mand6(iterations, coordinateX, coordinateY);
+            n = mand6S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 5:
-            n = mand7(iterations, coordinateX, coordinateY);
+            n = mand7S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 6:
-            n = ship(iterations, coordinateX, coordinateY);
+            n = shipS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 7:
-            n = ship3(iterations, coordinateX, coordinateY);
+            n = ship3S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 8:
-            n = ship4(iterations, coordinateX, coordinateY);
+            n = ship4S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 9:
-            n = celt(iterations, coordinateX, coordinateY);
+            n = celtS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 10:
-            n = prmb(iterations, coordinateX, coordinateY);
+            n = prmbS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 11:
-            n = buff(iterations, coordinateX, coordinateY);
+            n = buffS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 12:
-            n = tric(iterations, coordinateX, coordinateY);
+            n = tricS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 13:
-            n = mbbs(iterations, coordinateX, coordinateY);
+            n = mbbsS(iterations, coordinateX, coordinateY, ptr);
             break;
           case 14:
-            n = mbbs3(iterations, coordinateX, coordinateY);
+            n = mbbs3S(iterations, coordinateX, coordinateY, ptr);
             break;
           case 15:
-            n = mbbs4(iterations, coordinateX, coordinateY);
+            n = mbbs4S(iterations, coordinateX, coordinateY, ptr);
         }
     }
     // Cost increases are pre-computed to be as stable as possible (at least for
