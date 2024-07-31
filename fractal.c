@@ -23,29 +23,22 @@ static inline uint32_t mix(uint32_t colorStart, uint32_t colorEnd, uint32_t a) {
          0xff000000;
 }
 
-// static inline uint32_t mixWhite(uint32_t colorStart, uint32_t a) {
-//   uint32_t reverse = 0xff - a;
-//   return ((((colorStart & 0xff) * reverse + 0xff * a) >> 8)) ^
-//          (((((colorStart >> 8) & 0xff) * reverse + 0xff * a)) & -0xff) ^
-//          (((((colorStart >> 16) & 0xff) * reverse + 0xff * a) << 8) &
-//          -0xffff) ^ 0xff000000;
-// }
-
-// static inline uint32_t mixBlack(uint32_t colorStart, uint32_t a) {
-//   uint32_t reverse = 0xff - a;
-//   return ((((colorStart & 0xff) * reverse * a) >> 8)) ^
-//          (((((colorStart >> 8) & 0xff) * reverse)) & -0xff) ^
-//          ((((colorStart >> 16) & 0xff) * reverse << 8) & -0xffff) ^
-//          0xff000000;
-// }
-
-static inline uint32_t toRGB(uint32_t r, uint32_t g, uint32_t b) {
-  return r ^ (g << 8) ^ (b << 16) ^ 0xff000000;
-}
-
 static inline float powThreeQuarters(float x) {
   float t = sqrtf(x);
   return t * sqrtf(t);
+}
+
+static inline uint32_t mixBlack(uint32_t colorStart, uint32_t a) {
+  if (!a) return colorStart;
+  uint32_t reverse = 0xff - a;
+  return ((((colorStart & 0xff) * reverse) >> 8)) ^
+         (((((colorStart >> 8) & 0xff) * reverse)) & -0xff) ^
+         (((((colorStart >> 16) & 0xff) * reverse) << 8) & -0xffff) ^
+         0xff000000;
+}
+
+static inline uint32_t toRGB(uint32_t r, uint32_t g, uint32_t b) {
+  return r ^ (g << 8) ^ (b << 16) ^ 0xff000000;
 }
 
 static inline uint32_t getR(uint32_t color) { return color & 0xff; }
@@ -54,18 +47,27 @@ static inline uint32_t getG(uint32_t color) { return (color >> 8) & 0xff; }
 
 static inline uint32_t getB(uint32_t color) { return (color >> 16) & 0xff; }
 
+// Fast mixing (smoothing) of 32-bit colors but with consideration for the
+// rendering mode
+static inline uint32_t mix2(uint32_t colorStart, uint32_t colorEnd, float a,
+                            int renderMode, float darkenAmount) {
+  if (renderMode == 0) {
+    return mix(colorStart, colorEnd, a * 255);
+  }
+  return mixBlack(mix(colorStart, colorEnd, (a * sqrt(a)) * 255),
+                  200 * darkenAmount);
+}
+
 // Get a smoothed, looped, index of a pallete
 uint32_t getPallete(float position, uint32_t *pallete, int length,
-                    int renderMode) {
+                    int renderMode, float darkenAmount) {
   // Pallete used by handlePixels (last element=first element for looping).
   // Interestingly, you can get the hex representations with the middle six
   // letters (#a00a0a for the first one, for example)
-  int id = (int)position;
-  float mod = position - (float)id;
-  int index = id % length;
+  int id = (int)position % length;
+  float mod = position - ((int)position / length) * length - (float)id;
   if (renderMode == 1) {
-    uint32_t color =
-        mix(pallete[index], pallete[index + 1], mod * sqrtf(mod) * 0xff);
+    uint32_t color = mix(pallete[id], pallete[id + 1], mod * sqrtf(mod) * 255);
     // Incredibly complicated, eh?
     int newColor = toRGB(45.0f + 0.8f * getR(color), 45.0f + 0.8f * getG(color),
                          45.0f + 0.8f * getB(color));
@@ -98,9 +100,8 @@ uint32_t getPallete(float position, uint32_t *pallete, int length,
           color = newColor;
         }
       }
-      float multiplier = powThreeQuarters(1.0f - (mod - 0.6f) * 2.5f);
-      color = toRGB(getR(color) * multiplier, getG(color) * multiplier,
-                    getB(color) * multiplier);
+      color =
+          mixBlack(color, 200.0f - powThreeQuarters(2.5f * (1.0f - mod)) * 200);
     } else if (mod > 0.2 && mod < 0.3) {
       if (mod < 0.225) {
         color = mix(color, newColor, (mod - 0.2f) * 100);
@@ -118,9 +119,10 @@ uint32_t getPallete(float position, uint32_t *pallete, int length,
         color = newColor;
       }
     }
-    return color;
+    return mixBlack(color, 200 * darkenAmount);
   }
-  return mix(pallete[index], pallete[index + 1], mod * 0xff);
+  uint32_t color = mix(pallete[id], pallete[id + 1], mod * 255);
+  return mixBlack(color, 200 * darkenAmount);
 }
 
 // Really efficient (wouldn't be used if wasm supported log2; reduces overhead)
@@ -162,7 +164,7 @@ static inline float sinq(float x) {
   return x;
 }
 
-// All the fractal functions!
+// All the fractal functions are below!
 float mand(int iterations, double x, double y) {
   double r = x;
   double i = y;
@@ -181,6 +183,66 @@ float mand(int iterations, double x, double y) {
   return -999.0f;
 }
 
+float mandS(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  double dr = 1;
+  double di = 0;
+  for (int n = 1; n < iterations; n++) {
+    double tempdr = 2.0 * (dr * r - di * i) + 1.0;
+    di = 2.0 * (dr * i + di * r);
+    dr = tempdr;
+    i = 2 * r * i + y;
+    r = sr - si + x;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrt(sr + si)));
+      double sqm = dr * dr + di * di;
+      double ur = (r * dr + i * di) / sqm;
+      double ui = (i * dr - r * di) / sqm;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+
+      float t = (ur + ui) * 0.7071067811865475f + 1.5f;
+      // t /= (1.0 + 1.5);
+      *ptr = t <= 0 ? 0 : (t * 0.4f);
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
+float mandS2(int iterations, double x, double y, float *ptr) {
+  double r = x;
+  double i = y;
+  double sr = r * r;
+  double si = i * i;
+  for (int n = 1; n < iterations; n++) {
+    i = 2 * r * i + y;
+    r = sr - si + x;
+    sr = r * r;
+    si = i * i;
+    if (sr + si > 2500.0) {
+      float result = (float)n - (secondLog(sqrt(sr + si)));
+      double ur = r + i;
+      double ui = i - r;
+      double norm = sqrt(ur * ur + ui * ui);
+      ur /= norm;
+      ui /= norm;
+
+      float t = (ur + ui) * 0.7071067811865475f + 1.5;
+      // t /= (1.0 + 1.5);
+      *ptr = t <= 0 ? 0 : t * 0.4f;
+      return result;
+    }
+  }
+  return -999.0f;
+}
+
 float mand3(int iterations, double x, double y) {
   double r = x;
   double i = y;
@@ -191,7 +253,7 @@ float mand3(int iterations, double x, double y) {
     i = i * (3.0 * sr - si) + y;
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.6309297535714575;
       return result;
     }
@@ -209,7 +271,7 @@ float mand4(int iterations, double x, double y) {
     r = sr * (sr - 6.0 * si) + si * si + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.5;
       return result;
     }
@@ -229,7 +291,7 @@ float mand5(int iterations, double x, double y) {
     sr = r * r;
     si = i * i;
     fi = si * si;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result =
           (float)n - (secondLog(sqrt(sr + si))) * 0.43067655807339306;
       return result;
@@ -252,7 +314,7 @@ float mand6(int iterations, double x, double y) {
     si = i * i;
     fr = sr * sr;
     fi = si * si;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result =
           (float)n - (secondLog(sqrt(sr + si))) * 0.38685280723454163;
       return result;
@@ -275,7 +337,7 @@ float mand7(int iterations, double x, double y) {
     si = i * i;
     fr = sr * sr;
     fi = si * si;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.3562071871080222;
       return result;
     }
@@ -293,7 +355,7 @@ float ship(int iterations, double x, double y) {
     r = sr - si + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -311,7 +373,7 @@ float ship3(int iterations, double x, double y) {
     i = fabs(i) * (3.0 * sr - si) + y;
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.6309297535714575;
       return result;
     }
@@ -329,7 +391,7 @@ float ship4(int iterations, double x, double y) {
     r = sr * sr - 6.0 * sr * si + si * si + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.5;
       return result;
     }
@@ -347,7 +409,7 @@ float celt(int iterations, double x, double y) {
     r = fabs(sr - si) + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -366,7 +428,7 @@ float prmb(int iterations, double x, double y) {
     i = -tr - y;
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -387,7 +449,7 @@ float buff(int iterations, double x, double y) {
     i = tr - i + y;
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -405,7 +467,7 @@ float tric(int iterations, double x, double y) {
     r = sr - si + x;
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -430,7 +492,7 @@ float mbbs(int iterations, double x, double y) {
     }
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si)));
       return result;
     }
@@ -455,7 +517,7 @@ float mbbs3(int iterations, double x, double y) {
     }
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.6309297535714575;
       return result;
     }
@@ -480,7 +542,7 @@ float mbbs4(int iterations, double x, double y) {
     }
     sr = r * r;
     si = i * i;
-    if (sr + si > 500.0) {
+    if (sr + si > 2500.0) {
       float result = (float)n - (secondLog(sqrt(sr + si))) * 0.5;
       return result;
     }
@@ -491,8 +553,8 @@ float mbbs4(int iterations, double x, double y) {
 extern int run(int type, int w, int h, int pixel, double posX, double posY,
                double zoom, int max, float *iters, uint32_t *colors,
                int iterations, uint32_t *pallete, int palleteLength,
-               uint32_t interiorColor, int renderMode, float speed,
-               float flowAmount) {
+               uint32_t interiorColor, int renderMode, int darkenEffect,
+               float speed, float flowAmount) {
   // The boring stuff is here! We use 32-bit RGBA uint32_t instead of 8-bit
   // numbers for the coloring, because it's simpler and doesn't slow down JS at
   // all (we can access it with Uint8ClampedArray)
@@ -507,27 +569,32 @@ extern int run(int type, int w, int h, int pixel, double posX, double posY,
   // Pre-calculate speed constants for faster renderings
   float speed1 = sqrtf(sqrtf(speed));
   float speed2 = 0.035f * speed;
+  float *itersPtr = iters;
 
-  // we use a do...while rather than a simple while, so it doesn't increment the
-  // first time.
+  // This uses a do...while rather than a simple while, so it doesn't increment
+  // the first time.
   do {
     if (x == W) {
       x = 0;
       y++;
     }
     float t = iters[i];
+    float *ptr = itersPtr + limit + i;
     if (t) {
       if (t == -999.0f) {
         colors[i] = interiorColor;
       } else if (t == 1.0f) {
         int index = flowAmount;
         int indexModulo = index % palleteLength;
-        colors[i] = mix(pallete[indexModulo], pallete[indexModulo + 1],
-                        (flowAmount - index) * 0xff);
+        float l = *ptr;
+        colors[i] = mix2(pallete[indexModulo], pallete[indexModulo + 1],
+                         flowAmount - index, renderMode,
+                         darkenEffect == 2 ? 1.0f - l : l);
       } else {
-        colors[i] =
-            getPallete(flog2(t) * speed1 + (t - 1) * speed2 + flowAmount,
-                       pallete, palleteLength, renderMode);
+        float l = *ptr;
+        colors[i] = getPallete(
+            flog2(t) * speed1 + (t - 1) * speed2 + flowAmount, pallete,
+            palleteLength, renderMode, darkenEffect == 2 ? 1.0f - l : l);
       }
       x++;
       continue;
@@ -536,39 +603,160 @@ extern int run(int type, int w, int h, int pixel, double posX, double posY,
     double coordinateY = posY + y * zoom;
 
     float n;
-    // Run the function for on of the 15 types
-    if (type == 0) {
-      n = mand(iterations, coordinateX, coordinateY);
-    } else if (type == 1) {
-      n = mand3(iterations, coordinateX, coordinateY);
-    } else if (type == 2) {
-      n = mand4(iterations, coordinateX, coordinateY);
-    } else if (type == 3) {
-      n = mand5(iterations, coordinateX, coordinateY);
-    } else if (type == 4) {
-      n = mand6(iterations, coordinateX, coordinateY);
-    } else if (type == 5) {
-      n = mand7(iterations, coordinateX, coordinateY);
-    } else if (type == 6) {
-      n = ship(iterations, coordinateX, coordinateY);
-    } else if (type == 7) {
-      n = ship3(iterations, coordinateX, coordinateY);
-    } else if (type == 8) {
-      n = ship4(iterations, coordinateX, coordinateY);
-    } else if (type == 9) {
-      n = celt(iterations, coordinateX, coordinateY);
-    } else if (type == 10) {
-      n = prmb(iterations, coordinateX, coordinateY);
-    } else if (type == 11) {
-      n = buff(iterations, coordinateX, coordinateY);
-    } else if (type == 12) {
-      n = tric(iterations, coordinateX, coordinateY);
-    } else if (type == 13) {
-      n = mbbs(iterations, coordinateX, coordinateY);
-    } else if (type == 14) {
-      n = mbbs3(iterations, coordinateX, coordinateY);
-    } else if (type == 15) {
-      n = mbbs4(iterations, coordinateX, coordinateY);
+    // Run the function needed and also look at the darken effect
+    switch (darkenEffect) {
+      case 0:
+        switch (type) {
+          case 0:
+            n = mand(iterations, coordinateX, coordinateY);
+            break;
+          case 1:
+            n = mand3(iterations, coordinateX, coordinateY);
+            break;
+          case 2:
+            n = mand4(iterations, coordinateX, coordinateY);
+            break;
+          case 3:
+            n = mand5(iterations, coordinateX, coordinateY);
+            break;
+          case 4:
+            n = mand6(iterations, coordinateX, coordinateY);
+            break;
+          case 5:
+            n = mand7(iterations, coordinateX, coordinateY);
+            break;
+          case 6:
+            n = ship(iterations, coordinateX, coordinateY);
+            break;
+          case 7:
+            n = ship3(iterations, coordinateX, coordinateY);
+            break;
+          case 8:
+            n = ship4(iterations, coordinateX, coordinateY);
+            break;
+          case 9:
+            n = celt(iterations, coordinateX, coordinateY);
+            break;
+          case 10:
+            n = prmb(iterations, coordinateX, coordinateY);
+            break;
+          case 11:
+            n = buff(iterations, coordinateX, coordinateY);
+            break;
+          case 12:
+            n = tric(iterations, coordinateX, coordinateY);
+            break;
+          case 13:
+            n = mbbs(iterations, coordinateX, coordinateY);
+            break;
+          case 14:
+            n = mbbs3(iterations, coordinateX, coordinateY);
+            break;
+          case 15:
+            n = mbbs4(iterations, coordinateX, coordinateY);
+        }
+        break;
+      case 3:
+        switch (type) {
+          case 0:
+            n = mandS2(iterations, coordinateX, coordinateY, ptr);
+            break;
+          case 1:
+            n = mand3(iterations, coordinateX, coordinateY);
+            break;
+          case 2:
+            n = mand4(iterations, coordinateX, coordinateY);
+            break;
+          case 3:
+            n = mand5(iterations, coordinateX, coordinateY);
+            break;
+          case 4:
+            n = mand6(iterations, coordinateX, coordinateY);
+            break;
+          case 5:
+            n = mand7(iterations, coordinateX, coordinateY);
+            break;
+          case 6:
+            n = ship(iterations, coordinateX, coordinateY);
+            break;
+          case 7:
+            n = ship3(iterations, coordinateX, coordinateY);
+            break;
+          case 8:
+            n = ship4(iterations, coordinateX, coordinateY);
+            break;
+          case 9:
+            n = celt(iterations, coordinateX, coordinateY);
+            break;
+          case 10:
+            n = prmb(iterations, coordinateX, coordinateY);
+            break;
+          case 11:
+            n = buff(iterations, coordinateX, coordinateY);
+            break;
+          case 12:
+            n = tric(iterations, coordinateX, coordinateY);
+            break;
+          case 13:
+            n = mbbs(iterations, coordinateX, coordinateY);
+            break;
+          case 14:
+            n = mbbs3(iterations, coordinateX, coordinateY);
+            break;
+          case 15:
+            n = mbbs4(iterations, coordinateX, coordinateY);
+        }
+        break;
+      default:
+        switch (type) {
+          case 0:
+            n = mandS(iterations, coordinateX, coordinateY, ptr);
+            break;
+          case 1:
+            n = mand3(iterations, coordinateX, coordinateY);
+            break;
+          case 2:
+            n = mand4(iterations, coordinateX, coordinateY);
+            break;
+          case 3:
+            n = mand5(iterations, coordinateX, coordinateY);
+            break;
+          case 4:
+            n = mand6(iterations, coordinateX, coordinateY);
+            break;
+          case 5:
+            n = mand7(iterations, coordinateX, coordinateY);
+            break;
+          case 6:
+            n = ship(iterations, coordinateX, coordinateY);
+            break;
+          case 7:
+            n = ship3(iterations, coordinateX, coordinateY);
+            break;
+          case 8:
+            n = ship4(iterations, coordinateX, coordinateY);
+            break;
+          case 9:
+            n = celt(iterations, coordinateX, coordinateY);
+            break;
+          case 10:
+            n = prmb(iterations, coordinateX, coordinateY);
+            break;
+          case 11:
+            n = buff(iterations, coordinateX, coordinateY);
+            break;
+          case 12:
+            n = tric(iterations, coordinateX, coordinateY);
+            break;
+          case 13:
+            n = mbbs(iterations, coordinateX, coordinateY);
+            break;
+          case 14:
+            n = mbbs3(iterations, coordinateX, coordinateY);
+            break;
+          case 15:
+            n = mbbs4(iterations, coordinateX, coordinateY);
+        }
     }
     // Cost increases are pre-computed to be as stable as possible (at least for
     // my computer)
@@ -582,12 +770,17 @@ extern int run(int type, int w, int h, int pixel, double posX, double posY,
     else if (n < 1.000004f) {
       int index = flowAmount;
       int indexModulo = index % palleteLength;
-      colors[i] = mix(pallete[indexModulo], pallete[indexModulo + 1],
-                      (flowAmount - index) * 0xff);
+      float l = *ptr;
+      colors[i] = mix2(pallete[indexModulo], pallete[indexModulo + 1],
+                       flowAmount - index, renderMode,
+                       darkenEffect == 2 ? 1.0f - l : l);
+      iters[i] = 1.0f;
     } else {
       score += 13 + (int)n;
+      float l = *ptr;
       colors[i] = getPallete(flog2(n) * speed1 + (n - 1) * speed2 + flowAmount,
-                             pallete, palleteLength, renderMode);
+                             pallete, palleteLength, renderMode,
+                             darkenEffect == 2 ? 1.0f - l : l);
       iters[i] = n;
     }
     if (score > max) {
