@@ -82,10 +82,6 @@
             background-color: #f42;
         }
 
-        #close {
-            border: solid 2px white;
-        }
-
         #close:hover,
         #reset:hover {
             background-color: #d42;
@@ -98,7 +94,7 @@
 
         #menu {
             display: none;
-            position: absolute;
+            position: fixed;
             width: 1200px;
             max-width: 70%;
             height: 400px;
@@ -113,7 +109,7 @@
 
         #percent {
             white-space: pre;
-            position: absolute;
+            position: fixed;
             top: 60px;
             left: 25px;
             font-size: 20px;
@@ -122,17 +118,19 @@
         }
 
         #close {
+            border: solid 2px white;
             cursor: pointer;
-            position: absolute;
+            position: fixed;
             bottom: 2px;
             right: 2px;
         }
 
         #copy {
             cursor: pointer;
+            visibility: hidden;
             font-size: 28px;
             opacity: 0;
-            position: absolute;
+            position: fixed;
             border-radius: 8px;
             background-color: #303030;
             color: white;
@@ -143,7 +141,7 @@
 
         #slow {
             cursor: pointer;
-            position: absolute;
+            position: fixed;
             left: 10px;
             bottom: 10px;
             width: calc(100% - 20px);
@@ -168,7 +166,7 @@
         }
 
         #line {
-            position: absolute;
+            position: fixed;
             top: -1px;
             left: 0;
             width: 100%;
@@ -178,7 +176,7 @@
         .sheet {
             background-color: #222;
             opacity: 0.4;
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -211,7 +209,7 @@
         }
 
         #welcome {
-            position: absolute;
+            position: fixed;
             top: 155px;
             left: 10px;
             cursor: pointer;
@@ -292,11 +290,11 @@
     <div class="sheet" id="sheet"></div>
     <canvas width="0" height="0" id="canvas"></canvas>
     <div id="line"></div>
-    <div style="position: absolute; top: 20px; left: 20px; padding: 5px;">
+    <b id="percent"></b>
+    <div style="position: fixed; top: 20px; left: 20px; padding: 5px;">
         <button onclick="reset()" id="reset">Reset <b>(R)</b></button>
         <button onclick="toggleMenu()">More...</button>
     </div>
-    <b id="percent"></b>
     <div id="welcome">
         <div id="noteTitle">Welcome!</div>
         <div id="noteContent">
@@ -319,11 +317,25 @@
         <button onclick="switchPallete()">Switch Pallete <b>(P)</b></button>
         <button onclick="increaseSpeed()">Increase Pallete Change <b>(S)</b></button>
         <button onclick="pixelBreakdown = !pixelBreakdown">Decrease Pallete Change <b>(Shift+S)</b></button>
+        <br>
         <button onclick="switchCategory()">Switch Fractal Category <b>(X)</b></button>
         <button onclick="setIterations(iterations + 250)">Increase Iterations <b>(I)</b></button>
         <button onclick="setIterations(iterations + 250)">Toggle Pixel Inspector <b>(T)</b></button>
-        <button onclick="download()">Download Image</button>
+        <hr>
+        <span style="color: #ff0000">R</span><span style="color: #00ff00">G</span><span style="color: #0000ff">B</span>
+        <span style="font-size: 20px; color: white;"> values should be separated by
+            spaces. They should only contain 3 numbers (for example, black would be written as
+            <span style="color: black; font-size: 16px;">0,0,0</span>). The last color is the interior color.</span>
         <br>
+        <input type="text" placeholder="Enter RGB values..." id="newPallete"
+            value="255,255,255 200,200,200 255,255,255 160,160,160 255,255,255 120,120,120 255,255,255 60,60,60 50,50,50"></input>
+        <button onclick="customizePallete()">Use Pallete</button>
+        <br>
+        <input type="text" placeholder="Import location..." id="newLoc"></input>
+        <button onclick="importLocation()">Go to Location</button>
+        <button onclick="saveLocation()">Export Current Position</button>
+        <button onclick="download()">Download Image</button>
+        <hr>
         <button onclick="wantedFPS = 3.45">30FPS</button>
         <button onclick="wantedFPS = 7">15FPS</button>
         <button onclick="wantedFPS = 10.5">10FPS</button>
@@ -449,6 +461,7 @@
             pallete.push(start)
         }
 
+        var palleteOverride = false
         var palleteID = 0
         var pallete = palletes[palleteID]
         var interior = interiors[0]
@@ -961,6 +974,9 @@
         }, { passive: false })
 
         function updateZoom(factor, x, y) {
+            if (factor === 1) {
+                return
+            }
             var pointX = panX + x * zoom
             var pointY = panY + y * zoom
             zoom *= factor
@@ -1080,10 +1096,15 @@
         }
 
         function switchPallete() {
-            palleteID++
+            if (palleteOverride) {
+                palleteOverride = false
+            } else {
+                palleteID++
+            }
             if (palleteID === totalPalletes) {
                 palleteID = 0
             }
+            flowed = 0
             pallete = palletes[palleteID]
             interior = interiors[palleteID]
             palleteEnd = pallete.length - 1
@@ -1092,6 +1113,70 @@
             }
             palleteData.set(pallete)
             retry()
+        }
+
+        function customizePallete() {
+            var nextColors = decodePallete(newPallete.value.split(" "))
+            if (nextColors !== false) {
+                flowed = 0
+                palleteOverride = true
+                pallete = nextColors
+                palleteEnd = pallete.length - 1
+                interior = 0xff000000 + pallete.pop()
+                pallete.push(pallete[0])
+                if (palleteData === null) {
+                    palleteData = getMemory(palleteBytes * 0.25, 0, 32)
+                }
+                palleteData.set(pallete)
+                clearBack()
+                retry()
+            }
+        }
+
+        const hexStr = "0123456789abcdef"
+        function decodePallete(colors) {
+            var rgbLength = colors.length
+            var newColors = Array(rgbLength)
+            if (rgbLength < 2) {
+                return false
+            }
+            for (var i = 0; i < rgbLength; i++) {
+                var c = colors[i]
+                var split = c.split(",")
+                if (split.length === 0) {
+                    var hex = null
+                    if (split.charCodeAt(0) === 35) {
+                        c = c.slice(1)
+                    }
+                    if (c.length === 6) {
+                        hex = (hexStr.indexOf(c[0]) << 4) + hexStr.indexOf(c[1]) + (hexStr.indexOf(c[2]) << 12) + (hexStr.indexOf(c[3]) << 8) + (hexStr.indexOf(c[4]) << 20) + (hexStr.indexOf(c[5]) << 16)
+                    } else if (c.length === 3) {
+                        hex = hexStr.indexOf(c[0]) * 17 + hexStr.indexOf(c[1]) * 4352 + hexStr.indexOf(c[1]) * 69632 // These may seem like magic numbers, but they're really simple math
+                    }
+                    if (!isFinite(x)) {
+                        return false
+                    }
+                    newColors[i] = hex
+                    continue;
+                } else if (split.length !== 3) {
+                    return false
+                }
+                var textR = split[0]
+                var textG = split[1]
+                var textB = split[2]
+                if (textR === "" || textG === "" || textB === "") {
+                    return false
+                }
+                var r = parseInt(textR)
+                var g = parseInt(textG)
+                var b = parseInt(textB)
+                if (r >= 0 && r < 256 && g >= 0 && g < 256 && b >= 0 && g < 256) {
+                    newColors[i] = r + g * 256 + b * 65536
+                } else {
+                    return false
+                }
+            }
+            return newColors
         }
 
         function switchRenderMode() {
@@ -1113,6 +1198,7 @@
                 retry()
             } else {
                 redo()
+                clearBack()
             }
         }
 
@@ -1154,6 +1240,66 @@
         function setIterations(amount) {
             iterations = amount
             rehandle = true
+        }
+
+        const fractalNames = [
+            "Mandelbrot set",
+            "3rd Power Multibrot set",
+            "4th Power Multibrot set",
+            "5th Power Multibrot set",
+            "6th Power Multibrot set",
+            "7th Power Multibrot set",
+            "Burning Ship",
+            "3rd Power Burning Ship",
+            "4th Power Burning Ship",
+            "5th Power Burning Ship",
+            "Celtic",
+            "Perpendicular Mandelbrot",
+            "Buffalo",
+            "Tricorn",
+            "9x Mandelbrot, 1x Burning Ship",
+            "9x 3rd Power Multibrot, 1x 3rd Power Burning Ship",
+            "9x 4th Power Multibrot, 1x 4th Power Burning Ship",
+        ]
+        const shadingNames = [
+            "Default",
+            "Shadow",
+            "Inverted Shadow",
+            "Stripes"
+        ]
+        function saveLocation() {
+            newLoc.value = "X: " + panX + " Y: " + panY + " Zoom: " + zoom + " Type: " + fractalNames[fractalType] + " Shading: " + shadingNames[darkenEffect]
+        }
+
+        function importLocation() {
+            var val = newLoc.value
+            var valA = val.indexOf("X:")
+            var valB = val.indexOf(" Y:")
+            var valC = val.indexOf(" Zoom:")
+            var valD = val.indexOf(" Type:")
+            var valE = val.indexOf(" Shading:")
+            if (valA === 0 && valB !== -1 && valC !== -1 && valD !== -1 && valE !== -1) {
+                var a = val.slice(valA + 3, valB).trim()
+                var b = val.slice(valB + 3, valC).trim()
+                var c = val.slice(valC + 6).trim()
+                if (a !== "" && b !== "" && c !== "") {
+                    a = parseFloat(a)
+                    b = parseFloat(b)
+                    c = parseFloat(c)
+                    var d = fractalNames.indexOf(val.slice(valD + 6, valE).trim())
+                    var e = shadingNames.indexOf(val.slice(valE + 9).trim())
+                    if (isFinite(a) && isFinite(b) && c > 0 && isFinite(c) && c <= 0.5 && d !== -1 && d >= 0 && d < fractalNames.length && e >= 0 && e < shadingNames.length) {
+                        if (panX !== a || panY !== b || zoom !== c || fractalType !== d || darkenEffect !== e) {
+                            panX = a
+                            panY = b
+                            zoom = c
+                            fractalType = d
+                            darkenEffect = e
+                            redo()
+                        }
+                    }
+                }
+            }
         }
 
         var closeTimeout = -1
