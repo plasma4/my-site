@@ -263,7 +263,7 @@
         }
 
         #infoClose {
-            transition: background-color 100ms;
+            transition: background-color 100ms, transform 1s;
             opacity: 1;
             background-color: #ed710c;
         }
@@ -273,7 +273,7 @@
         }
 
         #infoClose:active {
-            transition: background-color 500ms;
+            transition: background-color 500ms, transform 200ms;
             background-color: #1aad10;
         }
     </style>
@@ -300,7 +300,7 @@
         <div id="noteContent">
             This online fractal viewer has a few of the features that professional "fractal creators" have, such as
             custom pallete options and fractal types! Currently, it lacks multithreading support.
-            Click <span onclick="loadInfo()" class="choice">here</span> to learn how it works.
+            Click <span onclick="loadInfo()" class="choice">here</span> to learn a little about it.
             Use the "More..." button to look at the options and shortcuts.
             <div id="notice">Anyways, hello!</div>
         </div>
@@ -351,7 +351,7 @@
     </div>
     <div class="sheet" id="help" style="background-color: #fff; opacity: 0.9">
         Hi there!<br>
-        This fractal viewer is unique, because it uses pertubation, allowing for significantly faster deep zooming.
+        <!-- This fractal viewer is unique, because it uses pertubation, allowing for significantly faster deep zooming.
         <br><br>
         <h2>Wait, what even <i>is</i> pertubation?</h2>
         <br>
@@ -359,8 +359,16 @@
         and going further results in pixelation. So, we have to implement high-precision, allowing us to zoom
         deeper. However, this is many times slower, so pertubation helps bring the fractals back up to speed.
         <br><br><br><br>
-        Well...that actually isn't implemented yet because I forgot to remove this, but that's my goal!
+        Well...that actually isn't implemented yet because I forgot to remove this, but that's my goal! -->
+        This fractal viewer is one of the highest quality fractal viewers, with the ability to add 3D effects with some
+        normal map options, a custom and entirely unique banding mode, flowing animations, basic anti-aliasing options,
+        iteration customization, a variety of fractal options, downloading and coordinate saving, and pallete
+        customization.
+        <hr>
+        (You can find the C file that was compiled into WebAssembly by replacing "fractal.html" with "fractal.c")
         <br>
+        This is licensed under a Creative Commons license in case you want to modify it.
+        <hr>
         Well, what are you waiting for? Dive in or look at the recommended stuff in the menu.
         <button onclick='help.removeAttribute("style")' id="infoClose">Okay</button>
     </div>
@@ -506,7 +514,7 @@
             if (!e.ctrlKey && !e.metaKey && !e.altKey) {
                 var code = e.keyCode
                 if (!e.shiftKey) {
-                    if (code === 32) {
+                    if (code === 32 && e.target.tagName !== "INPUT") {
                         toggleMenu()
                         e.preventDefault()
                     } else if (code === 65) {
@@ -1143,11 +1151,11 @@
                 return false
             }
             for (var i = 0; i < rgbLength; i++) {
-                var c = colors[i]
+                var c = colors[i].trim()
                 var split = c.split(",")
-                if (split.length === 0) {
+                if (split.length === 1) {
                     var hex = null
-                    if (split.charCodeAt(0) === 35) {
+                    if (c.charCodeAt(0) === 35) {
                         c = c.slice(1)
                     }
                     if (c.length === 6) {
@@ -1155,11 +1163,11 @@
                     } else if (c.length === 3) {
                         hex = hexStr.indexOf(c[0]) * 17 + hexStr.indexOf(c[1]) * 4352 + hexStr.indexOf(c[1]) * 69632 // These may seem like magic numbers, but they're really simple math
                     }
-                    if (!isFinite(x)) {
+                    if (!isFinite(hex)) {
                         return false
                     }
                     newColors[i] = hex
-                    continue;
+                    continue
                 } else if (split.length !== 3) {
                     return false
                 }
