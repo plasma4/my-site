@@ -1479,7 +1479,7 @@
                     if (typeof digits == "bigint") {
                         value.$ = new Hyper(digits + 1n).$
                     } else if (value.$[2] <= 0) {
-                        value = new Hyper()
+                        value.$ = [1, 0, 0, 0n]
                     } else {
                         value.$ = new Hyper(digits + 1).$
                     }
@@ -2828,7 +2828,7 @@
              * @returns {Hyper}
              */
             Hyper.prototype.digits = function (noClone) {
-                return HyperDigits(this, value)
+                return HyperDigits(this, noClone)
             }
 
             /**
@@ -4427,7 +4427,8 @@
                 update(ID("ezRaw"), calculateBoost(ezRaw, 2), 0)
                 if (ezEffect.isLess("eee10000") && ezEffect.isMore("eee50")) {
                     var x = ezEffect.log10().log10()
-                    update(ID("ezEffect"), "ee" + Hyper(ezEffect.log10().log10().$[3]).mul("1e-49").format(6) + "e" + x.digits().sub(1).format(), 0)
+                    var t = x.$[3].toString()
+                    update(ID("ezEffect"), "ee" + t[0] + "." + t.slice(1, 6) + "e" + x.digits().sub(1).format(), 0)
                 } else {
                     update(ID("ezEffect"), calculateBoost(ezEffect, 2), 0)
                 }
