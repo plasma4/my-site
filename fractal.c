@@ -1,10 +1,7 @@
 /*
-Welcome to my code that helps run my fractal viewer!
-It is compiled into WASM, which is supported by JavaScript.
-
-
-Magic command: emcc fractal.c -O3 -o fractal.wasm -sEXPORT_KEEPALIVE
--sIGNORE_MISSING_MAIN --no-entry -sEXPORTED_FUNCTIONS=_run -sALLOW_MEMORY_GROWTH
+Welcome to my code that helps run my fractal viewer. It is licensed under the
+MIT License and is open source in case you want to use it!
+It is compiled into WASM, and the run function can be executed by JavaScript.
 */
 
 #include <math.h>

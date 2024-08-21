@@ -1477,14 +1477,14 @@
                 if (value.$[1] < 2) {
                     var digits = value.$[2]
                     if (typeof digits == "bigint") {
-                        value.$ = new Hyper(value.$[2] + 1n).$
+                        value.$ = new Hyper(digits + 1n).$
                     } else if (value.$[2] <= 0) {
                         value = new Hyper()
                     } else {
-                        value.$ = new Hyper(value.$[2] + 1).$
+                        value.$ = new Hyper(digits + 1).$
                     }
                 } else {
-                    value.$[1] = value.$[1]
+                    value.$[1]--
                 }
                 return value
             }
