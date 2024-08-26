@@ -11,6 +11,7 @@
         * {
             font-size: 22px;
             font-family: Cambria, Cochin, Georgia;
+            image-rendering: pixelated;
             overflow: hidden;
             touch-action: manipulation;
             word-break: break-word;
@@ -30,13 +31,19 @@
             left: 0;
         }
 
-        img {
+        .img {
+            pointer-events: none;
             position: absolute;
             top: 0;
             left: 0;
             opacity: 0;
             width: 100%;
             height: calc(10% + 2px);
+        }
+
+        img {
+            cursor: pointer;
+            padding: 2px;
         }
 
         em {
@@ -284,16 +291,16 @@
 <body>
     <canvas width="0" height="0"></canvas>
     <i id="hole"></i>
-    <img>
-    <img style="top: 10%">
-    <img style="top: 20%">
-    <img style="top: 30%">
-    <img style="top: 40%">
-    <img style="top: 50%">
-    <img style="top: 60%">
-    <img style="top: 70%">
-    <img style="top: 80%">
-    <img style="top: 90%">
+    <img class="img">
+    <img class="img" style="top: 10%">
+    <img class="img" style="top: 20%">
+    <img class="img" style="top: 30%">
+    <img class="img" style="top: 40%">
+    <img class="img" style="top: 50%">
+    <img class="img" style="top: 60%">
+    <img class="img" style="top: 70%">
+    <img class="img" style="top: 80%">
+    <img class="img" style="top: 90%">
     <em></em>
     <span id="main">
         <div></div>
@@ -309,7 +316,7 @@
             j=Left Gate|k=Right Gate|v=Switch|y=Off Block|z=On Block|5=Fire|8=Up/Down|Enemy|9=Left/Right|Enemy
             <br>
         </small>
-        <div id="images"></div>
+        <span id="images"></span>
         <p>
             <span class="new3">Beta</span> <span class="new1">edition</span>
             <br>
@@ -532,7 +539,7 @@
         const EDIT = 0
         const PRACTICE = 1
         const PLAY = 2
-        var types = [1001]
+        var imageTypes = ["SOLID", "SPRING", "SLIME", "FIRE", "COIN", "HEART", "BATTERY"]
 
         // Load sprites dynamically with base64 data and automated animation
         const IMAGES = {
@@ -586,11 +593,6 @@
         loadMap("0.0.6.2|1AQAE^AQAB$U$gAC$Y$gAD$Y$QAE$UABgAC$QABgAC$UABgAD$UABgAD$QABgAD$M$QAF$U$wAH$M$wAI$M$gAJ$k$gAL$k$gAN$g$gAN$E$QAO$E$QAQ$E$QAS$M$QAW$gABQAU$QABgAW$U$QAW$k$QAW$o$QAW$s$QAY$g$QAY$k$QAY$o$QAY$sABQAY$cABQAZ$cABQAa$cABQAa$gABQAZ$gABQAZ$kABQAZ$oABQAZ$sABQAa$sABQAa$oABQAa$kAB$X$s$wAW$w$wAX$w$wAY$w$wAZ$w$wAa$w$wAN$U$wAO$U$QAP$UABQAP$I$gAQ$U$QAE$Y$wAF$Y$w^Y$QAB$Y$QAB$c$QAC$c$QAD$c$QAE$cABQAK$kABQAM$kABQAC$IA-v8S$IAnQBmAPET--+g^Z$F$M$gADABUAD$DABQAD$DABQACwADABQACgAD$YAB$D^BwAD^C$D$EAC$D$IAC$D$MAC$D$QAC$D$UAC$D$UABwD+-xUACwCdADID8RP--6^DoA-7-C$JAG$kwHxE@o^OgD-v8V$oAnQAyA-ET--+g^6AM")
         var state = new SaveState(tiles)
 
-        // Gets the images for the game
-        function getImages() {
-            IMAGES
-        }
-
         // Updates the mode button name
         function setMode(newMode) {
             mode = newMode
@@ -631,6 +633,7 @@
 
         function loadSprites() {
             var items = Object.keys(IMAGES)
+            var HTML = ""
             for (var i = 0; i < items.length; i++) {
                 var item = items[i]
                 var data = IMAGES[item]
@@ -658,14 +661,18 @@
                             result.push(result[t])
                         }
                     }
+                    if (imageTypes.includes(item)) HTML += '<img onclick="selectType=' + item + '" src="' + result[result.length - 1].src + '">'
                 } else {
                     // It's a single image
                     result = new Image(data)
                     result.src = data
+                    if (imageTypes.includes(item)) HTML += '<img onclick="selectType=' + item + '" src="' + data + '">'
                 }
                 // Indirect eval to get constants (we assume that the object is safe)
                 SPRITES[(null, eval)(item)] = result
             }
+            console.warn(HTML)
+            document.getElementById("images").innerHTML = HTML
         }
 
         // Saving is a lot simpler than loading because we only need to consider the newest version:
@@ -1153,7 +1160,7 @@
             var rotate = rotatePoint(e.pageX, e.pageY, playerX, playerY, rotation)
             selectX = floor(rotate[0] / zoom - panX)
             selectY = floor(rotate[1] / zoom - panY)
-            if (e.which === 1 && mode !== PLAY && !["A", "BUTTON", "INPUT", "SELECT", "OPTION", "LABEL"].includes(e.target.tagName) && e.target.parentElement.tagName !== "BUTTON") {
+            if (e.which === 1 && mode !== PLAY && !["A", "BUTTON", "INPUT", "SELECT", "OPTION", "LABEL", "IMG"].includes(e.target.tagName) && e.target.parentElement.tagName !== "BUTTON") {
                 down = true
                 if (add([selectType, selectX, selectY])) {
                     state.save(tiles)
@@ -2110,7 +2117,7 @@
             // Draw the selection block
             if (mode !== PLAY) {
                 if (selectType === NONE || selectType === PLAYER) {
-                    ctx.fillStyle = "#f006"
+                    ctx.fillStyle = selectType === NONE ? "#f006" : "#2f0b"
                     roundRect(floor((panX + selectX) * scale), floor((panY + selectY) * scale), scale, scale, 5)
                 } else if (selectType === OFFBLOCK || selectType === ONBLOCK) {
                     ctx.globalAlpha = 0.3
@@ -2627,7 +2634,6 @@
         }
         onresize = resize
 
-        document.getElementById("images").innerHTML = getImages()
         resize()
         resetPan()
     </script>
