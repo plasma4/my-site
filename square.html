@@ -268,7 +268,7 @@
         }
 
         /**
-         * Returns a requested state from all saved state
+         * Returns a requested state from all saved states
          * @param {Number} id What index to request
          */
         SaveState.prototype.request = function (id = 0) {
@@ -301,13 +301,15 @@
         <small id="keys">
             Keyboard shortcuts to switch blocks (well, not really because they're the only way you change blocks)
             <br>
-            p=Spawn|h=Heart|m=Modifier|u=Gear (a modifier that is not one-time)|g=Glitch|r=Reset|s=Quick checkpoint (live edit mode)
+            p=Spawn|h=Heart|m=Modifier|u=Gear (a modifier that is not one-time)|g=Glitch|r=Reset|s=Quick checkpoint
+            (live edit mode)
             <br>
             b=Powerup|t=Tall Fire|f=Flag|c=Clear|0=Erase|1=Solid|2=Spring|3=Slime|4=Goal|6=Coin|7=Portal
             <br>
             j=Left Gate|k=Right Gate|v=Switch|y=Off Block|z=On Block|5=Fire|8=Up/Down|Enemy|9=Left/Right|Enemy
             <br>
         </small>
+        <div id="images"></div>
         <p>
             <span class="new3">Beta</span> <span class="new1">edition</span>
             <br>
@@ -389,6 +391,9 @@
             <br>
             Rotation: <input autocomplete="off" type="range" min="0" max="360" value="0"
                 oninput="settings[12] = this.value % 360">
+            <br>
+            Gravity: <input autocomplete="off" type="range" min="0" max="1000" value="500"
+                oninput="settings[13] = this.value * 0.002">
             <br>
             <select autocomplete="off" onchange="settings[2] = this.selectedIndex">
                 <option>None</option>
@@ -527,6 +532,7 @@
         const EDIT = 0
         const PRACTICE = 1
         const PLAY = 2
+        var types = [1001]
 
         // Load sprites dynamically with base64 data and automated animation
         const IMAGES = {
@@ -538,7 +544,7 @@
             TALL: [80, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAABZUlEQVRIS+2UMW5CMQyGnaUDEq0EEhMjd+jUpeICrB05AzMSzJyhY9deoGLp1I2J6Y1MlYoKSAwsj2cTO07yklalVRcywUv85f9txwbOXObMeLgAwM9BOYbSTE/fPrq9sr0qvsxRdIAhCOAK5UDJGxDQGhawfuzB/wLQRk5F3sLTO8DLllKRgvwNgBMI/etTIawKLrF+P6KA607BywJgVh0LAHU20oCFvV0p0AC+0MuB3K6DEwC28T2AhSQVRP5DBQGA2xw71Og/SQsKoCsgAO553KQKsILbZ4C3gYux5dSNRQoQIGtU/dIA3NCQwE4M4Nrj7bxqVHBCHYADMUgHJyACwH0cInRO3b7bOwHNRmCjyoUHiHofFVzdE2H3OQcPELxOmX+USO3fAohymLtE/gZAd6T3mESFsuApsN7xG8/JHwH0kI0fEzfVRKY6wOsNDZXsPHBFs2XFhN5tKHj90KHtuvF+BAwzJTDoABVAAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAABbUlEQVRIS72UsU4CQRCG5xpLSKSl5B2saIgv4BsYn4HaBGqfgVDZ+gKGxsrOyupKKxJIpKQ57h/uX2b3du/0RLZij51v/5n5dzL548oYv1lOisH9yu1/yv11QAjuDKDizgAqOS+geJQim4tCN8NRMfjKWy+oHSAEAMpsAiVvAOD6IZftYiRnB9hUWxUgjSYVJycGRdMUntcirzstRQryPwAWUG57x0ZUKmItdj3HOVRbgz9zkafyAwEVhGmwxTifBnxUt9MMpQpbBxrN64K7ncE3LyLvdy6NWCHTAARjJQCeAm48BQ0ArwZ2EwVQRVUDO1C0iNbz+FM7gBpQQZAGAayHAzjytPyVAkQ6cgKg5zAMe28VRFTUFVjThMEWEJhK24jnqers7VeTo+D9ym9nDFDzPhQQQIjxAz65FLC5OMBa2psHmIFah1QKxkyck50AdsjWHxNUYM3cVBd566tHWl8jjaZtRSrj78ZgnD8AzFdPML8OU6MAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAgCAYAAAAbifjMAAABqElEQVRIS6WWsUoDQRCG5xpLDaa1DAh5AftoZ2VtI+Ij2AkaBTsfQcRGWys7TWNlZ3UgXGklRIKlzXr/3M1mdm/2ktOtDjL7zT//zA7JqDzulFx2QRm+ux5/qQtkejty/YMJ310ImF1vut7Re6AOAFwGZGnZs/G+643vfLyoWBqQ8iYAdPFBgEnAdGPg+h9Fq0L40wgQFQBIljZQMgMA64cFfd0MyAJIIgY8DoduN8/DVrUAtFcLAUiQUhEMUmwal3D/SfT0zVZoiI6dD0bk+r8AYiDtrFaNqFXIg2sokJbBbb6cF0RX5cUIIGXoeC7BBLzV2ZUCy4dm65BdX04AzFH28mNADUkqEFMCwNYD0eve/BGWRpoeJOsHAEcgNUA/a5heuV7PPH7kDqCEGKC80IPlAZ58XH5pgFYhQaqcJgC9l+xaryrFViBDg1/bAFFHeA7wPDmZQABYGVX5fyahmRagMfsaEEOi1+lHGZ0wFXQGSP1SggHQExnsA1Zx8lzVbAEut3kacWRP/gmgl6y5SDnFud/qRC9rvFSs3Wiudd9WgZxVYdZfgF/zP23iwl1E3wAAAABJRU5ErkJggg==", REVERSE],
             SPRING: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAHBJREFUOI1jYBhowMjAwMAg0Wr+n0tHlGTN9/y3MDLiknRzc/ufl5cH5/v4+OBUi1Xzli1b/iOLofNJ0ky0Ifg04zKEiShnEQuI8SdBV+KTJMaLOA0hWjO6IW5ubv/xacabOJA14UpIFCdlkjVRHQAAVBdKCU6z8isAAAAASUVORK5CYII=",
             COIN: [60, 10, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAGNJREFUOI1jYBhowIgu8P8Q33+Cmuw+wfWhGECMZnRD4AagaDb4hFvnBT4UQ1gwFMA0IylEAXs+MTC4IOSYCNlCCGA3gAQw4gzYgxm9mNF4gQ+rQjhwQY0h6qVEUgxBzgsUAwC+SR+ENoGMUwAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAGpJREFUOI1jYBhowIgu8P8Q33+Cmuw+wfWhGECMZnRD4AagaDb4hFsn738GhsP8cENYMBTANF/gw27AHkYGBheEHBNWRbg0YwHYDSABjDgD9mBGL2Y0XuDDqhAOXFBjiHopkRRDkPMCxQAAIvgfk5qbXaAAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAHpJREFUOI1jYBhowIgu8P8Q33+Cmuw+wfUxkaqZwfYjijq4SSiaDT5h18yLZP5hfgZGu0+MLBiKYJov8GExgZ+BwfYjA8NhfrgIExZVODRDQT1qsGE3gAQw4gzYgxm9mNF4gQ+rQjhwQY0hlDghKiXCNEKTM8V5gWIAAJC3I94qdqu9AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAHtJREFUOI1jYBhowIgu8P8Q33+Cmuw+wfUxkaqZwfYjijq4SSiaDT5h18z7n4HhMD8Dg+1HBobD/AyMdp8YWTAUwTRf4MNiAkIzVi/AAVbNUFCPGmzYDSABjDgD9mBGL2Y0XuDDqhAOXFBjCCVOiEqJMI3Q5ExxXqAYAAA/WSXeR/9h+gAAAABJRU5ErkJggg=="],
-            GATETOP: [50, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAR0lEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+P3nyBCyPzCbaAGwuwyaG0wWjBhAbAgwMo4E4Ggag1AIAFRcPEcR5EfwAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhUlEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCiX9B/ED1/0zqc6vAagO5cFWfOkDt7v69BFscwINrZOWTp3r0oirCFE0yMJBdgMwivAcS4hrYuwOd3+oTBqAuICQEGBorTAQD4PB4Rn/hqrAAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAqklEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCiX9B/ED1/0zqc6ggasOfuNYbHV2+A1Xk7OzZt3bu/DtkbGAYY80k1nf30DKzIy8nhvziPEGUuePnlHcO2fQfI8wK2GCI6FpC9AtNEVBhgs1XVka/p9v5PKIEHU4c3FijyAjGaQWpGXUCFMAAAStw4ER0yViEAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAArklEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCiX9B/ED1/0zqc6mhvwMfvXxnW7d45lF3w5Ppdht23L4K9YCKmOeXMq+s5yFGJ1W+ajlxTru//luOqqv9fRlOZ/FhAtsnD0XHKjv37UWwHyeN1AXqqw2YI3nQAMgDmHWxJHqcLcCnGJk7QBYQMG3gDADzASxFy3xwnAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA0ElEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCsl99/FhYWhvmb1uFUh9eARL+g/yCDKDKAh5eXYfLSheS7gGIDyPKCkaRu2rnnl2eBwuDHr58My3dsBXsBJo4clWTHQkpAQNqcDRtm0T4WYGGg4cifdmP/x1lEp0SQQl9Lu/8ioiIY6cBITjnt3KO7YMMwvMAlyZD27TkDWJIqCYmsaARHGdCZ+gb6M8k2gFgvAACVmWARzqkXMAAAAABJRU5ErkJggg=="],
+            GATETOP: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA0ElEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCsl99/FhYWhvmb1uFUh9eARL+g/yCDKDKAh5eXYfLSheS7gGIDyPKCkaRu2rnnl2eBwuDHr58My3dsBXsBJo4clWTHQkpAQNqcDRtm0T4WYGGg4cifdmP/x1lEp0SQQl9Lu/8ioiIY6cBITjnt3KO7YMMwvMAlyZD27TkDWJIqCYmsaARHGdCZ+gb6M8k2gFgvAACVmWARzqkXMAAAAABJRU5ErkJggg==",
             GATEMAIN: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA6ElEQVQ4T2NkwAJ8fX3nqcuJqb59/N7m3e+PDKpKCkduPnp1e/PmzUnoyhmxGQASK8lOPnz73gMbIVZ+BmFZwSM9U+faYlOLYYCfl+OcTdv2p5TlpCS/fvRuDkiTqJxQSteUOXOJMgCmCGaAirk2w8fnz4kzAGY7yBCQAfyC0nPuXLwMdwGyPMwinGEAMuDm3ftzQGFAthf4JSXn3Dl5lTgD0J0HDwN9XYaP75+Cw4BkL4BiAVsgIhuENwyoEo0kpwPkhASKBTMbK+LTAXJKw5YOSE6JuKKRpEAE5UZ1ZUXikjK6F4iJBQCAc7YRQXcqxAAAAABJRU5ErkJggg==",
             SLIME: [300, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAxklEQVQ4T2NkAIKCWRf/g2hcYFPvXLCUX3EyipIJafqMjMiacSlE1rV/zgk41zHFggFsALogPtcQNEDRCp92Bob7xxgYPn+8CvcSigtAEnqe2igmgDTAAMxwBS0LuBhKGDy4BvHfpe0QG0CGDYwB+EMB4UJQtGJ4AZuT0Q1ECQMl9bz/sAQCCgN8BiDLgdIACDBSbABySoTFAq4wQE8DYBegp0RCCQmkCSMdkJKUYa4D5Rt4LIAMQE6ehKIRJA83AMShJDsDAFiSlP0Q9bB5AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAzElEQVQ4T2NkAIKCWRf/g2hcYFPvXLCUX3EyipIJafqMjMiacSlE1rV/zgk41zHFggFsALogPtfA1H7+eBXsIgwDFK3waWdguH+MgQGkGeYluAEwQT1PbRQTQBpgAGa4gpYFXAwlDB5cg/jv0naIDSDDBsYA/KGAcCE8EGEaQF7A5mR0A1HCQEk97z8sgRAyANlwUBoAAUZyDIClAbAByCkRFgu4wgA9DcANQE6JhBISSBNGOkBPnoRiASQPyjcoSRk5eZJkAEgxJdkZAGwSnf3qoD9dAAAAAElFTkSuQmCC"],
             SOLID: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAGFJREFUOI3Nk1EOwCAIQ4uH64l7P/bnHEvGRD9sogkoNbyI4ZZjTta3QnE3aVmxpK9jt4XXAQAtJkhOm/jfRfKV299CySAhnerRk6SURbhTB4hzIEaNnykDvDxMNgSlcb4APgtGs58LapcAAAAASUVORK5CYII=",
@@ -564,12 +570,12 @@
         grain12.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAYAAAB4MH11AAAAAXNSR0IArs4c6QAAAHdJREFUOE+tklEKwDAIQ9f7H3pDqEUlqWG4X81zSbOef9+7ZauT+4IJ2uUNU+C+c6CTBw7cfqg6iEPmKAGIc+gAxVmPVLhr6F4cMHH3jnWemFMHjAPjVSOIUcQWIdeJqVaTxTRyoGvWda5WMTpgsULWLaLWvlKvD3wWGwiID085AAAAAElFTkSuQmCC"
 
         // Yes, it uses a whole lot of variables!
-        var tiles = [], effect = NONE, settings = [0.12, 0.3, KEEP, 255, 255, 255, 0.04, 0, 10, 140, 20, 0, 0], showInfo = false, time = 0, modID = 0, gradient = false
+        var tiles = [], effect = NONE, settings = [0.12, 0.3, KEEP, 255, 255, 255, 0.04, 0, 10, 140, 20, 0, 0, 1], showInfo = false, time = 0, modID = 0, gradient = false
         var spawnX = 1.25, spawnY = 1.25, liveX = spawnX, liveY = spawnY, playerX = -1, playerY = -1, doubleJump = false, doubleJumped = 0
         var mainX = spawnX, mainY = spawnY, velocity = 0, resetVelocity = false, immunity = 0, lives = Infinity, normalLives = Infinity, flying = false, clip = false
         var nextDraw = -1, zoom = 0, panX = 0, panY = 0, centerX = 0, centerY = 0, speed = 0.12, jump = 0.3, enemySpeed = 0.04, mode = PRACTICE
         var scale = 0, half = 0, w = 0, h = 0, moveL = 0, moveR = 0, moveU = 0, moveD = 0, collide = NONE
-        var note = 0, selectX = -1, selectY = -1, realFrame = 0, frame = 0, glitchFrame = floor(10 * random()), portal = true, rotation = 0, opacity = 1
+        var note = 0, selectX = -1, selectY = -1, realFrame = 0, frame = 0, glitchFrame = floor(10 * random()), portal = true, rotation = 0, gravity = 1, opacity = 1
 
         // Determine if the endian is little or not for exporting the map
         var u32 = new Uint32Array([0x01234567])
@@ -577,8 +583,13 @@
         const littleEndian = u8[0] === 0x67 && u8[1] === 0x45 && u8[2] === 0x23
 
         // Simple default level
-        loadMap("0.0.5|0AQAD^AQAB$U$gAC$Y$gAD$Y$QAE$UABgAC$QABgAC$UABgAD$UABgAD$QABgAD$M$QAF$U$wAH$M$wAI$M$gAJ$k$gAL$k$gAN$g$gAN$E$QAO$E$QAQ$E$QAS$M$QAW$gABQAU$QABgAW$U$QAW$k$QAW$o$QAW$s$QAY$g$QAY$k$QAY$o$QAY$sABQAY$cABQAZ$cABQAa$cABQAa$gABQAZ$gABQAZ$kABQAZ$oABQAZ$sABQAa$sABQAa$oABQAa$kAB$X$s$wAW$w$wAX$w$wAY$w$wAZ$w$wAa$w$wAN$U$wAO$U$QAP$UABQAP$I$gAQ$U$QAE$Y$wAF$Y$w^Y$QAB$Y$QAB$c$QAC$c$QAD$c$QAE$cABQAK$kABQAM$kABQAC$IA-v8S$IAfQADAewT--8&^$BQAD$I$wAV$w$wAU$w$wAU$s$wAU$o$wAG$Q$w^c$w^g$wAB$g$wAC$g$wAD$g$wAE$g$wAF$g$wAF$cA-v8H$k$QAsAfET--8&^$-v8G$k$QAsAfET--8&^$-v8I$k$QAsAfET--8&^$-v8V$sA+wDoA-ET--8&^$")
+        loadMap("0.0.6.2|1AQAE^AQAB$U$gAC$Y$gAD$Y$QAE$UABgAC$QABgAC$UABgAD$UABgAD$QABgAD$M$QAF$U$wAH$M$wAI$M$gAJ$k$gAL$k$gAN$g$gAN$E$QAO$E$QAQ$E$QAS$M$QAW$gABQAU$QABgAW$U$QAW$k$QAW$o$QAW$s$QAY$g$QAY$k$QAY$o$QAY$sABQAY$cABQAZ$cABQAa$cABQAa$gABQAZ$gABQAZ$kABQAZ$oABQAZ$sABQAa$sABQAa$oABQAa$kAB$X$s$wAW$w$wAX$w$wAY$w$wAZ$w$wAa$w$wAN$U$wAO$U$QAP$UABQAP$I$gAQ$U$QAE$Y$wAF$Y$w^Y$QAB$Y$QAB$c$QAC$c$QAD$c$QAE$cABQAK$kABQAM$kABQAC$IA-v8S$IAnQBmAPET--+g^Z$F$M$gADABUAD$DABQAD$DABQACwADABQACgAD$YAB$D^BwAD^C$D$EAC$D$IAC$D$MAC$D$QAC$D$UAC$D$UABwD+-xUACwCdADID8RP--6^DoA-7-C$JAG$kwHxE@o^OgD-v8V$oAnQAyA-ET--+g^6AM")
         var state = new SaveState(tiles)
+
+        // Gets the images for the game
+        function getImages() {
+            IMAGES
+        }
 
         // Updates the mode button name
         function setMode(newMode) {
@@ -677,6 +688,7 @@
                     } else {
                         data.push(tile[16])
                     }
+                    data.push(tile[17] * 500)
                 }
             }
             var reader = new FileReader()
@@ -693,7 +705,7 @@
                 }
                 result = t + result.slice(result.indexOf(",") + 1, len - t).replace(/AAAAAAA/g, "&").replace(/AAAA/g, "^").replace(/AAA/g, "%").replace(/AA/g, "$").replace(/\/\/\/\//g, ":").replace(/\/\/\//g, "@").replace(/\//g, "-")
                 // Copy the result
-                navigator.clipboard.writeText("0.0.6.1|" + result).then(() => {
+                navigator.clipboard.writeText("0.0.6.2|" + result).then(() => {
                     message("<b>Copied!</b>", 1500)
                 })
             }
@@ -756,10 +768,10 @@
                 }
             }
             var base64 = data.slice(1).replace(/\$/g, "AA").replace(/%/g, "AAA").replace(/\^/g, "AAAA").replace(/&/g, "AAAAAAA").replace(/@/g, "\/\/\/").replace(/:/g, "\/\/\/\/").replace(/-/g, "/")
-            var c = data.charCodeAt(0)
-            if (c === 49) {
+            var char = data.charCodeAt(0)
+            if (char === 49) {
                 base64 += "="
-            } else if (c === 50) {
+            } else if (char === 50) {
                 base64 += "=="
             }
             var raw = atob(base64)
@@ -787,7 +799,7 @@
                         item.push(array[i++])
                     } else if (type === MOD) {
                         // No effects/background in this version:
-                        item.push(0, array[i++] * 0.001, array[i++] * 0.001, 0, 255, 255, 255, 0.04)
+                        item.push(0, array[i++] * 0.001, array[i++] * 0.001, 0, 255, 255, 255, 0.04, 1)
                     }
                     result.push(item)
                 }
@@ -803,7 +815,7 @@
                         item.push(array[i++])
                     } else if (type === MOD) {
                         // No background in this version
-                        item.push(0, array[i++] * 0.001, array[i++] * 0.001, array[i++], 255, 255, 255, 0.04)
+                        item.push(0, array[i++] * 0.001, array[i++] * 0.001, array[i++], 255, 255, 255, 0.04, 1)
                     }
                     result.push(item)
                 }
@@ -825,7 +837,7 @@
                         if (data2 < 0) {
                             data2 = 65536 + data2
                         }
-                        item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625), 0.04)
+                        item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625), 0.04, 1)
                     }
                     result.push(item)
                 }
@@ -846,7 +858,7 @@
                         if (data2 < 0) {
                             data2 = 65536 + data2
                         }
-                        item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625), array[i++] * 0.00025)
+                        item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625), array[i++] * 0.00025, 1)
                     }
                     result.push(item)
                 }
@@ -887,7 +899,7 @@
                             if (data < 0) {
                                 data = 65536 + data
                             }
-                            item.push(data % 256, floor(data * 0.00390625), array[i++], array[i++], array[i++])
+                            item.push(data % 256, floor(data * 0.00390625), array[i++], array[i++], array[i++], 1)
                         }
                         result.push(item)
                     }
@@ -913,14 +925,43 @@
                             if (useGradient) {
                                 // Only add additional elements if gradients are being used
                                 data = under16(array[i++])
-                                item.push(data % 256, floor(data * 0.00390625), array[i++], array[i++], array[i++])
+                                item.push(data % 256, floor(data * 0.00390625), array[i++], array[i++], array[i++], 1)
                             } else {
-                                item.push(0, 0, 0, 0, array[i++])
+                                item.push(0, 0, 0, 0, array[i++], 1)
                             }
                         }
                         result.push(item)
                     }
-                } else {
+                } else if (version === "0.0.6.1") {
+                    for (i = 3; i < len;) {
+                        var item = [array[i++], array[i++], array[i++]]
+                        var type = item[0]
+                        if (type === COIN || type === BATTERY || type === HEART) {
+                            item.push(0)
+                        } else if (type === UPDOWN || type === LEFTRIGHT) {
+                            item.push(0, 0)
+                        } else if (type === PORTAL) {
+                            item.push(array[i++])
+                        } else if (type === MOD || type === GEAR) {
+                            item.push(0, array[i++] * 0.001, array[i++] * 0.001)
+                            var data = array[i++]
+                            var data2 = under16(array[i++])
+                            item.push(data % 20, floor(data * 0.05), data2 % 256, floor(data2 * 0.00390625))
+                            data = array[i++]
+                            var useGradient = data > 4000 ? 1 : 0
+                            // The toFixed is so that
+                            item.push((data * 0.00025).toFixed(2) % 1, useGradient)
+                            if (useGradient) {
+                                // Only add additional elements if gradients are being used
+                                data = under16(array[i++])
+                                item.push(data % 256, floor(data * 0.00390625), array[i++], array[i++], array[i++], 1)
+                            } else {
+                                item.push(0, 0, 0, 0, array[i++], 1)
+                            }
+                        }
+                        result.push(item)
+                    }
+                } else if (version === "0.0.6.2") {
                     for (i = 3; i < len;) {
                         var item = [array[i++], array[i++], array[i++]]
                         var type = item[0]
@@ -946,6 +987,7 @@
                             } else {
                                 item.push(0, 0, 0, 0, array[i++])
                             }
+                            item.push(array[i++] * 0.002)
                         }
                         result.push(item)
                     }
@@ -1017,6 +1059,7 @@
         function reset(force) {
             immunity = 0
             frame = 0
+            velocity = 0
             resetVelocity = true
             if (force) {
                 lives = normalLives
@@ -1250,7 +1293,7 @@
                 t.push(b, 0)
             } else if (a === MOD || a === GEAR) {
                 t.push(0)
-                t.push(...settings)
+                t.push.apply(t, settings)
             }
             // If the type is tall, also remove blocks above it
             if (selectType === TALL) {
@@ -1750,7 +1793,6 @@
             var force = false
             var mul = 1
             var directions = []
-            var directionsOn = [], directionsOff = [], maybeOn = false, maybeOff = false
             var switchable = [], switchableX = [], switchableY = []
             var noPortal = true
             modID = 0
@@ -1762,8 +1804,22 @@
             var hasCoins = false
             var gotCoin = false
 
-            // Update and render everything at the same time
+            hasSwitch = false
+            // Check for switches
             for (var i = 0; i < tiles.length; i++) {
+                var tile = tiles[i]
+                var type = tile[0]
+                if (type === SWITCH) {
+                    var x = tile[1], y = tile[2]
+                    console.warn(x, y, mainX, mainY)
+                    if (rect(mainX, mainY, 0.5, 0.5, x, y, 1, 1) !== NONE) {
+                        hasSwitch = !hasSwitch
+                    }
+                }
+            }
+
+            // Update and render everything at the same time
+            for (i = 0; i < tiles.length; i++) {
                 var tile = tiles[i]
                 var type = tile[0]
                 var x = tile[1], y = tile[2]
@@ -1855,14 +1911,19 @@
                 if (isGate) {
                     // Calculate where the gate ends
                     var lim = Infinity
-                    for (var m = 0; m < tiles.length; m++) {
+                    for (var m = 0; m < tiles.length;) {
                         var tile = tiles[m]
                         var tx = tile[1]
                         var ty = tile[2]
                         if (tx === x && ty > y) {
                             // Update the gate end limit
+                            if (tile[0] === GATEL || tile[0] === GATER) {
+                                tiles.splice(m, 1)
+                                continue
+                            }
                             lim = Math.min(lim, ty)
                         }
+                        m++
                     }
                 }
                 // Some collisions are a bit different, as you can see.
@@ -1920,7 +1981,7 @@
                         if (tile[3] === 0) {
                             tile[3] = 1
                             if (lives !== Infinity) {
-                                // We don't have to worry about the special "1 life" case as you'll have at least two lives after this
+                                // We don't have to worry about the "1 life" case as you'll have at least two lives after this
                                 lives++
                                 currentLives.textContent = lives + " lives"
                             }
@@ -1953,7 +2014,7 @@
                     } else if (type === FIRE || type === TALL) {
                         die()
                     } else if (type === UPDOWN || type === LEFTRIGHT) {
-                        if (d || c === UP) {
+                        if (d) {
                             if (!resetVelocity) {
                                 // The creature is dead now
                                 velocity = jump * 0.8
@@ -1981,6 +2042,7 @@
                                 canvas.style.backgroundImage = null
                             }
                             rotation = tile[16]
+                            gravity = tile[17]
                         }
                         if (type === GEAR) {
                             continue
@@ -1991,25 +2053,26 @@
                     }
                     if (type !== FLAG && type !== PORTAL && type !== MOD && !clip) {
                         if (type === ONBLOCK) {
-                            // Maybe valid directions: we check switches at the end
-                            directionsOn.push(c)
-                            maybeOn = true
+                            if (hasSwitch) {
+                                directions.push(c)
+                                collide = type
+                                velocity = 0
+                            }
                         } else if (type === OFFBLOCK) {
-                            directionsOff.push(c)
-                            maybeOff = true
+                            if (!hasSwitch) {
+                                directions.push(c)
+                                collide = type
+                                velocity = 0
+                            }
                         } else {
                             directions.push(c)
-                            if (c === UP) {
-                                if (type === SPRING) {
-                                    hasSpring = true
-                                } else if (type === SLIME) {
-                                    mul = 0.6
-                                }
-                                collide = type
-                                if (!resetVelocity) {
-                                    velocity = 0
-                                }
+                            if (type === SPRING) {
+                                hasSpring = true
+                            } else if (type === SLIME) {
+                                mul = 0.6
                             }
+                            collide = type
+                            velocity = 0
                         }
                     }
                 } else if (type === SWITCH) {
@@ -2028,21 +2091,6 @@
                 play(coinSound)
             }
 
-            if (hasSwitch) {
-                // The switch is actually somewhat simple: if there's an odd number of switches (which is considered by the boolean flipping), then add the collision from the switchable blocks.
-                if (maybeOn) {
-                    velocity = 0
-                    collide = OFFBLOCK
-                }
-                directions.push(...directionsOn)
-
-            } else {
-                if (maybeOff) {
-                    velocity = 0
-                    collide = ONBLOCK
-                }
-                directions.push(...directionsOff)
-            }
             var t = hasSwitch ? OFFBLOCK : ONBLOCK
             renderSwitches(switchable, switchableX, switchableY, t)
 
@@ -2153,12 +2201,12 @@
                 }
             }
 
-            // The down key allows you to go downward a bit faster, which is a small detail that helps you if you like slamming into the ground.
+            // The down key allows you to go downward a bit faster, which is a small detail that helps you if you wish to slam into the ground.
             if (moveD > moveU && velocity < -0.04) {
-                mainY += 0.2
+                mainY += 0.2 * gravity
             } else if (moveU > moveD && flying && collide !== DOWN) {
                 // Wheeeee!
-                mainY -= 0.2
+                mainY -= 0.2 * gravity
             }
 
             // This variable tries to prevent jump exploits that make the player jump after dying
@@ -2180,7 +2228,7 @@
                 }
 
                 if ((force || collide === NONE) && !flying) {
-                    mainY -= velocity
+                    mainY -= velocity < 0 ? velocity * gravity : velocity
                 }
             }
             // First remove the rotation before we do anything else
@@ -2446,12 +2494,15 @@
                     return false
                 } else if (e.ctrlKey || e.metaKey && code === 90) {
                     tiles = state.forward()
+                    return false
                 }
             } else if (e.ctrlKey || e.metaKey) {
                 if (code === 90) {
                     tiles = state.back()
+                    return false
                 } else if (code === 89) {
                     tiles = state.forward()
+                    return false
                 }
             } else if (!e.altKey) {
                 // Check on the audio and autoplay it
@@ -2575,6 +2626,7 @@
         }
         onresize = resize
 
+        document.getElementById("images").innerHTML = getImages()
         resize()
         resetPan()
     </script>
