@@ -2022,7 +2022,7 @@
                     } else if (type === FIRE || type === TALL) {
                         die()
                     } else if (type === UPDOWN || type === LEFTRIGHT) {
-                        if (d) {
+                        if (d || c === UP) {
                             if (!resetVelocity) {
                                 // The creature is dead now
                                 velocity = jump * 0.8
@@ -2074,13 +2074,15 @@
                             }
                         } else {
                             directions.push(c)
-                            if (type === SPRING) {
-                                hasSpring = true
-                            } else if (type === SLIME) {
-                                mul = 0.6
+                            if (c === UP) {
+                                if (type === SPRING) {
+                                    hasSpring = true
+                                } else if (type === SLIME) {
+                                    mul = 0.6
+                                }
+                                collide = type
+                                velocity = 0
                             }
-                            collide = type
-                            velocity = 0
                         }
                     }
                 } else if (type === SWITCH) {
