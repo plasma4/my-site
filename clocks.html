@@ -11691,7 +11691,7 @@
                             imagine achieving something that resets upon shard resetting
                         </span>
                         <br><br>
-                        <b class="valuable">Achievements (10):</b>
+                        <b class="valuable">Achievements (20):</b>
 
                         <span id="ach">
                             <div data-unlock="fc>=2.5e7" class="orange">
@@ -16613,7 +16613,8 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
                 } else {
                     updateId("cps", "some warpy feelings")
                     var franciumDecay = Hyper(hasResearch("halflife") ? hasResearch("halflife2") ? "0.9999" : "0.99975" : "0.99947")
-                    for (var i = 0; i < speed; i++) {
+                    var maxLoops = Math.min(speed, 1000) // Prevent too much lag
+                    for (var i = 0; i < maxLoops; i++) {
                         rawAdd("francium", franciumAmount)
                         mul("francium", franciumDecay)
                     }
