@@ -315,8 +315,8 @@
             <br>
             j=Left Gate|k=Right Gate|v=Switch|y=Off Block|z=On Block|5=Fire|8=Up/Down|Enemy|9=Left/Right|Enemy
             <br>
+            <span id="images"></span>
         </small>
-        <span id="images"></span>
         <p>
             <span class="new3">Beta</span> <span class="new1">edition</span>
             <br>
@@ -377,55 +377,56 @@
             Next Song
             <strong> (S)</strong>
         </button>
-        <br>
-        <br>
-        Starting lives (<span id="lives">Infinite</span>):
-        <br>
-        <input autocomplete="off" type="range" min="1" max="10" value="10" oninput="setLives(this.value)">
-        <u>Label Data:</u>
-        <p>
-            <span class="new2">Modifiers are weird!</span>
-            <i>Edit modifier information:</i>
-            Speed:
-            <input autocomplete="off" type="range" min="1" max="1000" value="125"
-                oninput="settings[0] = this.value * 0.001">
-            <br>Jump:
-            <input autocomplete="off" type="range" min="1" max="1000" value="300"
-                oninput="settings[1] = this.value * 0.001">
-            <br>Enemy Speed:
-            <input autocomplete="off" type="range" min="1" max="1000" value="160"
-                oninput="settings[6] = this.value * 0.00025">
+        <br><br>
+        <span id="hidePart">
+            Starting lives (<span id="lives">Infinite</span>):
+            <input autocomplete="off" type="range" min="1" max="10" value="10" oninput="setLives(this.value)">
             <br>
-            Rotation: <input autocomplete="off" type="range" min="0" max="360" value="0"
-                oninput="settings[12] = this.value % 360">
-            <br>
-            Gravity: <input autocomplete="off" type="range" min="0" max="1000" value="500"
-                oninput="settings[13] = this.value * 0.002">
-            <br>
-            <select autocomplete="off" onchange="settings[2] = this.selectedIndex">
-                <option>None</option>
-                <option>Darkness</option>
-                <option>Flash</option>
-                <option>Grainy</option>
-                <option>Glitchy</option>
-                <option selected>No changes</option>
-                <option>Intense</option>
-            </select>
-            <label>
-                <input type="checkbox" onchange="settings[7] = this.checked ? 1 : 0;">
-                2-color background
-            </label>
-            <br>
-            Backgrounds:
-            <br>
-            Background: <input autocomplete="off" type="color" value="#ffffff" oninput="setColor(this.value)">
-            <br>
-            Background 2 (enable 2-color background to use a gradient): <input autocomplete="off" type="color"
-                value="#0a8c15" oninput="setColor(this.value, 5)">
-            <br>
-            Gradient rotation (enable 2-color backgrounds): <input autocomplete="off" type="range" min="0" max="360"
-                value="0" oninput="settings[11] = this.value % 360">
-        </p>
+            <u>Label Data:</u>
+            <p>
+                <span class="new2">Modifiers are weird!</span>
+                <i>Edit modifier information:</i>
+                Speed:
+                <input autocomplete="off" type="range" min="1" max="1000" value="125"
+                    oninput="settings[0] = this.value * 0.001">
+                <br>Jump:
+                <input autocomplete="off" type="range" min="1" max="1000" value="300"
+                    oninput="settings[1] = this.value * 0.001">
+                <br>Enemy Speed:
+                <input autocomplete="off" type="range" min="1" max="1000" value="160"
+                    oninput="settings[6] = this.value * 0.00025">
+                <br>
+                Rotation: <input autocomplete="off" type="range" min="0" max="360" value="0"
+                    oninput="settings[12] = this.value % 360">
+                <br>
+                Gravity: <input autocomplete="off" type="range" min="0" max="1000" value="500"
+                    oninput="settings[13] = this.value * 0.002">
+                <br>
+                <select autocomplete="off" onchange="settings[2] = this.selectedIndex">
+                    <option>None</option>
+                    <option>Darkness</option>
+                    <option>Flash</option>
+                    <option>Grainy</option>
+                    <option>Glitchy</option>
+                    <option selected>No changes</option>
+                    <option>Intense</option>
+                </select>
+                <label>
+                    <input type="checkbox" onchange="settings[7] = this.checked ? 1 : 0;">
+                    2-color background
+                </label>
+                <br>
+                Backgrounds:
+                <br>
+                Background: <input autocomplete="off" type="color" value="#ffffff" oninput="setColor(this.value)">
+                <br>
+                Background 2 (enable 2-color background to use a gradient): <input autocomplete="off" type="color"
+                    value="#0a8c15" oninput="setColor(this.value, 5)">
+                <br>
+                Gradient rotation (enable 2-color backgrounds): <input autocomplete="off" type="range" min="0" max="360"
+                    value="0" oninput="settings[11] = this.value % 360">
+            </p>
+        </span>
     </span>
     <div class="alertBox" tabindex="9">
         Welcome to the game! Use the arrow keys or WASD to move around.
@@ -600,9 +601,11 @@
             if (mode === 2) {
                 document.getElementById("editButtons").style.display = "none"
                 document.getElementById("keys").style.display = "none"
+                document.getElementById("hidePart").style.display = "none"
             } else {
                 document.getElementById("editButtons").removeAttribute("style")
                 document.getElementById("keys").removeAttribute("style")
+                document.getElementById("hidePart").removeAttribute("style")
             }
             liveX = spawnX
             liveY = spawnY
