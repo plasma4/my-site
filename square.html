@@ -674,7 +674,6 @@
                 // Indirect eval to get constants (we assume that the object is safe)
                 SPRITES[(null, eval)(item)] = result
             }
-            console.warn(HTML)
             document.getElementById("images").innerHTML = HTML
         }
 
@@ -1822,7 +1821,6 @@
                 var type = tile[0]
                 if (type === SWITCH) {
                     var x = tile[1], y = tile[2]
-                    console.warn(x, y, mainX, mainY)
                     if (rect(mainX, mainY, 0.5, 0.5, x, y, 1, 1) !== NONE) {
                         hasSwitch = !hasSwitch
                     }
@@ -2001,7 +1999,6 @@
                     } else if (type === SWITCH) {
                         ctx.fillStyle = "#22ab0f"
                         circle(bx, by, 0.35 * scale)
-                        hasSwitch = !hasSwitch
                         continue
                     } else if (type === PORTAL) {
                         // Find the connected portal
