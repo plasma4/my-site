@@ -2085,7 +2085,7 @@
 
                         return timeout
                     } catch (e) {
-                        alert("An issue occured while the game was running:\n-> " + e.message + "\n----------\nWe're sorry for this issue.\nDev info: \n" + e.stack)
+                        alert("An issue occurred while the game was running:\n-> " + e.message + "\n----------\nWe're sorry for this issue.\nDev info: \n" + e.stack)
                         console.error(e)
                         Garden.draw = function () { }
                     }
@@ -2428,7 +2428,7 @@
 
                 Garden.loaded = true
             } catch (e) {
-                alert("An issue occured while loading: \n-> " + e.message + "\n----------\nWe're sorry for this issue.\nDev info: \n" + e.stack)
+                alert("An issue occurred while loading: \n-> " + e.message + "\n----------\nWe're sorry for this issue.\nDev info: \n" + e.stack)
                 console.error(e)
             }
         }

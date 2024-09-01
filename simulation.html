@@ -182,7 +182,7 @@
         var draw
         var errors = []
         onerror = function (e, t, a, b, o) {
-            document.body.innerHTML = "<i style='user-select:all;overflow:scroll;font-size:21px'>Sorry, but an error occured on our end. Try contacting the developer for more details.<br>Technical information:<br>" + e + " at " + a + "<br>Stack:<br>----------<br>" + o.stack.replace(/\n/g, "\r\n") + "</i><br><br><b style='font-weight:600'>You can <u onclick='location.reload()'>reload</u> this page. If this problem persists, try clearing your browser data..</b>"
+            document.body.innerHTML = "<i style='user-select:all;overflow:scroll;font-size:21px'>Sorry, but an error occurred on our end. Try contacting the developer for more details.<br>Technical information:<br>" + e + " at " + a + "<br>Stack:<br>----------<br>" + o.stack.replace(/\n/g, "\r\n") + "</i><br><br><b style='font-weight:600'>You can <u onclick='location.reload()'>reload</u> this page. If this problem persists, try clearing your browser data..</b>"
             document.body.style = "white-space:pre;font-size:22px"
             draw = function () { }
             onerror = null
@@ -332,7 +332,7 @@
                 // The float data is compacted in non-standard Base64:
                 this.to64(new Float64Array(data))
             } catch (e) {
-                notify("Aaaack! An error occured while attempting to save the file. This is likely an issue on our side.\n----------\n" + e.stack)
+                notify("Aaaack! An error occurred while attempting to save the file. This is likely an issue on our side.\n----------\n" + e.stack)
             }
         }
 
