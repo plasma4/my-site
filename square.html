@@ -248,7 +248,6 @@
          * @param {Number[][]} data The new state to save
          */
         SaveState.prototype.save = function (data = []) {
-            // this.h = this.h.slice(0, this.i++ + 1)
             if (!(data instanceof Array)) {
                 throw TypeError("The data is not an array")
             }
@@ -802,8 +801,10 @@
                     var type = item[0]
                     if (type === COIN) {
                         item.push(0)
-                    } else if (type === UPDOWN || type === LEFTRIGHT) {
-                        item.push(0, 0)
+                    } else if (type === UPDOWN) {
+                        item.push(item[2], 0)
+                    } else if (type === LEFTRIGHT) {
+                        item.push(item[1], 0)
                     } else if (type === PORTAL) {
                         item.push(array[i++])
                     } else if (type === MOD) {
@@ -818,8 +819,10 @@
                     var type = item[0]
                     if (type === COIN) {
                         item.push(0)
-                    } else if (type === UPDOWN || type === LEFTRIGHT) {
-                        item.push(0, 0)
+                    } else if (type === UPDOWN) {
+                        item.push(item[2], 0)
+                    } else if (type === LEFTRIGHT) {
+                        item.push(item[1], 0)
                     } else if (type === PORTAL) {
                         item.push(array[i++])
                     } else if (type === MOD) {
@@ -834,8 +837,10 @@
                     var type = item[0]
                     if (type === COIN) {
                         item.push(0)
-                    } else if (type === UPDOWN || type === LEFTRIGHT) {
-                        item.push(0, 0)
+                    } else if (type === UPDOWN) {
+                        item.push(item[2], 0)
+                    } else if (type === LEFTRIGHT) {
+                        item.push(item[1], 0)
                     } else if (type === PORTAL) {
                         item.push(array[i++])
                     } else if (type === MOD) {
@@ -856,8 +861,10 @@
                     var type = item[0]
                     if (type === COIN || type === BATTERY || type === HEART) {
                         item.push(0)
-                    } else if (type === UPDOWN || type === LEFTRIGHT) {
-                        item.push(0, 0)
+                    } else if (type === UPDOWN) {
+                        item.push(item[2], 0)
+                    } else if (type === LEFTRIGHT) {
+                        item.push(item[1], 0)
                     } else if (type === PORTAL) {
                         item.push(array[i++])
                     } else if (type === MOD) {
@@ -1084,10 +1091,10 @@
                     if (type === MOD || type === GEAR) {
                         tile[3] = 0
                     } else if (type === UPDOWN) {
-                        // Reset enemy coordinates (instead of using tile[3] to store the bias, we do this so when calculating collisions, we don't have to do extra math)
-                        tile[2] = tile[3]
+                        // Reset enemy coordinates (instead of using tile[3] to store the bias, we do this so when calculating collisions, so we don't have to do extra math)
+                        tile[3] = tile[2]
                     } else if (type === LEFTRIGHT) {
-                        tile[1] = tile[3]
+                        tile[3] = tile[2]
                     } else if (type !== PORTAL) {
                         // Fill all tiles with zeros after the y-coordinate for the block
                         tile.fill(0, 3)
@@ -1850,6 +1857,7 @@
                         continue
                     }
                     // Precompute enemy coordinates
+                    y = tile[3]
                     var tx = x + 0.1
                     var ty = y + 0.2
                     // math is hard
@@ -1874,12 +1882,13 @@
                     var bias = up ? -enemySpeed : enemySpeed
                     y += bias
                     by += scale * bias
-                    tile[2] = y
+                    tile[3] = y
                 } else if (type === LEFTRIGHT) {
                     var left = tile[4]
                     if (tile[5]) {
                         continue
                     }
+                    x = tile[3]
                     var tx = x + 0.1
                     var ty = y + 0.2
                     for (var m = 0; m < tiles.length; m++) {
@@ -1901,7 +1910,7 @@
                     var bias = left ? -enemySpeed : enemySpeed
                     x += bias
                     bx += scale * bias
-                    tile[1] = x
+                    tile[3] = x
                 } else if (type === COIN) {
                     if (tile[3]) {
                         // Tell the game that there actually are coins!
@@ -1972,7 +1981,7 @@
                         render(type, bx, by, [x, y, lim, 1])
                     }
                 } else {
-                    render(type, bx, by, (type === UPDOWN || type === LEFTRIGHT) ? i : tile[3])
+                    render(type, (type === LEFTRIGHT ? (panX + tile[3]) * scale : bx), (type === UPDOWN ? (panY + tile[3]) * scale : by), (type === UPDOWN || type === LEFTRIGHT) ? i : tile[3])
                 }
                 if (c !== NONE) {
                     if (type === COIN) {
