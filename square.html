@@ -97,8 +97,24 @@
         }
 
         button {
+            transition: background-color 0.2s;
+            background-color: #f49a39;
+            border: solid #333 2px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #e8d507;
+        }
+
+        button:active {
+            background-color: #91d007;
+        }
+
+        #lives {
+            accent-color: #119cbf;
         }
 
         u {
@@ -305,7 +321,7 @@
         <div></div>
         You have <span id="currentLives">&infin; lives</span>
         <small id="keys">
-            Keyboard shortcuts to switch blocks (well, not really because they're the only way you change blocks)
+            Keys used to switch blocks:
             <br>
             p=Spawn|h=Heart|m=Modifier|u=Gear (a modifier that is not one-time)|g=Glitch|r=Reset|s=Quick checkpoint
             (live edit mode)
@@ -386,7 +402,8 @@
         <br><br>
         <span id="hidePart">
             Starting lives (<span id="lives">Infinite</span>):
-            <input autocomplete="off" type="range" min="1" max="10" value="10" oninput="setLives(this.value)">
+            <input autocomplete="off" type="range" min="1" max="10" value="10" id="lives"
+                oninput="setLives(this.value)">
             <br>
             <u>Label Data:</u>
             <p>
@@ -598,8 +615,8 @@
         var u8 = new Uint8Array(u32.buffer)
         const littleEndian = u8[0] === 0x67 && u8[1] === 0x45 && u8[2] === 0x23
 
-        // Simple default level
-        loadMap("0.0.7|2AQAE^AQAK$EABQAC$IABgAC$MABgAK$QABQAG$IAB$G$IABQAG$MABQAG$MAB$G$M$wAK$UABQAD$c$wAD$g$wAC$kACQAC$sACQAC$0AC$C$0$QAB$4$QABAB%QABABI$wABABYAC$FABQAB$GABYABQABABYACQABABYACgABABYACwABABgAC$BABgACQABABgACgABABgACwAFABgABwAFABkABwAFABoABwAFABoAC$FABkAC$FABkACQAFABkACgAFABkACwAFABoACwAFABoACgAFABoACQAEABcACwADABYAD$DABcAD$DABgAD$DABkAD$DABoAD$D$0ABQAD$4ABQAB$8ABQAF$8$gACAB$BQAK$QABgAD$UABgAD^BgAK$EABgAK$EABwAK$IABwAK$MABwAK$QABwAF$oACQAF$wACQAF$I$gD+-xI$gCdAGYA8RP--6^Bk$U$wAC$MAFQAM$MAF$M$MAF$L$MAF$K$MABgAE$M^H$M^I$M$QAI$M$gAI$M$wAI$MAB$I$MABQAI$MABQAHAP7-FQALAJ0AMgPxE@o^OgD-v8I$kAYACTAfET--+g^6AP+-xUACgCdADID8RP--6^DoAw")
+        // Load the simple default level
+        loadMap("0.0.7|2AQAE&K$EABQAC$IABgAC$MABgAK$QABQAG$IAB$G$IABQAG$MABQAG$MAB$G$M$wAK$UABQAD$c$wAD$g$wAC$kACQAC$sACQAC$0AC$C$0$QAB$4$QABAB%QABABI$wABABYAC$FABQAB$GABYABQABABYACQABABYACgABABYACwABABgAC$BABgACQABABgACgABABgACwAFABgABwAFABkABwAFABoABwAFABoAC$FABkAC$FABkACQAFABkACgAFABkACwAFABoACwAFABoACgAFABoACQAEABcACwADABYAD$DABcAD$DABgAD$DABkAD$DABoAD$D$0ABQAD$4ABQAB$8ABQAF$8$gACAB$BQAK$QABgAD$UABgAD^BgAK$EABgAK$EABwAK$IABwAK$MABwAK$QABwAF$oACQAF$wACQAF$I$gD+-xI$gCdAGYA8RP--6^Bk$U$wAC$MAFQAM$MAF$M$MAF$L$MAF$K$MABgAE$M^H$M^I$M$QAI$M$gAI$M$wAI$MAB$I$MABQAI$MABQAHAP7-FQALAJ0AMgPxE@o^OgD-v8I$kAYACTAfET--+g^6AP+-xUACgCdADID8RP--6^DoAw")
         var state = new SaveState(tiles)
 
         // Updates the mode button name
@@ -893,10 +910,14 @@
                 if (lives === 0) {
                     lives = Infinity
                 }
-                var num = array[3]
-                doubleJump = num === 1 || num === 3
-                followPlayer = num >= 2
-                normalLives = lives
+                if (version === "0.0.7") {
+                    var num = array[3]
+                    doubleJump = num === 1 || num === 3
+                    followPlayer = num >= 2
+                    normalLives = lives
+                    document.getElementById("doubleJump").textContent = doubleJump ? "On" : "Off"
+                    document.getElementById("cameraFollow").textContent = followPlayer ? "On" : "Off"
+                }
 
                 // Update everything, including the input element
                 livesElem.textContent = lives === Infinity ? "Infinite" : lives
@@ -1135,6 +1156,12 @@
 
         function toggleCameraMode() {
             followPlayer = !followPlayer
+            if (!followPlayer) {
+                var diffX = spawnX - mainX
+                var diffY = spawnY - mainY
+                panX = centerX + diffX
+                panY = centerY + diffY
+            }
             document.getElementById("cameraFollow").textContent = followPlayer ? "On" : "Off"
         }
 
@@ -1482,11 +1509,11 @@
                 }
             }
             var sprite = getSprite(type)
-            if (type === SOLID || type === SPRING || type === SLIME) {
+            if (type === SOLID || type === SPRING || type === SLIME || type === ICE) {
                 if (!sprite) {
-                    ctx.fillStyle = type === SOLID ? "#333" : type === SPRING ? "#2b5" : "#46b"
+                    ctx.fillStyle = type === SOLID ? "#333" : type === SPRING ? "#2b5" : type === SLIME ? "#46b" : "#89e"
                     // Draw boring rounded rectangles if there's no sprite
-                    roundRect(bx, by, scale, scale, 5)
+                    roundRect(bx, by, scale, scale, 8)
                 } else {
                     // It's pretty shocking how fast drawImage is! It has no problem rendering dozens of these.
                     ctx.drawImage(sprite, bx, by, scale, scale)
@@ -1583,14 +1610,15 @@
                     if (!sprite) {
                         ctx.fillStyle = "#000"
                         var s = scale * 0.1
-                        ctx.fillRect(bx + 1.5 * s, by + 3 * s, 6.5 * s, 6 * s)
+                        ctx.fillRect(bx + 1.5 * s, by + 3.5 * s, 6.5 * s, 5 * s)
+                        ctx.fillStyle = "#040"
                         ctx.fillRect(bx + 8.2 * s, by + 4.5 * s, s, 3 * s)
                         ctx.fillStyle = "#3d5"
-                        ctx.fillRect(bx + 2 * s, by + 3.5 * s, 1.5 * s, 5 * s)
-                        ctx.fillRect(bx + 4 * s, by + 3.5 * s, 1.5 * s, 5 * s)
-                        // Create a flashing effect
+                        ctx.fillRect(bx + 2 * s, by + 4 * s, 1.5 * s, 4 * s)
+                        ctx.fillRect(bx + 4 * s, by + 4 * s, 1.5 * s, 4 * s)
+                        // Create a charging effect
                         if (time % 1000 > 500) {
-                            ctx.fillRect(bx + 6 * s, by + 3.5 * s, 1.5 * s, 5 * s)
+                            ctx.fillRect(bx + 6 * s, by + 4 * s, 1.5 * s, 4 * s)
                         }
                     } else {
                         ctx.drawImage(sprite, bx, by, scale, scale)
@@ -1679,14 +1707,14 @@
                 if (!sprite) {
                     // The polygon has a fun rotation effect:
                     ctx.fillStyle = "#b33"
-                    polygon(bx, by, 6, scale * 0.4, 0.17 * cos(0.008 * time + data))
+                    polygon(bx, by, 6, scale * 0.4, 0.17 * cos(0.008 * time + (data ? data : 0)))
                 } else {
                     ctx.drawImage(sprite, bx, by, scale, scale)
                 }
             } else if (type === LEFTRIGHT) {
                 if (!sprite) {
                     ctx.fillStyle = "#e0a989"
-                    polygon(bx, by, 6, scale * 0.4, 0.17 * cos(0.008 * time + data))
+                    polygon(bx, by, 6, scale * 0.4, 0.17 * cos(0.008 * time + (data ? data : 0)))
                 } else {
                     ctx.drawImage(sprite, bx, by, scale, scale)
                 }
@@ -1831,6 +1859,9 @@
                     rotate(rotation)
                 }
             }
+            if (effect !== OLD && canvas.style.filter) {
+                canvas.style.filter = null
+            }
 
             var hasSpring = false
             var force = false
@@ -1893,10 +1924,22 @@
                             var t = tiles[m]
                             var a = t[1], b = t[2]
                             var type2 = t[0]
-                            if (type2 === COIN || ((type2 === BATTERY || type2 === HEART) && t[3] === 1) || (type2 === UPDOWN || type2 === LEFTRIGHT && t[5])) {
+                            var r
+                            if (type2 === COIN || type2 === BATTERY || type2 === HEART || type2 === GEAR || (type2 === MOD && t[3] === 1)) {
                                 continue
+                            } else if (type2 === UPDOWN) {
+                                if (t[5]) {
+                                    continue
+                                }
+                                r = rect(a, t[3], 1, 1, tx, ty, 0.8, 0.6)
+                            } else if (type2 === LEFTRIGHT) {
+                                if (t[5]) {
+                                    continue
+                                }
+                                r = rect(t[3], b, 1, 1, tx, ty, 0.8, 0.6)
+                            } else {
+                                r = rect(a, b, 1, 1, tx, ty, 0.8, 0.6)
                             }
-                            var r = rect(a, b, 1, 1, tx, ty, 0.8, 0.6)
                             // Collision! Swap directions
                             if (r === UP || r === DOWN) {
                                 up = up === 0 ? 1 : 0
@@ -1923,10 +1966,22 @@
                             var t = tiles[m]
                             var a = t[1], b = t[2]
                             var type2 = t[0]
-                            if (type2 === COIN || ((type2 === BATTERY || type2 === HEART) && t[3] === 1) || (type2 === UPDOWN || type2 === LEFTRIGHT && t[5])) {
+                            var r
+                            if (type2 === COIN || type2 === BATTERY || type2 === HEART || type2 === GEAR || (type2 === MOD && t[3] === 1)) {
                                 continue
+                            } else if (type2 === UPDOWN) {
+                                if (t[5]) {
+                                    continue
+                                }
+                                r = rect(a, t[3], 1, 1, tx, ty, 0.8, 0.6)
+                            } else if (type2 === LEFTRIGHT) {
+                                if (t[5]) {
+                                    continue
+                                }
+                                r = rect(t[3], b, 1, 1, tx, ty, 0.8, 0.6)
+                            } else {
+                                r = rect(a, b, 1, 1, tx, ty, 0.8, 0.6)
                             }
-                            var r = rect(a, b, 1, 1, tx, ty, 0.8, 0.6)
                             if (r === LEFT || r === RIGHT) {
                                 left = left === 0 ? 1 : 0
                                 tile[4] = left
@@ -2003,6 +2058,8 @@
                             // Slam the gate down so you can't pass into it again
                             tile[3] = 1
                             continue
+                        } else {
+                            c = NONE
                         }
                     } else {
                         render(type, bx, by, [x, y, lim, 1])
@@ -2094,7 +2151,7 @@
                     } else if (type === FLAG) {
                         liveX = x + 0.25
                         liveY = y + 0.25
-                    } else if (type === ICE) {
+                    } else if (type === ICE && c === UP) {
                         onIce = true
                     }
                     if (type !== FLAG && type !== PORTAL && type !== MOD && !clip) {
@@ -2184,36 +2241,34 @@
             ctx.fillStyle = "#000b"
             var diff = 0
             if (moveL > moveR) {
-                if (!directions.includes(RIGHT)) {
-                    diff = -speed * mul
-                } else {
-                    momentum = 0
-                }
+                diff = -speed * mul
             } else if (moveR > moveL) {
-                if (!directions.includes(LEFT)) {
-                    diff = speed * mul
-                } else {
-                    momentum = 0
-                }
+                diff = speed * mul
             }
             if (onIce) {
-                momentum = momentum * 0.99 + diff * 0.4
+                momentum = momentum * 0.998 + diff * 0.1
             } else {
-                momentum *= 0.9
+                momentum *= 0.98
+            }
+            if (onIce) {
+                diff *= 0.1
             }
             diff += momentum
-            if (Math.abs(diff) >= 0.0001) {
-                drawShadow(size)
-                mainX += diff
-            } else {
-                diff = 0
+            if ((directions.includes(LEFT) && diff > 0) || (directions.includes(RIGHT) && diff < 0)) {
                 momentum = 0
+            } else {
+                if (Math.abs(diff) >= 0.0001) {
+                    drawShadow(size)
+                    mainX += diff
+                } else {
+                    momentum = 0
+                }
             }
 
             // Update player panning
             if (followPlayer) {
-                panX = -mainX + centerX
-                panY = -mainY + centerY + 5
+                panX = -mainX + centerX + 1.25
+                panY = -mainY + centerY + 4.25
             } else {
                 var diffX = spawnX - mainX
                 if (diffX < -12) {
@@ -2249,10 +2304,9 @@
             }
             ctx.shadowBlur = 0
 
-            // Here's how the game renders the colorful title!
             frame++
             if (note < time) {
-                text.innerHTML = "Doodle<sup style='color:" + color + "'>Square</sup><br><sup style='font-size:16px'>Frame #" + frame + "</sup>"
+                text.innerHTML = "Doodle<sup style='color:" + color + "'>Square</sup><br><sup style='font-size:16px'>Time: " + (frame / 60).toFixed(2) + "s</sup>"
             }
 
             if (directions.includes(UP)) {
@@ -2371,16 +2425,25 @@
                     }
                 } else if ((effect === INTENSE && random() < 0.8) || (effect === GLITCH && random() < 0.4)) {
                     // Only glitches small sections at a time
-                    glitch({ amount: floor(20 + 15 * random()), quality: 70, iterations: floor(15 + random() * 10) }).fromImageData(ctx.getImageData(0, w * 0.1 * glitchFrame, w, h * 0.1 + 2 + round(random() * 6))).toDataURL().then(function (data) {
+                    glitch({ amount: floor(40 + 15 * random()), quality: 95, iterations: floor(3 + random() * 2) }).fromImageData(ctx.getImageData(0, w * 0.1 * glitchFrame, w, h * 0.1 + 2 + round(random() * 6))).toDataURL().then(function (data) {
                         var image = imageElements[glitchFrame]
                         image.src = data
-                        image.style.opacity = 0.4 + 0.5 * random()
+                        image.style.opacity = 0.8 + 0.2 * random()
                     })
                     if (effect === INTENSE) {
-                        // The intense effect LOOKS intense, but it's shockingly fast, as panning and flashing are virtually free. The small cost of the glitch effect with both also doesn't do much, as the screen is split into ten sections.
-                        if (time % 300 < 80 || random() < 0.12) {
+                        // The intense effect LOOKS intense, but it's quite fast, as panning and flashing are virtually free. The small cost of the glitch effect with both also doesn't do much, as the screen is split into ten sections.
+                        var rand = random()
+                        if (random() < 0.25) {
                             // Clear the screen
                             ctx.clearRect(0, 0, w, h)
+                        } else if (rand < 0.4) {
+                            ctx.clearRect(0, 0, w * 0.5, h * 0.5)
+                        } else if (rand < 0.55) {
+                            ctx.clearRect(w * 0.5, 0, w * 0.5, h * 0.5)
+                        } else if (rand < 0.7) {
+                            ctx.clearRect(0, h * 0.5, w * 0.5, h * 0.5)
+                        } else if (rand < 0.85) {
+                            ctx.clearRect(w * 0.5, h * 0.5, w * 0.5, h * 0.5)
                         }
 
                         // Also add a cool effect that makes things black and green:
