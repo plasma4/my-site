@@ -310,7 +310,7 @@
             p=Spawn|h=Heart|m=Modifier|u=Gear (a modifier that is not one-time)|g=Glitch|r=Reset|s=Quick checkpoint
             (live edit mode)
             <br>
-            b=Powerup|t=Tall Fire|f=Flag|c=Clear|0=Erase|1=Solid|2=Spring|3=Slime|4=Goal|6=Coin|7=Portal
+            b=Powerup|t=Tall Fire|f=Flag|c=Clear|0=Erase|1=Solid|2=Spring|3=Slime|i=Ice|4=Goal|6=Coin|7=Portal
             <br>
             j=Left Gate|k=Right Gate|v=Switch|y=Off Block|z=On Block|5=Fire|8=Up/Down|Enemy|9=Left/Right|Enemy
             <br>
@@ -318,6 +318,8 @@
         </small>
         <p>
             <span class="new3">Beta</span> <span class="new1">edition</span>
+            <br>
+            (Press space to enable audio when you just start)
             <br>
             Sound effects (they have been converted to mp3 for compression so these don't need external files):
             <br>
@@ -345,7 +347,7 @@
             Created by Leo Zhang.
         </p>
         <br>
-        <button onclick="toggleInfo()">Info<strong> (I)</strong></button>
+        <button onclick="toggleInfo()">Info</button>
         <button onclick="saveMap()">
             Save Map
             <strong> (copy command)</strong>
@@ -359,6 +361,11 @@
                 Double Jump:
                 <span class="font-size: 18px" id="doubleJump">Off</span>
                 <strong> (O)</strong>
+            </button>
+            <button onclick="toggleCameraMode()">
+                Camera follows player:
+                <span class="font-size: 18px" id="cameraFollow">Off</span>
+                <strong> (Q)</strong>
             </button>
             <button onclick="tiles = state.back()">
                 Undo <strong> (Ctrl/Cmd+Z)</strong>
@@ -530,6 +537,7 @@
         const PORTAL = 7
         const UPDOWN = 8
         const LEFTRIGHT = 9
+        const ICE = 10
 
         const OUTLINE = 1
         const BOTH = 2
@@ -539,7 +547,7 @@
         const EDIT = 0
         const PRACTICE = 1
         const PLAY = 2
-        var imageTypes = ["SOLID", "SPRING", "SLIME", "FIRE", "COIN", "HEART", "BATTERY"]
+        var imageTypes = ["SOLID", "SPRING", "SLIME", "ICE", "FIRE", "COIN", "HEART", "BATTERY"]
 
         // Load sprites dynamically with base64 data and automated animation
         const IMAGES = {
@@ -554,6 +562,7 @@
             GATETOP: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA0ElEQVQ4T2NkwAL8/f3/nz17FkXG2NiYYePGjYzoyjEEYApkZGT+G8pJMIiIyDHsPneK4cmTJ1jV4jQAZFCsl99/FhYWhvmb1uFUh9eARL+g/yCDKDKAh5eXYfLSheS7gGIDyPKCkaRu2rnnl2eBwuDHr58My3dsBXsBJo4clWTHQkpAQNqcDRtm0T4WYGGg4cifdmP/x1lEp0SQQl9Lu/8ioiIY6cBITjnt3KO7YMMwvMAlyZD27TkDWJIqCYmsaARHGdCZ+gb6M8k2gFgvAACVmWARzqkXMAAAAABJRU5ErkJggg==",
             GATEMAIN: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA6ElEQVQ4T2NkwAJ8fX3nqcuJqb59/N7m3e+PDKpKCkduPnp1e/PmzUnoyhmxGQASK8lOPnz73gMbIVZ+BmFZwSM9U+faYlOLYYCfl+OcTdv2p5TlpCS/fvRuDkiTqJxQSteUOXOJMgCmCGaAirk2w8fnz4kzAGY7yBCQAfyC0nPuXLwMdwGyPMwinGEAMuDm3ftzQGFAthf4JSXn3Dl5lTgD0J0HDwN9XYaP75+Cw4BkL4BiAVsgIhuENwyoEo0kpwPkhASKBTMbK+LTAXJKw5YOSE6JuKKRpEAE5UZ1ZUXikjK6F4iJBQCAc7YRQXcqxAAAAABJRU5ErkJggg==",
             SLIME: [300, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAxklEQVQ4T2NkAIKCWRf/g2hcYFPvXLCUX3EyipIJafqMjMiacSlE1rV/zgk41zHFggFsALogPtcQNEDRCp92Bob7xxgYPn+8CvcSigtAEnqe2igmgDTAAMxwBS0LuBhKGDy4BvHfpe0QG0CGDYwB+EMB4UJQtGJ4AZuT0Q1ECQMl9bz/sAQCCgN8BiDLgdIACDBSbABySoTFAq4wQE8DYBegp0RCCQmkCSMdkJKUYa4D5Rt4LIAMQE6ehKIRJA83AMShJDsDAFiSlP0Q9bB5AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAzElEQVQ4T2NkAIKCWRf/g2hcYFPvXLCUX3EyipIJafqMjMiacSlE1rV/zgk41zHFggFsALogPtfA1H7+eBXsIgwDFK3waWdguH+MgQGkGeYluAEwQT1PbRQTQBpgAGa4gpYFXAwlDB5cg/jv0naIDSDDBsYA/KGAcCE8EGEaQF7A5mR0A1HCQEk97z8sgRAyANlwUBoAAUZyDIClAbAByCkRFgu4wgA9DcANQE6JhBISSBNGOkBPnoRiASQPyjcoSRk5eZJkAEgxJdkZAGwSnf3qoD9dAAAAAElFTkSuQmCC"],
+            ICE: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACjElEQVQ4T01Ty24TQRCs2Z3x+sHGzguDeB6wxJ0rX8CdIx/BAcQJhBAgrvwDcAAlcOPKLyBx8gESW5FDAo4fWdv7aqrHODDSenc809VV1d1GRC4BqD18u9dt1UMEBrjZDjGYApNZyaPlynKgFEGzYZAXgvt3Lnf498wQ4Majd/vd9UaIdtMhrgYIAiBZiA8cnuYMABiLrbUQUcXg+2HK8xJP717pmAdvfkizZtGIDFxoEPIJjAGJQH8KDebnZmxRq5BVUuJgmGFMgHlawDzf7UnVBQjJvVbRNzxA+Y89NhhccD9KMqQZkHIznpcQSjEvP/bEMUpBqqRnCVQypSUTzZ5y02pYDKc5z5SRIOOTM8MsLclgpy+auUHtXgIviXgByDS4bnGS5HAENkY8EwVwVjDPCPDkQ09atZAeBMyqsgNeVAa0OBNUCKpLjVUjIwbmBPk9LZYMHr/fl0YUYq0a/mVAGdb755dm9Kz4fb5p4VBgMCnxa1JgnNBEBVgnzZUHaqYyUID/GVzcsGhFzJwI9o5TpLngaJLDvNjtS1wLSG0pYTN2GM8K6lv2ga7r2w4X2EAHU8Epm+uYgUNmT1TCq099qdJEZXB1y+HnKMeCXacsdLVJO6OOZC6+E1WSllD1l6sybq9Z6nO+xtp5ha+CoE7gdsvi8CSngeJNzFmZeSoYESQAGbz+3Jd2q4IjXnKUweby86AAEd0LKcvvGKwMVo1UKJCW8cvXgXwbFFgwuyFvPQgZqOVTT5bR4BBZHI0yz0DZLGiib2Udpmc7vW5glJCWTGcBOMfZWGdQnW8dLLX08CTzHmzEHCoH3Lvd7ijA2ThrS8fV5TDdulbBcQLss2S6VuOsMxLXcTbOfwArA1+CoqwKTQAAAABJRU5ErkJggg==",
             SOLID: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAGFJREFUOI3Nk1EOwCAIQ4uH64l7P/bnHEvGRD9sogkoNbyI4ZZjTta3QnE3aVmxpK9jt4XXAQAtJkhOm/jfRfKV299CySAhnerRk6SURbhTB4hzIEaNnykDvDxMNgSlcb4APgtGs58LapcAAAAASUVORK5CYII=",
             BATTERY: [500, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAnElEQVQ4T2NkoBAwUqifgXIDDny97kuOKxy4NTeD9DGCDAByNpFiCFCPH4YBmS+mE2XGdIlMBpABMMVwF4AMWHOrAiweotaBwkY2GWQADIAMQjFg/u65DLzyt8EGILPRDeAOF2D4uvID2CVkGcB1yI7hm90hTAOQvYDPBTi9QEwo4gxEYjQj24wSjaRohqmFG0COZmQ9lOcFSl0AADZzdieJb69/AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAKlJREFUOE9jZKAQMFKon4FyAw7/uOhLjitsOfQ3g/Qxggyw5dDfRIohh39c9MMwIPPFdKLMmC6RyQAyAKYY7gKQAWtuVYDFQ9Q6cLJBBsAAyCAUA+bvnsvAK38bbAAyG9lgkAHc4QIMX1d+ALuEKAOQDQMZwHXIjuGb3SFMA5BtQncNyNmJrskMeL1ATCjiDERiNCMHHko0kqIZphZuADmakfVQnhcodQEAEpuDJ9N9u70AAAAASUVORK5CYII="],
             HEART: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAjklEQVQ4T2NkoBAwUqifgfoG/OLl/Q9yFdvnz3DDsYnBXI7iAphCmCTIEJjY7+kbGT6ev8kg1ZuJogfDFnxh8iati4H1/jsG0XXVcH1gBrrNxAQszIvUMYBUVyAHMElhgBy4RMUCtrBAth0kj5GQ8AUoumasBuAKD2yacRqAbgguzXgNgBmCTzNBA4hJUABVSz8R7MZufAAAAABJRU5ErkJggg==",
@@ -578,8 +587,8 @@
 
         // Yes, it uses a whole lot of variables!
         var tiles = [], effect = NONE, settings = [0.12, 0.3, KEEP, 255, 255, 255, 0.04, 0, 10, 140, 20, 0, 0, 1], showInfo = false, time = 0, modID = 0, gradient = false
-        var spawnX = 1.25, spawnY = 1.25, liveX = spawnX, liveY = spawnY, playerX = -1, playerY = -1, doubleJump = false, doubleJumped = 0
-        var mainX = spawnX, mainY = spawnY, velocity = 0, resetVelocity = false, immunity = 0, lives = Infinity, normalLives = Infinity, flying = false, clip = false
+        var spawnX = 1.25, spawnY = 1.25, liveX = spawnX, liveY = spawnY, playerX = -1, playerY = -1, doubleJump = false, doubleJumped = 0, followPlayer = false
+        var mainX = spawnX, mainY = spawnY, velocity = 0, momentum = 0, resetVelocity = false, immunity = 0, lives = Infinity, normalLives = Infinity, flying = false, clip = false
         var nextDraw = -1, zoom = 0, panX = 0, panY = 0, centerX = 0, centerY = 0, speed = 0.12, jump = 0.3, enemySpeed = 0.04, mode = PRACTICE
         var scale = 0, half = 0, w = 0, h = 0, moveL = 0, moveR = 0, moveU = 0, moveD = 0, collide = NONE
         var note = 0, selectX = -1, selectY = -1, realFrame = 0, frame = 0, glitchFrame = floor(10 * random()), portal = true, rotation = 0, gravity = 1, opacity = 1
@@ -678,7 +687,7 @@
 
         // Saving is a lot simpler than loading because we only need to consider the newest version:
         function saveMap() {
-            var data = [spawnX - 0.25, spawnY - 0.25, normalLives === Infinity ? 0 : normalLives]
+            var data = [spawnX - 0.25, spawnY - 0.25, normalLives === Infinity ? 0 : normalLives, doubleJump + followPlayer * 2]
             for (var i = 0; i < tiles.length; i++) {
                 var tile = tiles[i]
                 var type = tile[0]
@@ -713,7 +722,7 @@
                 }
                 result = t + result.slice(result.indexOf(",") + 1, len - t).replace(/AAAAAAA/g, "&").replace(/AAAA/g, "^").replace(/AAA/g, "%").replace(/AA/g, "$").replace(/\/\/\/\//g, ":").replace(/\/\/\//g, "@").replace(/\//g, "-")
                 // Copy the result
-                navigator.clipboard.writeText("0.0.6.2|" + result).then(() => {
+                navigator.clipboard.writeText("0.0.7|" + result).then(() => {
                     message("<b>Copied!</b>", 1500)
                 })
             }
@@ -765,7 +774,7 @@
                 version = trim.slice(0, pipe)
                 data = trim.slice(pipe + 1)
                 // Check if it's actually a version with a short regex:
-                if (!/0\.0\.([1-6]|6\.1)/.test(version)) {
+                if (!/0\.0\.([1-7]|6\.1)/.test(version)) {
                     // Very specific valid version regex in case people poke around (3 numbers one-digit or 4 numbers with the first three one-digit and the final one one-digit or two-digit but if it has two digits it doesn't start with a zero):
                     if (/^(([0-9]\.){2}[0-9]|([0-9]\.){3}([0-9]|[1-9][0-9]))$/.test(version)) {
                         message("<b style='color:red'>Version " + version + " not supported!</b>", 2000)
@@ -802,9 +811,9 @@
                     if (type === COIN) {
                         item.push(0)
                     } else if (type === UPDOWN) {
-                        item.push(item[2], 0)
+                        item.push(item[2], 0, 0)
                     } else if (type === LEFTRIGHT) {
-                        item.push(item[1], 0)
+                        item.push(item[1], 0, 0)
                     } else if (type === PORTAL) {
                         item.push(array[i++])
                     } else if (type === MOD) {
@@ -820,9 +829,9 @@
                     if (type === COIN) {
                         item.push(0)
                     } else if (type === UPDOWN) {
-                        item.push(item[2], 0)
+                        item.push(item[2], 0, 0)
                     } else if (type === LEFTRIGHT) {
-                        item.push(item[1], 0)
+                        item.push(item[1], 0, 0)
                     } else if (type === PORTAL) {
                         item.push(array[i++])
                     } else if (type === MOD) {
@@ -838,9 +847,9 @@
                     if (type === COIN) {
                         item.push(0)
                     } else if (type === UPDOWN) {
-                        item.push(item[2], 0)
+                        item.push(item[2], 0, 0)
                     } else if (type === LEFTRIGHT) {
-                        item.push(item[1], 0)
+                        item.push(item[1], 0, 0)
                     } else if (type === PORTAL) {
                         item.push(array[i++])
                     } else if (type === MOD) {
@@ -862,9 +871,9 @@
                     if (type === COIN || type === BATTERY || type === HEART) {
                         item.push(0)
                     } else if (type === UPDOWN) {
-                        item.push(item[2], 0)
+                        item.push(item[2], 0, 0)
                     } else if (type === LEFTRIGHT) {
-                        item.push(item[1], 0)
+                        item.push(item[1], 0, 0)
                     } else if (type === PORTAL) {
                         item.push(array[i++])
                     } else if (type === MOD) {
@@ -884,6 +893,9 @@
                 if (lives === 0) {
                     lives = Infinity
                 }
+                var num = array[3]
+                doubleJump = num === 1 || num === 3
+                followPlayer = num >= 2
                 normalLives = lives
 
                 // Update everything, including the input element
@@ -896,8 +908,10 @@
                         var type = item[0]
                         if (type === COIN || type === BATTERY || type === HEART) {
                             item.push(0)
-                        } else if (type === UPDOWN || type === LEFTRIGHT) {
-                            item.push(0, 0)
+                        } else if (type === UPDOWN) {
+                            item.push(item[2], 0, 0)
+                        } else if (type === LEFTRIGHT) {
+                            item.push(item[1], 0, 0)
                         } else if (type === PORTAL) {
                             item.push(array[i++])
                         } else if (type === MOD || type === GEAR) {
@@ -923,10 +937,12 @@
                     for (i = 3; i < len;) {
                         var item = [array[i++], array[i++], array[i++]]
                         var type = item[0]
-                        if (type === COIN || type === BATTERY || type === HEART) {
+                        if (type === COIN || type === BATTERY || type === HEART || type === GATEL || type === GATER) {
                             item.push(0)
-                        } else if (type === UPDOWN || type === LEFTRIGHT) {
-                            item.push(0, 0)
+                        } else if (type === UPDOWN) {
+                            item.push(item[2], 0, 0)
+                        } else if (type === LEFTRIGHT) {
+                            item.push(item[1], 0, 0)
                         } else if (type === PORTAL) {
                             item.push(array[i++])
                         } else if (type === MOD || type === GEAR) {
@@ -952,10 +968,12 @@
                     for (i = 3; i < len;) {
                         var item = [array[i++], array[i++], array[i++]]
                         var type = item[0]
-                        if (type === COIN || type === BATTERY || type === HEART) {
+                        if (type === COIN || type === BATTERY || type === HEART || type === GATEL || type === GATER) {
                             item.push(0)
-                        } else if (type === UPDOWN || type === LEFTRIGHT) {
-                            item.push(0, 0)
+                        } else if (type === UPDOWN) {
+                            item.push(item[2], 0, 0)
+                        } else if (type === LEFTRIGHT) {
+                            item.push(item[1], 0, 0)
                         } else if (type === PORTAL) {
                             item.push(array[i++])
                         } else if (type === MOD || type === GEAR) {
@@ -977,14 +995,17 @@
                         }
                         result.push(item)
                     }
-                } else if (version === "0.0.6.2") {
-                    for (i = 3; i < len;) {
+                } else if (version === "0.0.6.2" || version === "0.0.7") {
+                    console.warn(array)
+                    for (i = (version === "0.0.7" ? 4 : 3); i < len;) {
                         var item = [array[i++], array[i++], array[i++]]
                         var type = item[0]
-                        if (type === COIN || type === BATTERY || type === HEART) {
+                        if (type === COIN || type === BATTERY || type === HEART || type === GATEL || type === GATER) {
                             item.push(0)
-                        } else if (type === UPDOWN || type === LEFTRIGHT) {
-                            item.push(0, 0)
+                        } else if (type === UPDOWN) {
+                            item.push(item[2], 0, 0)
+                        } else if (type === LEFTRIGHT) {
+                            item.push(item[1], 0, 0)
                         } else if (type === PORTAL) {
                             item.push(array[i++])
                         } else if (type === MOD || type === GEAR) {
@@ -1073,6 +1094,7 @@
         }
 
         function reset(force) {
+            momentum = 0
             immunity = 0
             frame = 0
             velocity = 0
@@ -1108,8 +1130,13 @@
 
         function toggleDoubleJump() {
             doubleJump = !doubleJump
-            doubleJumped = 0
+            doubleJumped = 1
             document.getElementById("doubleJump").textContent = doubleJump ? "On" : "Off"
+        }
+
+        function toggleCameraMode() {
+            followPlayer = !followPlayer
+            document.getElementById("cameraFollow").textContent = followPlayer ? "On" : "Off"
         }
 
         function resetMod() {
@@ -1307,7 +1334,7 @@
             } else if (a === UPDOWN) {
                 t.push(c, 0)
             } else if (a === LEFTRIGHT) {
-                t.push(b, 0)
+                t.push(b, 0, 0)
             } else if (a === MOD || a === GEAR) {
                 t.push(0)
                 t.push.apply(t, settings)
@@ -1815,6 +1842,7 @@
             modID = 0
             var canJump = false
             var hasSwitch = true
+            var onIce = false
 
             // Win condition from collecting all the coins if there's no win block
             var allCoins = true
@@ -1972,7 +2000,7 @@
                 if (isGate) {
                     if (tile[3] === 0) {
                         render(type, bx, by, [x, y, lim, 0])
-                        if (!(type === GATER && c !== LEFT || type === GATEL && c !== RIGHT)) {
+                        if (!((type === GATER && c !== LEFT) || (type === GATEL && c !== RIGHT))) {
                             // Slam the gate down so you can't pass into it again
                             tile[3] = 1
                             continue
@@ -2067,6 +2095,8 @@
                     } else if (type === FLAG) {
                         liveX = x + 0.25
                         liveY = y + 0.25
+                    } else if (type === ICE) {
+                        onIce = true
                     }
                     if (type !== FLAG && type !== PORTAL && type !== MOD && !clip) {
                         if (type === ONBLOCK) {
@@ -2153,33 +2183,52 @@
             // Check for movement and left/right collisions, and also render the shadow
             var size = 0.5 + 0.1 * sin(time * 0.005)
             ctx.fillStyle = "#000b"
+            var diff = 0
             if (moveL > moveR) {
                 if (!directions.includes(RIGHT)) {
-                    var diff = speed * mul
-                    drawShadow(size)
-                    mainX -= diff
+                    diff = -speed * mul
+                } else {
+                    momentum = 0
                 }
             } else if (moveR > moveL) {
                 if (!directions.includes(LEFT)) {
-                    var diff = speed * mul
-                    drawShadow(size)
-                    mainX += diff
+                    diff = speed * mul
+                } else {
+                    momentum = 0
                 }
+            }
+            if (onIce) {
+                momentum = momentum * 0.99 + diff * 0.4
+            } else {
+                momentum *= 0.9
+            }
+            diff += momentum
+            if (Math.abs(diff) >= 0.0001) {
+                drawShadow(size)
+                mainX += diff
+            } else {
+                diff = 0
+                momentum = 0
             }
 
             // Update player panning
-            var diffX = spawnX - mainX
-            if (diffX < -12) {
-                panX = centerX + diffX + 12
-            } else if (diffX > 12) {
-                panX = centerX + diffX - 12
-            }
+            if (followPlayer) {
+                panX = -mainX + centerX
+                panY = -mainY + centerY + 5
+            } else {
+                var diffX = spawnX - mainX
+                if (diffX < -12) {
+                    panX = centerX + diffX + 12
+                } else if (diffX > 12) {
+                    panX = centerX + diffX - 12
+                }
 
-            var diffY = spawnY - mainY
-            if (diffY < -6) {
-                panY = centerY + diffY + 6
-            } else if (diffY > 6) {
-                panY = centerY + diffY - 6
+                var diffY = spawnY - mainY
+                if (diffY < -6) {
+                    panY = centerY + diffY + 6
+                } else if (diffY > 6) {
+                    panY = centerY + diffY - 6
+                }
             }
 
             // Changing color for the player and title (unless the player is immune)
@@ -2550,6 +2599,8 @@
                     }
                 } else if (code === 82) {
                     reset(true)
+                } else if (code === 81) {
+                    toggleCameraMode()
                 } else if (code === 80) {
                     setType(PLAYER)
                 } else if (code === 79) {
@@ -2566,7 +2617,7 @@
                 } else if (code === 74) {
                     setType(GATEL)
                 } else if (code === 73) {
-                    toggleInfo()
+                    setType(ICE)
                 } else if (code === 72) {
                     setType(HEART)
                 } else if (code === 71) {
@@ -2638,10 +2689,8 @@
             half = scale * 0.5
 
             // Instantly redraw so there's no moment where the blocks aren't rendered
-            reset()
             clearTimeout(nextDraw)
             draw()
-
         }
         onresize = resize
 

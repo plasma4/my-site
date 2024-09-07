@@ -2,7 +2,7 @@
 Everything on my [website](https://plasma4.github.io/my-site/), in one place!
 
 It includes:
-* [Crystal Clicker (the newest)](https://plasma4.github.io/my-site/fishing.html) (a game about gaining crystals)
+* [Doodle Square](https://plasma4.github.io/my-site/square.html) (a game where you create your own interactive levels)
 * [Fishing Incremental](https://plasma4.github.io/my-site/fishing.html) (an intriguing game that involves fish)
 * [An interactive fractal viewer](https://plasma4.github.io/my-site/fractal.html) (with lots of different fractals)
 * [Information on big numbers](https://plasma4.github.io/my-site/numbers.html) (from tetration to Rayo's Number, PLUS intersting info on the Fast-Growing Hierarchy)
