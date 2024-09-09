@@ -2439,10 +2439,10 @@
                     }
                 } else if ((effect === INTENSE && random() < 0.8) || (effect === GLITCH && random() < 0.4)) {
                     // Only glitches small sections at a time
-                    glitch({ amount: floor(40 + 15 * random()), quality: 95, iterations: floor(3 + random() * 2) }).fromImageData(ctx.getImageData(0, w * 0.1 * glitchFrame, w, h * 0.1 + 2 + round(random() * 6))).toDataURL().then(function (data) {
+                    glitch({ amount: floor(40 + 15 * random()), quality: 95, iterations: floor(3 + random() * (effect === GLITCH ? 5 : 2)) }).fromImageData(ctx.getImageData(0, w * 0.1 * glitchFrame, w, h * 0.1 + 2 + round(random() * 6))).toDataURL().then(function (data) {
                         var image = imageElements[glitchFrame]
                         image.src = data
-                        image.style.opacity = 0.8 + 0.2 * random()
+                        image.style.opacity = (effect === INTENSE ? 0.75 : 0.6) + 0.2 * random()
                     })
                     if (effect === INTENSE) {
                         // The intense effect LOOKS intense, but it's quite fast, as panning and flashing are virtually free. The small cost of the glitch effect with both also doesn't do much, as the screen is split into ten sections.
@@ -2483,13 +2483,9 @@
                     // Update glitch frame
                     if (random() < 0.7) {
                         glitchFrame += floor(3 * random() - 0.3)
-                        if (glitchFrame > 10) {
-                            glitchFrame -= 10
-                        } else if (glitchFrame < 0) {
-                            glitchFrame += 10
-                        }
+                        glitchFrame = Math.abs(glitchFrame) % 10
                     } else {
-                        glitchFrame = floor(8 * random())
+                        glitchFrame = floor(10 * random())
                     }
                 }
             }
