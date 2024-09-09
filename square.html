@@ -1131,7 +1131,7 @@
             resetVelocity = true
             if (force) {
                 if (lives !== normalLives) {
-                    currentLives.textContent = normalLives === 10 ? "\u221E lives" : (normalLives !== 1 ? value + " lives" : "1 life")
+                    currentLives.textContent = normalLives === 10 ? "\u221E lives" : (normalLives !== 1 ? normalLives + " lives" : "1 life")
                 }
                 lives = normalLives
                 effect = NONE
