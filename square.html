@@ -660,10 +660,11 @@
         }
 
         function setLives(value) {
-            var newLives = Number(value)
+            var newLives = Math.min(value, 10)
             normalLives = lives = newLives === 10 ? Infinity : newLives
             livesElem.textContent = newLives === 10 ? "Infinite" : value
             currentLives.textContent = newLives === 10 ? "\u221E lives" : (newLives !== 1 ? value + " lives" : "1 life")
+            livesInput.value = newLives
         }
 
         function loadSprites() {
@@ -1130,8 +1131,8 @@
             velocity = 0
             resetVelocity = true
             if (force) {
-                if (lives !== normalLives) {
-                    currentLives.textContent = normalLives === 10 ? "\u221E lives" : (normalLives !== 1 ? normalLives + " lives" : "1 life")
+                if (lives !== normalLives && normalLives !== Infinity) {
+                    currentLives.textContent = normalLives !== 1 ? normalLives + " lives" : "1 life"
                 }
                 lives = normalLives
                 effect = NONE
