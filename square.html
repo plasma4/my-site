@@ -184,7 +184,7 @@
             }
         }
 
-        .alertBox {
+        #alertBox {
             font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
             font-size: 20px;
             padding: 2px;
@@ -270,6 +270,7 @@
             var copy = cloneArray(data)
             this.a.push(copy)
             this.h.push(copy)
+            saveMap(true)
             this.i++
         }
 
@@ -451,7 +452,7 @@
             </p>
         </span>
     </span>
-    <div class="alertBox" tabindex="9">
+    <div id="alertBox" tabindex="9">
         Welcome to the game! Use the arrow keys or WASD to move around.
         <br>
         Use the key information at the top to switch between blocks. See what you can create!
@@ -616,6 +617,12 @@
         const littleEndian = u8[0] === 0x67 && u8[1] === 0x45 && u8[2] === 0x23
 
         // Load the simple default level
+        var localMap = localStorage.getItem("doodleSquareMap")
+        if (localMap !== null) {
+            document.getElementById("alertBox").innerHTML = '<b>Welcome back!</b> Press the <b style="font-family: \'Courier New\', Courier, monospace">L</b> key at any time to restore your previous progress.'
+            document.getElementById("alertBox").style.minHeight = "100px"
+            document.getElementById("alertBox").style.fontSize = "25px"
+        }
         loadMap("0.0.7|2AQAE&K$EABQAC$IABgAC$MABgAK$QABQAG$IAB$G$IABQAG$MABQAG$MAB$G$M$wAK$UABQAD$c$wAD$g$wAC$kACQAC$sACQAC$0AC$C$0$QAB$4$QABAB%QABABI$wABABYAC$FABQAB$GABYABQABABYACQABABYACgABABYACwABABgAC$BABgACQABABgACgABABgACwAFABgABwAFABkABwAFABoABwAFABoAC$FABkAC$FABkACQAFABkACgAFABkACwAFABoACwAFABoACgAFABoACQAEABcACwADABYAD$DABcAD$DABgAD$DABkAD$DABoAD$D$0ABQAD$4ABQAB$8ABQAF$8$gACAB$BQAK$QABgAD$UABgAD^BgAK$EABgAK$EABwAK$IABwAK$MABwAK$QABwAF$oACQAF$wACQAF$I$gD+-xI$gCdAGYA8RP--6^Bk$U$wAC$MAFQAM$MAF$M$MAF$L$MAF$K$MABgAE$M^H$M^I$M$QAI$M$gAI$M$wAI$MAB$I$MABQAI$MABQAHAP7-FQALAJ0AMgPxE@o^OgD-v8I$kAYACTAfET--+g^6AP+-xUACgCdADID8RP--6^DoAw")
         var state = new SaveState(tiles)
 
@@ -703,7 +710,7 @@
         }
 
         // Saving is a lot simpler than loading because we only need to consider the newest version:
-        function saveMap() {
+        function saveMap(saveLocally) {
             var data = [spawnX - 0.25, spawnY - 0.25, normalLives === Infinity ? 0 : normalLives, doubleJump + followPlayer * 2]
             for (var i = 0; i < tiles.length; i++) {
                 var tile = tiles[i]
@@ -738,10 +745,15 @@
                     }
                 }
                 result = t + result.slice(result.indexOf(",") + 1, len - t).replace(/AAAAAAA/g, "&").replace(/AAAA/g, "^").replace(/AAA/g, "%").replace(/AA/g, "$").replace(/\/\/\/\//g, ":").replace(/\/\/\//g, "@").replace(/\//g, "-")
-                // Copy the result
-                navigator.clipboard.writeText("0.0.7|" + result).then(() => {
-                    message("<b>Copied!</b>", 1500)
-                })
+                if (saveLocally) {
+                    // Store the save locally
+                    localStorage.setItem("doodleSquareMap", "0.0.7|" + result)
+                } else {
+                    // Copy the result
+                    navigator.clipboard.writeText("0.0.7|" + result).then(() => {
+                        message("<b>Copied!</b>", 1500)
+                    })
+                }
             }
             // Little endian devices make things simpler:
             if (littleEndian) {
@@ -921,10 +933,6 @@
                     document.getElementById("cameraFollow").textContent = followPlayer ? "On" : "Off"
                 }
 
-                // Update everything, including the input element
-                livesElem.value = lives === Infinity ? "Infinite" : lives
-                currentLives.textContent = lives === Infinity ? "\u221E lives" : (lives !== 1 ? lives + " lives" : "1 life")
-                livesInput.value = lives === Infinity ? 10 : lives
                 if (version === "0.0.5") {
                     for (i = 3; i < len;) {
                         var item = [array[i++], array[i++], array[i++]]
@@ -1122,6 +1130,9 @@
             velocity = 0
             resetVelocity = true
             if (force) {
+                if (lives !== normalLives) {
+                    currentLives.textContent = normalLives === 10 ? "\u221E lives" : (newLives !== 1 ? value + " lives" : "1 life")
+                }
                 lives = normalLives
                 effect = NONE
                 // Reset quick spawn
@@ -2661,6 +2672,11 @@
                         liveX = mainX
                         liveY = mainY
                     }
+                } else if (code === 83) {
+                    // Prevent the audio from being played twice
+                    if (!justPlayed) {
+                        createAudio()
+                    }
                 } else if (code === 82) {
                     reset(true)
                 } else if (code === 81) {
@@ -2672,9 +2688,8 @@
                 } else if (code === 77) {
                     setType(MOD)
                 } else if (code === 76) {
-                    // Prevent the audio from being played twice
-                    if (!justPlayed) {
-                        createAudio()
+                    if (localMap !== null) {
+                        loadMap(localMap)
                     }
                 } else if (code === 75) {
                     setType(GATER)
