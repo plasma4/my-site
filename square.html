@@ -975,6 +975,7 @@
                             item.push(item[2], 0, 0)
                         } else if (type === LEFTRIGHT) {
                             item.push(item[1], 0, 0)
+                            console.warn(item)
                         } else if (type === PORTAL) {
                             item.push(array[i++])
                         } else if (type === MOD || type === GEAR) {
@@ -1150,7 +1151,8 @@
                         // Reset enemy coordinates (instead of using tile[3] to store the bias, we do this so when calculating collisions, so we don't have to do extra math)
                         tile[3] = tile[2]
                     } else if (type === LEFTRIGHT) {
-                        tile[3] = tile[2]
+                        // For this type of enemy, it's the x coordinate instead
+                        tile[3] = tile[1]
                     } else if (type !== PORTAL) {
                         // Fill all tiles with zeros after the y-coordinate for the block
                         tile.fill(0, 3)
@@ -1372,7 +1374,7 @@
                 } while (q > 1)
                 t.push(id)
             } else if (a === UPDOWN) {
-                t.push(c, 0)
+                t.push(c, 0, 0)
             } else if (a === LEFTRIGHT) {
                 t.push(b, 0, 0)
             } else if (a === MOD || a === GEAR) {
@@ -1769,13 +1771,6 @@
                     ctx.drawImage(sprite, bx, by, scale, scale)
                 }
             }
-        }
-
-        function drawShadow(size) {
-            // The shadow is slightly blurry
-            ctx.shadowColor = "#333"
-            ctx.shadowBlur = 5 * devicePixelRatio
-            roundRect((panX + mainX) * scale, (panY + mainY + 0.5 - size) * scale - 3, 0.5 * scale, size * scale, 3)
         }
 
         function renderSwitches(switchable, switchableX, switchableY, t) {
@@ -2272,7 +2267,7 @@
                 momentum = 0
             } else {
                 if (Math.abs(diff) >= 0.0001) {
-                    drawShadow(size)
+                    roundRect((panX + mainX) * scale, (panY + mainY + 0.5 - size) * scale - 6, 0.5 * scale, size * scale, 3)
                     mainX += diff
                 } else {
                     momentum = 0
