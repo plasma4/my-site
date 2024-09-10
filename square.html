@@ -606,7 +606,7 @@
         grain11.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAEhJREFUKFOFkEEOACAIw8b/H62BKGE6wq6WUTTMWQDMZg4j6MDN1xjTQLTUEPg+Ophq1bFto4mzp21VPuSW1whx9WN5jFpJahvtNAwLcO3p0wAAAABJRU5ErkJggg=="
         grain12.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAYAAAB4MH11AAAAAXNSR0IArs4c6QAAAHdJREFUOE+tklEKwDAIQ9f7H3pDqEUlqWG4X81zSbOef9+7ZauT+4IJ2uUNU+C+c6CTBw7cfqg6iEPmKAGIc+gAxVmPVLhr6F4cMHH3jnWemFMHjAPjVSOIUcQWIdeJqVaTxTRyoGvWda5WMTpgsULWLaLWvlKvD3wWGwiID085AAAAAElFTkSuQmCC"
 
-        // Yes, it uses a whole lot of variables!
+        // Yes, the game uses a whole lot of variables!
         var tiles = [], effect = NONE, settings = [0.12, 0.3, KEEP, 255, 255, 255, 0.04, 0, 10, 140, 20, 0, 0, 1], showInfo = false, time = 0, modID = 0, gradient = false
         var spawnX = 1.25, spawnY = 1.25, liveX = spawnX, liveY = spawnY, playerX = -1, playerY = -1, doubleJump = false, doubleJumped = 0, followPlayer = false
         var mainX = spawnX, mainY = spawnY, velocity = 0, momentum = 0, resetVelocity = false, immunity = 0, lives = Infinity, normalLives = Infinity, flying = false, clip = false
@@ -1129,6 +1129,7 @@
         }
 
         function reset(force) {
+            doubleJumped = 1
             momentum = 0
             immunity = 0
             frame = 0
@@ -1178,8 +1179,8 @@
         function toggleCameraMode() {
             followPlayer = !followPlayer
             if (!followPlayer) {
-                var diffX = spawnX - mainX
-                var diffY = spawnY - mainY
+                var diffX = liveX - mainX
+                var diffY = liveY - mainY
                 panX = centerX + diffX
                 panY = centerY + diffY
             }
@@ -2281,17 +2282,17 @@
 
             // Update player panning
             if (followPlayer) {
-                panX = spawnX - mainX + centerX + 1.25
-                panY = spawnY - mainY + centerY + 4.25
+                panX = liveX - mainX + centerX + 1.25
+                panY = liveY - mainY + centerY + 4.25
             } else {
-                var diffX = spawnX - mainX
+                var diffX = liveX - mainX
                 if (diffX < -12) {
                     panX = centerX + diffX + 12
                 } else if (diffX > 12) {
                     panX = centerX + diffX - 12
                 }
 
-                var diffY = spawnY - mainY
+                var diffY = liveY - mainY
                 if (diffY < -6) {
                     panY = centerY + diffY + 6
                 } else if (diffY > 6) {
@@ -2577,18 +2578,20 @@
             var absY = abs(dy)
             if (abs(dx) < width && absY < height) {
                 if (crossWidth > crossHeight) {
-                    collision = (crossWidth > (-crossHeight)) ? DOWN : LEFT
+                    collision = (crossWidth > -crossHeight) ? DOWN : LEFT
                 } else {
-                    collision = (crossWidth > -(crossHeight)) ? RIGHT : UP
+                    collision = (crossWidth > -crossHeight) ? RIGHT : UP
                 }
             }
             return collision
         }
 
         function clear() {
-            tiles = []
-            // By default, the SaveState saves an empty array
-            state.save()
+            if (tiles.length !== 0) {
+                tiles.length = 0
+                // By default, the SaveState saves an empty array
+                state.save()
+            }
             mainX = liveX = spawnX = 1.25
             mainY = liveY = spawnY = 1.25
             effect = NONE
@@ -2748,8 +2751,8 @@
             centerX = 0.5 * w / scale - mainX - 0.25
             centerY = 0.5 * h / scale - mainY - 0.25
             if (followPlayer) {
-                panX = spawnX - mainX + centerX + 1.25
-                panY = spawnY - mainY + centerY + 4.25
+                panX = liveX - mainX + centerX + 1.25
+                panY = liveY - mainY + centerY + 4.25
             } else {
                 panX = centerX
                 panY = centerY
