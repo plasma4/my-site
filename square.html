@@ -259,6 +259,8 @@
             this.i = 0
         }
 
+        SaveState.prototype.lastSave = Date.now()
+
         /**
          * Saves the object
          * @param {Number[][]} data The new state to save
@@ -268,6 +270,7 @@
                 throw TypeError("The data is not an array")
             }
             var copy = cloneArray(data)
+            this.lastSave = Date.now()
             this.a.push(copy)
             this.h.push(copy)
             saveMap(true)
@@ -1243,7 +1246,7 @@
             if (e.which === 1 && mode !== PLAY && !["A", "BUTTON", "INPUT", "SELECT", "OPTION", "LABEL", "IMG"].includes(e.target.tagName) && e.target.parentElement.tagName !== "BUTTON") {
                 down = true
                 if (add([selectType, selectX, selectY])) {
-                    state.save(tiles)
+                    if (Date.now() - state.lastSave >= 1000) state.save(tiles)
                 }
             }
         }
@@ -1274,7 +1277,7 @@
                     selectY = floor(rotate[1] / zoom - panY)
                     touch = true
                     if (add([selectType, selectX, selectY])) {
-                        state.save(tiles)
+                        if (Date.now() - state.lastSave >= 1000) state.save(tiles)
                     }
                 }
             }
@@ -1487,7 +1490,7 @@
             do {
                 // Check if there actually were any changes
                 if (add([selectType, x1, y1]) && notSaved) {
-                    state.save(tiles)
+                    if (Date.now() - state.lastSave >= 1000) state.save(tiles)
                     notSaved = false
                 }
                 var e2 = 2 * err
@@ -1509,7 +1512,7 @@
                 return
             }
             // Some effects can pan blocks
-            if (effect === INTENSE || (effect === GLITCH && random() < 0.01)) {
+            if ((effect === INTENSE || (effect === GLITCH && random() < 0.01)) && mode !== EDIT) {
                 // Shake each block a bit more:
                 bx += (0.2 - 0.1 * random()) * scale
                 by += (0.2 - 0.1 * random()) * scale
