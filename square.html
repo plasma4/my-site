@@ -1150,9 +1150,11 @@
                     } else if (type === UPDOWN) {
                         // Reset enemy coordinates (instead of using tile[3] to store the bias, we do this so when calculating collisions, so we don't have to do extra math)
                         tile[3] = tile[2]
+                        tile[5] = 0
                     } else if (type === LEFTRIGHT) {
                         // For this type of enemy, it's the x coordinate instead
                         tile[3] = tile[1]
+                        tile[5] = 0
                     } else if (type !== PORTAL) {
                         // Fill all tiles with zeros after the y-coordinate for the block
                         tile.fill(0, 3)
