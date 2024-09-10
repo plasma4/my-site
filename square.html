@@ -2278,8 +2278,8 @@
 
             // Update player panning
             if (followPlayer) {
-                panX = -mainX + centerX + 1.25
-                panY = -mainY + centerY + 4.25
+                panX = spawnX - mainX + centerX + 1.25
+                panY = spawnY - mainY + centerY + 4.25
             } else {
                 var diffX = spawnX - mainX
                 if (diffX < -12) {
