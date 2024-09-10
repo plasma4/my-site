@@ -2659,11 +2659,9 @@
                     setType(GEAR)
                 } else if (code === 84) {
                     setType(TALL)
-                } else if (code === 83) {
-                    if (mode === PRACTICE) {
-                        liveX = mainX
-                        liveY = mainY
-                    }
+                } else if (code === 83 && mode === PRACTICE) {
+                    liveX = mainX
+                    liveY = mainY
                 } else if (code === 83) {
                     // Prevent the audio from being played twice
                     if (!justPlayed) {
@@ -2679,7 +2677,7 @@
                     toggleDoubleJump()
                 } else if (code === 77) {
                     setType(MOD)
-                } else if (code === 76) {
+                } else if (code === 76 && mode !== PLAY) {
                     if (localMap !== null) {
                         loadMap(localMap)
                     }
@@ -2695,7 +2693,7 @@
                     setType(-32768)
                 } else if (code === 70) {
                     setType(FLAG)
-                } else if (code === 67) {
+                } else if (code === 67 && mode !== PLAY) {
                     clear()
                 } else if (code === 66) {
                     setType(BATTERY)
