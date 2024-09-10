@@ -2743,8 +2743,13 @@
             // Move the screen so the player is centered
             centerX = 0.5 * w / scale - mainX - 0.25
             centerY = 0.5 * h / scale - mainY - 0.25
-            panX = centerX
-            panY = centerY
+            if (followPlayer) {
+                panX = spawnX - mainX + centerX + 1.25
+                panY = spawnY - mainY + centerY + 4.25
+            } else {
+                panX = centerX
+                panY = centerY
+            }
         }
 
         // Custom resize function! We add an extra pixel so you don't see the canvas edges.
