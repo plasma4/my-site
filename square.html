@@ -1178,8 +1178,8 @@
         function toggleCameraMode() {
             followPlayer = !followPlayer
             if (!followPlayer) {
-                var diffX = liveX - mainX
-                var diffY = liveY - mainY
+                var diffX = spawnX - mainX
+                var diffY = spawnY - mainY
                 panX = centerX + diffX
                 panY = centerY + diffY
             }
@@ -2281,17 +2281,17 @@
 
             // Update player panning
             if (followPlayer) {
-                panX = liveX - mainX + centerX + 1.25
-                panY = liveY - mainY + centerY + 4.25
+                panX = spawnX - mainX + centerX + 1.25
+                panY = spawnY - mainY + centerY + 4.25
             } else {
-                var diffX = liveX - mainX
+                var diffX = spawnX - mainX
                 if (diffX < -8) {
                     panX = centerX + diffX + 8
                 } else if (diffX > 8) {
                     panX = centerX + diffX - 8
                 }
 
-                var diffY = liveY - mainY
+                var diffY = spawnY - mainY
                 if (diffY < -6) {
                     panY = centerY + diffY + 6
                 } else if (diffY > 6) {
@@ -2750,8 +2750,8 @@
             centerX = 0.5 * w / scale - mainX - 0.25
             centerY = 0.5 * h / scale - mainY - 0.25
             if (followPlayer) {
-                panX = liveX - mainX + centerX + 1.25
-                panY = liveY - mainY + centerY + 4.25
+                panX = spawnX - mainX + centerX + 1.25
+                panY = spawnY - mainY + centerY + 4.25
             } else {
                 panX = centerX
                 panY = centerY
