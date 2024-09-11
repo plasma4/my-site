@@ -978,7 +978,6 @@
                             item.push(item[2], 0, 0)
                         } else if (type === LEFTRIGHT) {
                             item.push(item[1], 0, 0)
-                            console.warn(item)
                         } else if (type === PORTAL) {
                             item.push(array[i++])
                         } else if (type === MOD || type === GEAR) {
@@ -2286,10 +2285,10 @@
                 panY = liveY - mainY + centerY + 4.25
             } else {
                 var diffX = liveX - mainX
-                if (diffX < -12) {
-                    panX = centerX + diffX + 12
-                } else if (diffX > 12) {
-                    panX = centerX + diffX - 12
+                if (diffX < -8) {
+                    panX = centerX + diffX + 8
+                } else if (diffX > 8) {
+                    panX = centerX + diffX - 8
                 }
 
                 var diffY = liveY - mainY
