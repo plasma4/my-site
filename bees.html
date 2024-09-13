@@ -3021,6 +3021,10 @@
             font-size: inherit;
         }
 
+        b {
+            font-weight: 700;
+        }
+
         #noSelect {
             -webkit-user-select: none;
             user-select: none;
@@ -3385,6 +3389,7 @@
         #menus>button {
             transform: translateY(18px);
             border-radius: 10px 10px 0 0;
+            font-weight: 600;
         }
 
         body.light #menus>button {
@@ -3773,9 +3778,9 @@
             <button data-show="cells>0">Hive</button>
         </div>
         <hr>
+        <div id="time" class="small" style="color: #f5a9d2"></div>
         Time: <span id="currentDay">Loading data...</span>
         <br>
-        Amount to convert: <input id="sellAmount" type="range" min="1" max="100">
     </div>
     <div class="small">
         <div style="color: #f05c0d" id="beeLostCount"></div>
@@ -3789,6 +3794,8 @@
             Collect <b style="color: #f4d872">nectar</b> to make <b style="color: #dfb417">honey</b>!
         </p>
         <div style="color: #df7e17" data-s="bee" data-p="bees" id="bee"></div>
+        Amount to convert: <input id="sellAmount" type="range" min="1" max="100">
+        <br>
         <button class="sell green" data-earn="cells+all">
             Convert <span class="all"></span> of your honey into wax cells
         </button>
@@ -3812,6 +3819,7 @@
         <div class="small" style="color: #2dd860">Spring: 2&times; bee collection rate</div>
         <div class="small" style="color: #dec513">Summer: 1.5&times; bee collection rate</div>
         <div class="small" style="color: #fba32a">Autumn: 1&times; bee collection rate</div>
+        <hr>
         <button class="yellow" data-cost="honey-50" data-earn="bees+1" data-stat="bees">
             Hire a forager bee
         </button>
@@ -3827,9 +3835,9 @@
         Calculation progress: <span style="color: #7fef7d" id="calcAmount"></span>
         <br>
         Calculation speed: <span style="color: #7cdfe9" id="calcSpeed"></span>
-        <b style="color: #f05c0d" id="wereBeesLost"></b>
+        <div style="color: #f05c0d" id="wereBeesLost"></div>
         <br>
-        <button class="blue" id="skipCalc"><b>SKIP</b></button>
+        <button class="orange" id="skipCalc"><b>STOP CALCULATIONS</b></button>
     </b>
     <script id="main">
         ID("main").remove()
@@ -3923,7 +3931,7 @@
                     // Add the onclick event
                     button.onclick = function (e) {
                         // Prevent the button being clicked multiple times during the same frame
-                        if (alreadyClicked) {
+                        if (alreadyClicked || paused) {
                             return
                         } else if (waitID !== null) {
                             if (timeData[waitID].isPositive()) {
@@ -4382,7 +4390,9 @@
             }
 
             add("day", Hyper(1).div(120), speed)
-            var d = +C("day").add(1).floor()
+            var d = +C("day").add(1)
+            ID("time").textContent = ("0" + Math.floor((d * 24) % 12 + 1)).slice(-2) + ":" + ("0" + Math.floor((d * 1440) % 60 + 1)).slice(-2) + ((d * 24) % 24 > 12 ? " pm" : " am")
+            d = Math.floor(d)
             if (d !== oldDay) {
                 var yearAndDay = findYearAndDay(d)
                 year = yearAndDay[0]
@@ -4401,16 +4411,21 @@
                 season = 3
             }
 
-            ID("beeLostCount").textContent = C("beesLost").ceil().add(C("beesLost2").ceil()).format() + " bees lost this winter"
+            var lostBeeCount = C("beesLost").sub(0.0000000001).max(0).ceil().add(C("beesLost2").sub(0.0000000001).max(0).ceil())
+            if (lostBeeCount.isPositive()) {
+                ID("beeLostCount").textContent = lostBeeCount.format() + " bees lost this winter"
+            } else {
+                ID("beeLostCount").textContent = ""
+            }
 
             // Increase numbers
             var collectionRate = Hyper(speed).mul([0.4, 2, 1.5, 1][season])
             if (season === 0) {
-                if (!remove2("cells", C("bees").div(1200), speed)) {
-                    add("beesLost", C("bees") - mul("bees", Hyper(0.9999), speed))
+                if (frame % 2 === 0 && !remove2("cells", C("bees").div(1200), speed)) {
+                    add("beesLost", C("bees") - mul("bees", Hyper(0.99995), speed))
                 }
-                if (!remove2("cells", C("bees2").div(1200), speed)) {
-                    add("beesLost2", C("bees2") - mul("bees2", Hyper(0.9999), speed))
+                if (frame % 2 === 1 && !remove2("cells", C("bees2").div(1200), speed)) {
+                    add("beesLost2", C("bees2") - mul("bees2", Hyper(0.99995), speed))
                 }
             } else {
                 stuff.bees = C("bees").floor()
@@ -4519,10 +4534,13 @@
                 for (var t = 0; t < 10; t++) {
                     if (i++ < calculateLimit) {
                         updateGame(200)
+                        if (C("beesLost").add(C("beesLost2")).isPositive()) {
+                            ID("wereBeesLost").textContent = "Bees were lost, simulation stopped and game paused"
+                            paused = true
+                            ID("pause").textContent = "Resume"
+                            return
+                        }
                     }
-                }
-                if (C("beesLost").add(C("beesLost2")).isPositive()) {
-                    ID("wereBeesLost").textContent = "bees were lost, simulation stopped"
                 }
             }
 
@@ -4613,7 +4631,7 @@
                 }
             }
 
-            return (lightMode ? "beehive light " : "beehive ") + (paused ? "pause " : "") + (["", "styleA ", "styleB "][font]) + newResult.join(" ")
+            return (lightMode ? "beehive light " : "beehive ") + frame + (paused ? " pause " : " ") + (["", "styleA ", "styleB "][font]) + newResult.join(" ")
         }
 
         function saveLocally() {
@@ -4721,6 +4739,10 @@
         var confirmReset = false, resetTimeout = null, paused = false, stopCalc = false
         ID("skipCalc").addEventListener("click", function () {
             stopCalc = true
+            if (ID("wereBeesLost").textContent) {
+                ID("wereBeesLost").textContent = ""
+                draw()
+            }
         })
         ID("reset").addEventListener("click", function () {
             if (confirmReset) {
@@ -4790,9 +4812,10 @@
                 return
             }
             localData = localData.slice(8).trim().split(" ")
+            frame = Number(localData.shift())
             if (localData[0] === "light") {
                 lightMode = true
-                localData.unshift()
+                localData.shift()
             }
             if (localData[0] === "pause") {
                 paused = true
@@ -4801,11 +4824,11 @@
                 } else {
                     ID("pause").textContent = "Pause"
                 }
-                localData.unshift()
+                localData.shift()
             }
             if (localData[0] === "styleA" || localData[0] === "styleB") {
                 font = localData[0] === "styleA" ? 1 : 2
-                localData.unshift()
+                localData.shift()
             }
             if (localData.length !== 0) {
                 var convertedResult = ""
