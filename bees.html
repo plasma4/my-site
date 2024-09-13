@@ -3824,10 +3824,18 @@
             Get different types of bees for different jobs! Bees cost 50 <b style="color: #dfb417">honey</b>
             and 20 <b style="color: #f09b08">wax cells</b>.
         </p>
-        <div class="small" style="color: #bbd3fd">Winter: 0.4&times; bee collection rate</div>
-        <div class="small" style="color: #2dd860">Spring: 2&times; bee collection rate</div>
-        <div class="small" style="color: #dec513">Summer: 1.5&times; bee collection rate</div>
-        <div class="small" style="color: #fba32a">Autumn: 1&times; bee collection rate</div>
+        <div class="small" style="color: #bbd3fd">
+            Winter: <b style="color: #d3e2fa">0.4&times;</b> forager collection rate
+        </div>
+        <div class="small" style="color: #2dd860">
+            Spring: <b style="color: #98f7b5">2&times;</b> forager collection rate
+        </div>
+        <div class="small" style="color: #dec513">
+            Summer: <b style="color: #f8e871">1.5&times;</b> forager collection rate
+        </div>
+        <div class="small" style="color: #fba32a">
+            Autumn: <b style="color: #f5c37d">1&times;</b> forager collection rate
+        </div>
         <hr>
         <button class="yellow" data-cost="honey-50|cells-20" data-earn="bees+1" data-stat="bees">
             Hire a forager bee
@@ -4506,9 +4514,9 @@
                 stuff.beesLost2 = new Hyper()
                 stuff.beesLost3 = new Hyper()
             }
-            add("nectar", C("bees").div(20), speed)
+            add("nectar", C("bees").div(20), collectionRate)
             if (C("pollen").isPositive()) {
-                add("pollen", C("bees").div(1000), speed)
+                add("pollen", C("bees").div(1000), collectionRate)
             }
             var consumption = C("bees3").div(100)
             multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption, consumption], speed)
