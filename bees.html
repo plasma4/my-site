@@ -411,7 +411,7 @@
                     this.$ = [sign, 0, digits, (digits > DIGITSMINUSONE ? value / powerOfTenBig(digits - DIGITSMINUSONE) : (value * powerOfTenBig(DIGITSMINUSONE - digits)))]
                 } else if (typeof value === "number" && !isFinite(value)) {
                     if (!noWarnings) {
-                        console.error("Values given must be positive.")
+                        console.error("Numbers must be finite.")
                     }
                     this.$ = [1, 0, 0, 0n]
                     return
@@ -3043,6 +3043,10 @@
             font-size: 24px;
         }
 
+        .smaller {
+            font-size: 20px;
+        }
+
         /* 
                                         Apache License
                                 Version 2.0, January 2004
@@ -3778,6 +3782,9 @@
             <button data-show="cells>0">
                 Beehive <span class="sheet" style="background-position-x: -72px"></span>
             </button>
+            <button data-show="unlock2>0">
+                Construction <span class="sheet" style="background-position-x: -216px"></span>
+            </button>
         </div>
         <hr>
         <div id="time" class="small" style="color: #f5a9d2"></div>
@@ -3785,8 +3792,11 @@
         <br>
     </div>
     <div class="small">
-        <span style="color: #f0270d; display: none" class="small" id="queenBeesDying">QUEEN BEES DYING</span>
-        <br>
+        <div style="font-size: 16px">
+            &nbsp;
+            <span style="color: #f2134b; display: none; font-size: 16px" id="queenBeesDying">WARNING: your queen bees
+                are dying!</span>
+        </div>
         <div style="color: #f05c0d" id="beeLostCount"></div>
         <div style="color: #f09b08" data-s="wax cell $1" data-p="wax cells $1" id="cells"></div>
         <div style="color: #f6be14" data-s="honey $4" id="honey"></div>
@@ -3803,7 +3813,7 @@
         </p>
         <div style="color: #df7e17" data-s="bee" data-p="bees" id="bee"></div>
         Amount to convert: <input id="sellAmount" type="range" min="1" max="100">
-        <br>
+        <p style="color: #a3c9a6" id="pollinationPower"></p>
         <button class="sell green" data-earn="cells+all">
             Convert <span class="all"></span> of your honey into wax cells
         </button>
@@ -3812,11 +3822,15 @@
         <button class="yellow2" data-cost="nectar-20" data-earn="honey+20" data-wait="0.5">
             Convert 20 nectar into honey
         </button>
-        <button class="orange" data-cost="cells-10000" data-earn="pollen+1" data-hide="pollen>0">
-            Unlock <b style="color: #fafad1">pollen</b> for 10,000 <b style="color: #f3b03e">wax cells</b>
+        <button class="orange" data-cost="cells-1000" data-earn="pollen+1" data-hide="pollen>0">
+            Unlock <b style="color: #fafad1">pollen</b> for 1,000 <b style="color: #f3b03e">wax cells</b>
         </button>
         <button class="orange" data-show="pollen>0" data-cost="cells-25000" data-earn="unlock1+1" data-hide="unlock1>0">
             Unlock 2 new bee types for 25,000 <b style="color: #f3b03e">wax cells</b>
+        </button>
+        <button class="purple" data-show="unlock1>0" data-cost="cells-100000" data-earn="unlock2+1"
+            data-hide="unlock2>0">
+            Unlock construction for 100,000 <b style="color: #f3b03e">wax cells</b>
         </button>
     </div>
     <div id="menu2">
@@ -3846,7 +3860,7 @@
         <p data-show="unlock1>0" class="small hide" style="color: #9cf1aa">
             Nurse bees are able to produce <b style="color: #94f1fa">royal jelly</b> from
             <b style="color: #fafad1">pollen</b> and <b style="color: #f4d872">nectar</b>.
-            You can hire them for 10,000 <b style="color: #f09b08">wax cells</b>.
+            You can hire them for 500 <b style="color: #f09b08">wax cells</b>.
         </p>
         <p data-show="unlock1>0" class="small hide" style="color: #d6f18a">
             Queen bees, on the other hand, consume <b style="color: #94f1fa">royal jelly</b>
@@ -3854,7 +3868,7 @@
             which hatches into either forager or honey bees.
             You can hire them for 20,000 <b style="color: #94f1fa">royal jelly</b>.
         </p>
-        <button class="green" data-show="unlock1>0" data-cost="cells-10000" data-earn="bees3+1" data-stat="bees3">
+        <button class="green" data-show="unlock1>0" data-cost="cells-500" data-earn="bees3+1" data-stat="bees3">
             Hire a nurse bee
         </button>
         <button class="orange" data-show="unlock1>0" data-cost="jelly-20000" data-earn="qbees+1" data-stat="qbees">
@@ -3875,6 +3889,33 @@
             Each bee will consume 1 <b style="color: #f3b03e">wax cell</b> over the course of ten days.
         </i>
     </div>
+    <div id="menu3">
+        <p>
+            Build various cozy homes for your bees!
+            Note that if you build more homes than the number of bees that you have, you won't get any benefits.
+            Each home allows that a specific bee of that type to become <b style="color: #6ef979">+300% faster</b>.
+        </p>
+        Current house boosts:
+        <div class="small" style="color: #9cf1aa">
+            Nurse bees: <b id="boost" style="color: #1fee41"></b> production boost
+        </div>
+        <div class="small" style="color: #dba6f8">
+            Queen bees: <b id="boost2" style="color: #cc42eb"></b> production boost
+        </div>
+        <button class="smaller purple" data-cost="jelly-120" data-earn="homes+1" data-stat="homes">
+            Build a nurse bee home using 120 royal jelly
+        </button>
+        <button class="smaller purple" data-show="qbees>0" data-cost="jelly-80000" data-earn="homes2+1"
+            data-stat="homes2">
+            Build a queen bee home for 80,000 royal jelly
+        </button>
+        <hr>
+        <p>
+            Education is also important for your bees. Set up schools to learn more!
+            The more your bees study, the more they will learn, but their production rates will decrease.
+        </p>
+        Study amount: <input id="studyAmount" type="range" min="0" max="100">
+    </div>
     <b id="calculating">
         Hey! You've been gone for a while, so we're doing some math in the background. Please give us a bit!
         <br>
@@ -3893,12 +3934,13 @@
         var baseProperties = ["day", "beesLost", "beesLost2", "beesLost3", "pupae"]
         var oldDay = null
 
-        var buttons = null, sellPercent = 100, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = {}, stuffTotals = {}, alreadyClicked = true
+        var buttons = null, sellPercent = 100, studyAmount = 50, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = {}, stuffTotals = {}, alreadyClicked = true
         function setup(removeCSS) {
             ID("currentDay").textContent = "day 1 (year 1)"
             paused = false
             ID("pause").textContent = "Pause"
             sellPercent = 100
+            studyAmount = 50
             currentMenu = 1
             easyUpgrades = 0
             var elements = document.getElementsByTagName("*")
@@ -4436,7 +4478,7 @@
             return false
         }
 
-        var strangeBoost, easyclickCost = ["1e12", "1e15", "1e18", "1e21", "1e30", "1e50", "1e100", "1e1000", "ee9", "ee12", "ee15", "ee50", "ee250", "ee5000", "ee1000000", "eee12", "eeee12", "F10", "F100", "F1000000"], easyUpgrades = 0, season = 0, year = 1, dayOfYear = 1
+        var strangeBoost, easyclickCost = ["1e12", "1e15", "1e18", "1e21", "1e30", "1e50", "1e100", "1e1000", "ee9", "ee12", "ee15", "ee50", "ee250", "ee5000", "ee1000000", "eee12", "eeee12", "F10", "F100", "F1000000"], easyUpgrades = 0, season = 0, year = 1, dayOfYear = 1, queenBeesDying = false, pollenPower = Hyper()
         function updateGame(speed) {
             for (var i = 0; i < buttonsAndUnlocks.length; i++) {
                 var child = buttonsAndUnlocks[i]
@@ -4491,7 +4533,7 @@
             }
 
             var lostBeeCount = C("beesLost").add(C("beesLost2")).add(C("beesLost3"))
-            if (lostBeeCount.isMoreOrEqual(1)) {
+            if (lostBeeCount.isPositive()) {
                 ID("beeLostCount").textContent = lostBeeCount.format(3) + " bees lost"
             } else {
                 ID("beeLostCount").textContent = ""
@@ -4510,27 +4552,31 @@
                     add("beesLost3", C("bees3").sub(mul("bees3", Hyper(0.99975), speed)))
                 }
             } else {
+                stuff.bees3 = C("bees3").floor()
                 stuff.beesLost = new Hyper()
                 stuff.beesLost2 = new Hyper()
                 stuff.beesLost3 = new Hyper()
             }
-            add("nectar", C("bees").div(20), collectionRate)
+            pollenPower = C("pollen").add(100).log10().mul(3.5).sub(6)
+            add("nectar", C("bees").mul(pollenPower).div(20), collectionRate)
             if (C("pollen").isPositive()) {
-                add("pollen", C("bees").div(1000), collectionRate)
+                add("pollen", C("bees").mul(pollenPower).div(1000), collectionRate)
             }
-            var consumption = C("bees3").div(100)
+            var consumption = getBeeBoost("bees3", "homes").div(40)
             multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption, consumption], speed)
-            add("pupae", remove("jelly", C("qbees").div(5), speed).mul(0.01))
+            add("pupae", remove("jelly", getBeeBoost("qbees", "homes2").div(3), speed).mul(0.2))
             consumption = remove("pupae", C("pupae").mul(0.0001), speed).div(2)
             add("bees", consumption)
             add("bees2", consumption)
-            add("honey", remove("nectar", C("bees2").div(20), speed))
+            add("honey", remove("nectar", C("bees2").mul(pollenPower).div(20), speed))
 
-            if (!remove2("jelly", C("qbees").div(60), speed)) {
+            if (!remove2("jelly", C("qbees").div(12), speed)) {
                 C("qbees").sub(mul("qbees", Hyper(0.9995)), speed)
                 ID("queenBeesDying").style.display = null
-            } else {
+                queenBeesDying = true
+            } else if (queenBeesDying) {
                 ID("queenBeesDying").style.display = "none"
+                queenBeesDying = false
             }
         }
 
@@ -4543,7 +4589,7 @@
                 easyButton = null
             }
             var mult = paused ? Hyper(0) : baseSpeed
-            if (diff < 400) {
+            if (diff < 7000) {
                 updateGame(mult)
 
                 var clickBoost = Hyper(1)
@@ -4579,11 +4625,17 @@
             updateNumbers()
             updateWaits(Hyper(diff).div(1000))
 
+            ID("boost").textContent = calculateBoost(getBeeBoost2("bees3", "homes"))
+            ID("boost2").textContent = calculateBoost(getBeeBoost2("qbees", "homes2"))
+            ID("pollinationPower").textContent = "Nectar and honey boost from pollination: " + calculateBoost(pollenPower)
             ID("currentDay").style.color = ["#bbd3fd", "#2dd860", "#dec513", "#fba32a"][season]
             season = 0
 
             if (sellPercent != ID("sellAmount").value) {
                 ID("sellAmount").value = sellPercent
+            }
+            if (studyAmount != ID("studyAmount").value) {
+                ID("studyAmount").value = studyAmount
             }
 
             alreadyClicked = false
@@ -4631,7 +4683,7 @@
                 for (var t = 0; t < 10; t++) {
                     if (i++ < calculateLimit) {
                         updateGame(200)
-                        if (C("beesLost").add(C("beesLost2")).add(C("beesLost3")).isPositive()) {
+                        if (queenBeesDying || C("beesLost").add(C("beesLost2")).add(C("beesLost3")).isPositive()) {
                             ID("calcHoney").textContent = C("honey").format() + " honey"
                             ID("calcNectar").textContent = C("nectar").format() + " nectar"
                             ID("calcAmount").textContent = i + "/" + calculateLimit + " (" + Hyper(i).div(calculateLimit).mul(100).format(2) + "%)"
@@ -4666,6 +4718,16 @@
 
         onpagehide = function () {
             saveLocally()
+        }
+
+        function getBeeBoost(beeName, houseName) {
+            var beeAmount = C(beeName)
+            return beeAmount.isPositive() ? beeAmount.add(C(houseName).min(beeAmount).mul(3)) : new Hyper()
+        }
+
+        function getBeeBoost2(beeName, houseName) {
+            var beeAmount = C(beeName)
+            return beeAmount.isPositive() ? C(houseName).div(beeAmount).min(1).mul(3).add(1) : new Hyper()
         }
 
         // Leap years are crazy complex
@@ -4716,7 +4778,7 @@
                 }
             }
 
-            result += "|||" + time + "|||" + easyUpgrades + "|||" + waitLength + "|||" + timeData.join(" ") + "|||" + currentMenu + "|||" + sellPercent
+            result += "|||" + time + "|||" + easyUpgrades + "|||" + waitLength + "|||" + timeData.join(" ") + "|||" + currentMenu + "|||" + sellPercent + "|||" + (studyAmount + 2)
 
             // Do some silly encoding
             var len = result.length
@@ -4731,7 +4793,7 @@
                 }
             }
 
-            return (lightMode ? "beehive light " : "beehive ") + frame + (paused ? " pause " : " ") + (["", "styleA ", "styleB "][font]) + newResult.join(" ")
+            return (lightMode ? "beehive light " : "beehive ") + frame.toString(36).toUpperCase() + (paused ? " pause " : " ") + (["", "styleA ", "styleB "][font]) + newResult.join(" ")
         }
 
         function saveLocally() {
@@ -4907,16 +4969,16 @@
             sellPercent = Number(ID("sellAmount").value)
         })
 
+        ID("studyAmount").addEventListener("input", function () {
+            studyAmount = Number(ID("studyAmount").value)
+        })
+
         function loadSave(localData) {
             if (localData === null || localData.slice(0, 8) !== "beehive ") {
                 return
             }
             localData = localData.slice(8).trim().split(" ")
-            frame = Number(localData.shift())
-            if (localData[0] === "light") {
-                lightMode = true
-                localData.shift()
-            }
+            frame = parseInt(localData.shift(), 36)
             if (localData[0] === "pause") {
                 paused = true
                 if (paused) {
@@ -4961,8 +5023,9 @@
                 }
                 currentMenu = Number(convertedSplit[5])
                 sellPercent = Number(convertedSplit[6])
-                if (sellPercent === 0 || !isFinite(sellPercent)) {
-                    sellPercent = 100
+                studyAmount = convertedSplit[7] - 2
+                if (studyAmount === -2 || !isFinite(studyAmount)) {
+                    studyAmount = 50
                 }
 
                 // Clear previous stats

@@ -410,7 +410,7 @@
                     this.$ = [sign, 0, digits, (digits > DIGITSMINUSONE ? value / powerOfTenBig(digits - DIGITSMINUSONE) : (value * powerOfTenBig(DIGITSMINUSONE - digits)))]
                 } else if (typeof value === "number" && !isFinite(value)) {
                     if (!noWarnings) {
-                        console.error("Values given must be positive.")
+                        console.error("Numbers must be finite.")
                     }
                     this.$ = [1, 0, 0, 0n]
                     return
