@@ -3849,11 +3849,7 @@
         function setup(removeCSS) {
             ID("currentDay").textContent = "day 1 (year 1)"
             paused = false
-            if (paused) {
-                ID("pause").textContent = "Resume"
-            } else {
-                ID("pause").textContent = "Pause"
-            }
+            ID("pause").textContent = "Pause"
             sellPercent = 100
             currentMenu = 1
             easyUpgrades = 0
@@ -4391,7 +4387,7 @@
 
             add("day", Hyper(1).div(120), speed)
             var d = +C("day").add(1)
-            ID("time").textContent = ("0" + Math.floor((d * 24) % 12 + 1)).slice(-2) + ":" + ("0" + Math.floor((d * 1440) % 60 + 1)).slice(-2) + ((d * 24) % 24 > 12 ? " pm" : " am")
+            ID("time").textContent = paused ? "GAME PAUSED" : ("0" + Math.floor((d * 24) % 12 + 1)).slice(-2) + ":" + ("0" + Math.floor((d * 1440) % 60 + 1)).slice(-2) + ((d * 24) % 24 > 12 ? " pm" : " am")
             d = Math.floor(d)
             if (d !== oldDay) {
                 var yearAndDay = findYearAndDay(d)
@@ -4535,6 +4531,10 @@
                     if (i++ < calculateLimit) {
                         updateGame(200)
                         if (C("beesLost").add(C("beesLost2")).isPositive()) {
+                            ID("calcHoney").textContent = C("honey").format() + " honey"
+                            ID("calcNectar").textContent = C("nectar").format() + " nectar"
+                            ID("calcAmount").textContent = i + "/" + calculateLimit + " (" + Hyper(i).div(calculateLimit).mul(100).format(2) + "%)"
+                            ID("calcSpeed").textContent = Hyper(i).div(0.219).div(new Hyper(Date.now() - time)).format(2) + " in-game years/calculation second"
                             ID("wereBeesLost").textContent = "Bees were lost, simulation stopped and game paused"
                             paused = true
                             ID("pause").textContent = "Resume"
@@ -4545,10 +4545,9 @@
             }
 
             if (i < calculateLimit) {
-                var calcAmount = Hyper(i).div(calculateLimit)
                 ID("calcHoney").textContent = C("honey").format() + " honey"
                 ID("calcNectar").textContent = C("nectar").format() + " nectar"
-                ID("calcAmount").textContent = i + "/" + calculateLimit + " (" + calcAmount.mul(100).format(2) + "%)"
+                ID("calcAmount").textContent = i + "/" + calculateLimit + " (" + Hyper(i).div(calculateLimit).mul(100).format(2) + "%)"
                 ID("calcSpeed").textContent = Hyper(i).div(0.219).div(new Hyper(Date.now() - time)).format(2) + " in-game years/calculation second"
                 setTimeout(calculateRapidly, 5, i, calculateLimit)
                 return
