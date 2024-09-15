@@ -3915,88 +3915,91 @@
             data-hide="unlock2>0">
             Unlock construction for 100,000 <b style="color: #f3b03e">wax cells</b>
         </button>
-        <p>
-            Education is also important for your bees. Teach them things to learn more!
-            The more your bees study, the more they will learn, but their production rates will decrease.
-        </p>
-        Study amount: <input id="studyAmount" class="range2" type="range" min="0" max="100">
-        <div style="color: #fc9ae2" data-s="education $9" id="education"></div>
-        <div style="color: #81f0ee" data-s="idea $10" data-p="ideas $10" id="ideas"></div>
-        <div style="color: #d4f6da" data-s="cultural point $14" data-p="cultural points $14" id="cpoints"></div>
-        <div style="color: #f1d2b9" data-s="tech point $15" data-p="tech points $15" id="tpoints"></div>
-        <div class="smaller">...</div>
-        <button class="gold" data-show="education>0" data-cost="education-1000" data-earn="ideas+1" id="createIdeas"
-            data-wait="5">
-            Convert 1,000 education into ideas
-            <span class="sheet" style="background-position-x: -216px"></span>
-        </button>
-        <br>
-        <button class="diamond" data-show="education>0" data-cost="education-1000" data-earn="double+1"
-            data-hide="double>0">
-            Triple idea creation speed for 1,000 education
-            <span class="sheet" style="background-position-x: -240px"></span>
-        </button>
-        <button class="diamond" data-show="double>0" data-cost="education-10000" data-earn="double+1"
-            data-hide="double>1">
-            Triple idea creation speed again for 10,000 education
-            <span class="sheet" style="background-position-x: -240px"></span>
-        </button>
-        <button class="diamond" data-show="double>1" data-cost="education-100000" data-earn="double+1"
-            data-hide="double>2">
-            Triple idea creation speed for the final time for 100,000 education
-            <span class="sheet" style="background-position-x: -240px"></span>
-        </button>
-        <button class="diamond" data-show="double>2" data-cost="education-2000000" data-earn="double+97"
-            data-hide="double>3">
-            Remove idea creation speed limits for 2,000,000 education
-            <span class="sheet" style="background-position-x: -240px"></span>
-        </button>
-        <hr>
-        <button class="green" data-show="ideas>0" data-cost="ideas-25" data-earn="gardening+1" data-hide="gardening>0">
-            Unlock gardening for 25 ideas in the Gardening tab
-            <span class="sheet" style="background-position-x: -168px"></span>
-        </button>
-        <button class="blue" data-show="ideas>0" data-cost="ideas-100" data-earn="labor+1" data-hide="labor>0">
-            Unlock division of labor for 100 ideas in the Beehive tab
-            <span class="sheet" style="background-position-x: -48px"></span>
-        </button>
-        <button class="wow" data-show="ideas>0" data-cost="ideas-120" data-earn="unlock3+1" data-hide="unlock3>0">
-            Unlock researches below for 120 ideas
-            <span class="sheet" style="background-position-x: -216px"></span>
-            <span class="sheet" style="background-position-x: -240px"></span>
-            <span class="sheet" style="background-position-x: -216px"></span>
-        </button>
-        <div class="hide" data-show="unlock3>0">
-            <div style="color: #edaac3">Research Department:</div>
-            <button class="wow2" data-cost="ideas-10" data-earn="cpoints+1" data-wait="0.25">
-                Convert 10 ideas into 1 cultural point
-                <span class="sheet" style="background-position-x: -336px"></span>
-            </button>
-            <button class="wow3" data-cost="ideas-10" data-earn="tpoints+1" data-wait="0.25">
-                Convert 10 ideas into 1 research point
-                <span class="sheet" style="background-position-x: -360px"></span>
+        <div class="hide" data-show="bees3>0">
+            <p>
+                Education is also important for your bees. Teach them things to learn more!
+                The more your bees study, the more they will learn, but their production rates will decrease.
+            </p>
+            Study amount: <input id="studyAmount" class="range2" type="range" min="0" max="100">
+            <div style="color: #fc9ae2" data-s="education $9" id="education"></div>
+            <div style="color: #81f0ee" data-s="idea $10" data-p="ideas $10" id="ideas"></div>
+            <div style="color: #d4f6da" data-s="cultural point $14" data-p="cultural points $14" id="cpoints"></div>
+            <div style="color: #f1d2b9" data-s="tech point $15" data-p="tech points $15" id="tpoints"></div>
+            <div class="smaller">...</div>
+            <button class="gold" data-show="education>0" data-cost="education-1000" data-earn="ideas+1" id="createIdeas"
+                data-wait="5">
+                Convert 1,000 education into ideas
+                <span class="sheet" style="background-position-x: -216px"></span>
             </button>
             <br>
-            <button class="wow4" data-show="tpoints>0" data-cost="cpoints-3" data-earn="unlock4+1"
-                data-hide="unlock4>0">
-                Unlock cultural ideas for 3 cultural points
-                <span class="tech" style="background-position-x: -456px"></span>
+            <button class="diamond" data-show="education>0" data-cost="education-1000" data-earn="double+1"
+                data-hide="double>0">
+                Triple idea creation speed for 1,000 education
+                <span class="sheet" style="background-position-x: -240px"></span>
             </button>
-            <button class="wow4" data-show="tpoints>0" data-cost="tpoints-3" data-earn="unlock5+1"
-                data-hide="unlock5>0">
-                Unlock wooden bee houses for 3 research points
-                <span class="tech" style="background-position-x: -384px"></span>
+            <button class="diamond" data-show="double>0" data-cost="education-10000" data-earn="double+1"
+                data-hide="double>1">
+                Triple idea creation speed again for 10,000 education
+                <span class="sheet" style="background-position-x: -240px"></span>
             </button>
-            <button class="wow4" data-show="unlock4>0" data-cost="cpoints-10" data-earn="unlock6+1"
-                data-hide="unlock6>0">
-                Unlock artistry for 10 cultural points
-                <span class="tech" style="background-position-x: -480px"></span>
+            <button class="diamond" data-show="double>1" data-cost="education-100000" data-earn="double+1"
+                data-hide="double>2">
+                Triple idea creation speed for the final time for 100,000 education
+                <span class="sheet" style="background-position-x: -240px"></span>
             </button>
-            <button class="wow4" data-show="unlock4>0|unlock5>0" data-cost="cpoints-25" data-earn="unlock7+1"
-                data-hide="unlock7>0">
-                Unlock housing decorations for 25 cultural points
-                <span class="tech" style="background-position-x: -432px"></span>
+            <button class="diamond" data-show="double>2" data-cost="education-2000000" data-earn="double+97"
+                data-hide="double>3">
+                Remove idea creation speed limits for 2,000,000 education
+                <span class="sheet" style="background-position-x: -240px"></span>
             </button>
+            <hr>
+            <button class="green" data-show="ideas>0" data-cost="ideas-25" data-earn="gardening+1"
+                data-hide="gardening>0">
+                Unlock gardening for 25 ideas in the Gardening tab
+                <span class="sheet" style="background-position-x: -168px"></span>
+            </button>
+            <button class="blue" data-show="ideas>0" data-cost="ideas-100" data-earn="labor+1" data-hide="labor>0">
+                Unlock division of labor for 100 ideas in the Beehive tab
+                <span class="sheet" style="background-position-x: -48px"></span>
+            </button>
+            <button class="wow" data-show="ideas>0" data-cost="ideas-120" data-earn="unlock3+1" data-hide="unlock3>0">
+                Unlock researches below for 120 ideas
+                <span class="sheet" style="background-position-x: -216px"></span>
+                <span class="sheet" style="background-position-x: -240px"></span>
+                <span class="sheet" style="background-position-x: -216px"></span>
+            </button>
+            <div class="hide" data-show="unlock3>0">
+                <div style="color: #edaac3">Research Department:</div>
+                <button class="wow2" data-cost="ideas-10" data-earn="cpoints+1" data-wait="0.25">
+                    Convert 10 ideas into 1 cultural point
+                    <span class="sheet" style="background-position-x: -336px"></span>
+                </button>
+                <button class="wow3" data-cost="ideas-10" data-earn="tpoints+1" data-wait="0.25">
+                    Convert 10 ideas into 1 research point
+                    <span class="sheet" style="background-position-x: -360px"></span>
+                </button>
+                <br>
+                <button class="wow4" data-show="tpoints>0" data-cost="cpoints-3" data-earn="unlock4+1"
+                    data-hide="unlock4>0">
+                    Unlock cultural ideas for 3 cultural points
+                    <span class="tech" style="background-position-x: -456px"></span>
+                </button>
+                <button class="wow4" data-show="tpoints>0" data-cost="tpoints-3" data-earn="unlock5+1"
+                    data-hide="unlock5>0">
+                    Unlock wooden bee houses for 3 research points
+                    <span class="tech" style="background-position-x: -384px"></span>
+                </button>
+                <button class="wow4" data-show="unlock4>0" data-cost="cpoints-10" data-earn="unlock6+1"
+                    data-hide="unlock6>0">
+                    Unlock artistry for 10 cultural points
+                    <span class="tech" style="background-position-x: -480px"></span>
+                </button>
+                <button class="wow4" data-show="unlock4>0|unlock5>0" data-cost="cpoints-25" data-earn="unlock7+1"
+                    data-hide="unlock7>0">
+                    Unlock housing decorations for 25 cultural points
+                    <span class="tech" style="background-position-x: -432px"></span>
+                </button>
+            </div>
         </div>
     </div>
     <div id="menu2">
@@ -4144,13 +4147,16 @@
     </div>
     <div id="menu4">
         <p>
-            Setting up gardens that have enough water will allow you to increase pollen and nectar gain!
+            Setting up gardens that have enough <b style="color: #d6ecfa">water</b>
+            to support them will increase your pollen and nectar gain!
         </p>
         <div style="color: #63c6f3; text-shadow: #63c6f3 0 0 2px" data-s="water source" data-p="water sources"
             id="sources"></div>
         <div style="color: #d6ecfa; text-shadow: #d6ecfa 0 0 2px" data-s="water $13" id="water"></div>
         <div style="color: #d7b095; text-shadow: #d7b095 0 0 2px" data-s="soil $12" id="soil"></div>
         <div style="color: #d1b479; text-shadow: #d1b479 0 0 2px" data-s="seed $6" data-p="seeds $6" id="seeds">
+        </div>
+        <div style="color: #79d195; text-shadow: #79d195 0 0 2px" data-s="garden $7" data-p="gardens $7" id="gardens">
         </div>
         <p style="color: #eb8feb" id="waterPower"></p>
         <p style="color: #7cf786" id="flowerPower"></p>
@@ -4179,13 +4185,13 @@
         var baseProperties = ["day", "beesLost", "beesLost2", "beesLost3", "pupae", "water"]
         var oldDay = null
 
-        var buttons = null, sellPercent = 100, studyAmount = 50, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = {}, stuffTotals = {}, alreadyClicked = true
+        var buttons = null, sellPercent = 100, studyAmount = 0, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = {}, stuffTotals = {}, alreadyClicked = true
         function setup(removeCSS) {
             ID("currentDay").textContent = "day 1 (year 1)"
             paused = false
             ID("pause").textContent = "Pause"
             sellPercent = 100
-            studyAmount = 50
+            studyAmount = 0
             currentMenu = 1
             easyUpgrades = 0
             var elements = document.getElementsByTagName("*")
@@ -4754,6 +4760,10 @@
                 sellClass[i].textContent = sellPercent + "%"
             }
 
+            if (!C("bees3").isPositive()) {
+                studyAmount = 0
+            }
+
             add("day", Hyper(1).div(120), speed)
             var d = Math.min(C("day").add(1), 1e100)
             ID("time").textContent = paused ? "GAME PAUSED" : ("0" + Math.floor((d * 24) % 12 + 1)).slice(-2) + ":" + ("0" + Math.floor((d * 1440) % 60 + 1)).slice(-2) + ((d * 24) % 24 > 12 ? " pm" : " am")
@@ -5286,9 +5296,6 @@
                 currentMenu = Number(convertedSplit[5])
                 sellPercent = Number(convertedSplit[6])
                 studyAmount = convertedSplit[7] - 2
-                if (studyAmount === -2 || !isFinite(studyAmount)) {
-                    studyAmount = 50
-                }
 
                 // Clear previous stats
                 for (i = 0; i < properties.length; i++) {
