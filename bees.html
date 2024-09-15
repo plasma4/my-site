@@ -3038,6 +3038,10 @@
             font-size: 26px;
         }
 
+        .light div[data-s] {
+            text-shadow: 1px 1px 2px black;
+        }
+
         .small {
             font-size: 24px;
         }
@@ -3832,6 +3836,7 @@
             height: 100%;
             padding: 20px;
             background-color: black;
+            color: white;
         }
     </style>
 </head>
@@ -5231,6 +5236,10 @@
                 return
             }
             localData = localData.slice(8).trim().split(" ")
+            if (localData[0] === "light") {
+                lightMode = true
+                localData.shift()
+            }
             frame = parseInt(localData.shift(), 36)
             if (localData[0] === "pause") {
                 paused = true
