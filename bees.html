@@ -3011,6 +3011,7 @@
         * {
             text-align: center;
             font-size: 30px;
+            line-height: 1.4;
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             touch-action: manipulation;
@@ -3320,7 +3321,7 @@
             font-weight: 400;
             text-align: center;
             cursor: pointer;
-            margin: 1px;
+            margin: 3px;
             border: solid 2px #616161;
             background-color: #e1e1e144;
             transition: transform 500ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, border-radius 500ms, filter 1s;
@@ -3404,6 +3405,7 @@
             transform: translateY(18px);
             border-radius: 10px 10px 0 0;
             padding: 6px 12px 6px 12px;
+            margin: 2px;
             font-size: 25px;
         }
 
@@ -3886,7 +3888,8 @@
         <div style="color: #94f1fa" data-s="royal jelly $1" id="jelly"></div>
         <div style="color: #dba6f8; text-shadow: #dba6f8 0 0 2px" data-s="queen bee" data-p="queen bees" id="qbees">
         </div>
-        <div style="color: #f3e080; text-shadow: #f3e080 0 0 6px" data-s="flowers $11" id="flowers"></div>
+        <div style="color: #f3e080; text-shadow: #f3e080 0 0 6px" data-s="flower $11" data-p="flowers $11" id="flowers">
+        </div>
     </div>
     <div id="menu1">
         <p>
@@ -3964,8 +3967,8 @@
                 Unlock the Gardening tab for 25 ideas
                 <span class="sheet" style="background-position-x: -168px"></span>
             </button>
-            <button class="blue" data-show="schools>0" data-cost="ideas-100" data-earn="labor+1" data-hide="labor>0">
-                Unlock division of labor for 100 ideas in the Beehive tab
+            <button class="blue" data-show="schools>0" data-cost="ideas-60" data-earn="labor+1" data-hide="labor>0">
+                Unlock division of labor for 60 ideas in the Beehive tab
                 <span class="sheet" style="background-position-x: -48px"></span>
             </button>
             <button class="wow" data-show="schools>0" data-cost="ideas-120" data-earn="unlock3+1" data-hide="unlock3>0">
@@ -4130,7 +4133,7 @@
             You can trade with various animals, who will help you for the right price!
         </p>
         <div style="color: #a3a09d">Bear trades:</div>
-        <button class="brown" data-cost="honey-1e8" data-earn="soil+100|trades+1" data-stat="soil" data-wait="10">
+        <button class="brown" data-cost="honey-1e8" data-earn="soil+100|trades+1" data-stat="soil" data-wait="5">
             Purchase 100 soil
         </button>
         <span class="sheet" style="background-position-x: -288px"></span> (100M <b style="color: #dfb417">honey</b>)
@@ -4140,26 +4143,26 @@
         </button>
         <span class="sheet" style="background-position-x: -144px"></span> (10M <b style="color: #dfb417">honey</b>)
         <hr>
-        <button class="gray" data-show="trades>0" data-cost="honey-5e10" data-earn="partners+1" data-hide="partners>0">
-            Unlock a new trading partner for 50B <b style="color: #dfb417">honey</b>
+        <button class="gray" data-show="trades>0" data-cost="honey-1e9" data-earn="partners+1" data-hide="partners>0">
+            Unlock a new trading partner for 1B <b style="color: #dfb417">honey</b>
         </button>
         <div class="hide" data-show="partners>0">
             <div style="color: #babeb1">Elephant trades:</div>
-            <button class="aqua" data-cost="honey-2e10" data-earn="sources+1" data-stat="sources" data-wait="5">
+            <button class="aqua" data-cost="honey-2e9" data-earn="sources+1" data-stat="sources" data-wait="15">
                 Purchase 1 water source
             </button>
-            <span class="sheet" style="background-position-x: -312px"></span> (20B <b style="color: #dfb417">honey</b>)
+            <span class="sheet" style="background-position-x: -312px"></span> (2B <b style="color: #dfb417">honey</b>)
             <br>
-            <button class="brown" data-cost="honey-5e9" data-earn="soil+1000" data-stat="soil" data-wait="10">
+            <button class="brown" data-cost="honey-5e9" data-earn="soil+1000" data-stat="soil" data-wait="5">
                 Purchase 1,000 soil
             </button>
             <span class="sheet" style="background-position-x: -288px"></span> (5B <b style="color: #dfb417">honey</b>,
             faster)
             <br>
-            <button class="wood" data-cost="honey-1e12" data-earn="wood+200" data-stat="wood" data-wait="2">
+            <button class="wood" data-cost="honey-4e10" data-earn="wood+200" data-stat="wood" data-wait="2">
                 Purchase 200 wood
             </button>
-            <span class="sheet" style="background-position-x: -528px"></span> (1T <b style="color: #dfb417">honey</b>)
+            <span class="sheet" style="background-position-x: -528px"></span> (40B <b style="color: #dfb417">honey</b>)
         </div>
     </div>
     <div id="menu4">
@@ -4173,13 +4176,13 @@
         <div style="color: #d7b095; text-shadow: #d7b095 0 0 2px" data-s="soil $12" id="soil"></div>
         <div style="color: #d1b479; text-shadow: #d1b479 0 0 2px" data-s="seed $6" data-p="seeds $6" id="seeds">
         </div>
-        <div style="color: #79d195; text-shadow: #79d195 0 0 2px" data-s="garden $7" data-p="gardens $7" id="gardens">
+        <div style="color: #79d195; text-shadow: #79d195 0 0 6px" data-s="garden $7" data-p="gardens $7" id="gardens">
         </div>
         <p style="color: #eb8feb" id="waterPower"></p>
         <p style="color: #7cf786" id="flowerPower"></p>
         <hr>
-        <button class="green2" data-cost="pollen-1.5e7|soil-1000|seeds-100" data-earn="gardens+1" data-wait="2">
-            Create a garden with 15M pollen, 1,000 soil, and 100 seeds
+        <button class="green2" data-cost="pollen-5000000|soil-1000|seeds-100" data-earn="gardens+1" data-wait="2">
+            Create a garden with 5,000,000 pollen, 1,000 soil, and 100 seeds
             <span class="sheet" style="background-position-x: -168px"></span>
         </button>
     </div>
@@ -4839,7 +4842,7 @@
             }
 
             schoolBoost = C("schools").mul(4).add(1).log2()
-            waterPower = C("water").add(10).log10().mul(1.3).sub(0.3)
+            waterPower = C("water").mul(0.3).add(10).log10().mul(1.3).sub(0.3)
             flowerPower = C("flowers").add(10).log10().mul(5).sub(4)
             add("water", C("sources").div(10), speed)
             add("flowers", remove("water", C("gardens").div(10), speed).div(15))
