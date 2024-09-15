@@ -3911,13 +3911,14 @@
         <button class="orange" data-show="pollen>0" data-cost="cells-2000" data-earn="unlock1+1" data-hide="unlock1>0">
             Unlock 2 new bee types for 2,000 <b style="color: #f3b03e">wax cells</b>
         </button>
-        <button class="purple" data-show="unlock1>0" data-cost="cells-100000" data-earn="unlock2+1"
+        <button class="purple" data-show="unlock1>0" data-cost="cells-50000" data-earn="unlock2+1"
             data-hide="unlock2>0">
-            Unlock construction for 100,000 <b style="color: #f3b03e">wax cells</b>
+            Unlock construction for 50,000 <b style="color: #f3b03e">wax cells</b>
         </button>
         <div class="hide" data-show="bees3>0">
             <p>
                 Education is also important for your bees. Teach them things to learn more!
+                Forager, honey, and nurse bees can learn.
                 The more your bees study, the more they will learn, but their production rates will decrease.
             </p>
             Study amount: <input id="studyAmount" class="range2" type="range" min="0" max="100">
@@ -3953,16 +3954,21 @@
                 <span class="sheet" style="background-position-x: -240px"></span>
             </button>
             <hr>
+            <button class="orange" data-show="ideas>0" data-cost="ideas-1" data-earn="schoolidea+1"
+                data-hide="schoolidea>0">
+                Unlock schools for 1 idea in the Construction and Trade tab
+                <span class="sheet" style="background-position-x: -96px"></span>
+            </button>
             <button class="green" data-show="ideas>0" data-cost="ideas-25" data-earn="gardening+1"
                 data-hide="gardening>0">
-                Unlock gardening for 25 ideas in the Gardening tab
+                Unlock the Gardening tab for 25 ideas
                 <span class="sheet" style="background-position-x: -168px"></span>
             </button>
-            <button class="blue" data-show="ideas>0" data-cost="ideas-100" data-earn="labor+1" data-hide="labor>0">
+            <button class="blue" data-show="schools>0" data-cost="ideas-100" data-earn="labor+1" data-hide="labor>0">
                 Unlock division of labor for 100 ideas in the Beehive tab
                 <span class="sheet" style="background-position-x: -48px"></span>
             </button>
-            <button class="wow" data-show="ideas>0" data-cost="ideas-120" data-earn="unlock3+1" data-hide="unlock3>0">
+            <button class="wow" data-show="schools>0" data-cost="ideas-120" data-earn="unlock3+1" data-hide="unlock3>0">
                 Unlock researches below for 120 ideas
                 <span class="sheet" style="background-position-x: -216px"></span>
                 <span class="sheet" style="background-position-x: -240px"></span>
@@ -4046,12 +4052,15 @@
             Queen bees, on the other hand, consume <b style="color: #94f1fa">royal jelly</b>
             during all seasons to stay alive and make <b style="color: #c7e63d">pupae</b>,
             which hatches into either forager or honey bees.
-            You can hire them for 20,000 <b style="color: #94f1fa">royal jelly</b>.
+            You can hire them for 5,000 <b style="color: #94f1fa">royal jelly</b>.
         </p>
         <button class="green" data-show="unlock1>0" data-cost="cells-500" data-earn="bees3+1" data-stat="bees3">
             Hire a nurse bee
         </button>
-        <button class="orange" data-show="unlock1>0" data-cost="jelly-20000" data-earn="qbees+1" data-stat="qbees">
+        <button class="red" data-show="bees3>0" data-cost="bees3-1" data-earn="">
+            Fire a nurse bee
+        </button>
+        <button class="orange" data-show="unlock1>0" data-cost="jelly-5000" data-earn="qbees+1" data-stat="qbees">
             Hire a queen bee
         </button>
         <hr>
@@ -4083,11 +4092,14 @@
         <div class="small" style="color: #dba6f8">
             Queen bees: <b id="boost2" style="color: #de64fa"></b> production boost
         </div>
+        <div class="small hide" style="color: #f8bc5c" data-show="schools>0">
+            Schools: <b id="boost3" style="color: #ec8405"></b> education boost
+        </div>
         <button class="purple" data-cost="jelly-120" data-earn="homes+1" data-stat="homes">
             Build a nurse bee home using 120 royal jelly
         </button>
-        <button class="purple" data-show="qbees>0" data-cost="jelly-80000" data-earn="homes2+1" data-stat="homes2">
-            Build a queen bee home for 80,000 royal jelly
+        <button class="purple" data-show="qbees>0" data-cost="jelly-20000" data-earn="homes2+1" data-stat="homes2">
+            Build a queen bee home for 20,000 royal jelly
         </button>
         <br>
         <button class="wood" data-show="unlock5>0" data-cost="homes-10|wood-30" data-earn="whomes+10"
@@ -4106,6 +4118,11 @@
         <button class="gold" data-show="unlock7>0" data-cost="whomes2-10|flowers-2000" data-earn="fhomes2+10"
             data-stat="fhomes2">
             Decorate 10 upgraded nurse bee homes using 2,000 flowers
+        </button>
+        <br>
+        <button class="orange" data-show="schoolidea>0" data-cost="jelly-80000|cells-1e7" data-earn="schools+1"
+            data-stat="schools">
+            Construct a school for 1,000 using 80,000 royal jelly and 10M wax cells
         </button>
         <hr>
         <p>
@@ -4425,7 +4442,7 @@
                 }
 
                 t = button.getAttribute("data-earn")
-                if (t !== null) {
+                if (t !== null && t.length !== 0) {
                     if (t.slice(0, 5) === "base|") {
                         t = t.slice(5)
                     }
@@ -4728,7 +4745,7 @@
             return false
         }
 
-        var strangeBoost, easyclickCost = ["1e12", "1e15", "1e18", "1e21", "1e30", "1e50", "1e100", "1e1000", "ee9", "ee12", "ee15", "ee50", "ee250", "ee5000", "ee1000000", "eee12", "eeee12", "F10", "F100", "F1000000"], easyUpgrades = 0, season = 0, year = 1, dayOfYear = 1, queenBeesDying = false, pollenPower = Hyper(), waterPower = Hyper(), flowerPower = Hyper()
+        var strangeBoost, easyclickCost = ["1e12", "1e15", "1e18", "1e21", "1e30", "1e50", "1e100", "1e1000", "ee9", "ee12", "ee15", "ee50", "ee250", "ee5000", "ee1000000", "eee12", "eeee12", "F10", "F100", "F1000000"], easyUpgrades = 0, season = 0, year = 1, dayOfYear = 1, queenBeesDying = false, pollenPower = Hyper(), waterPower = Hyper(), flowerPower = Hyper(), schoolBoost = Hyper()
         function updateGame(speed) {
             for (var i = 0; i < buttonsAndUnlocks.length; i++) {
                 var child = buttonsAndUnlocks[i]
@@ -4797,13 +4814,13 @@
             var collectionRate = Hyper(speed).mul([0.4, 2, 1.5, 1][season])
             if (season === 0) {
                 if (!remove2("cells", C("bees").div(1200), speed)) {
-                    add("beesLost", C("bees").sub(mul("bees", Hyper(0.9999), speed)))
+                    add("beesLost", C("bees").sub(mul("bees", Hyper(0.99999), speed)))
                 }
                 if (!remove2("cells", C("bees2").div(1200), speed)) {
-                    add("beesLost2", C("bees2").sub(mul("bees2", Hyper(0.99995), speed)))
+                    add("beesLost2", C("bees2").sub(mul("bees2", Hyper(0.99998), speed)))
                 }
                 if (!remove2("cells", C("bees3").div(1200), speed)) {
-                    add("beesLost3", C("bees3").sub(mul("bees3", Hyper(0.99975), speed)))
+                    add("beesLost3", C("bees3").sub(mul("bees3", Hyper(0.99995), speed)))
                 }
             } else {
                 stuff.bees3 = C("bees3").floor()
@@ -4812,6 +4829,16 @@
                 stuff.beesLost3 = new Hyper()
             }
 
+            if (!remove2("jelly", C("qbees").div(12), speed)) {
+                C("qbees").sub(mul("qbees", Hyper(0.99995)), speed)
+                ID("queenBeesDying").style.display = null
+                queenBeesDying = true
+            } else if (queenBeesDying) {
+                ID("queenBeesDying").style.display = "none"
+                queenBeesDying = false
+            }
+
+            schoolBoost = C("schools").mul(4).add(1).log2()
             waterPower = C("water").add(10).log10().mul(1.3).sub(0.3)
             flowerPower = C("flowers").add(10).log10().mul(5).sub(4)
             add("water", C("sources").div(10), speed)
@@ -4822,22 +4849,13 @@
                 add("pollen", getBeeBoost("bees").mul(flowerPower).div(1000), collectionRate)
             }
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).div(20)
-            multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption, consumption], speed)
+            multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.4), consumption], speed)
             add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).div(3), speed).div(15))
             consumption = remove("pupae", C("pupae").mul(0.0001), speed).div(2)
-            add("education", C("bees").add(C("bees2")).add(C("bees3")).mul(studyAmount).div(1e7))
             add("bees", consumption)
             add("bees2", consumption)
             add("honey", remove("nectar", getBeeBoost("bees2").mul(pollenPower).mul(waterPower).div(20), speed))
-
-            if (!remove2("jelly", C("qbees").div(12), speed)) {
-                C("qbees").sub(mul("qbees", Hyper(0.99995)), speed)
-                ID("queenBeesDying").style.display = null
-                queenBeesDying = true
-            } else if (queenBeesDying) {
-                ID("queenBeesDying").style.display = "none"
-                queenBeesDying = false
-            }
+            add("education", C("bees").add(C("bees2")).add(C("bees3")).mul(studyAmount).mul(schoolBoost).div(1e7), speed)
         }
 
         var baseSpeed = Hyper(1)
@@ -4887,11 +4905,11 @@
 
             ID("boost").textContent = calculateBoost(getBeeBoost2("bees3", "homes"))
             ID("boost2").textContent = calculateBoost(getBeeBoost2("qbees", "homes2"))
-            ID("pollinationPower").textContent = "Nectar and honey production boost from pollination: " + calculateBoost(pollenPower)
+            ID("boost3").textContent = calculateBoost(schoolBoost)
+            ID("pollinationPower").textContent = "Nectar and honey production boost from pollen and pollination: " + calculateBoost(pollenPower)
             ID("waterPower").textContent = "Honey and royal jelly production boost from water: " + calculateBoost(waterPower)
             ID("flowerPower").textContent = "Nectar and pollen production boost from flowers: " + calculateBoost(flowerPower)
             ID("currentDay").style.color = ["#bbd3fd", "#2dd860", "#dec513", "#fba32a"][season]
-            season = 0
 
             if (sellPercent != ID("sellAmount").value) {
                 ID("sellAmount").value = sellPercent
