@@ -3935,7 +3935,12 @@
             <div class="smaller">...</div>
             <button class="gold" data-show="education>0" data-cost="education-1000" data-earn="ideas+1" id="createIdeas"
                 data-wait="5">
-                Convert 1,000 education into ideas
+                Convert 1,000 education into an idea
+                <span class="sheet" style="background-position-x: -216px"></span>
+            </button>
+            <button class="gold" data-show="unlock8>0" data-cost="education-1e7" data-earn="ideas+10000"
+                id="createIdeas" data-wait="0.5">
+                Convert 10M education into 10,000 ideas
                 <span class="sheet" style="background-position-x: -216px"></span>
             </button>
             <br>
@@ -3986,8 +3991,18 @@
                     Convert 10 ideas into 1 cultural point
                     <span class="sheet" style="background-position-x: -336px"></span>
                 </button>
+                <button class="wow2" data-show="unlock8>0" data-cost="ideas-1000" data-earn="cpoints+100"
+                    data-wait="0.25">
+                    Convert 1,000 ideas into 100 cultural points
+                    <span class="sheet" style="background-position-x: -336px"></span>
+                </button>
                 <button class="wow3" data-cost="ideas-10" data-earn="tpoints+1" data-wait="0.25">
                     Convert 10 ideas into 1 research point
+                    <span class="sheet" style="background-position-x: -360px"></span>
+                </button>
+                <button class="wow3" data-show="unlock8>0" data-cost="ideas-1000" data-earn="tpoints+100"
+                    data-wait="0.25">
+                    Convert 1,000 ideas into 1 research point
                     <span class="sheet" style="background-position-x: -360px"></span>
                 </button>
                 <br>
@@ -4011,9 +4026,14 @@
                     Unlock housing decorations for 25 cultural points
                     <span class="tech" style="background-position-x: -432px"></span>
                 </button>
-                <button class="wow4" data-show="unlock5>0" data-cost="tpoints-50" data-earn="unlock8+1"
+                <button class="wow4" data-show="unlock5>0" data-cost="tpoints-75" data-earn="unlock8+1"
                     data-hide="unlock8>0">
-                    Unlock tree seeds for 50 research points
+                    Unlock mass idea generation for 40 research points
+                    <span class="tech" style="background-position-x: -384px"></span>
+                </button>
+                <button class="wow4" data-show="double>3|unlock5>0" data-cost="tpoints-50" data-earn="unlock9+1"
+                    data-hide="unlock9>0">
+                    Unlock tree seeds for 250 research points
                     <span class="tech" style="background-position-x: -384px"></span>
                 </button>
             </div>
@@ -4204,7 +4224,7 @@
             You are also able to plant trees to increase queen bee productiveness or cut them down for
             <b style="color: #f3d7c3">wood</b>!
         </p>
-        <button class="green" data-show="unlock8>0" data-cost="pollen-1e8|tseeds-10" data-earn="saplings+1"
+        <button class="green" data-show="unlock9>0" data-cost="pollen-1e8|tseeds-10" data-earn="saplings+1"
             data-wait="3">
             Start planting a tree with 100M pollen and 10 tree seeds
             <span class="sheet" style="background-position-x: -600px"></span>
@@ -4873,7 +4893,7 @@
             schoolBoost = C("schools").mul(4).add(1).log2()
             waterPower = C("water").mul(0.3).add(10).log10().mul(1.3).sub(0.3)
             flowerPower = C("flowers").add(10).log10().mul(5).sub(4)
-            treePower = C("trees").mul(12).add(1).ln().mul(3).sub(2)
+            treePower = C("trees").mul(12).add(1).ln().mul(3).add(1)
             add("water", C("sources").div(7), speed)
             add("flowers", remove("water", C("gardens").div(10), speed).div(15))
             pollenPower = C("pollen").add(100).log10().mul(3.5).sub(6)
@@ -4881,13 +4901,17 @@
             if (C("pollen").isPositive()) {
                 add("pollen", getBeeBoost("bees").mul(flowerPower).div(1000), collectionRate)
             }
-            if (C("unlock8").isPositive()) {
+            if (C("unlock9").isPositive()) {
                 add("tseeds", getBeeBoost("bees").div(10000000000), collectionRate)
             }
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).div(20)
             multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.4), consumption], speed)
             add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).div(3), speed).mul(treePower).div(15))
             add("trees", remove("saplings", C("saplings").mul(0.00001), speed))
+            if (C("saplings").isLess(0.000001)) {
+                stuff.trees = C("trees").ceil()
+                stuffTotals.trees = stuffTotals.trees.ceil()
+            }
             consumption = remove("pupae", C("pupae").mul(0.0001), speed).div(2)
             add("bees", consumption)
             add("bees2", consumption)
@@ -5046,7 +5070,7 @@
             }
             var woodenHomes = C("w" + houseName)
             var decoratedHomes = C("f" + houseName)
-            return beeAmount.add(C(houseName).min(beeAmount.sub(woodenHomes).sub(decoratedHomes)).mul(3)).add(woodenHomes.min(beeAmount.sub(decoratedHomes)).mul(10)).add(decoratedHomes.min(beeAmount).mul(20)).mul(ignoreStudyAmount ? 1 : 1 - (studyAmount / 100))
+            return beeAmount.add(C(houseName).min(beeAmount.sub(woodenHomes).sub(decoratedHomes)).mul(3)).add(woodenHomes.min(beeAmount.sub(decoratedHomes)).mul(10)).add(decoratedHomes.min(beeAmount).mul(20)).mul(ignoreStudyAmount ? 1 : 1 - (studyAmount / 100)).max(1)
         }
 
         function getBeeBoost2(beeName, houseName) {
