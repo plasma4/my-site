@@ -5070,7 +5070,7 @@
             }
             var woodenHomes = C("w" + houseName)
             var decoratedHomes = C("f" + houseName)
-            return beeAmount.add(C(houseName).min(beeAmount.sub(woodenHomes).sub(decoratedHomes)).mul(3)).add(woodenHomes.min(beeAmount.sub(decoratedHomes)).mul(10)).add(decoratedHomes.min(beeAmount).mul(20)).mul(ignoreStudyAmount ? 1 : 1 - (studyAmount / 100)).max(1)
+            return beeAmount.isPositive() ? beeAmount.add(C(houseName).min(beeAmount.sub(woodenHomes).sub(decoratedHomes)).mul(3)).add(woodenHomes.min(beeAmount.sub(decoratedHomes)).mul(10)).add(decoratedHomes.min(beeAmount).mul(20)).mul(ignoreStudyAmount ? 1 : 1 - (studyAmount / 100)) : new Hyper()
         }
 
         function getBeeBoost2(beeName, houseName) {
