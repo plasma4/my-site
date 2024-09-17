@@ -3569,7 +3569,7 @@
 
         .gold {
             border-color: #8e6211;
-            background-color: #f0c20c88;
+            background-color: #f0c20caa;
         }
 
         .gold:hover,
@@ -3583,18 +3583,18 @@
 
         .diamond {
             border-color: #87f4c5;
-            background-color: #b3effa44;
+            background-color: #b3effaaa;
         }
 
         .diamond:hover,
         .diamond:focus {
             border-color: #48b586;
-            background-color: #7dd5e466;
+            background-color: #7dd5e488;
         }
 
         .diamond:active {
             border-color: #318b6499;
-            background-color: #5ebdce;
+            background-color: #5ebdce55;
         }
 
         .porply {
@@ -3734,10 +3734,30 @@
             color: white;
         }
 
+        .wow5 {
+            padding: 12px;
+            margin: 5px;
+            background-color: #ece116;
+            color: black;
+            border-color: white;
+        }
+
+        .wow5:hover,
+        .wow5:focus {
+            background-color: #5fef4f;
+            color: black;
+        }
+
         .wow1:active,
         .wow2:active,
-        .wow3:active {
+        .wow3:active,
+        .wow4:active {
             background-color: white;
+            color: black;
+        }
+
+        .wow5:active {
+            background-color: #89f9fb;
             color: black;
         }
 
@@ -4247,25 +4267,39 @@
             <b style="color: #f3d7c3">wood</b>!
         </p>
         <button class="green" data-show="unlock9>0" data-cost="pollen-3e8|tseeds-10" data-earn="saplings+1"
-            data-wait="3">
+            data-wait="1">
             Start planting a tree with 300M pollen and 10 tree seeds
             <span class="sheet" style="background-position-x: -600px"></span>
         </button>
         <button class="brown" data-show="saplings>0" data-cost="trees-1" data-earn="wood+10000" data-wait="0.25">
             Harvest a grown tree for 10,000 wood
+            <span class="sheet" style="background-position-x: -528px"></span>
+        </button>
+        <button class="aqua" data-show="trees>0" data-cost="honey-1e12" data-earn="planters+1" data-wait="3"
+            data-stat="planters">
+            Hire a bunny to slowly plant trees for 1T honey
             <span class="sheet" style="background-position-x: -576px"></span>
         </button>
     </div>
     <div id="menu5">
         <p style="color: #fd3859">
-            By trading for <b style="color: #f0af0c">gold</b>, you'll start attracting enemies over time!
+            By trading for <b style="color: #f0af0c">gold</b>, you'll get <b style="color: #94efc7">fame</b>,
+            which will attract enemies over time!
         </p>
         <div style="color: #c1b7b2;" data-s="wood $22" id="wood"></div>
+        <div style="color: #94efc7; text-shadow: #94efc7 0 0 8px" data-s="fame" id="fame"></div>
         <hr>
         <div style="color: #a79c91">Bunny trades:</div>
         <button class="yellow2" data-show="saplings>0" data-cost="wood-100000" data-earn="gold+1" data-wait="5">
             Trade 100,000 wood for 1 gold
-            <span class="sheet" style="background-position-x: -576px"></span>
+            <span class="sheet" style="background-position-x: -648px"></span>
+        </button>
+        <hr>
+        <button class="wow5" data-show="gold>0" data-hide="fame>=100">
+            Unlock yellow jackers (requires 100 fame)
+        </button>
+        <button class="wow5" data-earn="gold1+1" data-show="fame>=100" data-hide="gold1>0">
+            Unlock yellow jackers
         </button>
     </div>
 
@@ -4286,7 +4320,7 @@
         "use strict"
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = ["day", "beesLost", "beesLost2", "beesLost3", "pupae", "water"]
+        var baseProperties = ["day", "beesLost", "beesLost2", "beesLost3", "pupae", "water", "fame"]
         var oldDay = null
 
         var buttons = null, sellPercent = 100, studyAmount = 0, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = {}, stuffTotals = {}, alreadyClicked = true
@@ -4939,11 +4973,14 @@
             if (C("unlock9").isPositive()) {
                 add("tseeds", getBeeBoost("bees").div(1000000000), collectionRate)
             }
+            add("saplings", C("planters").div(1000))
+            add("fame", C("gold").div(1000))
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).div(20)
             multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.4), consumption], speed)
             add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).div(3), speed).mul(treePower).div(15))
             add("trees", remove("saplings", C("saplings").mul(0.00001), speed))
             if (C("saplings").isLess(0.000001)) {
+                mul("saplings", Hyper())
                 stuff.trees = C("trees").ceil()
                 stuffTotals.trees = stuffTotals.trees.ceil()
             }
