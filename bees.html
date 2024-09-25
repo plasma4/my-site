@@ -4028,11 +4028,10 @@
         <div style="color: #94f1fa" data-s="royal jelly $1" id="jelly"></div>
         <div style="color: #dba6f8; text-shadow: #dba6f8 0 0 2px" data-s="queen bee" data-p="queen bees" id="qbees">
         </div>
-        <div style="font-size: 22px; color: #ddaafc" id="queenRate"></div>
+        <div style="font-size: 22px; color: #ad88ec" id="queenRate"></div>
         <div style="color: #e8beaa; text-shadow: #e8beaa 0 0 4px" data-s="wood $22" id="wood"></div>
         <div style="color: #f3e080; text-shadow: #f3e080 0 0 6px" data-s="flower $11" data-p="flowers $11" id="flowers">
         </div>
-        <div style="color: #f0af0c; text-shadow: #f0af0c 0 0 8px" data-s="gold $27" id="gold"></div>
     </div>
     <div id="menu1">
         <p>
@@ -4244,7 +4243,7 @@
             You can transfer some bees of one job into another manually.
             <br>
             <button class="red" data-cost="bees-10%" data-earn="bees2+*1">
-                Transfer 10% of foragers bees to honey bees
+                Transfer 10% of forager bees to honey bees
             </button>
             <button class="red" data-cost="bees2-10%" data-earn="bees+*1">
                 Transfer 10% of honey bees to forager bees
@@ -4429,7 +4428,7 @@
     </div>
     <div id="menu5">
         <p style="color: #f59134">
-            By trading for <b style="color: #f0af0c">gold</b>, you'll get <b class="rainbow">fame</b>.
+            By trading for <b style="color: #f3c735">gold</b>, you'll get <b class="rainbow">fame</b>.
         </p>
         <div class="rainbow" data-s="fame" id="fame"></div>
         <hr>
@@ -4473,7 +4472,7 @@
         <hr>
         <div style="color: #5ebae8; text-shadow: #5ebae8 0 0 10px" data-s="gem $35" data-p="gems $35" id="gems"></div>
         <div class="hide" data-show="unlock13>0">
-            <div style="color: #f0af0c; text-shadow: #f0af0c 0 0 8px" data-s="gold $27" id="goldAlt"></div>
+            <div style="color: #f3c735; text-shadow: #f3c735 0 0 8px" data-s="gold $27" id="gold"></div>
             <div style="color: #f09b08" data-s="honeycomb $0" data-p="honeycombs $0" id="cellsAlt"></div>
             <p>
                 Upgrade costs: <strong style="color: #f56ace" id="c1"></strong>/<strong style="color: #c7f32a"
@@ -4500,7 +4499,7 @@
             </div>
             <p>
                 You can repeatedly get upgrades that improve your hive with
-                <b style="color: #f3b03e">honeycombs</b> and a little bit of <b style="color: #f0af0c">gold</b>.
+                <b style="color: #f3b03e">honeycombs</b> and a little bit of <b style="color: #f3c735">gold</b>.
             </p>
         </div>
     </div>
@@ -4522,7 +4521,7 @@
         "use strict"
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = ["day", "beesLost", "beesLost2", "beesLost3", "pupae", "water", "stress", "u1", "u2", "u3", "u4", "u5", "gems", "cellsAlt", "goldAlt"]
+        var baseProperties = ["day", "beesLost", "beesLost2", "beesLost3", "pupae", "water", "stress", "u1", "u2", "u3", "u4", "u5", "gems", "cellsAlt"]
         var oldDay = null
 
         var buttons = null, sellPercent = 100, studyAmount = 0, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = {}, stuffTotals = {}, alreadyClicked = true
@@ -4943,8 +4942,8 @@
                 var property = properties[i]
                 var element = ID(property)
                 if (element !== null) {
-                    var amount = C(property === "cellsAlt" ? "cells" : property === "goldAlt" ? "gold" : property)
-                    if (property === "cellsAlt" || property === "goldAlt" || T(property).isPositive() || property === "trades" || property === "gems") {
+                    var amount = C(property === "cellsAlt" ? "cells" : property)
+                    if (property === "cellsAlt" || T(property).isPositive() || property === "trades" || property === "gems") {
                         element.style.display = null
                         var accuracy = Number(element.getAttribute("data-precision"))
                         var string = amount.format(accuracy) + " "
