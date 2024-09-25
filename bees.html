@@ -5134,7 +5134,7 @@
                 var magicNumber = beeSum.isMore(10) ? beeSum.mul(0.01).add(0.9).log10().mul(0.6) : new Hyper()
                 overcrowding = magicNumber.div(magicNumber.add(1)).mul(Hyper(0.98).pow(getUpgrade(1)))
                 queenRate = Hyper(1).sub(overcrowding.sqrt()).sqr().mul(0.95).add(0.05)
-                motivationBoost = C("u6").isPositive() ? C("gems").mul(C("u6")).mul(3.5).add(100).log10().div(2) : new Hyper(1)
+                motivationBoost = C("u6").isPositive() ? C("gems").mul(C("u6")).mul(0.7).add(1).log10().div(4) : new Hyper()
                 motivation = new Hyper(1).sub(overcrowding).mul(new Hyper(1).sub(C("stress").sqr())).add(motivationBoost)
             }
 
@@ -5268,7 +5268,7 @@
             ID("overcrowding").textContent = (hasMotivation ? "Motivation decrease from overcrowding: " + calculateLoss(overcrowding) : "")
             ID("stress").textContent = (hasMotivation ? "Work stress: " + calculateLoss(C("stress").sqr()) : "")
             ID("queenRate").textContent = (C("qbees").isPositive() ? "Pupae production rate: " + calculateBoost(queenRate, 3) : "Get a queen bee to get bees faster!")
-            ID("motivationBoost").textContent = (C("u6").isPositive() ? "Motivation boost from gems: " + calculateBoost(motivationBoost) : "")
+            ID("motivationBoost").textContent = (C("u6").isPositive() ? "Motivation boost from gems: " + calculateBoost(motivationBoost.add(1)) : "")
             ID("boost").textContent = calculateBoost(getBeeBoost2("bees3", "homes"))
             ID("boost2").textContent = calculateBoost(getBeeBoost2("qbees", "homes2"))
             ID("boost3").textContent = calculateBoost(schoolBoost)
