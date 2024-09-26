@@ -5188,7 +5188,7 @@
             if (C("unlock9").isPositive()) {
                 add("tseeds", getBeeBoost("bees").div(1000000000), collectionRate)
             }
-            add("saplings", C("planters").div(1300), speed)
+            add("saplings", remove("tseeds", C("planters").div(130), speed).div(10))
             add("fame", C("gold").div(2000), speed)
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).div(18)
             multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.4), consumption], speed)
