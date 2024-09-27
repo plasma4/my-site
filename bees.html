@@ -3082,6 +3082,7 @@
             pointer-events: none;
             content: var(--tip);
             text-shadow: none !important;
+            font-weight: 600;
             width: 80%;
             max-width: 500px;
             font-size: 18px;
@@ -3090,6 +3091,7 @@
             text-align: center;
             border-radius: 6px;
             padding: 5px;
+            display: inline-block;
             position: absolute;
             z-index: 1;
             top: calc(100% + 10px);
@@ -3119,6 +3121,17 @@
 
         [style*="--tip"]:hover::before {
             opacity: 1;
+        }
+
+        button[style*="--tip"]::after {
+            font-size: 16px;
+            background-color: #564c49;
+            top: auto;
+            bottom: calc(100% + 5px);
+        }
+
+        button[style*="--tip"]::before {
+            border-color: transparent transparent #fc4a4a transparent;
         }
 
         /* 
@@ -4103,11 +4116,11 @@
         <label class="hidden" for="sellAmount">
             The percentage of honey you want to convert into honeycombs at once.
         </label>
-        <div
-            style="margin: 4px; --tip: 'You can convert every 10 honey into 1 honeycomb, and choose how much you want to convert at a time.'">
+        <div>
             Amount to convert: <input id="sellAmount" type="range" min="1" max="100">
         </div>
-        <button class="sell green" data-earn="cells+all">
+        <button class="sell green" data-earn="cells+all"
+            style="margin: 4px; --tip: 'You can convert every 10 honey into 1 honeycomb, and choose how much you want to convert at a time.'">
             Convert <span class="all"></span> of your honey into honeycombs
             <span class="sheet"></span>
         </button>
@@ -4132,18 +4145,22 @@
         </button>
         <div class="hide" data-show="bees3>0">
             <p
-                style="font-size: 20px; --tip: 'Education is also important for your bees. Teach them things to learn more! Forager, honey, and nurse bees can learn. The more your bees study, the more education they get, but their production rates will also decrease. You can set how much you want them to study below!'">
+                style="font-size: 20px; --tip: 'Education is also important for your bees. Teach them things to learn more! Forager, honey, and nurse bees can learn. The more your bees study, the more education they get, but their production rates will also decrease. You can set how much you want them to study in the slider below.'">
                 Educating your bees allows new concepts to be created.
             </p>
             <label class="hidden" for="studyAmount">
                 How much you want your bees to study (at the cost of their production speed).
             </label>
             Study amount: <input id="studyAmount" class="range2" type="range" min="0" max="100">
-            <div style="color: #fc9ae2" data-s="education $9" id="education"></div>
-            <div style="color: #81f0ee" data-s="idea $10" data-p="ideas $10" id="ideas"></div>
-            <div style="color: #d4f6da" data-s="cultural point $14" data-p="cultural points $14" id="cpoints"></div>
-            <div style="color: #f1d2b9" data-s="tech point $15" data-p="tech points $15" id="tpoints"></div>
-            <div class="smaller">...</div>
+            <div style="color: #fc9ae2; --tip: 'The education of your bees may be turned into ideas!'"
+                data-s="education $9" id="education"></div>
+            <div style="color: #81f0ee; --tip: 'Ideas are the first step in unlocking new technologies.'"
+                data-s="idea $10" data-p="ideas $10" id="ideas"></div>
+            <div style="color: #d4f6da; --tip: 'Cultural points may be used for unlocking advancements related to culture and art.'"
+                data-s="cultural point $14" data-p="cultural points $14" id="cpoints"></div>
+            <div style="color: #f1d2b9; --tip: 'Tech points may be used for unlocking advancements related to complex technologies.'"
+                data-s="tech point $15" data-p="tech points $15" id="tpoints"></div>
+            <div class="smaller" style="user-select: none">...</div>
             <button class="gold" data-show="education>0" data-cost="education-100" data-earn="ideas+1" data-wait="5">
                 Convert 100 education into an idea
                 <span class="sheet" style="background-position-x: -216px"></span>
@@ -4181,20 +4198,23 @@
             </button>
             <hr>
             <button class="orange" data-show="ideas>0" data-cost="ideas-1" data-earn="schoolidea+1"
-                data-hide="schoolidea>0">
-                Unlock schools for 1 idea in the Construction and Trade tab
+                data-hide="schoolidea>0"
+                style="--tip: 'View more information about schools in the Construction and Trade tab.'">
+                Unlock schools for 1 idea
                 <span class="sheet" style="background-position-x: -96px"></span>
             </button>
             <button class="green" data-show="ideas>0" data-cost="ideas-25" data-earn="gardening+1"
-                data-hide="gardening>0">
-                Unlock the Gardening tab for 25 ideas
+                data-hide="gardening>0" style="--tip: 'View more information about gardening in its own tab.'">
+                Unlock gardening for 25 ideas
                 <span class="sheet" style="background-position-x: -168px"></span>
             </button>
-            <button class="blue" data-show="schools>0" data-cost="ideas-60" data-earn="labor+1" data-hide="labor>0">
-                Unlock division of labor for 60 ideas in the Beehive tab
+            <button class="blue" data-show="schools>0" data-cost="ideas-60" data-earn="labor+1" data-hide="labor>0"
+                style="--tip: 'View more information about schools in the Beehive tab.'">
+                Unlock division of labor for 60 ideas
                 <span class="sheet" style="background-position-x: -48px"></span>
             </button>
-            <button class="wow" data-show="schools>0" data-cost="ideas-120" data-earn="unlock3+1" data-hide="unlock3>0">
+            <button class="wow" data-show="schools>0" data-cost="ideas-120" data-earn="unlock3+1" data-hide="unlock3>0"
+                style="--tip: 'Get this to unlock various new researches below!'">
                 Unlock researches below for 120 ideas
                 <span class="sheet" style="background-position-x: -216px"></span>
                 <span class="sheet" style="background-position-x: -240px"></span>
@@ -4321,7 +4341,7 @@
             <hr>
         </div>
         <p data-show="unlock1>0" class="small hide"
-            style="color: #9cf1aa; --tip: 'They cost 500 honeycombs to hire, and will slowly produce valuable royal jelly from pollen and nectar!'">
+            style="color: #9cf1aa; --tip: 'Nurse bees will slowly produce valuable royal jelly from pollen and nectar!'">
             Nurse bees are able to produce <b style="color: #94f1fa">royal jelly</b> from
             <b style="color: #fafad1">pollen</b> and <b style="color: #f4d872">nectar</b>.
         </p>
@@ -4330,14 +4350,15 @@
             <b style="color: #dba6f8">Queen bees</b> consume large amounts of <b style="color: #94f1fa">royal jelly</b>
             instead.
         </p>
-        <button class="yellow" data-show="unlock1>0" data-cost="cells-500" data-earn="bees3+1" data-stat="bees3">
+        <button class="yellow" data-show="unlock1>0" data-cost="cells-500" data-earn="bees3+1" data-stat="bees3"
+            style="--tip: 'It costs 500 honeycombs to hire each nurse bee.'">
             Hire a nurse bee
         </button>
-        <button class="red" data-show="bees3>0" data-cost="bees3-1" data-earn="">
+        <button class="red" data-show="bees3>0" data-cost="bees3-1" data-earn="" style="--tip: 'Watch out!'">
             Fire a nurse bee
         </button>
         <button class="purple" data-show="unlock1>0" data-cost="jelly-5000" data-earn="qbees+1" data-stat="qbees"
-            style="--tip: 'Be warned! The more bees that you have, the less they will work and the less pupae you will gain. You can counter this by building houses of various sizes as you progress.'">
+            style="--tip: 'Nurse bees cost 5,000 royal jelly each. However, be aware that the more bees that you have, the less they will work and the less pupae you will gain. You can counter this by building houses of various sizes as you progress.'">
             Hire a queen bee
         </button>
         <hr>
@@ -4460,6 +4481,7 @@
         <p style="color: #7cf786" id="flowerPower"></p>
         <p style="color: #93f95c" id="treePower"></p>
         <hr>
+        <p>Plant gardens in order to get flowers! Gardens will consume water slowly.</p>
         <button class="green2" data-cost="pollen-5000000|soil-1000|seeds-100" data-earn="gardens+1" data-wait="2">
             Create a garden with 5,000,000 pollen, 1,000 soil, and 100 seeds
             <span class="sheet" style="background-position-x: -168px"></span>
@@ -4543,10 +4565,13 @@
             <div style="margin: 4px; font-size: 16px; color: #f09b08" data-s="honeycomb $0" data-p="honeycombs $0"
                 id="cellsAlt"></div>
             <p>
-                Upgrade costs: <strong style="color: #dbbac7" id="c1"></strong>/<strong style="color: #c7f32a"
-                    id="c2"></strong>/<strong style="color: #89f58e" id="c3"></strong>/<strong style="color: #f6ab4a"
-                    id="c4"></strong>/<strong style="color: #abdbe8" id="c5"></strong><span class="small hide"
-                    data-show="unlock14>0">/<strong style="color: #9aa9df" id="c6"></strong></span>
+                Upgrade costs: <strong style="color: #dbbac7; --tip: 'Cost for upgrade #1'" id="c1"></strong>/<strong
+                    style="color: #c7f32a; --tip: 'Cost for upgrade #2'" id="c2"></strong>/<strong
+                    style="color: #89f58e; --tip: 'Cost for upgrade #3'" id="c3"></strong>/<strong
+                    style="color: #f6ab4a; --tip: 'Cost for upgrade #4'" id="c4"></strong><span class="hide"
+                    data-show="unlock14>0" style="font-size: inherit">/<strong
+                        style="color: #abdbe8; --tip: 'Cost for upgrade #5'" id="c5"></strong>/<strong
+                        style="color: #9aa9df; --tip: 'Cost for upgrade #6'" id="c6"></strong></span>
             </p>
             <div class="smaller">Upgrade 1: <strong style="color: #dbbac7">-2% overcrowding (multiplicative)</strong>
             </div>
@@ -5190,8 +5215,8 @@
             var beeSum = C("bees").add(C("bees2")).add(C("bees3")).div(C("hives").add(1))
             hasMotivation = beeSum.isPositive()
             if (hasMotivation) {
-                add("stress", Hyper([0, 0.00003, 0.000015, 0.00001, 0.000001][season]), speed)
-                add("stress", C("day").add(10).log10().sub(1).div(10000).min(0.0006), speed)
+                add("stress", Hyper([0, 0.000035, 0.000015, 0.00001, 0.000002][season]), speed)
+                add("stress", C("day").add(10).log10().sub(1).div(30000).mul(beeSum.add(10).log10().mul(1.2)).min(0.0006), speed)
                 mul("stress", Hyper(0.999), speed)
                 var magicNumber = beeSum.isMore(10) ? beeSum.mul(0.005).add(0.95).log10().mul(0.6) : new Hyper()
                 overcrowding = magicNumber.div(magicNumber.add(1)).mul(Hyper(0.98).pow(getUpgrade(1)))
