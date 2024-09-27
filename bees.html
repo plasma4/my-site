@@ -1615,6 +1615,100 @@
                 return result === false ? false : result
             }
 
+            function HyperFloor(start, noClone) {
+                var value = noClone ? start : new Hyper(start)
+                if (value.$[0] === 1) {
+                    return HyperFloorBase(value, noClone)
+                } else {
+                    return HyperCeilBase(value, noClone)
+                }
+            }
+
+            function HyperRound(start, noClone) {
+                var value = noClone ? start : new Hyper(start)
+                if (value.$[0] === 1) {
+                    return HyperRoundBase(value, noClone)
+                } else {
+                    return HyperRoundOtherBase(value, noClone)
+                }
+            }
+
+            function HyperRoundOther(start, noClone) {
+                var value = noClone ? start : new Hyper(start)
+                if (value.$[0] === 1) {
+                    return HyperRoundOtherBase(value, noClone)
+                } else {
+                    return HyperRoundBase(value, noClone)
+                }
+            }
+
+            function HyperCeil(start, noClone) {
+                var value = noClone ? start : new Hyper(start)
+                if (value.$[0] === 1) {
+                    return HyperCeilBase(value, noClone)
+                } else {
+                    return HyperFloorBase(value, noClone)
+                }
+            }
+
+            function HyperFloorBase(value, noClone) {
+                if (value.$[1] === 0) {
+                    var digits = value.$[2]
+                    if (digits < HDIGITS) {
+                        if (digits < 0) {
+                            value.$ = [value.$[0], 0, 0, 0n]
+                            return value
+                        }
+                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
+                        value.$[3] = value.$[3] / diffPower * diffPower
+                    }
+                }
+                return value
+            }
+
+            function HyperRoundBase(value, noClone) {
+                if (value.$[1] === 0) {
+                    var digits = value.$[2]
+                    if (digits < HDIGITS) {
+                        var data = value.$[3]
+                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
+                        var flooredData = (data / diffPower) * diffPower
+                        value.$[3] = data < (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
+                    }
+                }
+                return value
+            }
+
+            function HyperRoundOtherBase(value, noClone) {
+                if (value.$[1] === 0) {
+                    var digits = value.$[2]
+                    if (digits < HDIGITS) {
+                        var data = value.$[3]
+                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
+                        var flooredData = (data / diffPower) * diffPower
+                        value.$[3] = data <= (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
+                    }
+                }
+                return value
+            }
+
+            function HyperCeilBase(value, noClone) {
+                if (value.$[1] === 0) {
+                    var digits = value.$[2]
+                    if (digits < HDIGITS) {
+                        var data = value.$[3]
+                        if (digits < 0) {
+                            value.$ = data === 0n ? [value.$[0], 0, 0, 0n] : [value.$[0], 0, 0, BIGONE]
+                            return value
+                        }
+                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
+                        var flooredData = (data / diffPower) * diffPower
+                        value.$[3] = flooredData === data ? flooredData : (flooredData + diffPower)
+                    }
+                }
+                return value
+            }
+
             /**
              * Returns the smaller of two numbers.
              * @param {string | number | bigint | Hyper} value The value to compare to.
@@ -1695,19 +1789,7 @@
              * @returns {Hyper}
              */
             Hyper.prototype.floor = function (noClone) {
-                var value = noClone ? this : new Hyper(this)
-                if (value.$[1] === 0) {
-                    var digits = value.$[2]
-                    if (digits < HDIGITS) {
-                        if (digits < 0) {
-                            value.$ = [1, 0, 0, 0n]
-                            return value
-                        }
-                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
-                        value.$[3] = value.$[3] / diffPower * diffPower
-                    }
-                }
-                return value
+                return HyperFloor(this, noClone)
             }
 
             /**
@@ -1716,19 +1798,7 @@
              * @returns {Hyper}
              */
             Hyper.floor = function (value) {
-                value = new HyperNumber(value)
-                if (value.$[1] === 0) {
-                    var digits = value.$[2]
-                    if (digits < HDIGITS) {
-                        if (digits < 0) {
-                            value.$ = [1, 0, 0, 0n]
-                            return value
-                        }
-                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
-                        value.$[3] = value.$[3] / diffPower * diffPower
-                    }
-                }
-                return value
+                return HyperFloor(new Hyper(value), true)
             }
 
             /**
@@ -1737,17 +1807,7 @@
              * @returns {Hyper}
              */
             Hyper.prototype.round = function (noClone) {
-                var value = noClone ? this : new Hyper(this)
-                if (value.$[1] === 0) {
-                    var digits = value.$[2]
-                    if (digits < HDIGITS) {
-                        var data = value.$[3]
-                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
-                        var flooredData = (data / diffPower) * diffPower
-                        value.$[3] = data < (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
-                    }
-                }
-                return value
+                return HyperRound(this, noClone)
             }
 
             /**
@@ -1756,17 +1816,7 @@
              * @returns {Hyper}
              */
             Hyper.round = function (value) {
-                value = new HyperNumber(value)
-                if (value.$[1] === 0) {
-                    var digits = value.$[2]
-                    if (digits < HDIGITS) {
-                        var data = value.$[3]
-                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
-                        var flooredData = (data / diffPower) * diffPower
-                        value.$[3] = data < (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
-                    }
-                }
-                return value
+                return HyperRound(new Hyper(value), true)
             }
 
             /**
@@ -1775,17 +1825,7 @@
              * @returns {Hyper}
              */
             Hyper.prototype.roundOther = function (noClone) {
-                var value = noClone ? this : new Hyper(this)
-                if (value.$[1] === 0) {
-                    var digits = value.$[2]
-                    if (digits < HDIGITS) {
-                        var data = value.$[3]
-                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
-                        var flooredData = (data / diffPower) * diffPower
-                        value.$[3] = data <= (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
-                    }
-                }
-                return value
+                return HyperRoundOther(this, noClone)
             }
 
             /**
@@ -1794,17 +1834,7 @@
              * @returns {Hyper}
              */
             Hyper.roundOther = function (value) {
-                value = new HyperNumber(value)
-                if (value.$[1] === 0) {
-                    var digits = value.$[2]
-                    if (digits < HDIGITS) {
-                        var data = value.$[3]
-                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
-                        var flooredData = (data / diffPower) * diffPower
-                        value.$[3] = data <= (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
-                    }
-                }
-                return value
+                return HyperRoundOther(new Hyper(value), true)
             }
 
             /**
@@ -1813,21 +1843,7 @@
              * @returns {Hyper}
              */
             Hyper.prototype.ceil = function (noClone) {
-                var value = noClone ? this : new Hyper(this)
-                if (value.$[1] === 0) {
-                    var digits = value.$[2]
-                    if (digits < HDIGITS) {
-                        var data = value.$[3]
-                        if (digits < 0) {
-                            value.$ = data === 0n ? [1, 0, 0, 0n] : [1, 0, 0, BIGONE]
-                            return value
-                        }
-                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
-                        var flooredData = (data / diffPower) * diffPower
-                        value.$[3] = flooredData === data ? flooredData : (flooredData + diffPower)
-                    }
-                }
-                return value
+                return HyperCeil(this, noClone)
             }
 
             /**
@@ -1836,21 +1852,7 @@
              * @returns {Hyper}
              */
             Hyper.ceil = function (value) {
-                value = new HyperNumber(value)
-                if (value.$[1] === 0) {
-                    var digits = value.$[2]
-                    if (digits < HDIGITS) {
-                        var data = value.$[3]
-                        if (digits < 0) {
-                            value.$ = data === 0n ? [1, 0, 0, 0n] : [1, 0, 0, BIGONE]
-                            return value
-                        }
-                        var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
-                        var flooredData = (data / diffPower) * diffPower
-                        value.$[3] = flooredData === data ? flooredData : (flooredData + diffPower)
-                    }
-                }
-                return value
+                return HyperCeil(new Hyper(value), true)
             }
 
             /**
@@ -2196,7 +2198,7 @@
                         return sign + formatValue(startingDigits.slice(0, digits + 1))
                     } else {
                         if (digits < -1) {
-                            return formatValue("0." + "0".repeat(-(digits + 1)) + startingDigits, additionalDigits)
+                            return formatValue((this.$[0] === 1 ? "0." : "-0.") + "0".repeat(-(digits + 1)) + startingDigits, additionalDigits)
                         }
                         return sign + formatValue(startingDigits.slice(0, digits + 1) + "." + startingDigits.slice(digits + 1), additionalDigits)
                     }
@@ -3094,7 +3096,7 @@
             left: 50%;
             transform: translateX(-50%) scale(0);
             opacity: 0.2;
-            transition: opacity 500ms, transform 300ms;
+            transition: opacity 500ms, transform 300ms ease-in-out;
         }
 
         [style*="--tip"]::before {
@@ -4095,16 +4097,14 @@
             data-s="water $13" id="water"></div>
     </div>
     <div id="menu1">
-        <p>
-            Collect <b style="color: #f4d872">nectar</b> to make <b style="color: #dfb417">honey</b>!
-        </p>
         <p style="color: #f3ad20; --tip: 'Some resources, like pollen, provide a direct multiplier.'"
             id="pollinationPower"></p>
         <div style="color: #df7e17" data-s="bee" data-p="bees" id="bee"></div>
         <label class="hidden" for="sellAmount">
             The percentage of honey you want to convert into honeycombs at once.
         </label>
-        <div style="--tip: 'You can convert honey into honeycombs. Ten honey will be equal to one honeycomb.'">
+        <div
+            style="margin: 4px; --tip: 'You can convert every 10 honey into 1 honeycomb, and choose how much you want to convert at a time.'">
             Amount to convert: <input id="sellAmount" type="range" min="1" max="100">
         </div>
         <button class="sell green" data-earn="cells+all">
@@ -4112,6 +4112,9 @@
             <span class="sheet"></span>
         </button>
         <hr>
+        <p>
+            Collect <b style="color: #f4d872">nectar</b> to make <b style="color: #dfb417">honey</b>!
+        </p>
         <button class="yellow2" data-earn="nectar+1">Find nectar</button>
         <button class="yellow2" data-cost="nectar-20" data-earn="honey+20" data-wait="0.2">
             Convert 20 nectar into honey
@@ -4304,9 +4307,9 @@
             style="text-decoration: underline; color: #ea780d; --tip: 'During the winter, bees will die off if there isn\'t enough food to support them. Each bee will consume 1 honeycomb over the course of ten days, so make sure to stock up on them before getting too many bees!'">
             WARNING: bees can die!
         </div>
-        <hr>
         <div data-show="labor>0" class="hide"
             style="font-size: 20px; color: #f7960f; --tip: 'You\'ve unlocked bee transferring, meaning that you can switch the jobs of some bees! This can be useful if, for example, you have too many honeybees.'">
+            <hr>
             You may transfer some bees of one job into another manually.
             <br>
             <button class="red" data-cost="bees-10%" data-earn="bees2+*1">
@@ -5190,7 +5193,7 @@
                 add("stress", Hyper([0, 0.00003, 0.000015, 0.00001, 0.000001][season]), speed)
                 add("stress", C("day").add(10).log10().sub(1).div(10000).min(0.0006), speed)
                 mul("stress", Hyper(0.999), speed)
-                var magicNumber = beeSum.isMore(10) ? beeSum.mul(0.01).add(0.9).log10().mul(0.6) : new Hyper()
+                var magicNumber = beeSum.isMore(10) ? beeSum.mul(0.005).add(0.95).log10().mul(0.6) : new Hyper()
                 overcrowding = magicNumber.div(magicNumber.add(1)).mul(Hyper(0.98).pow(getUpgrade(1)))
                 queenRate = Hyper(1).sub(overcrowding.sqrt()).sqr().mul(0.95).add(0.05)
                 motivationBoost = C("u6").isPositive() ? C("gems").mul(C("u6")).mul(0.7).add(1).log10().div(4) : new Hyper()
@@ -5331,7 +5334,7 @@
             ID("boost").textContent = calculateBoost(getBeeBoost2("bees3", "homes"))
             ID("boost2").textContent = calculateBoost(getBeeBoost2("qbees", "homes2"))
             ID("boost3").textContent = calculateBoost(schoolBoost)
-            ID("pollinationPower").textContent = "Nectar and honey production boost from pollen and pollination: " + calculateBoost(pollenPower)
+            ID("pollinationPower").textContent = (C("pollen").isPositive() ? "Nectar and honey production boost from pollen and pollination: " + calculateBoost(pollenPower) : "")
             ID("waterPower").textContent = "Honey and royal jelly production boost from water: " + calculateBoost(waterPower)
             ID("flowerPower").textContent = "Nectar and pollen production boost from flowers: " + calculateBoost(flowerPower)
             ID("treePower").textContent = T("saplings").isPositive() ? "Pupae production boost from trees (with no upkeep increase): " + calculateBoost(treePower) : ""
