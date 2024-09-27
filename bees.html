@@ -3031,11 +3031,6 @@
             font-weight: 700;
         }
 
-        i {
-            text-shadow: 2px 2px 1px black;
-            font-size: 24px;
-        }
-
         #noSelect {
             -webkit-user-select: none;
             user-select: none;
@@ -3066,11 +3061,62 @@
         }
 
         .small {
-            font-size: 24px;
+            font-size: 24px !important;
         }
 
         .smaller {
+            font-size: 18px !important;
+        }
+
+        [style*="--tip"] {
+            position: relative;
+        }
+
+        [style*="--tip"]:empty::before {
+            display: none;
+        }
+
+        [style*="--tip"]::after {
+            pointer-events: none;
+            content: var(--tip);
+            text-shadow: none !important;
+            width: 60%;
+            max-width: 500px;
             font-size: 18px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            opacity: 0.2;
+            transition: opacity 500ms, transform 300ms;
+        }
+
+        [style*="--tip"]::before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            transition: opacity 1s;
+            opacity: 0.5;
+            border-color: #ddd transparent transparent transparent;
+        }
+
+        [style*="--tip"]:hover::after {
+            transform: translateX(-50%) scale(1);
+            opacity: 1;
+        }
+
+        [style*="--tip"]:hover::before {
+            opacity: 1;
         }
 
         /* 
@@ -3333,7 +3379,7 @@
         body {
             overflow-x: hidden;
             transition: background-color 1s, color 750ms 250ms;
-            font-family: "Roboto Mono", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
+            font-family: "Roboto Mono", monospace;
             background-color: #4e4b41;
             font-weight: 600;
             color: white;
@@ -3363,7 +3409,7 @@
 
         button,
         .mini {
-            font-family: "Roboto Mono", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS";
+            font-family: "Roboto Mono", monospace;
             position: relative;
             font-weight: 400;
             text-align: center;
@@ -3978,11 +4024,10 @@
 
 <body style="display: none">
     <div id="noSelect">
-        <p class="smaller">
-            Game made by Leo Zhang with sprites from myself, NEL/Magix sprites, and @theskullyko, and modified when
-            needed.
+        <p
+            style="font-size: 16px; --tip: 'Game made by Leo Zhang with sprites from myself, NEL/Magix sprites, and @theskullyko, and modified when needed.'">
+            Game info (press and hold on a button to prevent your hands from aching)
         </p>
-        <p class="smaller">Note that if you press and hold on a button, it will be pressed repeatedly.</p>
         <button class="red" id="reset">RESET</button>
         <button class="red" id="pause">Pause</button>
         <button class="orange" id="import">Import</button>
@@ -4012,18 +4057,25 @@
     <div class="small">
         <div style="font-size: 16px">
             &nbsp;
-            <span style="color: #f2134b; display: none; font-size: 16px" id="queenBeesDying">WARNING: your queen bees
+            <span
+                style="color: #f2134b; display: none; font-size: 16px; --tip: 'Your queen bees are dying! Make sure they have enough royal jelly.'"
+                id="queenBeesDying">WARNING: your queen bees
                 are dying!</span>
         </div>
-        <div style="font-size: 22px; color: #e7cdf9" id="motivation"></div>
+        <div style="font-size: 22px; color: #e7cdf9; --tip: 'This is how motivated your bees are. The more motivated they are, the faster they work! Various factors can change how motivated they are.'"
+            id="motivation"></div>
         <div style="font-size: 18px; color: #61d0f5" id="motivationBoost"></div>
         <div style="font-size: 18px; color: #f37cd3" id="stress"></div>
         <div style="font-size: 18px; color: #fe5c7a" id="overcrowding"></div>
-        <div style="color: #f05c0d" id="beeLostCount"></div>
-        <div style="color: #f09b08" data-s="honeycomb $0" data-p="honeycombs $0" id="cells"></div>
+        <div style="color: #f05c0d; --tip: 'The number of bees you have lost this winter. Make honeycombs so that they can survive!'"
+            id="beeLostCount"></div>
+        <div style="color: #f09b08; --tip: 'Made from honey and used as a food source, among other things.'"
+            data-s="honeycomb $0" data-p="honeycombs $0" id="cells">
+        </div>
         <div style="color: #f6be14" data-s="honey $3" id="honey"></div>
         <div style="color: #f4d872" data-s="nectar" id="nectar"></div>
-        <div style="color: #fafad1" data-s="pollen" id="pollen"></div>
+        <div style="color: #fafad1; --tip: 'By getting pollen, your bees will gain more nectar and create honey from nectar faster!'"
+            data-s="pollen" id="pollen"></div>
         <div style="color: #c7e63d" data-s="pupae" id="pupae"></div>
         <div style="color: #94f1fa" data-s="royal jelly $1" id="jelly"></div>
         <div style="color: #dba6f8; text-shadow: #dba6f8 0 0 2px" data-s="queen bee" data-p="queen bees" id="qbees">
@@ -4037,12 +4089,15 @@
         <p>
             Collect <b style="color: #f4d872">nectar</b> to make <b style="color: #dfb417">honey</b>!
         </p>
+        <p style="color: #f3ad20; --tip: 'Some resources, like pollen, provide a direct multiplier.'"
+            id="pollinationPower"></p>
         <div style="color: #df7e17" data-s="bee" data-p="bees" id="bee"></div>
         <label class="hidden" for="sellAmount">
             The percentage of honey you want to convert into honeycombs at once.
         </label>
-        Amount to convert: <input id="sellAmount" type="range" min="1" max="100">
-        <p style="color: #f3ad20" id="pollinationPower"></p>
+        <div style="--tip: 'You can convert honey into honeycombs. Ten honey will be equal to one honeycomb.'">
+            Amount to convert: <input id="sellAmount" type="range" min="1" max="100">
+        </div>
         <button class="sell green" data-earn="cells+all">
             Convert <span class="all"></span> of your honey into honeycombs
             <span class="sheet"></span>
@@ -4053,7 +4108,7 @@
             Convert 20 nectar into honey
             <span class="sheet" style="background-position-x: -72px"></span>
         </button>
-        <button class="orange" data-cost="cells-125" data-earn="pollen+1" data-hide="pollen>0">
+        <button class="orange" data-cost="cells-125" data-earn="pollen+1" data-hide="pollen>0" style="--tip: 'Enjoy!'">
             Unlock <b style="color: #fafad1">pollen</b> for 125 <b style="color: #f3b03e">honeycombs</b>
         </button>
         <button class="orange" data-show="pollen>0" data-cost="cells-2000" data-earn="unlock1+1" data-hide="unlock1>0">
@@ -4064,10 +4119,9 @@
             Unlock construction for 50,000 <b style="color: #f3b03e">honeycombs</b>
         </button>
         <div class="hide" data-show="bees3>0">
-            <p>
-                Education is also important for your bees. Teach them things to learn more!
-                Forager, honey, and nurse bees can learn.
-                The more your bees study, the more they will learn, but their production rates will decrease.
+            <p
+                style="--tip: 'Education is also important for your bees. Teach them things to learn more! Forager, honey, and nurse bees can learn. The more your bees study, the more education they get, but their production rates will also decrease.'">
+                Educating your bees allows you to generate new concepts.
             </p>
             <label class="hidden" for="studyAmount">
                 How much you want your bees to study (at the cost of their production speed).
@@ -4237,15 +4291,14 @@
         <button class="yellow" data-cost="honey-50|cells-20" data-earn="bees2+1" data-stat="bees2">
             Hire a honey bee
         </button>
+        <div
+            style="text-decoration: underline; color: #ea780d; --tip: 'During the winter, bees will die off if there isn\'t enough food to support them. Each bee will consume 1 honeycomb over the course of ten days, so make sure to stock up on them before getting too many bees!'">
+            WARNING: bees can die!
+        </div>
         <hr>
-        <i style="color: #55e3e5">
-            During <span style="color: #bbd3fd">winter</span>,
-            bees will die off if there isn't enough food to support them.
-            Each bee will consume 1 <span style="color: #f3b03e">honeycomb</span> over the course of ten days, so make
-            sure to stock up on them before getting a bee!
-        </i>
-        <div data-show="labor>0" class="hide" style="color: #f7960f">
-            You can transfer some bees of one job into another manually.
+        <div data-show="labor>0" class="hide"
+            style="font-size: 20px; color: #f7960f; --tip: 'You\'ve unlocked bee transferring, meaning that you can switch the jobs of some bees! This can be useful if, for example, you have too many honeybees.'">
+            You may transfer some bees of one job into another manually.
             <br>
             <button class="red" data-cost="bees-10%" data-earn="bees2+*1">
                 Transfer 10% of forager bees to honey bees
@@ -4255,29 +4308,24 @@
             </button>
             <hr>
         </div>
-        <p data-show="unlock1>0" class="small hide" style="color: #9cf1aa">
+        <p data-show="unlock1>0" class="small hide"
+            style="color: #9cf1aa; --tip: 'They cost 500 honeycombs to hire, and will slowly produce valuable royal jelly from pollen and nectar!'">
             Nurse bees are able to produce <b style="color: #94f1fa">royal jelly</b> from
             <b style="color: #fafad1">pollen</b> and <b style="color: #f4d872">nectar</b>.
-            You can hire them for 500 <b style="color: #f09b08">honeycombs</b>.
         </p>
-        <p data-show="unlock1>0" class="small hide" style="color: #d6f18a">
-            Queen bees, on the other hand, consume <b style="color: #94f1fa">royal jelly</b>
-            during all seasons to stay alive and make <b style="color: #c7e63d">pupae</b>,
-            which hatches into either forager or honey bees.
-            You can hire them for 5,000 <b style="color: #94f1fa">royal jelly</b>.
+        <p data-show="unlock1>0" class="small hide"
+            style="color: #f8b8de; --tip: 'Queen bees are able to produce pupae, which slowly grow up and turn into forager and honey bees. Note that they consume a lot of royal jelly, so make sure you get enough nurse bees beforehand!'">
+            <b style="color: #dba6f8">Queen bees</b> consume large amounts of <b style="color: #94f1fa">royal jelly</b>
+            instead.
         </p>
-        <u data-show="unlock1>0" class="hide" style="font-size: 20px; color: #f67da3">
-            Be warned, however. The more bees that you have, the less they will work and the less pupae you will gain.
-            You can counter this by building houses of various sizes as you progress.
-        </u>
-        <br>
         <button class="yellow" data-show="unlock1>0" data-cost="cells-500" data-earn="bees3+1" data-stat="bees3">
             Hire a nurse bee
         </button>
         <button class="red" data-show="bees3>0" data-cost="bees3-1" data-earn="">
             Fire a nurse bee
         </button>
-        <button class="purple" data-show="unlock1>0" data-cost="jelly-5000" data-earn="qbees+1" data-stat="qbees">
+        <button class="purple" data-show="unlock1>0" data-cost="jelly-5000" data-earn="qbees+1" data-stat="qbees"
+            style="--tip: 'Be warned! The more bees that you have, the less they will work and the less pupae you will gain. You can counter this by building houses of various sizes as you progress.'">
             Hire a queen bee
         </button>
         <hr>
@@ -4290,11 +4338,9 @@
         </button>
     </div>
     <div id="menu3">
-        <p>
+        <p style="--tip: 'Each home allows that a specific bee of that type to work significantly faster.'">
             Build various cozy homes for your bees!
             Note that if you build more homes than the number of bees that you have, you won't get any benefits.
-            Each home allows that a specific bee of that type to become <b style="color: #6ef979">+300% faster</b>.
-            Upgrades to those houses may increase that boost even more...
         </p>
         Current house boosts:
         <div class="small" style="color: #9cf1aa">
@@ -4475,11 +4521,13 @@
             Hire a yellow jacker to collect gems
         </button>
         <hr>
-        <div style="color: #5ebae8; text-shadow: #5ebae8 0 0 10px" data-s="gem $35" data-p="gems $35" id="gems"></div>
+        <div style="color: #f3c735; text-shadow: #f3c735 0 0 8px" data-s="gold $27" id="gold"></div>
+        <div style="color: #5ebae8; text-shadow: #5ebae8 0 0 10px; --tip: 'Oooh, so shiny!'" data-s="gem $35"
+            data-p="gems $35" id="gems"></div>
         <div class="hide" data-show="unlock13>0">
             <div class="smaller rainbow" id="famePower"></div>
-            <div style="color: #f3c735; text-shadow: #f3c735 0 0 8px" data-s="gold $27" id="gold"></div>
-            <div style="color: #f09b08" data-s="honeycomb $0" data-p="honeycombs $0" id="cellsAlt"></div>
+            <div style="margin: 4px; font-size: 16px; color: #f09b08" data-s="honeycomb $0" data-p="honeycombs $0"
+                id="cellsAlt"></div>
             <p>
                 Upgrade costs: <strong style="color: #dbbac7" id="c1"></strong>/<strong style="color: #c7f32a"
                     id="c2"></strong>/<strong style="color: #89f58e" id="c3"></strong>/<strong style="color: #f6ab4a"
