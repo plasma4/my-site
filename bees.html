@@ -3080,7 +3080,7 @@
             pointer-events: none;
             content: var(--tip);
             text-shadow: none !important;
-            width: 60%;
+            width: 80%;
             max-width: 500px;
             font-size: 18px;
             background-color: #555;
@@ -4055,14 +4055,14 @@
         <br>
     </div>
     <div class="small">
-        <div style="font-size: 16px">
+        <div style="font-size: 15px">
             &nbsp;
             <span
                 style="color: #f2134b; display: none; font-size: 16px; --tip: 'Your queen bees are dying! Make sure they have enough royal jelly.'"
                 id="queenBeesDying">WARNING: your queen bees
                 are dying!</span>
         </div>
-        <div style="font-size: 22px; color: #e7cdf9; --tip: 'This is how motivated your bees are. The more motivated they are, the faster they work! Various factors can change how motivated they are.'"
+        <div style="font-size: 22px; color: #e7cdf9; margin: 2px; --tip: 'This is how motivated your bees are. The more motivated they are, the faster they work! Various factors can change how motivated they are.'"
             id="motivation"></div>
         <div style="font-size: 18px; color: #61d0f5" id="motivationBoost"></div>
         <div style="font-size: 18px; color: #f37cd3" id="stress"></div>
@@ -4072,18 +4072,27 @@
         <div style="color: #f09b08; --tip: 'Made from honey and used as a food source, among other things.'"
             data-s="honeycomb $0" data-p="honeycombs $0" id="cells">
         </div>
-        <div style="color: #f6be14" data-s="honey $3" id="honey"></div>
-        <div style="color: #f4d872" data-s="nectar" id="nectar"></div>
-        <div style="color: #fafad1; --tip: 'By getting pollen, your bees will gain more nectar and create honey from nectar faster!'"
+        <div style="color: #f6be14; --tip: 'Honey is useful for purchasing stuff and is made from nectar.'"
+            data-s="honey $3" id="honey"></div>
+        <div style="color: #f4d872; --tip: 'Nectar may be gathered by foragers or manually made.'" data-s="nectar"
+            id="nectar"></div>
+        <div style="color: #fafad1; --tip: 'Pollen, while not edible, can help in the pollination process.'"
             data-s="pollen" id="pollen"></div>
-        <div style="color: #c7e63d" data-s="pupae" id="pupae"></div>
-        <div style="color: #94f1fa" data-s="royal jelly $1" id="jelly"></div>
-        <div style="color: #dba6f8; text-shadow: #dba6f8 0 0 2px" data-s="queen bee" data-p="queen bees" id="qbees">
+        <div style="color: #c7e63d; --tip: 'Queen bees create pupae over time from royal jelly.'" data-s="pupae"
+            id="pupae"></div>
+        <div style="color: #94f1fa; --tip: 'Royal jelly is produced by nurse bees and allows you to feed your queen bees.'"
+            data-s="royal jelly $1" id="jelly"></div>
+        <div style="color: #dba6f8; text-shadow: #dba6f8 0 0 2px; --tip: 'Although queen bees can hatch pupae, they are also affected by motivation. In addition, their pupae production rate will also decrease based on the amount of other bee types.'"
+            data-s="queen bee" data-p="queen bees" id="qbees">
         </div>
         <div style="font-size: 22px; color: #ad88ec" id="queenRate"></div>
-        <div style="color: #e8beaa; text-shadow: #e8beaa 0 0 4px" data-s="wood $22" id="wood"></div>
-        <div style="color: #f3e080; text-shadow: #f3e080 0 0 6px" data-s="flower $11" data-p="flowers $11" id="flowers">
+        <div style="color: #e8beaa; text-shadow: #e8beaa 0 0 4px; --tip: 'Wood may be used for construction, or as exchange for something more valuable...'"
+            data-s="wood $22" id="wood"></div>
+        <div style="color: #f3e080; text-shadow: #f3e080 0 0 6px; --tip: 'Flowers smell great and improve your nectar and pollen production.'"
+            data-s="flower $11" data-p="flowers $11" id="flowers">
         </div>
+        <div style="color: #d6ecfa; text-shadow: #d6ecfa 0 0 2px; --tip: 'Water boosts your honey and royal jelly gain and is able to hydrate all the plants nearby. It is also required to keep gardens active!'"
+            data-s="water $13" id="water"></div>
     </div>
     <div id="menu1">
         <p>
@@ -4338,7 +4347,8 @@
         </button>
     </div>
     <div id="menu3">
-        <p style="--tip: 'Each home allows that a specific bee of that type to work significantly faster.'">
+        <p
+            style="color: #ebddb7; --tip: 'Each home allows that a specific bee of that type to work significantly faster.'">
             Build various cozy homes for your bees!
             Note that if you build more homes than the number of bees that you have, you won't get any benefits.
         </p>
@@ -4387,9 +4397,9 @@
             Create a separate hive to decrease overcrowding with 150M honeycombs
         </button>
         <hr>
-        <p>
+        <p
+            style="--tip: 'You can trade with various animals, who will help you for the right price! Some trades will take longer than others.'">
             Trade is vital on the route to becoming a prosperous bee colony.
-            You can trade with various animals, who will help you for the right price!
         </p>
         <div style="color: #a3a09d">Bear trades:</div>
         <button class="brown" data-cost="honey-1e8" data-earn="soil+100|trades+1" data-stat="soil" data-wait="5">
@@ -4431,7 +4441,6 @@
         </p>
         <div style="color: #63c6f3; text-shadow: #63c6f3 0 0 2px" data-s="water source" data-p="water sources"
             id="sources"></div>
-        <div style="color: #d6ecfa; text-shadow: #d6ecfa 0 0 2px" data-s="water $13" id="water"></div>
         <div style="color: #d7b095; text-shadow: #d7b095 0 0 2px" data-s="soil $12" id="soil"></div>
         <div style="color: #d1b479; text-shadow: #d1b479 0 0 2px" data-s="seed $6" data-p="seeds $6" id="seeds">
         </div>
@@ -4454,7 +4463,7 @@
         </button>
         <hr>
         <p>
-            You may also plant <b style="color: #8bef5d">trees</b> to increase queen bee productiveness
+            You may also plant <b style="color: #8bef5d">trees</b> to increase <b style="color: #c7e63d">pupae</b> gain
             or cut them down for some <b style="color: #e8beaa">wood</b>!
         </p>
         <button class="green" data-show="unlock9>0" data-cost="pollen-3e8|tseeds-10" data-earn="saplings+1"
@@ -4513,7 +4522,8 @@
             Yellow jackers are a good way to gather various valuable resources.
             They are very greedy, however, and will become more expensive to hire as you get more of them.
         </p>
-        <p class="hide" data-show="gold1>0">
+        <p class="hide" data-show="gold1>0"
+            style="--tip: 'Honey cost formula: 1.000T, multiplied by 1.4 for every jacker you\'ve already hired'">
             Current cost: <b class="small" style="color: #f7ea2e" id="jackerCost"></b>
         </p>
         <button class="yellow3" data-show="gold1>0" data-cost="honey-1e12/1.4POWjackers|gold-3" data-earn="jackers+1"
@@ -4521,7 +4531,8 @@
             Hire a yellow jacker to collect gems
         </button>
         <hr>
-        <div style="color: #f3c735; text-shadow: #f3c735 0 0 8px" data-s="gold $27" id="gold"></div>
+        <div style="color: #f3c735; text-shadow: #f3c735 0 0 8px; --tip: 'A valuable resource indeed.'"
+            data-s="gold $27" id="gold"></div>
         <div style="color: #5ebae8; text-shadow: #5ebae8 0 0 10px; --tip: 'Oooh, so shiny!'" data-s="gem $35"
             data-p="gems $35" id="gems"></div>
         <div class="hide" data-show="unlock13>0">
@@ -5222,7 +5233,7 @@
             }
 
             schoolBoost = C("schools").mul(4).add(1).log2().add(1)
-            waterPower = C("water").mul(0.3).add(10).log10().mul(1.3).sub(0.3)
+            waterPower = C("water").mul(0.3).add(10).log10().mul(1.1).sub(0.1)
             flowerPower = C("flowers").add(10).log10().mul(5).sub(4)
             treePower = C("trees").mul(12).add(1).ln().mul(3).add(1)
             famePower = C("fame").mul(0.03).add(2).log2()
