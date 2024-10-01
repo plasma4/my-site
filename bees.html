@@ -3047,7 +3047,7 @@
         b,
         strong {
             transition: text-shadow 500ms;
-            font-size: 26px;
+            font-size: 24px;
         }
 
         body.light div[style],
@@ -3452,7 +3452,7 @@
             user-select: none;
         }
 
-        button[data-wait]:before {
+        button[data-wait]::before {
             pointer-events: none;
             transition: border-radius 500ms;
             content: "";
@@ -3466,12 +3466,12 @@
             width: 100%;
         }
 
-        button:hover[data-wait]:before,
-        button:focus[data-wait]:before {
+        button:hover[data-wait]::before,
+        button:focus[data-wait]::before {
             border-radius: 12px;
         }
 
-        button:active[data-wait]:before {
+        button:active[data-wait]::before {
             border-radius: 25px;
         }
 
@@ -4128,16 +4128,18 @@
             data-s="queen bee" data-p="queen bees" id="qbees">
         </div>
         <div style="font-size: 22px; color: #ad88ec" id="queenRate"></div>
-        <div style="color: #f3e080; text-shadow: #f3e080 0 0 6px; --tip: 'Flowers smell great and improve your nectar and pollen production.'"
+        <div style="color: #f3b135; text-shadow: #f3b135 0 0 8px; --tip: 'A very shiny and valuable resource indeed.'"
+            data-s="gold $27" id="gold"></div>
+        <div style="color: #f3e080; text-shadow: #f3e080 0 0 2px; --tip: 'Flowers smell great and improve your nectar and pollen production.'"
             data-s="flower $11" data-p="flowers $11" id="flowers">
         </div>
         <div style="color: #d6ecfa; text-shadow: #d6ecfa 0 0 2px; --tip: 'Water boosts your honey and royal jelly gain and is able to hydrate all the plants nearby. It is also required to keep gardens active!'"
             data-s="water $13" id="water"></div>
-        <div style="color: #d59679; text-shadow: #d59679 0 0 4px; --tip: 'Wood may be used for constructing various items, or as exchange for something more valuable...'"
+        <div style="color: #d59679; text-shadow: #d59679 0 0 2px; --tip: 'Wood may be used for constructing various items, or as exchange for something more valuable...'"
             data-s="wood $22" id="wood"></div>
-        <div style="color: #b3b3b3; text-shadow: #b3b3b3 0 0 5px; --tip: 'Iron is useful for construction and automation.'"
+        <div style="color: #b3b3b3; text-shadow: #b3b3b3 0 0 4px; --tip: 'Iron is useful for construction and automation.'"
             data-s="iron $39" id="iron"></div>
-        <div style="color: #fb7f88; text-shadow: #fb7f88 0 0 5px; --tip: 'Fruit is tasty; just not for bees.'"
+        <div style="color: #de73b2; text-shadow: #de73b2 0 0 6px; --tip: 'Fruit is tasty; just not for bees.'"
             data-s="fruit $43" id="fruit"></div>
     </div>
     <div id="menu1">
@@ -4512,7 +4514,7 @@
         </div>
         <div class="hide" data-show="partners>1">
             <hr>
-            <div style="color: #aeed1b">Frog trades:</div>
+            <div style="color: #f0d874">Squirrel trades:</div>
             <button class="aqua" data-cost="fruit-1000" data-earn="sources+25" data-stat="sources" data-wait="2">
                 Purchase 25 water sources
             </button>
@@ -4530,6 +4532,16 @@
             </button>
             <span class="sheet" style="background-position-x: -936px"></span> (24,000 <b
                 style="color: #fb7f88">fruit</b>)
+            <br>
+            <button class="pink"
+                style="--tip: 'Cost formula for honeycombs: 10.000q, multiplied by 1.00001 for every queen bee that you have'"
+                data-cost="cells-1e16/1.00001POWqbees|gold-1" data-earn="qbees+1000" data-stat="qbees">
+                Hire 1,000 queen bees
+            </button>
+            <br>
+            <span class="sheet" style="background-position-x: -120px"></span> (<b id="honeycombCost"
+                style="color: #eedc67"></b> <b style="color: #f09b08">honeycombs</b> and 1 <b
+                style="color: #f0ad11">gold</b>, with slow honeycomb cost scaling)
         </div>
     </div>
     <div id="menu4">
@@ -4669,8 +4681,6 @@
             Hire a yellow jacker to collect gems
         </button>
         <hr>
-        <div style="color: #f3c735; text-shadow: #f3c735 0 0 8px; --tip: 'A valuable resource indeed.'"
-            data-s="gold $27" id="gold"></div>
         <div style="color: #5ebae8; text-shadow: #5ebae8 0 0 10px; --tip: 'Oooh, so shiny!'" data-s="gem $35"
             data-p="gems $35" id="gems"></div>
         <div class="hide" data-show="unlock13>0">
@@ -4736,7 +4746,7 @@
         "use strict"
         ID("main").remove()
         ID("bigScript").remove()
-        var baseProperties = ["day", "beesLost", "beesLost2", "beesLost3", "pupae", "water", "stress", "u1", "u2", "u3", "u4", "u5", "u6", "gems", "cellsAlt", "fruit"]
+        var baseProperties = ["day", "beesLost", "beesLost2", "beesLost3", "pupae", "water", "stress", "u1", "u2", "u3", "u4", "u5", "u6", "gems", "cellsAlt"]
         var oldDay = null
 
         var buttons = null, sellPercent = 100, studyAmount = 0, waitButtons = [], waitLength = 0, timeData = [], totalTimes = [], buttonsAndUnlocks = [], properties = baseProperties.slice(0), stuff = {}, stuffTotals = {}, alreadyClicked = true
@@ -4866,11 +4876,7 @@
                                     }
                                 } else {
                                     var powIndex = str.indexOf("POW")
-                                    if (powIndex !== -1) {
-                                        noPow = false
-                                        var separator = str.indexOf("/")
-                                        amount = Hyper(str.slice(separator + 1, powIndex)).pow(C(str.slice(powIndex + 3))).mul(str.slice(0, separator)).ceil()
-                                    } else {
+                                    if (powIndex === -1) {
                                         var lenSub = str.length - 1
                                         if (str.charCodeAt(lenSub) === 37) {
                                             // The string ends with a percent sign:
@@ -4879,6 +4885,10 @@
                                         } else {
                                             amount = Hyper(str)
                                         }
+                                    } else {
+                                        noPow = false
+                                        var separator = str.indexOf("/")
+                                        amount = Hyper(str.slice(separator + 1, powIndex)).pow(C(str.slice(powIndex + 3))).mul(str.slice(0, separator)).ceil()
                                     }
                                 }
 
@@ -5337,7 +5347,8 @@
                 mul("stress", Hyper(0.999), speed)
                 var magicNumber = beeSum.isMore(10) ? beeSum.mul(0.005).add(0.95).log10().mul(0.6) : new Hyper()
                 overcrowding = magicNumber.div(magicNumber.add(1)).mul(Hyper(0.98).pow(getUpgrade(1)))
-                queenRate = Hyper(1).sub(overcrowding.sqrt()).sqr().mul(0.95).add(0.05)
+                queenRate = Hyper(1).sub(overcrowding.sqrt()).mul(0.95).add(0.05)
+                queenRate = queenRate.mul(queenRate.sqrt())
                 motivationBoost = C("u6").isPositive() ? C("gems").mul(C("u6")).mul(0.7).add(1).log10().div(4) : new Hyper()
                 motivation = new Hyper(1).sub(overcrowding).mul(new Hyper(1).sub(C("stress").sqr())).add(motivationBoost)
             }
@@ -5490,6 +5501,7 @@
             updateId("treePower", T("saplings").isPositive() ? "Pupae production boost from trees (with no upkeep increase): " + calculateBoost(treePower) : "")
             updateId("treeGain", C("unlock16").isPositive() ? treesGrown.mul(60).format(2) + " saplings grow into trees each second, while " + treesCut.mul(60).format(2) + " trees are chopped each second (you have " + C("trees").format() + " trees)" : "")
             ID("currentDay").style.color = ["#bbd3fd", "#2dd860", "#dec513", "#fba32a"][season]
+            updateId("honeycombCost", Hyper(1.00001).pow(C("qbees")).mul(1e16).format())
             updateId("jackerCost", Hyper(1.4).pow(C("jackers")).mul(1e12).format() + " honey and 3 gold")
             updateId("famePower", "Gem collection boost from fame: " + calculateBoost(famePower))
 
