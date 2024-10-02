@@ -4102,7 +4102,7 @@
         <div style="font-size: 15px">
             &nbsp;
             <span
-                style="color: #f2134b; display: none; font-size: 16px; --tip: 'Your queen bees are dying! Make sure they have enough royal jelly.'"
+                style="color: #f2134b; display: none; font-size: 16px; --tip: 'Your queen bees are dying right now! Try to make your royal jelly production stable.'"
                 id="queenBeesDying">WARNING: your queen bees
                 are dying!</span>
         </div>
@@ -5300,65 +5300,15 @@
         }
 
         var strangeBoost, easyclickCost = ["1e12", "1e15", "1e18", "1e21", "1e30", "1e50", "1e100", "1e1000", "ee9", "ee12", "ee15", "ee50", "ee250", "ee5000", "ee1000000", "eee12", "eeee12", "F10", "F100", "F1000000"], easyUpgrades = 0, season = 0, year = 1, dayOfYear = 1, queenBeesDying = false, hasMotivation = false, pollenPower = Hyper(), waterPower = Hyper(), flowerPower = Hyper(), treePower = Hyper(), fruitBoost = new Hyper(), schoolBoost = Hyper(), famePower = Hyper(1), motivation = Hyper(1), motivationBoost = Hyper(), overcrowding = Hyper(), queenRate = Hyper(), treesGrown = Hyper(), treesCut = ""
-        function updateGame(speed) {
-            for (var i = 0; i < buttonsAndUnlocks.length; i++) {
-                var child = buttonsAndUnlocks[i]
-                var requirements = child.getAttribute("data-show")
-                var hideRequirements = child.getAttribute("data-hide")
-                if (hideRequirements !== null && meetsRequirements(hideRequirements)) {
-                    if (child.style.display !== "none") {
-                        child.style.display = "none"
-                    }
-                } else if (requirements !== null) {
-                    if (meetsRequirements(requirements)) {
-                        child.style.display = null
-                    } else if (child.style.display !== "none") {
-                        child.style.display = "none"
-                    }
-                }
+        function updateGame(speed, disableRender) {
+            if (new Hyper(speed).isZero()) {
+                return
             }
-
-            for (i = 1; i <= menuLength; i++) {
-                if (currentMenu === i) {
-                    ID("menu" + i).removeAttribute("style")
-                } else {
-                    ID("menu" + i).style.display = "none"
-                }
-            }
-
-            var sellClass = document.getElementsByClassName("all")
-            for (i = 0; i < sellClass.length; i++) {
-                update(sellClass[i], sellPercent + "%")
-            }
-
-            if (!C("bees3").isPositive()) {
-                studyAmount = 0
-            }
-
             add("day", Hyper(1).div(120), speed)
-            var d = Math.min(C("day").add(1), 1e100)
-            updateId("time", paused ? "GAME PAUSED" : ("0" + Math.floor((d * 24) % 12 + 1)).slice(-2) + ":" + ("0" + Math.floor((d * 1440) % 60 + 1)).slice(-2) + ((d * 24) % 24 > 12 ? " pm" : " am"))
-            d = Math.floor(d)
-            if (d !== oldDay) {
-                var yearAndDay = findYearAndDay(d)
-                year = yearAndDay[0]
-                dayOfYear = yearAndDay[1]
-                updateId("currentDay", "day " + dayOfYear + " (year " + Hyper(year).format() + ")")
-                oldDay = d
-            }
-
-            if (dayOfYear > 335 || dayOfYear < 61) {
-                season = 0
-            } else if (dayOfYear < 153) {
-                season = 1
-            } else if (dayOfYear < 245) {
-                season = 2
-            } else {
-                season = 3
-            }
-
             var beeSum = C("bees").add(C("bees2")).add(C("bees3")).div(C("hives").add(1))
             hasMotivation = beeSum.isPositive()
+            updateTime(disableRender)
+
             if (hasMotivation) {
                 add("stress", Hyper([0.000002, 0.000035, 0.000015, 0.00001][season] + 0.00002 * (season + 1) * Math.random()), speed)
                 add("stress", C("day").add(10).log10().sub(1).div(30000).mul(beeSum.add(10).log10().mul(1.2 + Math.random())).min(0.0006), speed)
@@ -5455,6 +5405,33 @@
             }
         }
 
+        function updateTime(disableRender) {
+            var d = Math.min(C("day").add(1), 1e100)
+            d = Math.floor(d)
+            if (d !== oldDay) {
+                var yearAndDay = findYearAndDay(d)
+                year = yearAndDay[0]
+                dayOfYear = yearAndDay[1]
+                if (!disableRender) {
+                    updateId("currentDay", "day " + dayOfYear + " (year " + Hyper(year).format() + ")")
+                    oldDay = d
+                }
+            }
+
+            if (dayOfYear > 335 || dayOfYear < 61) {
+                season = 0
+            } else if (dayOfYear < 153) {
+                season = 1
+            } else if (dayOfYear < 245) {
+                season = 2
+            } else {
+                season = 3
+            }
+            if (!disableRender) {
+                updateId("time", paused ? "GAME PAUSED: PRESS RESUME TO KEEP PLAYING" : ("0" + Math.floor((d * 24) % 12 + 1)).slice(-2) + ":" + ("0" + Math.floor((d * 1440) % 60 + 1)).slice(-2) + ((d * 24) % 24 > 12 ? " pm" : " am"))
+            }
+        }
+
         function randomFloor(num) {
             return Math.random() < num % 1 ? Math.floor(num) : Math.ceil(num)
         }
@@ -5468,6 +5445,43 @@
                 easyButton = null
             }
             var mult = paused ? Hyper(0) : baseSpeed
+            if (paused) {
+                updateTime()
+            }
+            for (var i = 0; i < buttonsAndUnlocks.length; i++) {
+                var child = buttonsAndUnlocks[i]
+                var requirements = child.getAttribute("data-show")
+                var hideRequirements = child.getAttribute("data-hide")
+                if (hideRequirements !== null && meetsRequirements(hideRequirements)) {
+                    if (child.style.display !== "none") {
+                        child.style.display = "none"
+                    }
+                } else if (requirements !== null) {
+                    if (meetsRequirements(requirements)) {
+                        child.style.display = null
+                    } else if (child.style.display !== "none") {
+                        child.style.display = "none"
+                    }
+                }
+            }
+
+            for (i = 1; i <= menuLength; i++) {
+                if (currentMenu === i) {
+                    ID("menu" + i).removeAttribute("style")
+                } else {
+                    ID("menu" + i).style.display = "none"
+                }
+            }
+
+            var sellClass = document.getElementsByClassName("all")
+            for (i = 0; i < sellClass.length; i++) {
+                update(sellClass[i], sellPercent + "%")
+            }
+
+            if (!C("bees3").isPositive()) {
+                studyAmount = 0
+            }
+
             if (diff < 7000) {
                 updateGame(mult)
 
@@ -5589,7 +5603,7 @@
             var date = Date.now()
             while (Date.now() - date < 33 && i++ < calculateLimit) {
                 for (var t = 0; t < 10 && i++ < calculateLimit; t++) {
-                    updateGame(200)
+                    updateGame(200, true)
                     if (queenBeesDying || C("beesLost").add(C("beesLost2")).add(C("beesLost3")).isPositive()) {
                         var formatted = C("cells").format()
                         updateId("calcCells", C("cells").format() + (formatted === "1" ? " honeycomb" : " honeycombs"))
