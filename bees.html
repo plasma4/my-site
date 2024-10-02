@@ -3118,12 +3118,14 @@
             border-color: #ddd transparent transparent transparent;
         }
 
-        [style*="--tip"]:hover::after {
+        [style*="--tip"]:hover::after,
+        [style*="--tip"]:focus::after {
             transform: translateX(-50%) scale(1);
             opacity: 1;
         }
 
-        [style*="--tip"]:hover::before {
+        [style*="--tip"]:hover::before,
+        [style*="--tip"]:focus::before {
             opacity: 1;
         }
 
@@ -4344,9 +4346,17 @@
                     Unlock machines in the Gardening tab for 4,000 tech points
                     <span class="tech" style="background-position-x: -1008px"></span>
                 </button>
-                <button class="pink" data-show="unlock16>0" data-cost="tpoints-4000" data-earn="unlock18+1"
+                <button class="pink" data-show="unlock16>0" data-cost="cpoints-1500|tpoints-500" data-earn="unlock18+1"
                     data-hide="unlock18>0">
-                    Unlock The Rocket in the Construction tab for 5,000 tech points
+                    Use pollen to increase your fruit production for 1,500 cultural points and 500 tech points
+                </button>
+                <button class="pink" data-show="unlock18>0" data-cost="fruit-1e6" data-earn="unlock19+1"
+                    data-hide="unlock19>0">
+                    Unlock a new tech for 1,000,000 fruit...
+                </button>
+                <button class="pink" data-show="unlock19>0" data-cost="tpoints-6000|iron-1e7" data-earn="unlock20+1"
+                    data-hide="unlock20>0">
+                    Unlock The Rocket in the Construction tab for 6,000 tech points and 10M iron
                 </button>
             </div>
         </div>
@@ -4410,7 +4420,7 @@
             Fire a nurse bee
         </button>
         <button class="purple" data-show="unlock1>0" data-cost="jelly-5000" data-earn="qbees+1" data-stat="qbees"
-            style="--tip: 'Nurse bees cost 5,000 royal jelly each. However, be aware that the more bees that you have, the less they will work and the less pupae you will gain. You can counter this by building houses of various sizes as you progress.'">
+            style="--tip: 'Nurse bees cost 5,000 royal jelly each. However, be aware that the more bees that you have, the less they will work and the less pupae you will gain. You can counter this by building houses of various sizes as you progress. They will also consume pollen, which will eat at its nectar and honey production boost!'">
             Hire a queen bee
         </button>
         <hr>
@@ -4472,7 +4482,7 @@
             data-stat="hives">
             Create a separate hive to decrease overcrowding with 150M honeycombs
         </button>
-        <button class="pink tip2" data-show="unlock18>0" style="--tip: 'You have beaten the game for now. Congrats!'">
+        <button class="pink tip2" data-show="unlock20>0" style="--tip: 'You have beaten the game for now. Congrats!'">
             Build a rocket
         </button>
         <hr>
@@ -4533,21 +4543,22 @@
             <span class="sheet" style="background-position-x: -936px"></span> (24,000 <b
                 style="color: #fb7f88">fruit</b>)
             <br>
-            <button class="green" data-cost="fruit-30000" data-earn="bees3+5000" data-stat="bees3" data-wait="0.2">
+            <button class="green" data-cost="fruit-30000|wood-2e7" data-earn="bees3+5000" data-stat="bees3">
                 Hire 5,000 nurse bees with the help of squirrels
             </button>
-            <span class="sheet" style="background-position-x: -48px"></span> (30,000 <b
-                style="color: #fb7f88">fruit</b>)
+            <span class="sheet" style="background-position-x: -24px"></span> (30,000 <b style="color: #fb7f88">fruit</b>
+            and 20M <b style="color: #d59679">wood</b>, instant trade)
             <br>
             <button class="pink"
-                style="--tip: 'Cost formula for honeycombs: 10.000q, multiplied by 1.00001 for every queen bee that you have. Just remember that queen bees require lots of royal jelly!'"
-                data-cost="cells-1e16/1.00001POWqbees|gold-1" data-earn="qbees+1000" data-stat="qbees">
+                style="--tip: 'The cost formula for honeycombs starts at 10.000q but is multiplied by 2% for every 1,000 queen bees that you have. (Also, remember that queen bees require lots of royal jelly!)'"
+                data-cost="cells-1e16/1.0000198028233694978822052901735239566662981343803POWqbees|gold-5"
+                data-earn="qbees+1000" data-stat="qbees">
                 Hire 1,000 queen bees with the help of squirrels
             </button>
             <br>
-            <span class="sheet" style="background-position-x: -120px"></span> (<b id="honeycombCost"
-                style="color: #eedc67"></b> <b style="color: #f09b08">honeycombs</b> and 1 <b
-                style="color: #f0ad11">gold</b>, with slow honeycomb cost scaling)
+            <span class="sheet" style="background-position-x: -120px"></span> <b>(<b id="honeycombCost"
+                    style="color: #eedc67"></b> <b style="color: #f09b08">honeycombs</b> and 5 <b
+                    style="color: #f0ad11">gold</b>, with slow honeycomb cost scaling, instant trade)</b>
         </div>
     </div>
     <div id="menu4">
@@ -4572,6 +4583,7 @@
         <p style="color: #eb8feb" id="waterPower"></p>
         <p style="color: #7cf786" id="flowerPower"></p>
         <p style="color: #93f95c" id="treePower"></p>
+        <p style="color: #ee6940" id="fruitBoost"></p>
         <hr>
         <p>Plant gardens in order to get flowers! Gardens will consume water slowly.</p>
         <button class="lime" data-cost="pollen-5000000|soil-1000|seeds-100" data-earn="gardens+1" data-wait="2">
@@ -4640,7 +4652,7 @@
             100 <b style="color: #b3b3b3">iron</b> and 1 <b style="color: #d59679">wood</b>
             <br>
             <button class="wood" data-cost="axes-10|honey-1e18" data-earn="cutters+10"
-                style="margin: 5px; --tip: 'Hire some woodcutters to chop down trees automatically for you.'"
+                style="margin: 5px; --tip: 'Hire some woodcutters to chop down trees automatically for you. Be warned, however, as if you get too many woodcutters, your sapling growth will not be able to keep up.'"
                 data-stat="cutters">
                 Hire 10 woodcutters
             </button>
@@ -5287,7 +5299,7 @@
             return false
         }
 
-        var strangeBoost, easyclickCost = ["1e12", "1e15", "1e18", "1e21", "1e30", "1e50", "1e100", "1e1000", "ee9", "ee12", "ee15", "ee50", "ee250", "ee5000", "ee1000000", "eee12", "eeee12", "F10", "F100", "F1000000"], easyUpgrades = 0, season = 0, year = 1, dayOfYear = 1, queenBeesDying = false, hasMotivation = false, pollenPower = Hyper(), waterPower = Hyper(), flowerPower = Hyper(), treePower = Hyper(), schoolBoost = Hyper(), famePower = Hyper(1), motivation = Hyper(1), motivationBoost = Hyper(), overcrowding = Hyper(), queenRate = Hyper(), treesGrown = Hyper(), treesCut = Hyper()
+        var strangeBoost, easyclickCost = ["1e12", "1e15", "1e18", "1e21", "1e30", "1e50", "1e100", "1e1000", "ee9", "ee12", "ee15", "ee50", "ee250", "ee5000", "ee1000000", "eee12", "eeee12", "F10", "F100", "F1000000"], easyUpgrades = 0, season = 0, year = 1, dayOfYear = 1, queenBeesDying = false, hasMotivation = false, pollenPower = Hyper(), waterPower = Hyper(), flowerPower = Hyper(), treePower = Hyper(), fruitBoost = new Hyper(), schoolBoost = Hyper(), famePower = Hyper(1), motivation = Hyper(1), motivationBoost = Hyper(), overcrowding = Hyper(), queenRate = Hyper(), treesGrown = Hyper(), treesCut = ""
         function updateGame(speed) {
             for (var i = 0; i < buttonsAndUnlocks.length; i++) {
                 var child = buttonsAndUnlocks[i]
@@ -5398,12 +5410,14 @@
             waterPower = C("water").mul(0.3).add(10).log10().mul(1.1).sub(0.1)
             flowerPower = C("flowers").add(10).log10().mul(5).sub(4)
             treePower = C("trees").mul(12).add(1).ln().mul(3).add(1)
+            fruitBoost = C("unlock18").isPositive() ? C("pollen").add(1).log10().div(3).add(1) : Hyper(1)
             famePower = C("fame").mul(0.03).add(2).log2()
 
-            treesCut = remove("trees", C("cutters").div(500), speed)
+            var cuttingAmount = C("cutters").div(700)
+            treesCut = remove("trees", cuttingAmount, speed)
             add("wood", treesCut.mul(10000))
-            treesCut = treesCut.div(speed)
-            add("iron", C("mines").mul(C("unlock16").isPositive() ? 3 : 1).div(400), speed)
+            treesCut = treesCut.div(speed).mul(60).format(2) + (C("trees").isPositive() ? "" : "/" + cuttingAmount.mul(60).format(2))
+            add("iron", C("mines").mul(C("unlock16").isPositive() ? 3 : 1).div(350), speed)
             add("water", C("sources").div(7), speed)
             add("flowers", remove("water", C("gardens").div(10), speed).mul(getUpgrade(3).mul(0.5).add(1)).div(15))
             pollenPower = C("pollen").add(100).log10().mul(3.5).sub(6)
@@ -5414,7 +5428,7 @@
             if (C("unlock9").isPositive()) {
                 add("tseeds", getBeeBoost("bees").div(1000000000), collectionRate)
             }
-            add("fruit", C("trees").mul(C("harvesters")).div(2400000), speed)
+            add("fruit", C("trees").mul(C("harvesters")).mul(fruitBoost).div(2400000), speed)
             add("saplings", remove("tseeds", C("planters").div(130).add(C("aplanters").div(2.4)), speed).div(10))
             add("fame", C("gold").div(2000), speed)
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).div(18)
@@ -5505,9 +5519,10 @@
             updateId("waterPower", "Honey and royal jelly production boost from water: " + calculateBoost(waterPower))
             updateId("flowerPower", "Nectar and pollen production boost from flowers: " + calculateBoost(flowerPower))
             updateId("treePower", T("saplings").isPositive() ? "Pupae production boost from trees (with no upkeep increase): " + calculateBoost(treePower) : "")
-            updateId("treeGain", C("unlock16").isPositive() ? treesGrown.mul(60).format(2) + " saplings grow into trees each second, while " + treesCut.mul(60).format(2) + " trees are chopped each second (you have " + C("trees").format() + " trees)" : "")
+            updateId("fruitBoost", C("unlock18").isPositive() ? "Fruit production boost from pollen: " + calculateBoost(fruitBoost) : "")
+            updateId("treeGain", C("unlock16").isPositive() ? treesGrown.mul(60).format(2) + " saplings grow into trees each second, while " + treesCut + " trees are chopped each second (you have " + C("trees").format() + " trees)" : "")
             ID("currentDay").style.color = ["#bbd3fd", "#2dd860", "#dec513", "#fba32a"][season]
-            updateId("honeycombCost", Hyper(1.00001).pow(C("qbees")).mul(1e16).format())
+            updateId("honeycombCost", Hyper("1.0000198028233694978822052901735239566662981343803").pow(C("qbees")).mul(1e16).format())
             updateId("jackerCost", Hyper(1.4).pow(C("jackers")).mul(1e12).format() + " honey and 3 gold")
             updateId("famePower", "Gem collection boost from fame: " + calculateBoost(famePower))
 
