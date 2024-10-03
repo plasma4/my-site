@@ -3484,6 +3484,7 @@
         }
 
         p {
+            line-height: 1.25;
             font-size: 20px;
         }
 
@@ -4106,7 +4107,7 @@
                 id="queenBeesDying">WARNING: your queen bees
                 are dying!</span>
         </div>
-        <div style="font-size: 22px; color: #e7cdf9; margin: 2px; --tip: 'This is how motivated your bees are. The more motivated they are, the faster they work! Various factors can change how motivated they are.'"
+        <div style="font-size: 22px; color: #e7cdf9; margin: 2px; --tip: 'This is how motivated your bees are. The more motivated they are, the faster they work! Various factors can change how motivated they are. (Factors that decrease motivation are multiplied together, while factors that boost motivation are additive.)'"
             id="motivation"></div>
         <div style="font-size: 18px; color: #61d0f5" id="motivationBoost"></div>
         <div style="font-size: 18px; color: #f37cd3" id="stress"></div>
@@ -4580,8 +4581,8 @@
         </div>
         <div style="color: #90f68d; text-shadow: #90f68d 0 0 6px" data-s="tree seed" data-p="tree seeds" id="tseeds">
         </div>
-        <p style="color: #eb8feb" id="waterPower"></p>
-        <p style="color: #7cf786" id="flowerPower"></p>
+        <p style="color: #aee0f6" id="waterPower"></p>
+        <p style="color: #fee577" id="flowerPower"></p>
         <p style="color: #93f95c" id="treePower"></p>
         <p style="color: #ee6940" id="fruitBoost"></p>
         <hr>
@@ -4607,8 +4608,8 @@
         <br>
         <button class="orange" data-show="unlock12>0" data-cost="trees-100" data-earn="wood+1000000" data-wait="2">
             Commit mass deforestation for 1,000,000 wood
+            <span class="tech" style="background-position-x: -960px"></span>
         </button>
-        <span class="sheet" style="background-position-x: -960px"></span>
         <br>
         <button class="aqua" data-show="unlock11>0" data-cost="honey-1e12" data-earn="planters+1" data-wait="0.2"
             data-stat="planters">
@@ -5311,7 +5312,7 @@
 
             if (hasMotivation) {
                 add("stress", Hyper([0.000002, 0.000035, 0.000015, 0.00001][season] + 0.00002 * (season + 1) * Math.random()), speed)
-                add("stress", C("day").add(10).log10().sub(1).div(30000).mul(beeSum.add(10).log10().mul(1.2 + Math.random())).min(0.0006), speed)
+                add("stress", C("day").add(10).log10().sub(1).div(100000).mul(beeSum.add(10).log10().mul(1.2 + Math.random())).min(0.0006), speed)
                 mul("stress", Hyper(0.999), speed)
                 var magicNumber = beeSum.isMore(10) ? beeSum.mul(0.005).add(0.95).log10().mul(0.6) : new Hyper()
                 overcrowding = magicNumber.div(magicNumber.add(1)).mul(Hyper(0.98).pow(getUpgrade(1)))
