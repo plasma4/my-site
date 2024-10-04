@@ -3481,6 +3481,7 @@
         }
 
         button:active[data-wait]::before {
+            transition: border-radius 250ms;
             border-radius: 25px;
         }
 
@@ -3506,8 +3507,7 @@
         }
 
         button:active,
-        .mini:active,
-        .upper:active {
+        .mini:active {
             transition: transform 200ms, border-color 150ms 250ms, color 250ms 100ms, background-color 250ms, border-radius 250ms, filter 500ms;
         }
 
@@ -4246,6 +4246,11 @@
                 Unlock schools for 1 idea
                 <span class="sheet" style="background-position-x: -96px"></span>
             </button>
+            <button class="lime" data-show="ideas>0" data-cost="ideas-5" data-earn="bighive+1" data-hide="bighive>0"
+                style="--tip: 'Getting this will double forager and honey bee production speeds and also unlock the ability to construct hives in the Construction and Trade tab.'">
+                Double honey and forager bee production rates and unlock an option to make new hives
+                <span class="sheet" style="background-position-x: -72px"></span>
+            </button>
             <button class="green" data-show="ideas>0" data-cost="ideas-25" data-earn="gardening+1"
                 data-hide="gardening>0" style="--tip: 'View more information about gardening in its own tab.'">
                 Unlock gardening for 25 ideas
@@ -4481,12 +4486,12 @@
             Decorate 10 upgraded nurse bee homes using 2,000 flowers
         </button>
         <br>
-        <button class="orange" data-show="schoolidea>0" data-cost="jelly-80000|cells-1e7" data-earn="schools+1"
+        <button class="orange" data-show="schoolidea>0" data-cost="jelly-80000|cells-2000000" data-earn="schools+1"
             data-stat="schools">
-            Construct a school using 80,000 royal jelly and 10M honeycombs
+            Construct a school using 80,000 royal jelly and 2,000,000 honeycombs
         </button>
         <hr>
-        <button class="red" data-show="schoolidea>0" data-cost="cells-1.5e8" data-earn="hives+1" data-wait="0.2"
+        <button class="red" data-show="bighive>0" data-cost="cells-1.5e8" data-earn="hives+1" data-wait="0.2"
             data-stat="hives">
             Create a separate hive to decrease overcrowding with 150M honeycombs
         </button>
@@ -4499,8 +4504,13 @@
             Trade is vital on the route to becoming a prosperous bee colony.
         </p>
         <div style="color: #a3a09d">Bear trades:</div>
-        <button class="brown" data-cost="honey-1e8" data-earn="soil+100|trades+1" data-stat="soil" data-wait="5">
-            Purchase 100 soil
+        <button class="aqua" data-cost="honey-4e8" data-earn="sources+1|trades+1" data-stat="sources" data-wait="15">
+            Purchase 1 water source
+        </button>
+        <span class="sheet" style="background-position-x: -312px"></span> (400M <b style="color: #dfb417">honey</b>)
+        <br>
+        <button class="brown" data-cost="honey-1e8" data-earn="soil+250|trades+1" data-stat="soil" data-wait="5">
+            Purchase 250 soil
         </button>
         <span class="sheet" style="background-position-x: -288px"></span> (100M <b style="color: #dfb417">honey</b>)
         <br>
@@ -4517,7 +4527,8 @@
             <button class="aqua" data-cost="honey-2e9" data-earn="sources+1" data-stat="sources" data-wait="15">
                 Purchase 1 water source
             </button>
-            <span class="sheet" style="background-position-x: -312px"></span> (2B <b style="color: #dfb417">honey</b>)
+            <span class="sheet" style="background-position-x: -312px"></span> (2B <b style="color: #dfb417">honey</b>,
+            faster)
             <br>
             <button class="brown" data-cost="honey-5e9" data-earn="soil+1000" data-stat="soil" data-wait="5">
                 Purchase 1,000 soil
@@ -4594,8 +4605,8 @@
         <p style="color: #ee6940" id="fruitBoost"></p>
         <hr>
         <p>Plant gardens in order to get flowers! Gardens will consume water slowly.</p>
-        <button class="lime" data-cost="pollen-5000000|soil-1000|seeds-100" data-earn="gardens+1" data-wait="2">
-            Create a garden with 5,000,000 pollen, 1,000 soil, and 100 seeds
+        <button class="lime" data-cost="pollen-400000|soil-1000|seeds-100" data-earn="gardens+1" data-wait="2">
+            Create a garden with 400,000 pollen, 1,000 soil, and 100 seeds
             <span class="sheet" style="background-position-x: -168px"></span>
         </button>
         <hr>
@@ -5324,7 +5335,7 @@
                 var magicNumber = beeSum.isMore(10) ? beeSum.mul(0.005).add(0.95).log10().mul(0.6) : new Hyper()
                 overcrowding = magicNumber.div(magicNumber.add(1)).mul(Hyper(0.98).pow(getUpgrade(1)))
                 queenRate = Hyper(1).sub(overcrowding.sqrt()).mul(0.95).add(0.05)
-                queenRate = queenRate.mul(queenRate.sqrt())
+                queenRate = queenRate.add(0.12).min(1).sqrt().sqrt().mul(getUpgrade(2).mul(0.1).add(1))
                 motivationBoost = C("u6").isPositive() ? C("gems").mul(C("u6")).mul(0.7).add(1).log10().div(4) : new Hyper()
                 motivation = new Hyper(1).sub(overcrowding).mul(new Hyper(1).sub(C("stress").sqr())).add(motivationBoost)
             }
@@ -5377,9 +5388,9 @@
             treesCut = treesCut.div(speed).mul(60).format(2) + (C("trees").isPositive() ? "" : "/" + cuttingAmount.mul(60).format(2))
             add("iron", C("mines").mul(C("unlock16").isPositive() ? 3 : 1).div(350), speed)
             add("water", C("sources").div(7), speed)
-            add("flowers", remove("water", C("gardens").div(10), speed).mul(getUpgrade(3).mul(0.5).add(1)).div(15))
+            add("flowers", remove("water", C("gardens").div(11), speed).mul(getUpgrade(3).mul(0.5).add(1)).div(15))
             pollenPower = C("pollen").add(100).log10().mul(3.5).sub(6)
-            add("nectar", getBeeBoost("bees").mul(pollenPower).mul(flowerPower).div(12), collectionRate)
+            add("nectar", getBeeBoost("bees").mul(C("bighive").add(1)).mul(pollenPower).mul(flowerPower).div(12), collectionRate)
             if (C("pollen").isPositive()) {
                 add("pollen", getBeeBoost("bees").mul(flowerPower).div(400), collectionRate)
             }
@@ -5390,8 +5401,8 @@
             add("saplings", remove("tseeds", C("planters").div(130).add(C("aplanters").div(2.4)), speed).div(10))
             add("fame", C("gold").div(2000), speed)
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).div(18)
-            multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.4), consumption], speed)
-            add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).mul(queenRate).mul(1.5), speed).mul(treePower).mul(getUpgrade(2).mul(0.1).add(1)).div(15))
+            multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.24), consumption], speed)
+            add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).mul(queenRate).mul(1.5), speed).mul(treePower).div(8))
             treesGrown = remove("saplings", C("saplings").mul(0.00001), speed)
             add("trees", treesGrown)
             treesGrown = treesGrown.div(speed)
@@ -5403,7 +5414,7 @@
             consumption = remove("pupae", C("pupae").mul(0.0001), speed).div(2)
             add("bees", consumption)
             add("bees2", consumption)
-            add("honey", remove("nectar", getBeeBoost("bees2").mul(pollenPower).mul(waterPower).mul(getUpgrade(4).add(1)).div(12), speed))
+            add("honey", remove("nectar", getBeeBoost("bees2").mul(C("bighive").add(1)).mul(pollenPower).mul(waterPower).mul(getUpgrade(4).add(1)).div(12), speed))
             add("education", beeSum.mul(studyAmount).mul(schoolBoost).div(1e7), speed)
             add("gems", new Hyper(randomFloor(simulateRandomSum(C("jackers").mul(speed)) / 1000)).mul(famePower))
         }
