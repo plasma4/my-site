@@ -4392,10 +4392,10 @@
             Autumn: <b style="color: #f5c37d">1&times;</b> forager collection rate
         </div>
         <hr>
-        <button class="yellow" data-cost="honey-50|cells-20" data-earn="bees+1" data-stat="bees">
+        <button class="yellow" data-cost="honey-50|cells-20" data-earn="bees+1" data-stat="bees" data-bee>
             Hire a forager bee
         </button>
-        <button class="yellow" data-cost="honey-50|cells-20" data-earn="bees2+1" data-stat="bees2">
+        <button class="yellow" data-cost="honey-50|cells-20" data-earn="bees2+1" data-stat="bees2" data-bee>
             Hire a honey bee
         </button>
         <div
@@ -4426,13 +4426,14 @@
             instead.
         </p>
         <button class="yellow" data-show="unlock1>0" data-cost="cells-500" data-earn="bees3+1" data-stat="bees3"
-            style="--tip: 'It costs 500 honeycombs to hire each nurse bee.'">
+            data-bee style="--tip: 'It costs 500 honeycombs to hire each nurse bee.'">
             Hire a nurse bee
         </button>
         <button class="red" data-show="bees3>0" data-cost="bees3-1" data-earn="" style="--tip: 'Watch out!'">
             Fire a nurse bee
         </button>
         <button class="purple" data-show="unlock1>0" data-cost="jelly-5000" data-earn="qbees+1" data-stat="qbees"
+            data-bee
             style="--tip: 'Queen bees cost 5,000 royal jelly to hire. However, be aware that the more bees that you have, the less they will work and the less pupae you will gain. You can counter this by building houses of various sizes as you progress. They will also consume pollen, which will eat at its nectar and honey production boost!'">
             Hire a queen bee
         </button>
@@ -4524,7 +4525,7 @@
         </button>
         <div class="hide" data-show="partners>0">
             <div style="color: #babeb1">Elephant trades:</div>
-            <button class="aqua" data-cost="honey-2e9" data-earn="sources+1" data-stat="sources" data-wait="15">
+            <button class="aqua" data-cost="honey-2e9" data-earn="sources+1" data-stat="sources" data-wait="4">
                 Purchase 1 water source
             </button>
             <span class="sheet" style="background-position-x: -312px"></span> (2B <b style="color: #dfb417">honey</b>,
@@ -5220,7 +5221,11 @@
                 var raw = button.getAttribute("data-raw")
                 if (raw !== null) {
                     var statItem = button.getAttribute("data-stat")
-                    update(button, button.getAttribute("data-raw") + " (you have " + C(statItem).format() + ")")
+                    if (button.hasAttribute("data-bee")) {
+                        update(button, button.getAttribute("data-raw") + " (with " + C(statItem).ceil().format() + " bees of this type)")
+                    } else {
+                        update(button, button.getAttribute("data-raw") + " (you have " + C(statItem).format() + ")")
+                    }
                 }
             }
         }
@@ -5367,12 +5372,16 @@
             }
 
             if (!remove2("jelly", C("qbees").div(12), speed)) {
+                sub("qbees", Hyper(0.00005), speed)
                 mul("qbees", Hyper(0.999995), speed)
                 ID("queenBeesDying").style.display = null
                 queenBeesDying = true
-            } else if (queenBeesDying) {
-                ID("queenBeesDying").style.display = "none"
-                queenBeesDying = false
+            } else {
+                stuff.qbees = C("qbees").add(Hyper(0.001).mul(speed)).min(C("qbees").ceil())
+                if (queenBeesDying) {
+                    ID("queenBeesDying").style.display = "none"
+                    queenBeesDying = false
+                }
             }
 
             schoolBoost = C("schools").mul(4).add(1).log2().add(1)
@@ -5685,7 +5694,7 @@
             }
             var woodenHomes = C("w" + houseName)
             var decoratedHomes = C("f" + houseName)
-            return beeAmount.isPositive() ? beeAmount.add(C(houseName).min(beeAmount.sub(woodenHomes).sub(decoratedHomes)).mul(3)).add(woodenHomes.min(beeAmount.sub(decoratedHomes)).mul(10)).add(decoratedHomes.min(beeAmount).mul(20)).mul(ignoreAmount ? 1 : 1 - (studyAmount / 100)).mul(ignoreAmount >= 2 ? 1 : motivation) : new Hyper()
+            return beeAmount.isPositive() ? beeAmount.add(C(houseName).add(woodenHomes).add(decoratedHomes).min(beeAmount).mul(3)).add(woodenHomes.add(decoratedHomes).min(beeAmount).mul(7)).add(decoratedHomes.min(beeAmount).mul(5)).mul(ignoreAmount ? 1 : 1 - (studyAmount / 100)).mul(ignoreAmount >= 2 ? 1 : motivation) : new Hyper()
         }
 
         function getBeeBoost2(beeName, houseName) {
