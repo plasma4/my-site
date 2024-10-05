@@ -5377,7 +5377,7 @@
             }
 
             if (!remove2("jelly", C("qbees").div(12), speed)) {
-                sub("qbees", Hyper(0.00005), speed)
+                remove("qbees", Hyper(0.00005), speed)
                 mul("qbees", Hyper(0.999995), speed)
                 ID("queenBeesDying").style.display = null
                 queenBeesDying = true
