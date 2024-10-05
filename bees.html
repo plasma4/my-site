@@ -5376,17 +5376,23 @@
                 stuff.beesLost3 = new Hyper()
             }
 
-            if (!remove2("jelly", C("qbees").div(12), speed)) {
-                remove("qbees", Hyper(0.00005), speed)
-                mul("qbees", Hyper(0.999995), speed)
-                ID("queenBeesDying").style.display = null
-                queenBeesDying = true
-            } else {
-                stuff.qbees = C("qbees").add(Hyper(0.001).mul(speed)).min(C("qbees").ceil())
+            if (remove2("jelly", C("qbees").div(12), speed)) {
+                if (C("qbees").isPositive()) {
+                    stuff.qbees = C("qbees").add(Hyper(0.001).mul(speed)).min(C("qbees").ceil())
+                }
                 if (queenBeesDying) {
-                    ID("queenBeesDying").style.display = "none"
+                    if (!disableRender) {
+                        ID("queenBeesDying").style.display = "none"
+                    }
                     queenBeesDying = false
                 }
+            } else {
+                remove("qbees", Hyper(0.00005), speed)
+                mul("qbees", Hyper(0.999995), speed)
+                if (!disableRender) {
+                    ID("queenBeesDying").style.display = null
+                }
+                queenBeesDying = true
             }
 
             schoolBoost = C("schools").mul(4).add(1).log2().add(1)
