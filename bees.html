@@ -4248,7 +4248,7 @@
             </button>
             <button class="lime" data-show="ideas>0" data-cost="ideas-5" data-earn="bighive+1" data-hide="bighive>0"
                 style="--tip: 'Getting this will double forager and honey bee production speeds and also unlock the ability to construct hives in the Construction and Trade tab.'">
-                Double honey and forager bee production rates and unlock an option to make new hives
+                Double the pollen effect and unlock separate hives in the Construction and Trade tab
                 <span class="sheet" style="background-position-x: -72px"></span>
             </button>
             <button class="green" data-show="ideas>0" data-cost="ideas-25" data-earn="gardening+1"
@@ -4493,9 +4493,9 @@
             Construct a school using 80,000 royal jelly and 2,000,000 honeycombs
         </button>
         <hr>
-        <button class="red" data-show="bighive>0" data-cost="cells-1.5e8" data-earn="hives+1" data-wait="0.2"
+        <button class="red" data-show="bighive>0" data-cost="cells-1.5e8|pollen-1e6" data-earn="hives+1" data-wait="0.2"
             data-stat="hives">
-            Create a separate hive to decrease overcrowding with 150M honeycombs
+            Create a separate hive to decrease overcrowding with 150M honeycombs and 1M pollen
         </button>
         <button class="pink tip2" data-show="unlock20>0" style="--tip: 'You have beaten the game for now. Congrats!'">
             Build a rocket
@@ -5409,8 +5409,8 @@
             add("iron", C("mines").mul(C("unlock16").isPositive() ? 3 : 1).div(350), speed)
             add("water", C("sources").div(7), speed)
             add("flowers", remove("water", C("gardens").div(11), speed).mul(getUpgrade(3).mul(0.5).add(1)).div(15))
-            pollenPower = C("pollen").add(100).log10().mul(3.5).sub(6)
-            add("nectar", getBeeBoost("bees").mul(C("bighive").add(1)).mul(pollenPower).mul(flowerPower).div(12), collectionRate)
+            pollenPower = T("pollen").mul(0.16).add(100).log10().mul(3.5).sub(7).mul(C("bighive").add(1)).add(1)
+            add("nectar", getBeeBoost("bees").mul(pollenPower).mul(flowerPower).div(12), collectionRate)
             if (C("pollen").isPositive()) {
                 add("pollen", getBeeBoost("bees").mul(flowerPower).div(400), collectionRate)
             }
@@ -5434,7 +5434,7 @@
             consumption = remove("pupae", C("pupae").mul(0.0001), speed).div(2)
             add("bees", consumption)
             add("bees2", consumption)
-            add("honey", remove("nectar", getBeeBoost("bees2").mul(C("bighive").add(1)).mul(pollenPower).mul(waterPower).mul(getUpgrade(4).add(1)).div(12), speed))
+            add("honey", remove("nectar", getBeeBoost("bees2").mul(pollenPower).mul(waterPower).mul(getUpgrade(4).add(1)).div(12), speed))
             add("education", beeSum.mul(studyAmount).mul(schoolBoost).div(1e7), speed)
             add("gems", new Hyper(randomFloor(simulateRandomSum(C("jackers").mul(speed)) / 1000)).mul(famePower))
         }
@@ -5582,7 +5582,7 @@
             updateId("boost", calculateBoost(getBeeBoost2("bees3", "homes")))
             updateId("boost2", calculateBoost(getBeeBoost2("qbees", "homes2")))
             updateId("boost3", calculateBoost(schoolBoost))
-            updateId("pollinationPower", (C("pollen").isPositive() ? "Nectar and honey production boost from pollen and pollination: " + calculateBoost(pollenPower) : ""))
+            updateId("pollinationPower", (C("pollen").isPositive() ? "Nectar and honey production boost from total pollen produced: " + calculateBoost(pollenPower) : ""))
             updateId("waterPower", "Honey and royal jelly production boost from water: " + calculateBoost(waterPower))
             updateId("flowerPower", "Nectar and pollen production boost from flowers: " + calculateBoost(flowerPower))
             updateId("treePower", T("saplings").isPositive() ? "Pupae production boost from trees (with no upkeep increase): " + calculateBoost(treePower) : "")
