@@ -92,6 +92,7 @@
             font-family: "Times New Roman";
             font-size: 24px;
             background-color: black;
+            transition: background-color 2s, color 500ms;
             color: white;
             animation: fadeIn linear 1250ms;
         }
@@ -478,7 +479,7 @@
         #\operatorname{Rayo}(x)>\operatorname{TREE}(x)>⋯>φ_x(x)>f_{ε_{ε_x}}(x)>f_{ε_x}(x)>f_{ε_1}(x)>f_{ε_0}(x)>f_{ω^{ω^ω}}(x)>f_{ω^ω}(x)>\newline
         f_{ω^2}(x)>x→x→x-1→x-1>f_{ω2}(x)>f_{ω+1}(x)>g_x>x↑^xx∼f_x(x)>x↑↑↑x>x↑↑x>x^{x^x}>x^x>x+1#
         Let's begin.
-        <br>
+        <hr>
         <big>Going Up (or <b>exploding bunnies</b>, as I like to call it)</big>
         We start with the humble exponentiation operator:
         #x^y=x↑y#
@@ -499,6 +500,7 @@
         <br><br>
         <sup>I like to think of these recursive functions as cute little explosive bunnies that leave smaller teennnnnnnny tinny explosive bunnies in their wake. I know, strange analogy, right?</sup>
         <img id="bunny" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'><path fill='%23d44' d='M336 31c-10-1-17 4-17 13 0 12-3 61 1 77s22 39 34 54c11 13 5 42 5 56 0 15-3 26-9 26s-14 6-20 12-11 13-19 7-20-12-43-16-62 0-86 9-76 56-91 77c-14 22-16 88-14 98s-3 18-10 9-13-4-13-4-7 14-7 21 3 15 3 15-12 8-12 14 12 16 19 24 31 26 41 25 29 0 36 4 25 10 46 12l98 5c16 0 20-2 28-10s-6-15-11-26 15-7 21-8 21-12 31-12 9 10 22 16 32 25 46 27c14 3 47 0 59-4s10-14 0-21-35-21-39-28-6-16 2-23 14-4 25-10 16-23 16-33 2-21 6-27 5-22 5-34-5-15-9-22 4-18 10-18 31-4 41-8 21-23 28-32 1-27-9-33-10-22-19-32-18-31-27-38-29-13-36-13-11 0-11-6l-2-26c0-13-16-69-37-102-5-7-12-6-20-3-6 2-9 4-9 23s-11 0-17-10-16-22-29-25h-7z'/></svg>"></img>
+        <hr>
         <big>Back to the start (and then further)</big>
         To begin, we start by…adding by one.
         #f_0(x)=x+1#
@@ -512,6 +514,7 @@
         These functions, together, are called a "fast-growing hierarchy," and they grow really quickly, as you might be able to guess from the name.
         <br>
         Enough formulas for you? Well then, let's move to a different kind of arrow.
+        <hr>
         <big>Horizontal Expansion? More Confusion!</big>
         (Oh, this section isn't that important to understand. If you're in a rush, feel free to skip to "Graham's Number" or, if you're trying to procrastinate from you what you should be doing, just skip to "Back to a Hierarchy.")
         #a→b=a^b\newline
@@ -525,6 +528,7 @@
         That does seem like a mathful, but, <i>eventually,</i> if you use these properties, you can simplify these right arrows. You can try to do this, with, say, $3→3→2$, and realize that $a→b→c=a↑^cb$. These arrows are <i>EXTREMELY</i> big, so we use it to compare the size of these values.
         <br>
         <small>Let's squeeze in a discussion about factorials here, which are practically invisible compared to what comes next. $n!=1×2×3×4×⋯×n$ isn't actually that big, and is less than $n^n$ for $n>1$. ($5×4×3×2×1$, which is $5!$, is clearly less than $5×5×5×5×5$, or $5^5$.) So, yeah, they aren't very big.</small>
+        <hr>
         <big><b>GRAHAM'S NUMBER:</b> The Elephant in the Article</big>
         Fanatics of big numbers might also recognize this: Graham's Number! Remember the cute little up arrow? Yeah, this has everything to do with that. You can guess it's a pretty huge
         number! So:
@@ -535,6 +539,7 @@
         So, $g_{64}=3↑^{g_{63}}3$. But think about what that means. For the next number in the function, we take the previous function <i>as the number of arrows.</i> This is incomprehensible, as our minds can't process what it means: we just see the threes and trust that it is huge. Furthermore, Graham's number is between $3→3→64→2$ and $3→3→65→2$. That should give you an idea of how crazy-huge-huge-huge Graham's Number <i>and</i> right arrows are. The <i>first number</i> in the sequence already has an unbelievable amount of digits:
         <span id="graham">#g_1=3↑↑↑(3↑↑↑3)=3↑↑↑(3↑↑(3↑↑3))=3↑↑↑(3↑↑7,625,597,484,987)=3↑↑↑\underset{7,625,597,484,987\ 3\text{'s}}{\underbrace{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{\text{and so on}}}}}}}}}}}}}}}}}}}}}}}}}}}}=\underset{3↑↑7,625,597,484,987\ 3\text{'s}}{\underbrace{3↑↑3↑↑3↑↑3↑↑⋯↑↑3}}#</span>
         Note that you can also calculate $g_{65}$, $g_{66}$ and all other numbers in the sequence.
+        <hr>
         <big>Back to a Hierarchy</big>
         Let's go back to a fast-growing hierarchy. To get the size of the function across (as we didn't do that earlier), let's try $f_4(2)$:
         #f_{n+1}(x)=f_n^x(x)=\underset{f_n\ x\text{ times}}{\underbrace{f_n(f_n(f_n(⋯f_n(x))))}}\newline
@@ -616,7 +621,8 @@
         <img id="inf" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><style>*{font-family:'Gill Sans','Gill Sans MT',Calibri,'Trebuchet MS'}</style><g transform='matrix(.7 0 0 .7 29 21)'><path fill='none' stroke='%23831' stroke-width='3' d='m34 60 32 62m32-62-32 62m0 1v64'/><circle transform='translate(33 60)' fill='%2347e' r='16'/><circle transform='translate(66 187)' fill='%2347e' r='16'/><circle transform='translate(98 60)' fill='%234d7' r='16'/><circle transform='translate(66 123)' fill='%23916' r='16'/></g><g transform='matrix(.7 0 0 .7 185 36)'><path fill='none' stroke='%23831' stroke-width='3' d='m34 60 32 62m32-62-32 62'/><circle transform='translate(33 60)' fill='%2347e' r='16'/><circle transform='translate(98 60)' fill='%234d7' r='16'/><circle transform='translate(66 123)' fill='%234d7' r='16'/></g><g transform='matrix(.5 0 0 .5 198 178)'><path fill='none' stroke='%234c0933' stroke-width='3' d='m34 60 32 62m32-62-32 62'/><circle transform='translate(33 60)' fill='%2347e' r='16'/><circle transform='translate(98 60)' fill='%234d7' r='16'/><circle transform='translate(66 123)' fill='%234d7' r='16'/></g><text dx='0' dy='0' font-size='22' transform='translate(20 30)'><tspan font-weight='700'><![CDATA[inf-embeddable]]></tspan></text><text dx='0' dy='0' font-size='10.5' transform='translate(91 111)'><tspan><![CDATA[These trees are different!!]]></tspan></text><text dx='0' dy='0' font-size='9.5' transform='translate(57 273)'><tspan><![CDATA[These trees are actually the ]]></tspan><tspan text-decoration='underline'><![CDATA[same.]]></tspan><tspan x='0' y='10'><![CDATA[The blue and green dots on the edges and that]]></tspan><tspan x='0' y='19.5'><![CDATA[blue dot at the bottom are in both trees.]]></tspan></text><path fill='none' stroke='%234c0933' stroke-width='1.5' d='m39 183 31 71m5-71-20 35m20-35 16 35m20-36-41 72'/><g transform='translate(33 149)'><circle transform='translate(6 32)' fill='%2347e' r='8'/><circle transform='translate(55 67)' fill='%2347e' r='8'/><circle transform='translate(38 105)' fill='%2347e' r='8'/><circle transform='translate(77 34)' fill='%234d7' r='8'/><circle transform='translate(22 67)' fill='%23916' r='8'/><circle transform='translate(42 34)' fill='%23916' r='8'/></g></svg>"></img>
         <br>
         You would expect it to be infinite, but for all values of the function, it is <i>finite!</i> This value has been PROVEN to be way more than the number below. Any approximation currently is actually an <i>extremely</i> loose lower bound (meaning the actual value is much, much higher). (To think that Graham's Number is that big in the first place!) In reality, is an <i>extremely weak</i> lower bound, and in reality, this number is too big to be represented with either of these arrows! That simply <i>blows away</i> the numbers we've discussed currently. But we can go further.
-        <small>See, that's not even the full story. Later proofs have shown that this value will actually exceed $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$ (which will be explained later), and even this is actually much smaller than the actual value. You see, some person that was really into this function ended up devising a complex set of estimations for $\operatorname{tree}(\operatorname{tree}(3)(3))$. Then, they calculated the end result that $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$ You don't need to worry about what that is, but there was a proof that $\operatorname{TREE}(3)≫\operatorname{tree}^{\operatorname{tree}(7)^{\operatorname{tree}(7)^{\operatorname{tree}(7)^{\operatorname{tree}^8(7)}}}}(7)$, which is part of the reason this proof worked in the first place.</small>
+        <small>See, that's not even the full story. Later proofs have shown that this value will actually exceed $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$ (which will be explained later), and even this is actually much smaller than the actual value. You see, some person that was really into this function ended up devising a complex set of estimations for $\operatorname{tree}(\operatorname{tree}(3)(3))$. Then, they calculated the end result, which was that $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$. You don't need to worry about what that is, but there was a proof that $\operatorname{TREE}(3)≫\operatorname{tree}^{\operatorname{tree}(7)^{\operatorname{tree}(7)^{\operatorname{tree}(7)^{\operatorname{tree}^8(7)}}}}(7)$, which is part of the reason this proof worked in the first place!</small>
+        <hr>
         <big><b>fast</b>, <b>Fast</b>, and <b>FAST!</b> (and more symbols)</big>
         Next up: the Veblen function, represented with the lowercase phi symbol.
         #φ_0(0)=1\newline
@@ -632,11 +638,13 @@
         Now, let's find the secret recipe that made our $f$'s so powerful. We first used <i>recursion,</i> then exploited <i>iteration,</i> and the special symbols allowed for <i>diagonalization.</i> We'll continue in the next section!
         <br>
         And with that cliffhanger, we proceed to observe some weird beavers.
+        <hr>
         <big>The <b class="bold">UNCOMPUTABLE</b> Busy Beaver</big>
         <small>iTuringPhoneiTuringPhoneiTuringPhoneiTuringPhoneiTuringPhoneiTuringPhone…</small>
         Apparently, people can't decide what it should look like, so you may see $\operatorname{BB}(n)$, $\operatorname{B}(n)$, $∑(n)$, or even $\operatorname{BB}\text{-n}$. This number involves a Turing machine: a machine that produces ones and zeroes.
         <br>
         Think of the busy beaver as a weird game: you're in an infinitely long hallway, with infinitely many rooms at tbe first floor of the hotel. You have a beaver that consults his TuringPhone™<sup>ⒼⓄⓄⒹ</sup> for instructions. For example, the instructions could be these:
+        <hr>
         <em class="guide">
             Start with guide 1.
             <br>
@@ -648,7 +656,9 @@
             <br>
             Otherwise, if the room is dark, then stop.
         </em>
+        <hr>
         The "stop" part of the instruction allows the robot to finish eventually. If the instructions don't tell you to switch guides, then keep using that guide after you move. After the beaver stops, it counts the number of lit rooms and the busy beaver reports the amount. However, to calculate $\operatorname{BB}(n)$, it returns the <i>most</i> amount of (finite) lit rooms out of all the possibilities. (If part of an instruction is stopping, then you can't also turn the light on.) It turns out, for $\operatorname{BB}(3)$, these rules win:
+        <hr>
         <em class="guide">
             Start with Guide 1.
             <br>
@@ -663,10 +673,11 @@
             <br>
             If the room is lit, then stop.
         </em>
-        <br><br>
+        <hr>
         In fact, there aren't actually many possible Turing machines: for $n$ symbols, you get $(4n+4)^{2n}$ valid ones, which is much smaller than simple <i>tetration ($↑↑$).</i> However, this function is actually uncomputable, so you can't guarantee that the value you believe is the longest game is actually the longest. This all has to do with the halting problem: can you determine if a Turing machine halts with another Turing machine? It turns out that it is impossible, so it's impossible to determine what the result is larger values of the Busy Beaver. Sorry. (However, we can still revel in the fact that we <i>do</i> have ginormous lower bounds, and the fact t.)
         <small>$\operatorname{BB}(1)=1$, and $\operatorname{BB}(2)=4$. It can be proved (with difficulty) that $\operatorname{BB}(3)=6$ and $\operatorname{BB}(4)=13$. Also, $\operatorname{BB}(5)$ equals $47,176,870$ with the newest proofs, $\operatorname{BB}(6)>10↑↑15$, $\operatorname{BB}(9)>10↑↑28$, and finally, $\operatorname{BB}(11)>3↑↑↑720618962331271$. $\operatorname{BB}(18)$ is proven to be bigger than Graham's Number, and $\operatorname{BB}(85)>f_{ε_0}(1907)$. (Apparently, there's a group of people who are obsessed with these numbers, and larger numbers in general, and they've found out these values!)</small>
         <b class="bold">THE MORE YOU KNOW</b>
+        <hr>
         <big>The Beginnings of Insanity and <b>SSCG</b></big>
         What does SSCG mean? SSCG means "SubCubic Graph Number," which, sadly, doesn't help much. As with $\operatorname{TREE}(3)$, it involves graphs. Here's the first few values:
         #\operatorname{SSCG}(0)=2\newline
@@ -681,12 +692,14 @@
         If we don't allow loops (like $G_1$ in the example above) or points with multiple lines connecting them, then we get $\operatorname{SSCG}$, another function. As you'd expect, this number is smaller than $\operatorname{SCG}$ but is still <i>more popular!</i> Also, for all graphs before the new graph, no graph may be a graph minor of any previous graphs. A graph minor is created after removing points, removing lines, and finally, collapsing (contracting) lines. Imagine collapsing a line as moving a point to another point, while keeping the line on the point. Once you finish moving, delete the duplicate point but keep the line at the same position. (Remember, for $\operatorname{SCG}$, you can have multiple lines connect to the same points!) That should give you a good idea of how it works!
         <br>
         Oh, both SSCG and SCG grow similarly quickly, as $\operatorname{SSCG}(x)&lt;\operatorname{SCG}(x)≤\operatorname{SSCG}(4x+3)$.
+        <hr>
         <big>Super-Duper Numbers</big>
         Remember how the Busy Beaver is uncomputable (maybe look at the Busy Beaver section if you've forgotten)? Well, let's say that there's a manager for the first floor who <i>somehow</i> solved the halting problem, and knows the result! Now, the manager and the beaver beaver contact each other through TuringPhones<sup>®</sup>. Now, there are three new free states introduced: "count," "halted," and "eternal." Now, whenever the beaver goes into the "count" state, the manager counts the number of lit rooms (call that $n$) and simulates the $n$<sup>th</sup> Turing machine. (How these machines are sorted isn't important, but there's a one-to-one mapping so that each machine is somewhere.) If it halts, it puts the robot into the "halted" state. Otherwise, the robot gets put into the "eternal" state. This may seem weird, but this new number is much bigger than the Busy Beaver number, but sadly is again <i>uncomputable!</i> Let's call this a Level 1 Turing machine.
         <br>
         Of course, managers have managers too, and you could have a Level 2 Turing machine, where you get three extra states, simulating the $n$<sup>th</sup> Level 1 Turing machine, and so on, and so on, and so on.
         <br><br>
         <sup>All right, fine. I admit it: I made some of it up so that it isn't as boring to read.</sup>
+        <hr>
         <big>Back from the Break?</big>
         We left you off exploring how our&nbsp; <em id="f">f</em>ast-growing hierarchy was so successful. Now, we apply these principles with the $ψ$ symbol. (The inventors of these ideas sure loved Greek symbols, huh?)
         #ψ(0)=ε_0#
@@ -800,6 +813,7 @@
         <br>
         These functions are hurting my head though, so we'll stop talking about them for now.
         <small>@@@@@@@@@@@@@@@@@@@@@@@@⋯@@@@@@@@@@@@@@@@@@@@@@@@</small>
+        <hr>
         <big>The Beastly Hydra: Larger than Ever</big>
         <br>
         This also has to do with trees, but this time one called a <i>hydra.</i> A hydra is an infinite tree, and the game involves a hero who cuts off branches of the tree. Your hydra, or monster in this case, has a large amount of heads. However, the monster can have other heads attached to it! (If you're having a hard time, just imagine the TREE diagram, but with only one color.)
@@ -812,6 +826,7 @@
         <br>
         This function doesn't have a lot of information about it, so take this information with a few (or many) grains of salt: This function is believed to be bigger than TREE and even SSCG (more popular than SCG, by the way). So yeah. This math-inducing hydra is a huge mess, and we don't understand it fully!
         <small>You may have wondered: why aren't TREE, SSCG, and HG in the sneak peek? Well, it's because we don't know where these functions lie in there. We know that $\operatorname{TREE}(x)$ and $\operatorname{SSCG}(x)$ grow faster than $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$, which is quite impressive.</small>
+        <hr>
         <big>Setting up Sets and a Googol</big>
         Here's a fun fact: Rayo's number was part of a big number duel at MIT. The goal was to write down the biggest number that you could think of, and each new number had to be unique (so you couldn't just add "plus one" to someone else's answer). Also, you have to be specific, so you couldn't say something like "the biggest number you could think of plus two." Reasonably, the stands were crowded, and we present to you the final result (by Rayo himself, of course):
         <div id="rayo">      ∀R  {
@@ -843,7 +858,7 @@
         Z(1,x)=\text{The smallest number bigger than any number obtainable by}\newline\text{ using less than }x\text{ symbols, where an additional symbol,}\operatorname{Rayo}(x)\text{, is given.}#
         Why add one? Rayo is the smallest number bigger than all representable values, but $H$ is the smallest number larger. This can also continue, so for $H(2,x)$, you have access to the values $Z(1,x)$ and $Z(0,x)$ (and find the smallest number larger than all finite values). For $Z(3,x)$, you get $Z(2,x)$, $Z(1,x)$, and $Z(0,x)$, and so on. These values only cost one symbol, so the new numbers you can obtain get much bigger. As you might expect, each increase of $n$ in $Z(n,x)$ creates a number much bigger than $H(n-1,x)$.
         <br>
-        Except...this is a great example of a salad number. A salad number is a number that appears to be much bigger (which it is), but in terms of googology, it's pretty much the same. For example, a factorial will ALWAYS be powerful by conventional standards, but in terms of googology, it isn't important. (In other cases, salad numbers may not have a good defintion, such as the $Z$ function we made up. In this case, how do we represent the Rayo number as a symbol?)
+        Except...this is a great example of a salad number. A salad number is a number that appears to be much bigger (which it would noramlly be.). Unfortunately, in terms of googology, it's pretty much the same. For example, a factorial will ALWAYS be powerful by conventional standards, but in terms of googology, it isn't important. (In other cases, salad numbers may not have a good defintion, such as the $Z$ function we made up. In this case, how do we represent the Rayo number as a symbol?)
         <br><br>
         At the end of the day, it doesn't matter if you're in a large number competition with your friend. They'll likely beat you by saying "whatever you said plus one," or cheat out and say "infinity." Lesson? Be sure to set the rules like they did at the MIT contest!
         <br><br>
