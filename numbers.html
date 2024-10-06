@@ -708,7 +708,7 @@
         ψ(Ω+1)[n]=φ_1(φ_2(0)+1)=ψ(Ω)↑↑n=\underset{n\ ψ\text{'s}}{\underbrace{ψ(Ω)^{ψ(Ω)^{ψ(Ω)^{ψ(Ω)^{ψ(Ω)}}}}}}\newline
         ψ(Ω+(n+1))[n]=ψ(Ω+n)↑↑n=\underset{n\ ψ\text{'s}}{\underbrace{ψ(Ω+n)^{ψ(Ω+n)^{ψ(Ω+n)^{ψ(Ω+n)^{ψ(Ω+n)}}}}}}\newline#
         This function alone won't get us very far. Notably, it does gives us an idea: just like the $φ$ functions, we iterate the function, each time iterating a slightly smaller value.
-        <small>Think about how infinities are special. Well then, the $Ω$ infinity (yes, it's an infinity) is special-special. (I'm truly amazing at creating analogies, but at least it gets the point across.) Well, it's <i>uncountable,</i> which means that it's INFINITELY bigger than the infinities we discussed previously.</small>
+        <small>Think about how infinities are special. Well then, the $Ω$ infinity (yes, it's an infinity) is special-special. Confusing? Normally, $Ω$ is <i>uncountable,</i> which means that it's INFINITELY bigger than the infinities we discussed previously; however, these things are actually called <i>meta-ordinals</i>. Meta-ordinals can be considered a symbol that "prompts" an operation, rather than actually representing, in this case, absolute infinity.</small>
         #ψ(Ω+Ω)[n]≠ψ(Ω+Ω[n])#
         Instead, we use iteration. Below are the first few values:
         #ψ(Ω2)[2]=ψ(Ω+ψ(0))\newline
@@ -780,7 +780,8 @@
         So, instead of calculating $ω^{ω^{ω^{ω^⋰}}}$ infinitely, we stop exponentiating after we have a total of $n$ $ω$'s. (We use the $[n]$ to indicate that the limit value is $n$ so we don't write $\lim$ every single time. Also, note that these limits may not be valid for other functions that aren't the fast-growing hierarchy.) All right. Let's exponentiate to some infinities:
         #ψ(Ω^x)=φ_x(0)=\underset{n\ ψ\text{'s}}{\underbrace{ψ(Ω^{x-1}×ψ(Ω^{x-1}×ψ(Ω^{x-1}×⋯ψ(Ω^{x-1}×ψ(Ω^{x-1}×ψ(0))))))}}\newline
         ψ(Ω^ω)[n]=φ_n(0)=\underset{n\ ψ\text{'s}}{\underbrace{ψ(Ω^{n-1}×ψ(Ω^{n-1}×ψ(Ω^{n-1}×⋯ψ(Ω^{n-1}×ψ(Ω^{n-1}×ψ(0))))))}}#
-        As you might expect, the silly w symbol doesn't do much. Next up is a pretty big landmark: $Ω^Ω$.
+        <small>Be aware that some people define values smaller than $ψ(Ω^ω)$ differently; this isn't too important, as the functions catch up at that point anyway. (Catching up means that the values are "close enough" by googology standards.)</small>
+        Next up is a pretty big landmark: $Ω^Ω$.
         #ψ(Ω^Ω)[n]=\underset{n\ ψ\text{'s}}{\underbrace{ψ(Ω^{ψ(Ω^{ψ(Ω^{ψ(Ω^{ψ(Ω^{⋰^{ψ(Ω^{ψ(0)})}})})})})})}}=\underset{n\ φ\text{'s}}{\underbrace{φ_{φ_{φ_{φ_{φ_{φ_⋯φ_{φ(0)}(0)}(0)}(0)}(0)}(0)}(0)}}=Γ_0[n]#
         This upside-down L symbol represents a Feferman-Schütte Ordinal, and, again, is Greek (an uppercase gamma this time). We've now surpassed the simple $φ$ stuff, but we can go further even more. But before we do, just make a mental note that $φ_x(y)=φ(x,y)$. (We'll deal with more inputs below!)
         #Γ_{k+1}[n]=\underset{n\ φ\text{'s}}{\underbrace{φ_{φ_{φ_{φ_{φ_{φ_⋯φ_{Γ_k+1}(0)}(0)}(0)}(0)}(0)}(0)}}\newline
@@ -797,35 +798,39 @@
         #φ(1@n)=\underset{n\ 0\text{'s}}{\underbrace{φ(1,0,0⋯0,0,0)}}\newline
         φ(a@b)=\underset{b\ 0\text{'s}}{\underbrace{φ(a,0,0⋯0,0,0)}}#
         This can be extended much further:
-        #φ(1@ω)[k]=\underset{k\ 0\text{'s}}{\underbrace{φ(1,0,0⋯0,0,0)}}\newline
-        φ(1@10@2)[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(9,φ(1@(9,φ(1@(9,⋯,0,0)),0,0)),0,0))⋯,0,0))}}\newline
-        φ(1@(a+1)@2)[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(a,φ(1@(a,φ(1@(a,⋯,0,0)),0,0)),0,0))⋯,0,0))}}\newline
-        φ(1@(a+1)@3)[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(a,φ(1@(a,φ(1@(a,⋯,0,0,0)),0,0,0)),0,0,0))⋯,0,0,0))}}\newline
-        φ(n@(a+1)@3)[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(n@(4,φ(n@(a,φ(n@(a,φ(n@(a,⋯,0,0,0)),0,0,0)),0,0,0))⋯,0,0,0))}}\newline
-        φ(n@(a+1)@b)[k]=\underset{k\ φ\text{'s with each one containing b zeroes inside}}{\underbrace{φ(n@(4,φ(n@(a,φ(n@(a,φ(n@(a,⋯,0,0⋯0)),0,0⋯0)),0,0⋯0))⋯,0,0⋯0))}}\newline#
-        If that's strange, here are a few examples:
-        #φ(1@5@2)[4]=φ(1@φ(5@2))[4]=φ(1@(4,φ(1@(4,φ(1@(4,φ(1@(4,0,0)),0)),0)),0))\newline
-        φ(5@10@2)[4]=φ(5@(9,φ(5@(9,φ(5@(9,φ(5@(4,0,0)),0,0)),0,0)),0,0))\newline
-        φ(5@10@4)[3]=φ(5@(9,φ(5@(9,φ(5@(9,0,0,0,0)),0,0,0,0)),0,0,0,0))\newline
-        φ(x@(y+1)@4)[3]=φ(x@(y,φ(x@(y,φ(x@(y,0,0,0,0)),0,0,0,0)),0,0,0,0))\newline
-        φ(x@(y+2)@4)[2]=φ(x@(y,φ(x@(y+1,0,0,0,0)),0,0,0,0))[2]=φ\biggr(x@\Bigl(y,φ\bigl(x@(y,φ(x@(y+1,0,0,0,0)),0,0,0,0)\bigr),0,0,0,0\Bigr)\biggr)[2]=⋯\newline#
-        Well, those numbers sure are huge!
+        #φ(1@ω)[k]=\underset{k\ 0\text{'s}}{\underbrace{φ(1,0,0⋯0,0,0)}}=ψ(Ω^{Ω^ω})[k]\newline
+        φ(1@(10@2))[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(9,φ(1@(9,φ(1@(9,⋯,0,0)),0,0)),0,0))⋯,0,0))}}\newline
+        φ(1@((a+1)@2))[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(a,φ(1@(a,φ(1@(a,⋯,0,0)),0,0)),0,0))⋯,0,0))}}\newline
+        φ(1@((a+1)@3))[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(a,φ(1@(a,φ(1@(a,⋯,0,0,0)),0,0,0)),0,0,0))⋯,0,0,0))}}\newline
+        φ(n@((a+1)@3))[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(n@(4,φ(n@(a,φ(n@(a,φ(n@(a,⋯,0,0,0)),0,0,0)),0,0,0))⋯,0,0,0))}}\newline
+        φ(n@((a+1)@b))[k]=\underset{k\ φ\text{'s with each one containing b zeroes inside}}{\underbrace{φ(n@(4,φ(n@(a,φ(n@(a,φ(n@(a,⋯,0,0⋯0)),0,0⋯0)),0,0⋯0))⋯,0,0⋯0))}}\newline#
+        <small>Googologists will call $φ(1@ω)$, or $ψ(Ω^{Ω^ω})$ (these two are the same; weird, right?), the Small Veblen Ordinal, or SVO. $ψ(Ω^{Ω^Ω})$, or $φ(1@(1,0))$, is equal the Large Veblen Ordinal, or LVO.</small>
+        If that's strange, here are a few more examples:
+        #φ(3@(2@0))[k]=φ(3@2)[k]=φ(3,0,0)[k]\newline
+        φ(1@(5@2))[4]=φ(1@φ(5@2))[4]=φ(1@(4,φ(1@(4,φ(1@(4,φ(1@(4,0,0)),0)),0)),0))\newline
+        φ(5@(10@2))[4]=φ(5@(9,φ(5@(9,φ(5@(9,φ(5@(4,0,0)),0,0)),0,0)),0,0))\newline
+        φ(5@(10@4))[3]=φ(5@(9,φ(5@(9,φ(5@(9,0,0,0,0)),0,0,0,0)),0,0,0,0))\newline
+        φ(x@((y+1)@4))[3]=φ(x@(y,φ(x@(y,φ(x@(y,0,0,0,0)),0,0,0,0)),0,0,0,0))\newline
+        φ(x@((y+2)@4))[2]=φ(x@(y,φ(x@(y+1,0,0,0,0)),0,0,0,0))[2]=φ\biggr(x@\Bigl(y,φ\bigl(x@(y,φ(x@(y+1,0,0,0,0)),0,0,0,0)\bigr),0,0,0,0\Bigr)\biggr)[2]=⋯\newline#
+        Note that this can also be extended to larger values, such as $φ(1@(1@(1@(1,0))))$, relatively easily, so we won't get into that too far and we'll just skip all of that. The next huge step, in that case, would be to repeat that.
+        #ψ(ε_{Ω+1})[k]=\underset{k\ Ω\text{'s}}{\underbrace{ψ(Ω^{Ω^{Ω^{Ω^{Ω^⋰}}}})}}[k]=\underset{k-2\ @\text{'s}}{\underbrace{φ(1@(1@(1@(1@(1@(1@(⋯)))))))}}[k]#
+        This value is the Bachmann-Howard ordinal, or BHO. (It's also famous.)
         <br>
-        These functions are hurting my head though, so we'll stop talking about them for now.
+        Those numbers sure are huge! These functions are hurting my head though (and more likely than not, yours as well), so we'll stop talking about them for now.
         <small>@@@@@@@@@@@@@@@@@@@@@@@@⋯@@@@@@@@@@@@@@@@@@@@@@@@</small>
         <hr>
         <big>The Beastly Hydra: Larger than Ever</big>
-        <br>
+        <small>This one's a little confusing. It's also not that important.</small>
         This also has to do with trees, but this time one called a <i>hydra.</i> A hydra is an infinite tree, and the game involves a hero who cuts off branches of the tree. Your hydra, or monster in this case, has a large amount of heads. However, the monster can have other heads attached to it! (If you're having a hard time, just imagine the TREE diagram, but with only one color.)
         <br>
         The hero gets to chop off one of the heads of the hydra that are also not connected to any other heads. The monster can have only one body, which means that the only heads that don't regenerate are the ones that are connected directly to the body. However, if you cut off one of the <i>other</i> heads (that aren't attached to any other heads), then we clone part of the hydra.
         <br>
         How? Well, the hydra is really a giant graph. So, remember how you can only cut off heads not attached to other heads? That means that we can take the head that our newly chopped off head is attached to. (When I refer to a head from now on in the sentence, it's NOT the newly chopped off one.) Then, we make $x$ new copies of everything above the head AFTER the head-chopping and attach them to that head.
         <br><br>
-        And the result grows pretty quickly. The considerable amount of heads may seem like it will never end, but in reality, EVERY SINGLE HYDRA has an ending. (Which means that you could define a large number for the number of heads (or $x$) that regenerate every chop, and get a good hydra, it would generate a HUGE number!)
+        And the result grows pretty quickly. The considerable amount of heads may seem like it will never end, but in reality, EVERY SINGLE HYDRA has an ending. (Which means that you could define a large number for the number of heads, or $x$, that regenerate every chop, and get a good hydra, it would generate a HUGE number!)
         <br>
         This function doesn't have a lot of information about it, so take this information with a few (or many) grains of salt: This function is believed to be bigger than TREE and even SSCG (more popular than SCG, by the way). So yeah. This math-inducing hydra is a huge mess, and we don't understand it fully!
-        <small>You may have wondered: why aren't TREE, SSCG, and HG in the sneak peek? Well, it's because we don't know where these functions lie in there. We know that $\operatorname{TREE}(x)$ and $\operatorname{SSCG}(x)$ grow faster than $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$, which is quite impressive.</small>
+        <small>You may have wondered: why aren't TREE, SSCG, and HG in the sneak peek? Well, it's because we don't know where these functions lie in there. We know that $\operatorname{TREE}(x)$ and $\operatorname{SSCG}(x)$ grow faster than $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$, however, which is quite impressive. Upper bounds have been proposed, but they are pretty large, even for googology standards.</small>
         <hr>
         <big>Setting up Sets and a Googol</big>
         Here's a fun fact: Rayo's number was part of a big number duel at MIT. The goal was to write down the biggest number that you could think of, and each new number had to be unique (so you couldn't just add "plus one" to someone else's answer). Also, you have to be specific, so you couldn't say something like "the biggest number you could think of plus two." Reasonably, the stands were crowded, and we present to you the final result (by Rayo himself, of course):
