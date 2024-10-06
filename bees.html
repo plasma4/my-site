@@ -5451,13 +5451,13 @@
             pollenPower = T("pollen").mul(0.16).add(100).log10().mul(3.5).sub(7).mul(C("bighive").add(1)).add(1)
             add("nectar", getBeeBoost("bees").mul(pollenPower).mul(flowerPower).div(12), collectionRate)
             if (C("pollen").isPositive()) {
-                add("pollen", getBeeBoost("bees").mul(flowerPower).mul(C("p5").mul(C("ppoints").mul(0.5))).div(400), collectionRate)
+                add("pollen", getBeeBoost("bees").mul(flowerPower).mul(C("p5").mul(C("ppoints").mul(0.5)).add(1)).div(400), collectionRate)
             }
             if (C("unlock9").isPositive()) {
                 add("tseeds", getBeeBoost("bees").div(1000000000), collectionRate)
             }
             add("fruit", C("trees").mul(C("harvesters")).mul(fruitBoost).div(2400000), speed)
-            add("saplings", remove("tseeds", C("planters").div(130).add(C("aplanters").mul(C("p4").mul(C("ppoints").mul(0.4))).div(2.4)), speed).div(10))
+            add("saplings", remove("tseeds", C("planters").div(130).add(C("aplanters").mul(C("p4").mul(C("ppoints").mul(0.4)).add(1)).div(2.4)), speed).div(10))
             add("fame", C("gold").div(2000), speed)
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).mul(Hyper(1.1).pow(C("p1"))).div(18)
             multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.24), consumption], speed)
