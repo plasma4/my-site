@@ -3971,13 +3971,32 @@
 
         .rainbow {
             background: linear-gradient(90deg, #e41a1a, #f5a30c, #e7fa15, #2ccf4a, #1a98c2, #2270e6, #891fed, #9b24b6, #e0116b, #e41a1a, #f5a30c, #e7fa15, #2ccf4a, #1a98c2, #2270e6, #891fed, #9b24b6, #e0116b, #e41a1a);
+        }
+
+        .grayish {
+            background: linear-gradient(90deg, #a1a1a1, #4d4d4d, #444444, #eaeaea, #a1a1a1, #4d4d4d, #444444, #eaeaea, #a1a1a1);
+        }
+
+        .rainbow,
+        .grayish {
             background-size: 200% 100%;
-            animation: gradient2 15s linear infinite;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 1px #fff8;
-            animation: gradient 2s linear infinite;
+            animation: gradient 2500ms linear infinite;
+        }
+
+        .rainbow.rainbow,
+        .grayish.grayish {
+            text-shadow: 0 0 1px #fff8 !important;
+        }
+
+        .metal {
+            background: linear-gradient(90deg, #a1a1a177, #4d4d4d77, #44444477, #eaeaea77, #a1a1a177, #4d4d4d77, #44444477, #eaeaea77, #a1a1a177);
+            background-size: 200% 100%;
+            animation: gradient 2500ms linear infinite;
+            color: white;
+            border-color: white;
         }
 
         @keyframes gradient {
@@ -4153,7 +4172,7 @@
             data-s="wood $22" id="wood"></div>
         <div style="color: #b3b3b3; text-shadow: #b3b3b3 0 0 4px; --tip: 'Iron is useful for construction and automation.'"
             data-s="iron $39" id="iron"></div>
-        <div style="color: #de73b2; text-shadow: #de73b2 0 0 6px; --tip: 'Fruit is tasty; just not for bees.'"
+        <div style="color: #b4dbb2; text-shadow: #b4dbb2 0 0 6px; --tip: 'Fruit is tasty; just not for bees.'"
             data-s="fruit $43" id="fruit"></div>
     </div>
     <div id="menu1">
@@ -4647,24 +4666,37 @@
             Unlock a new trading partner for 1,000 fruit
         </button>
         <hr>
+        <div style="color: #f24ea3; text-shadow: #f24ea3 0 0 10px; --tip: 'Pollination power increases based on several different factors: unspent pollination points, trees, flowers, and pollen.'"
+            data-s="pollination power" id="ppower">
+        </div>
+        <p>
+            Various resources boost your <b style="color: #f24ea3">pollination power</b> gain.
+            However, the amount that you gain will decrease as you get more and more of it.
+            (Note that this decrease is based on the total amount of pollination power that you have.)
+        </p>
+        <button class="yellow2 tip2" data-cost="iron-2.5e7|gold-5000|ppower-300000" data-earn="freepoints+1|ppoints+1"
+            style="--tip: 'Get free pollination points from your unspent pollination power, which is automatically generated.'">
+            Get a free pollination point for 25M iron, 5,000 gold and 300,000 pollination power
+        </button>
+        <hr>
         <p class="hide" data-show="gold1>0"
             style="--tip: 'Pollen cost formula: 5.000T, multiplied by 1.2 for every pollination point you\'ve previously purchased.'">
-            Pollination point cost: <b class="small" style="color: #959595" id="ppointCost"></b>
+            Pollination point cost: <b class="small grayish" id="ppointCost"></b>
         </p>
-        <button class="black tip2" data-cost="pollen-5e12/1.1POWtppoints|fruit-1e6" data-earn="ppoints+1|tppoints+1"
+        <button class="metal tip2" data-cost="pollen-5e12/1.1POWtppoints|fruit-1e6" data-earn="ppoints+1|tppoints+1"
             data-stat="ppoints"
             style="--tip: 'Pollination points, although expensive, can be spent on various upgrades!'">
             Get 1 pollination point
         </button>
-        <button class="red tip2" id="refund" style="--tip: 'Refund all your spent pollination points at no cost!'">
+        <button class="black tip2" id="refund" style="--tip: 'Refund all your spent pollination points at no cost!'">
             Refund pollination points
         </button>
         <p>
             Upgrade costs: <strong style="color: #d5f770; --tip: 'Cost for upgrade #1'" id="pp1"></strong>/<strong
                 style="color: #f29d52; --tip: 'Cost for upgrade #2'" id="pp2"></strong>/<strong
                 style="color: #0bdd7b; --tip: 'Cost for upgrade #3'" id="pp3"></strong>/<strong
-                style="color: #2dccec; --tip: 'Cost for upgrade #4'" id="pp4"></strong>/<strong
-                style="color: #f162c2; --tip: 'Cost for upgrade #5'" id="pp5"></strong>/<strong
+                style="color: #f162c2; --tip: 'Cost for upgrade #4'" id="pp4"></strong>/<strong
+                style="color: #2dccec; --tip: 'Cost for upgrade #5'" id="pp5"></strong>/<strong
                 style="color: #f7c6c1; --tip: 'Cost for upgrade #6'" id="pp6"></strong>
         </p>
         <div class="smaller">Upgrade 1: <strong style="color: #d5f770">+10% royal jelly production
@@ -4674,10 +4706,10 @@
         </div>
         <div class="smaller">Upgrade 3: <strong style="color: #0bdd7b">+30% more gems (multiplicative)</strong>
         </div>
-        <div class="smaller">Upgrade 4: <strong style="color: #2dccec">+40% faster automatic tree planters for EVERY
+        <div class="smaller">Upgrade 4: <strong style="color: #f162c2">+40% faster automatic tree planters for EVERY
                 unspent pollination
                 point (additive)</strong></div>
-        <div class="smaller">Upgrade 5: <strong style="color: #f162c2">+50% pollen gain for EVERY unspent pollination
+        <div class="smaller">Upgrade 5: <strong style="color: #2dccec">+50% pollen gain for EVERY unspent pollination
                 point (additive)</strong></div>
         <div class="smaller">Upgrade 6: <strong style="color: #f7c6c1">increased motivation based on fame</strong></div>
         <div class="upgradeMenu">
@@ -4722,17 +4754,25 @@
         </div>
         <hr>
         <div style="color: #a79c91">Bunny trades:</div>
-        <button class="yellow2" data-cost="wood-100000" data-earn="gold+1" data-wait="2">
+        <button class="yellow" data-cost="wood-100000" data-earn="gold+1" data-wait="2">
             Trade 100,000 wood for 1 gold
             <span style="--s: 27"></span>
         </button>
-        <button class="yellow2" data-show="saplings>0" data-cost="wood-1000000" data-earn="gold+11" data-wait="2">
+        <button class="yellow" data-show="saplings>0" data-cost="wood-1000000" data-earn="gold+11" data-wait="2">
             Trade 1,000,000 wood for 11 gold
             <span style="--s: 27"></span>
         </button>
-        <button class="yellow2" data-show="saplings>0" data-cost="wood-1e7" data-earn="gold+111" data-wait="2">
+        <button class="yellow" data-show="saplings>0" data-cost="wood-1e7" data-earn="gold+111" data-wait="2">
             Trade 10M wood for 111 gold
             <span style="--s: 27"></span>
+        </button>
+        <button class="yellow2" data-show="gold>0" data-cost="wood-1e9" data-earn="massgold+1" data-hide="massgold>0">
+            Unlock mass gold trading for 1B wood
+            <span style="--s: 22"></span>
+        </button>
+        <button class="yellow2" data-show="massgold>0" data-cost="wood-5%" data-earn="gold+*0.2" data-wait="2">
+            Trade 5% of your wood, getting 1 gold for every 5 wood
+            <span style="--s: 22"></span>
         </button>
         <hr>
         <button class="wow5" data-show="gold>0" data-hide="fame>=100">
@@ -5022,7 +5062,6 @@
                                 if (multipliedAmount === null) {
                                     console.warn("To have a multiplier for the amount to add, you first have to have an 'all' or percentage cost included.")
                                 } else {
-                                    multipliedAmount = multipliedAmount
                                     // * sign: multiply the amount of the item with "%" or "all" spent (so a data-cost of "gold-1%" with the playing having 200 gold as well as an data-earn of "honey+*4" means that the user earns 2 * 4 = 8 honey)
                                     add(part1, multipliedAmount.mul(part2.slice(1)))
                                 }
@@ -5451,6 +5490,9 @@
             add("flowers", remove("water", C("gardens").div(11), speed).mul(getUpgrade(3).mul(0.5).add(1)).div(15))
             pollenPower = T("pollen").mul(0.16).add(100).log10().mul(3.5).sub(7).mul(C("bighive").add(1)).add(1)
             add("nectar", getBeeBoost("bees").mul(pollenPower).mul(flowerPower).div(12), collectionRate)
+            if (C("ppoints").isPositive()) {
+                add("ppower", C("ppoints").mul(C("trees")).mul(C("flowers")).mul(C("pollen").sqrt()).add(1).log10().div(C("ppower").div(5e5).add(1)), speed)
+            }
             if (C("pollen").isPositive()) {
                 add("pollen", getBeeBoost("bees").mul(flowerPower).mul(C("p5").mul(C("ppoints").mul(0.5)).add(1)).div(400), collectionRate)
             }
@@ -5459,7 +5501,7 @@
             }
             add("fruit", C("trees").mul(C("harvesters")).mul(fruitBoost).div(2400000), speed)
             add("saplings", remove("tseeds", C("planters").div(130).add(C("aplanters").mul(C("p4").mul(C("ppoints").mul(0.4)).add(1)).div(2.4)), speed).div(10))
-            add("fame", C("gold").div(2000), speed)
+            add("fame", C("gold").div(2000).div(C("gold").add(2).log10()), speed)
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).mul(Hyper(1.1).pow(C("p1"))).div(18)
             multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.24), consumption], speed)
             add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).mul(queenRate).mul(1.5), speed).mul(treePower).div(8))
@@ -6009,7 +6051,7 @@
 
         ID("refund").addEventListener("click", function () {
             clearAmount(["ppoints", "p1", "p2", "p3", "p4", "p5", "p6"], true)
-            add("ppoints", C("tppoints"))
+            add("ppoints", C("tppoints").add(C("freepoints")))
         })
 
         function getUpgradeCost(i) {
