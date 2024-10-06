@@ -5370,15 +5370,16 @@
                 return
             }
             add("day", Hyper(1).div(120), speed)
-            var beeSum = C("bees").add(C("bees2")).add(C("bees3")).div(C("hives").add(1))
+            var beeSum = C("bees").add(C("bees2")).add(C("bees3"))
             hasMotivation = beeSum.isPositive()
             updateTime(disableRender)
 
             if (hasMotivation) {
+                var beeDiv = beeSum.div(C("hives").add(1))
                 add("stress", Hyper([0.000002, 0.000035, 0.000015, 0.00001][season] + 0.00002 * (season + 1) * random()), speed)
-                add("stress", C("day").add(10).log10().sub(1).div(100000).mul(beeSum.add(10).log10().mul(1.2 + random())).min(0.0006), speed)
+                add("stress", C("day").add(10).log10().sub(1).div(100000).mul(beeDiv.add(10).log10().mul(1.2 + random())).min(0.0006), speed)
                 mul("stress", Hyper(0.999), speed)
-                var magicNumber = beeSum.isMore(10) ? beeSum.mul(0.005).add(0.95).log10().mul(0.6) : new Hyper()
+                var magicNumber = beeDiv.isMore(10) ? beeDiv.mul(0.005).add(0.95).log10().mul(0.6) : new Hyper()
                 overcrowding = magicNumber.div(magicNumber.add(1)).mul(Hyper(0.98).pow(getUpgrade(1)))
                 queenRate = Hyper(1).sub(overcrowding.sqrt()).mul(0.95).add(0.05)
                 queenRate = queenRate.add(0.12).min(1).sqrt().sqrt().mul(getUpgrade(2).mul(0.1).add(1)).mul(Hyper(1.1).pow(C("p2")))
