@@ -4649,7 +4649,7 @@
         <hr>
         <p class="hide" data-show="gold1>0"
             style="--tip: 'Pollen cost formula: 5.000T, multiplied by 1.2 for every pollination point you\'ve previously purchased.'">
-            Current cost: <b class="small" style="color: #adef57" id="ppointCost"></b>
+            Pollination point cost: <b class="small" style="color: #959595" id="ppointCost"></b>
         </p>
         <button class="black tip2" data-cost="pollen-5e12/1.1POWtppoints|fruit-1e6" data-earn="ppoints+1|tppoints+1"
             data-stat="ppoints"
@@ -5630,7 +5630,7 @@
             updateId("treeGain", C("unlock16").isPositive() ? treesGrown.mul(60).format(2) + " saplings grow into trees each second, while " + treesCut + " trees are chopped each second (you have " + C("trees").format() + " trees)" : "")
             ID("currentDay").style.color = ["#bbd3fd", "#2dd860", "#dec513", "#fba32a"][season]
             updateId("honeycombCost", Hyper("1.0000198028233694978822052901735239566662981343803").pow(C("qbees")).mul(1e16).format())
-            updateId("ppointCost", Hyper(1.25).pow(C("tppoints")).mul(5e12).format() + " pollen and 1,000,000 fruit")
+            updateId("ppointCost", Hyper(1.1).pow(C("tppoints")).mul(5e12).format() + " pollen and 1,000,000 fruit")
             updateId("jackerCost", Hyper(1.4).pow(C("jackers")).mul(1e12).format() + " honey and 3 gold")
             updateId("famePower", "Gem collection boost from fame: " + calculateBoost(famePower))
 
