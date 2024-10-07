@@ -3403,8 +3403,8 @@
             margin: 0 10px -1px 0;
         }
 
-        .upgradeMenu>button {
-            background-color: white !important;
+        .upgradeMenu button {
+            background-color: #fffb !important;
             border-color: black !important;
             color: #555 !important;
             margin: 5px;
@@ -3445,7 +3445,13 @@
         button {
             padding: 2px 10px 2px 10px;
             min-height: 50px;
-            font-size: 22px;
+            font-size: 20px;
+        }
+
+        button.bsmall {
+            padding: 4px 6px 4px 6px;
+            min-height: 30px;
+            font-size: 18px;
         }
 
         button,
@@ -3784,6 +3790,7 @@
         }
 
         .diamond {
+            color: #262e31bb;
             border-color: #87f4c5;
             background-color: #b3effaaa;
         }
@@ -4271,7 +4278,7 @@
             </button>
             <button class="lime" data-show="ideas>0" data-cost="ideas-5" data-earn="bighive+1" data-hide="bighive>0"
                 style="--tip: 'Getting this will double forager and honey bee production speeds and also unlock the ability to construct hives in the Construction and Trade tab.'">
-                Double the pollen effect and unlock separate hives in the Construction and Trade tab
+                Double the pollen effect and unlock separate hives in the Construction and Trade tab for 5 ideas
                 <span style="--s: 3"></span>
             </button>
             <button class="green" data-show="ideas>0" data-cost="ideas-25" data-earn="gardening+1"
@@ -4430,10 +4437,10 @@
             <hr>
             You may transfer some bees of one job into another manually.
             <br>
-            <button class="red" data-cost="bees-10%" data-earn="bees2+*1">
+            <button class="red bsmall" data-cost="bees-10%" data-earn="bees2+*1">
                 Transfer 10% of forager bees to honey bees
             </button>
-            <button class="red" data-cost="bees2-10%" data-earn="bees+*1">
+            <button class="red bsmall" data-cost="bees2-10%" data-earn="bees+*1">
                 Transfer 10% of honey bees to forager bees
             </button>
             <hr>
@@ -4453,20 +4460,24 @@
             style="--tip: 'It costs 500 honeycombs to hire each nurse bee. However, be aware that nurse bees will consume pollen, and pollen provides a significant boost boost to honey and nectar production! If you run out of royal jelly, you might be unable to support your queen bees as well.'">
             Hire a nurse bee
         </button>
-        <button class="red" data-show="bees3>0" data-cost="bees3-1" data-earn="" style="--tip: 'Watch out!'">
-            Fire a nurse bee
-        </button>
         <button class="purple" data-show="unlock1>0" data-cost="jelly-5000" data-earn="qbees+1" data-stat="qbees"
             data-bee
             style="--tip: 'Queen bees cost 5,000 royal jelly to hire. However, be aware that the more bees that you have, the less they will work and the less pupae you will gain. You can counter this by building houses of various sizes as you progress. They will also consume pollen, which will eat at its nectar and honey production boost!'">
             Hire a queen bee
+        </button>
+        <br>
+        <button class="bsmall" data-show="bees3>0" data-cost="bees3-1" data-earn="" style="--tip: 'You don\'t get anything back, so be warned!'">
+            Fire a nurse bee
+        </button>
+        <button class="bsmall" data-show="qbees>0" data-cost="qbees-1" data-earn="" style="--tip: 'You don\'t get anything back, so be warned!'">
+            Fire a queen bee
         </button>
         <hr>
         <p>
             You can also build honeycomb homes for 1,000 <b style="color: #f09b08">honeycombs</b>,
             which gives you 10 forager and honey bees each.
         </p>
-        <button class="blue" data-cost="cells-1000" data-earn="h+1|bees+10|bees2+10" data-stat="h">
+        <button class="blue" data-cost="cells-1000" data-earn="h+1|bees+10|bees2+10" data-stat="h" style="--tip: 'Honeycomb homes give you 10 forager bees and 10 honey bees; just know that these homes don\'t provide any other benefits.'">
             Build a honeycomb home
         </button>
     </div>
@@ -4493,29 +4504,40 @@
             Build a queen bee home for 20,000 royal jelly
         </button>
         <br>
-        <button class="wood" data-show="unlock5>0" data-cost="homes-10|wood-30" data-earn="whomes+10"
+        <button class="diamond bsmall" data-cost="jelly-1200" data-earn="homes+10" data-stat="homes">
+            Build 10 nurse bee homes using 120 royal jelly
+        </button>
+        <br>
+        <button class="diamond bsmall" data-show="qbees>0" data-cost="jelly-200000" data-earn="homes2+10"
+            data-stat="homes2">
+            Build 10 queen bee homes for 20,000 royal jelly
+        </button>
+        <br>
+        <button class="wood bsmall" data-show="unlock5>0" data-cost="homes-10|wood-30" data-earn="whomes+10"
             data-stat="whomes">
             Get 10 upgraded nurse bee homes using 30 wood
         </button>
-        <button class="wood" data-show="unlock5>0" data-cost="homes2-10|wood-250" data-earn="whomes2+10"
+        <br>
+        <button class="wood bsmall" data-show="unlock5>0" data-cost="homes2-10|wood-250" data-earn="whomes2+10"
             data-stat="whomes2">
             Get 10 upgraded queen bee homes using 250 wood
         </button>
         <br>
-        <button class="gold" data-show="unlock5>0" data-cost="whomes-10|flowers-100" data-earn="fhomes+10"
+        <button class="gold bsmall" data-show="unlock5>0" data-cost="whomes-10|flowers-100" data-earn="fhomes+10"
             data-stat="fhomes">
             Decorate 10 upgraded nurse bee homes using 100 flowers
         </button>
-        <button class="gold" data-show="unlock7>0" data-cost="whomes2-10|flowers-2000" data-earn="fhomes2+10"
+        <br>
+        <button class="gold bsmall" data-show="unlock7>0" data-cost="whomes2-10|flowers-2000" data-earn="fhomes2+10"
             data-stat="fhomes2">
             Decorate 10 upgraded nurse bee homes using 2,000 flowers
         </button>
         <br>
+        <hr>
         <button class="orange" data-show="schoolidea>0" data-cost="jelly-80000|cells-2000000" data-earn="schools+1"
             data-stat="schools">
             Construct a school using 80,000 royal jelly and 2,000,000 honeycombs
         </button>
-        <hr>
         <button class="red" data-show="bighive>0" data-cost="cells-1.5e8|pollen-1e6" data-earn="hives+1" data-wait="0.2"
             data-stat="hives">
             Create a separate hive to decrease overcrowding with 150M honeycombs and 1M pollen
@@ -4754,18 +4776,19 @@
         </div>
         <hr>
         <div style="color: #a79c91">Bunny trades:</div>
-        <button class="yellow" data-cost="wood-100000" data-earn="gold+1" data-wait="2">
+        <button class="yellow bsmall" data-cost="wood-100000" data-earn="gold+1" data-wait="2">
             Trade 100,000 wood for 1 gold
             <span style="--s: 27"></span>
         </button>
-        <button class="yellow" data-show="saplings>0" data-cost="wood-1000000" data-earn="gold+11" data-wait="2">
+        <button class="yellow bsmall" data-show="saplings>0" data-cost="wood-1000000" data-earn="gold+11" data-wait="2">
             Trade 1,000,000 wood for 11 gold
             <span style="--s: 27"></span>
         </button>
-        <button class="yellow" data-show="saplings>0" data-cost="wood-1e7" data-earn="gold+111" data-wait="2">
+        <button class="yellow bsmall" data-show="saplings>0" data-cost="wood-1e7" data-earn="gold+111" data-wait="2">
             Trade 10M wood for 111 gold
             <span style="--s: 27"></span>
         </button>
+        <br>
         <button class="yellow2" data-show="gold>0" data-cost="wood-1e9" data-earn="massgold+1" data-hide="massgold>0">
             Unlock mass gold trading for 1B wood
             <span style="--s: 22"></span>
@@ -5789,7 +5812,7 @@
             }
             var woodenHomes = C("w" + houseName)
             var decoratedHomes = C("f" + houseName)
-            return beeAmount.isPositive() ? beeAmount.add(C(houseName).add(woodenHomes).add(decoratedHomes).min(beeAmount).mul(3)).add(woodenHomes.add(decoratedHomes).min(beeAmount).mul(7)).add(decoratedHomes.min(beeAmount).mul(5)).mul(ignoreAmount ? 1 : 1 - (studyAmount / 100)).mul(ignoreAmount >= 2 ? 1 : motivation) : new Hyper()
+            return beeAmount.isPositive() ? beeAmount.add(C(houseName).add(woodenHomes).add(decoratedHomes).min(beeAmount).mul(3)).add(woodenHomes.add(decoratedHomes).min(beeAmount).mul(6)).add(decoratedHomes.min(beeAmount).mul(5)).mul(ignoreAmount ? 1 : 1 - (studyAmount / 100)).mul(ignoreAmount >= 2 ? 1 : motivation) : new Hyper()
         }
 
         function getBeeBoost2(beeName, houseName) {
