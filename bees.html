@@ -4158,7 +4158,7 @@
             data-s="honey $3" id="honey"></div>
         <div style="color: #f4d872; --tip: 'Nectar may be gathered by foragers or manually made.'" data-s="nectar"
             id="nectar"></div>
-        <div style="color: #fafad1; --tip: 'Pollen, while not edible, provides significant pollination benefits and is also consumed by nurse bees.'"
+        <div style="color: #fafad1; --tip: 'Pollen, while not edible, provides significant pollination benefits and is also consumed by nurse bees. It is produced by forager bees.'"
             data-s="pollen" id="pollen"></div>
         <div style="color: #c7e63d; --tip: 'Queen bees create pupae over time from royal jelly.'" data-s="pupae"
             id="pupae"></div>
@@ -4183,7 +4183,7 @@
             data-s="fruit $43" id="fruit"></div>
     </div>
     <div id="menu1">
-        <p style="color: #f3ad20; --tip: 'Some resources, like pollen, provide a direct multiplier.'"
+        <p style="color: #f3ad20; --tip: 'Some resources, like pollen, provide a direct multiplier. Note that pollen is gained from forager bees!'"
             id="pollinationPower"></p>
         <div style="color: #df7e17" data-s="bee" data-p="bees" id="bee"></div>
         <label class="hidden" for="sellAmount">
@@ -4654,10 +4654,12 @@
             <span style="--s: 7"></span>
         </button>
         <hr>
-        <p>
+        <div class="smaller">
             You may also plant <b style="color: #8bef5d">trees</b> to increase <b style="color: #c7e63d">pupae</b> gain
             or cut them down for some <b style="color: #d59679">wood</b>!
-        </p>
+            <br>
+            Trees require 10 <b style="color: #90f68d">tree seeds</b> to plant, which you can get from forager bees.
+        </div>
         <button class="green" data-show="unlock9>0" data-cost="pollen-3e8|tseeds-10" data-earn="saplings+1"
             data-wait="1">
             Start planting a tree with 300M pollen and 10 tree seeds
@@ -5481,7 +5483,7 @@
                 clearAmount(["beesLost", "beesLost2", "beesLost3"])
             }
 
-            if (remove2("jelly", C("qbees").div(12), speed)) {
+            if (remove2("jelly", C("qbees").div(4), speed)) {
                 if (C("qbees").isPositive()) {
                     stuff.qbees = C("qbees").add(Hyper(0.001).mul(speed)).min(C("qbees").ceil())
                 }
@@ -5530,7 +5532,7 @@
             add("fame", C("gold").div(2000).div(C("gold").add(2).log10()), speed)
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).mul(Hyper(1.1).pow(C("p1"))).div(18)
             multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.24), consumption], speed)
-            add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).mul(queenRate).mul(1.5), speed).mul(treePower).div(8))
+            add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).mul(queenRate).div(1.2), speed).mul(treePower).div(8))
             treesGrown = remove("saplings", C("saplings").mul(0.00001), speed)
             add("trees", treesGrown)
             treesGrown = treesGrown.div(speed)
