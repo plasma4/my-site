@@ -3012,7 +3012,7 @@
     <style>
         * {
             text-align: center;
-            font-size: 30px;
+            font-size: 28px;
             line-height: 1.4;
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
@@ -3047,7 +3047,7 @@
         b,
         strong {
             transition: text-shadow 500ms;
-            font-size: 24px;
+            font-size: 22px;
         }
 
         body.light div[style],
@@ -3063,11 +3063,11 @@
         }
 
         .small {
-            font-size: 24px !important;
+            font-size: 22px !important;
         }
 
         .smaller {
-            font-size: 18px !important;
+            font-size: 16px !important;
         }
 
         [style*="--tip:"] {
@@ -3083,7 +3083,7 @@
             content: var(--tip);
             text-shadow: none !important;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 16px;
             line-height: 1.4;
             width: 80%;
             max-width: 500px;
@@ -3131,7 +3131,6 @@
         }
 
         button[style*="--tip:"]::after {
-            font-size: 16px;
             background-color: #564c49;
             top: auto;
             bottom: calc(100% + 5px);
@@ -3408,7 +3407,7 @@
             border-color: black !important;
             color: #555 !important;
             margin: 5px;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .tech {
@@ -3451,7 +3450,7 @@
         button.bsmall {
             padding: 4px 6px 4px 6px;
             min-height: 30px;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         button,
@@ -3497,12 +3496,12 @@
         .mini {
             padding: 4px 8px 4px 8px;
             min-width: 44px;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         p {
             line-height: 1.25;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         button:hover,
@@ -3622,7 +3621,7 @@
             border-radius: 10px 10px 0 0;
             padding: 6px 12px 6px 12px;
             margin: 2px;
-            font-size: 25px;
+            font-size: 24px;
         }
 
         body.light #menus>button {
@@ -4105,8 +4104,8 @@
 
 <body style="display: none">
     <div id="noSelect">
-        <p
-            style="font-size: 16px; --tip: 'Game made by Leo Zhang with sprites from myself, NEL/Magix sprites, and @theskullyko, and modified when needed.'">
+        <p class="smaller"
+            style="--tip: 'Game made by Leo Zhang with sprites from myself, NEL/Magix sprites, and @theskullyko, and modified when needed.'">
             Game info (press and hold on a button to prevent your hands from aching)
         </p>
         <button class="red" id="reset">RESET</button>
@@ -4809,11 +4808,8 @@
         <button class="wow5" data-show="fame>=100" data-earn="gold1+1" data-hide="gold1>0">
             Unlock yellow jackers
         </button>
-        <button class="wow5" data-show="gold>0" data-hide="fame>=5000">
-            Unlock armor (requires 5,000 fame)
-        </button>
-        <button class="wow5" data-show="fame>=5000" data-earn="gold2+1" data-hide="gold2>0">
-            Unlock armor
+        <button class="wow5" data-show="gold1>0" data-earn="collection+1" data-hide="collection>0">
+            Double the collection rate of yellow jackers for 100 gems
         </button>
         <p class="hide" data-show="gold1>0">
             Yellow jackers are a good way to gather various valuable resources.
@@ -5546,7 +5542,7 @@
             add("bees2", consumption)
             add("honey", remove("nectar", getBeeBoost("bees2").mul(pollenPower).mul(waterPower).mul(getUpgrade(4).add(1)).div(12), speed))
             add("education", beeSum.mul(studyAmount).mul(schoolBoost).div(1e7), speed)
-            add("gems", new Hyper(randomFloor(simulateRandomSum(C("jackers").mul(speed)) / 1000)).mul(famePower).mul(Hyper(1.3).pow(C("p3"))))
+            add("gems", new Hyper(randomFloor(simulateRandomSum(C("jackers").mul(C("collection").add(1)).mul(speed)) / 1000)).mul(famePower).mul(Hyper(1.3).pow(C("p3"))))
         }
 
         var currentRand = 1000
