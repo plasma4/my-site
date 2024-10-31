@@ -2142,7 +2142,9 @@
                     } else if (type === MOD || type === GEAR) {
                         if (tile[3] === 0) {
                             resetMod()
-                            tile[3] = 1
+                            if (type === MOD) {
+                                tile[3] = 1
+                            }
                             speed = tile[4]
                             jump = tile[5]
                             if (tile[6] !== KEEP) {
