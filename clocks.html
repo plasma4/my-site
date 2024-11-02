@@ -700,7 +700,6 @@
         #note {
             transition: none;
             font-size: 3vh;
-            font-family: "Helvetica", "Trebuchet MS";
             font-weight: 700;
         }
 
@@ -18380,7 +18379,7 @@ c`.split("\n")
         })
 
         ID("die").addEventListener("click", function () {
-            if (dieFrame < 0 && doubleCheck("Are you sure you want to reset your position and health? You won't gain any reward!")) {
+            if ((dieFrame < 0 || !isFinite(dieFrame)) && doubleCheck("Are you sure you want to reset your position and health? You won't gain any reward!")) {
                 resetCharacter()
             }
         })
