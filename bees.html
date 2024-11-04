@@ -4137,7 +4137,7 @@
     <div class="small">
         <div style="font-size: 15px">
             &nbsp;
-            <u style="color: #f2134b; display: none; font-size: 16px; --tip: 'Your queen bees are dying right now! Make sure that you have enough royal jelly to support your queen bees. If you don\'t seem to be making enough royal jelly, also make sure that your pollen production (from foragers) is stable.'"
+            <u style="color: #ed4278; display: none; font-size: 16px; --tip: 'Your queen bees are dying right now! Make sure that you have enough royal jelly to support your queen bees. If you don\'t seem to be making enough royal jelly, also make sure that your pollen production (from foragers) is stable.'"
                 id="queenBeesDying">
                 WARNING: your queen bees are dying!
             </u>
@@ -4461,16 +4461,16 @@
         </button>
         <button class="purple" data-show="unlock1>0" data-cost="jelly-5000" data-earn="qbees+1" data-stat="qbees"
             data-bee
-            style="--tip: 'Queen bees cost 5,000 royal jelly to hire. However, be aware that the more bees that you have, the less they will work and the less pupae you will gain. You can counter this by building houses of various sizes as you progress. They will also consume pollen, which will eat at its nectar and honey production boost!'">
+            style="--tip: 'Queen bees cost 5,000 royal jelly to hire. However, be aware that the more bees that you have, the less they will work and the less pupae you will gain. You can counter this by building houses of various sizes as you progress, or by simply getting more queen bees.'">
             Hire a queen bee
         </button>
         <br>
         <button class="bsmall" data-show="bees3>0" data-cost="bees3-1" data-earn=""
-            style="--tip: 'You don\'t get anything back, so be warned!'">
+            style="--tip: 'You don\'t get anything back, so bee warned!'">
             Fire a nurse bee
         </button>
         <button class="bsmall" data-show="qbees>0" data-cost="qbees-1" data-earn=""
-            style="--tip: 'You don\'t get anything back, so be warned!'">
+            style="--tip: 'You don\'t get anything back, so bee warned!'">
             Fire a queen bee
         </button>
         <hr>
@@ -5040,8 +5040,12 @@
                                 }
 
                                 if (quantity.isLess(amount)) {
-                                    e.stopPropagation()
-                                    return
+                                    if (type === "bees3" || type === "qbees") {
+                                        quantity = new Hyper(amount)
+                                    } else {
+                                        e.stopPropagation()
+                                        return
+                                    }
                                 }
 
                                 types[t] = type
@@ -5529,7 +5533,7 @@
             add("fame", C("gold").div(2000).div(C("gold").add(2).log10()), speed)
             var consumption = getBeeBoost("bees3", "homes").mul(waterPower).mul(Hyper(1.1).pow(C("p1"))).div(18)
             multiExchange("jelly", consumption.mul(0.6), ["pollen", "nectar"], [consumption.mul(0.24), consumption], speed)
-            add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).mul(queenRate).div(1.2), speed).mul(treePower).div(8))
+            add("pupae", remove("jelly", getBeeBoost("qbees", "homes2", true).mul(queenRate).div(2.2), speed).mul(treePower).div(8))
             treesGrown = remove("saplings", C("saplings").mul(0.00001), speed)
             add("trees", treesGrown)
             treesGrown = treesGrown.div(speed)
