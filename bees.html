@@ -5304,7 +5304,7 @@
                     if (property === "cellsAlt" || T(property).isPositive() || property === "trades" || property === "gems") {
                         element.style.display = null
                         var accuracy = Number(element.getAttribute("data-precision"))
-                        var string = amount.format(accuracy) + " "
+                        var string = (property === "qbees" ? amount.ceil() : amount).format(accuracy) + " "
                         if (accuracy > 0 || amount.isPlural()) {
                             var p = element.getAttribute("data-p")
                             string += p === null ? element.getAttribute("data-s") : p
