@@ -322,7 +322,7 @@
 
         /**
          * Creates a new event listener for the garden: an API hook inside the game.
-         * @param {"load" | "frame" | "tick" | "plant" | "harvest" | "bonusstart" | "bonusend"} type The type of listener. The load listener is required, and will excecute on load, or instantly if the game has already loaded. The frame listener is called every time the game renders (although multiple "ticks" may occur in the same frame with Garden.speed modifiers AND when the game lags, so use the "tick" listener if you want to update things inside the game). The tick listener fires every The plant listener is called every time a plant is created. The harvest listener is called every time a plant gets harvested. The bonusstart listener is called every time the user needs to select a temple bonus. The bonusend listener is called every time the user finishes selecting that temple bonus. Custom events may also be added if needed (you can use custom listener types and trigger them all with Garden.triggerEventListeners()).
+         * @param {"load" | "frame" | "tick" | "plant" | "harvest" | "bonusstart" | "bonusend"} type The type of listener. The load listener is required, and will execute on load, or instantly if the game has already loaded. The frame listener is called every time the game renders (although multiple "ticks" may occur in the same frame with Garden.speed modifiers AND when the game lags, so use the "tick" listener if you want to update things inside the game). The tick listener fires every The plant listener is called every time a plant is created. The harvest listener is called every time a plant gets harvested. The bonusstart listener is called every time the user needs to select a temple bonus. The bonusend listener is called every time the user finishes selecting that temple bonus. Custom events may also be added if needed (you can use custom listener types and trigger them all with Garden.triggerEventListeners()).
          * @param {(this: GardenHandler, ev: GardenEvent) => void} listener The method to call when the event triggers
          */
         GardenHandler.prototype.addEventListener = (type, listener) => GardenIncompleteError()
@@ -466,7 +466,7 @@
          * Creates a new instance to use, effectively refreshing everything. To also clear the save file, use the clear() function instead.
          * @param {PlantGuide} data The plant data for the new game to use: can be modified later
          * @param {*} clear Treated as a boolean: if it evaluates to true, the game also clears all stored data
-         * @param {Function} onbeforestart The function to excecute before the game starts up again
+         * @param {Function} onbeforestart The function to execute before the game starts up again
          * @returns {GardenHandler} The new garden, also stored in the "Garden" variable
          */
         GardenHandler.prototype.reset = (data, clear, onbeforestart) => GardenIncompleteError()
@@ -1918,7 +1918,7 @@
                                         description = button[3]
 
                                         if (mouseDown && buttonDown === false) {
-                                            // Add the function to excecute if it's actually clicked
+                                            // Add the function to execute if it's actually clicked
                                             buttonDown = function () {
                                                 var mouseX = cursorX * devicePixelRatio
                                                 var mouseY = cursorY * devicePixelRatio
