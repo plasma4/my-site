@@ -108,6 +108,7 @@
         }
 
         button {
+            transition: background-color 200ms;
             cursor: pointer;
             font-family: "Trebuchet MS";
             font-size: 28px;
@@ -444,6 +445,7 @@
             display: block;
             line-height: 21px;
             font-size: 14px;
+            color: #ddd;
         }
 
         #shade {
@@ -485,14 +487,18 @@
         #x^y=x↑y#
         Wait a second. What does the $↑$ symbol represent? Well, a single arrow means exponentiation, or $x^y$. Here's two arrows:
         #x↑↑y=\underset{y\ x\text{'s}}{\underbrace{x^{x^{x^{x^{x^⋰}}}}}}#
-        And we get to the point that we can talk about a popular number: <i>googol.</i> A googol contains $100$ zeroes ($10^{100}$), which clearly is huge. You can have a googolplex ($10^{10^{100}}$), a googolduplex ($10^{10^{10^{100}}}$), a googoltriplex ($10^{10^{10^{10^{100}}}}$), etc. Problem is, there's fewer <i>atoms</i> in the universe than the innocent googol, yet it's downright miniscule compared to what's coming next.
-        <small>Just like exponents, operations with any amount of arrows go from right to left.</small>
+        Well, that's a lot bigger, isn't it? This is repeated exponentiation. Just like exponents, operations with any amount of arrows go from right to left. You might want a few examples, right?
+        #2↑↑3=2^{2^2}=2^4=16\newline
+        2↑↑4=2^{2^{2^2}}=2^{16}=65536\newline
+        2↑↑5=2^{2^{2^{2^{2^2}}}}=2^{65536}\newline#
         <br><br>
-        Oh, and this function is called "tetration," where we exponentiate $x$ many times. It's sometimes called a power tower as well because the numbers get HUGE quickly. For example, $4^{4^{4^4}}$ has $8.027304726⋯×10^{153}$ <i>digits,</i> which is way to big too even comprehend. However, that's nothing compared to what comes next!
+        Oh, and this function is called "tetration," where we exponentiate $x$ many times. It's sometimes called a power tower as well because the numbers get HUGE quickly. For example, $4^{4^{4^4}}$ has $8.027304726⋯×10^{153}$ <i>digits,</i> which is way to big too even comprehend.
+        <small>And yes, we get to the point that we can talk about a popular number: <i>googol.</i> A googol contains $100$ zeroes ($10^{100}$), which clearly is huge. You can have a googolplex ($10^{10^{100}}$), a googolduplex ($10^{10^{10^{100}}}$), a googoltriplex ($10^{10^{10^{10^{100}}}}$), etc. Problem is, there's fewer <i>atoms</i> in the universe than the innocent googol.</small>
+        Yet this is downright miniscule compared to what's coming next.
         #x↑^3y=x↑↑↑y=\underset{y\ x\text{'s}}{\underbrace{x↑↑ \bigg(x↑↑\Big(x↑↑\big(x↑↑(x↑↑x)\big)\Big)\bigg)}}#
         That's three arrows, so, for example, $4↑↑↑3=4↑↑(4↑↑4)=4↑↑4^{4^{4^4}}≈\underset{8.072×10^{153}\ 4\text{'s}}{\underbrace{4^{4^{4^{4^{4^⋰}}}}}}$. You can't express it anymore with numbers or digits. You just can't. At this point, the universe can't last a fraction of a fraction of…anyway,
         <br>
-        Pretty insane, no, REALLY insane, for such an innocent-looking formula. Let's try adding another arrow…
+        Pretty insane for such an innocent-looking formula, but let's try adding another arrow…
         #x↑^4y=x↑↑↑↑y=\underset{y\ x\text{'s}}{\underbrace{x↑↑↑x↑↑↑x↑↑↑x↑↑↑x↑↑↑⋯↑↑↑x}}#
         By the way, this is called Knuth's up-arrow notation, well, because there's arrows. From here on out, there's literally no way to describe the magnitude of these values. Digits don't work, nothing does! However, this is just the start. It's <i>unimaginably</i> huge. This is more atoms, energy in the universe, more quantum states, chess games…I'm getting carried away.
         #a↑^nb=a\ \underset{n\text{ arrows}}{\underbrace{↑↑↑↑↑⋯↑↑↑↑↑}}\ b=\underset{b\ a\text{'s}}{\underbrace{a↑^{n-1}a↑^{n-1}a↑^{n-1}a↑^{n-1}a↑^{n-1}a↑^{n-1}a↑^{n-1}a↑^{n-1}a↑^{n-1}a↑^{n-1}a↑^{n-1}a↑^{n-1}a⋯}}#
@@ -500,6 +506,31 @@
         <br><br>
         <sup>I like to think of these recursive functions as cute little explosive bunnies that leave smaller teennnnnnnny tinny explosive bunnies in their wake. I know, strange analogy, right?</sup>
         <img id="bunny" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'><path fill='%23d44' d='M336 31c-10-1-17 4-17 13 0 12-3 61 1 77s22 39 34 54c11 13 5 42 5 56 0 15-3 26-9 26s-14 6-20 12-11 13-19 7-20-12-43-16-62 0-86 9-76 56-91 77c-14 22-16 88-14 98s-3 18-10 9-13-4-13-4-7 14-7 21 3 15 3 15-12 8-12 14 12 16 19 24 31 26 41 25 29 0 36 4 25 10 46 12l98 5c16 0 20-2 28-10s-6-15-11-26 15-7 21-8 21-12 31-12 9 10 22 16 32 25 46 27c14 3 47 0 59-4s10-14 0-21-35-21-39-28-6-16 2-23 14-4 25-10 16-23 16-33 2-21 6-27 5-22 5-34-5-15-9-22 4-18 10-18 31-4 41-8 21-23 28-32 1-27-9-33-10-22-19-32-18-31-27-38-29-13-36-13-11 0-11-6l-2-26c0-13-16-69-37-102-5-7-12-6-20-3-6 2-9 4-9 23s-11 0-17-10-16-22-29-25h-7z'/></svg>"></img>
+        <hr>
+        <big><b>GRAHAM'S NUMBER:</b> The Elephant in the Article</big>
+        Fanatics of big numbers might also recognize this: Graham's Number! Remember the cute little up arrow? Yeah, this has everything to do with that. You can guess it's a pretty huge
+        number! So:
+        #g_1=3↑↑↑↑3\newline
+        g_2=3↑^{g_1}3\newline
+        g_3=3↑^{g_2}3\newline
+        g_n=3↑^{g_{n-1}}3#
+        So, $g_{64}=3↑^{g_{63}}3$. But think about what that means. For the next number in the function, we take the previous function <i>as the number of arrows.</i> This is incomprehensible, as our minds can't process what it means: we just see the threes and trust that it is huge. Furthermore, Graham's number is between $3→3→64→2$ and $3→3→65→2$. That should give you an idea of how crazy-huge-huge-huge Graham's Number <i>and</i> right arrows are. The <i>first number</i> in the sequence already has an unbelievable amount of digits:
+        <span id="graham">#g_1=3↑↑↑(3↑↑↑3)=3↑↑↑(3↑↑(3↑↑3))=3↑↑↑(3↑↑7,625,597,484,987)=3↑↑↑\underset{7,625,597,484,987\ 3\text{'s}}{\underbrace{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{\text{and so on}}}}}}}}}}}}}}}}}}}}}}}}}}}}=\underset{3↑↑7,625,597,484,987\ 3\text{'s}}{\underbrace{3↑↑3↑↑3↑↑3↑↑⋯↑↑3}}#</span>
+        Note that you can also calculate $g_{65}$, $g_{66}$ and all other numbers in the sequence.
+        <hr>
+        <big>Horizontal Expansion? More Confusion!</big>
+        (Be aware: this section really isn't important. Seriously. If you're in a rush, feel free to stop procrastinating and just skip to the next question.)
+        #a→b=a^b\newline
+        a→b→c=a↑^cb#
+        Wait, what does that little right arrow even mean? This is Conway's chained arrow notation, and although it looks pretty innocent right now, don't get fooled just yet. This notation is defined by itself, and…things get absolutely HUGE. Here's how it gets evaluated:
+        #a⋯→x→y→1=a⋯→x→y\newline
+        a⋯→x→y→1→z⋯=a⋯→x→y\newline
+        a⋯→x→y→z=x→(a⋯→x→y-1→z)→z-1#
+        <span class="small">R U okay?</span>
+        <br>
+        That does seem like a mathful, but, <i>eventually,</i> if you use these properties, you can simplify these right arrows. You can try to do this, with, say, $3→3→2$, and realize that $a→b→c=a↑^cb$. These arrows are <i>EXTREMELY</i> big, so we use it to compare the size of these values.
+        <br>
+        <small>Let's squeeze in a discussion about factorials here, which are practically invisible compared to what comes next. $n!=1×2×3×4×⋯×n$ isn't actually that big, and is less than $n^n$ for $n>1$. ($5×4×3×2×1$, which is $5!$, is clearly less than $5×5×5×5×5$, or $5^5$.) So, yeah, they aren't very big.</small>
         <hr>
         <big>Back to the start (and then further)</big>
         To begin, we start by…adding by one.
@@ -513,35 +544,7 @@
         <br>
         These functions, together, are called a "fast-growing hierarchy," and they grow really quickly, as you might be able to guess from the name.
         <br>
-        Enough formulas for you? Well then, let's move to a different kind of arrow.
-        <hr>
-        <big>Horizontal Expansion? More Confusion!</big>
-        (Oh, this section isn't that important to understand. If you're in a rush, feel free to skip to "Graham's Number" or, if you're trying to procrastinate from you what you should be doing, just skip to "Back to a Hierarchy.")
-        #a→b=a^b\newline
-        a→b→c=a↑^cb#
-        Wait, what does that little right arrow even mean? This is Conway's chained arrow notation, and although it looks pretty innocent right now, don't get fooled just yet. This notation is defined by itself, and…things get absolutely HUGE. Here's how it gets evaluated:
-        #a⋯→x→y→1=a⋯→x→y\newline
-        a⋯→x→y→1→z⋯=a⋯→x→y\newline
-        a⋯→x→y→z=x→(a⋯→x→y-1→z)→z-1#
-        <span class="small">R U okay?</span>
-        <br>
-        That does seem like a mathful, but, <i>eventually,</i> if you use these properties, you can simplify these right arrows. You can try to do this, with, say, $3→3→2$, and realize that $a→b→c=a↑^cb$. These arrows are <i>EXTREMELY</i> big, so we use it to compare the size of these values.
-        <br>
-        <small>Let's squeeze in a discussion about factorials here, which are practically invisible compared to what comes next. $n!=1×2×3×4×⋯×n$ isn't actually that big, and is less than $n^n$ for $n>1$. ($5×4×3×2×1$, which is $5!$, is clearly less than $5×5×5×5×5$, or $5^5$.) So, yeah, they aren't very big.</small>
-        <hr>
-        <big><b>GRAHAM'S NUMBER:</b> The Elephant in the Article</big>
-        Fanatics of big numbers might also recognize this: Graham's Number! Remember the cute little up arrow? Yeah, this has everything to do with that. You can guess it's a pretty huge
-        number! So:
-        #g_1=3↑↑↑↑3\newline
-        g_2=3↑^{g_1}3\newline
-        g_3=3↑^{g_2}3\newline
-        g_n=3↑^{g_{n-1}}3#
-        So, $g_{64}=3↑^{g_{63}}3$. But think about what that means. For the next number in the function, we take the previous function <i>as the number of arrows.</i> This is incomprehensible, as our minds can't process what it means: we just see the threes and trust that it is huge. Furthermore, Graham's number is between $3→3→64→2$ and $3→3→65→2$. That should give you an idea of how crazy-huge-huge-huge Graham's Number <i>and</i> right arrows are. The <i>first number</i> in the sequence already has an unbelievable amount of digits:
-        <span id="graham">#g_1=3↑↑↑(3↑↑↑3)=3↑↑↑(3↑↑(3↑↑3))=3↑↑↑(3↑↑7,625,597,484,987)=3↑↑↑\underset{7,625,597,484,987\ 3\text{'s}}{\underbrace{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{3^{\text{and so on}}}}}}}}}}}}}}}}}}}}}}}}}}}}=\underset{3↑↑7,625,597,484,987\ 3\text{'s}}{\underbrace{3↑↑3↑↑3↑↑3↑↑⋯↑↑3}}#</span>
-        Note that you can also calculate $g_{65}$, $g_{66}$ and all other numbers in the sequence.
-        <hr>
-        <big>Back to a Hierarchy</big>
-        Let's go back to a fast-growing hierarchy. To get the size of the function across (as we didn't do that earlier), let's try $f_4(2)$:
+        Need a few examples to help explain this again? Let's try $f_4(2)$:
         #f_{n+1}(x)=f_n^x(x)=\underset{f_n\ x\text{ times}}{\underbrace{f_n(f_n(f_n(⋯f_n(x))))}}\newline
         f_4(2)=f_3(f_3(2))\newline
         f_2(x)=x×2^x\newline
@@ -557,8 +560,8 @@
         We can add bigger values and also double $ω$.
         #f_{ω+n}(x)=f_{ω+(n-1)}^x(x)∼3→3→(x+1)→(n+1)\newline
         f_{ω2}(x)=f_{ω+x}(x)#
-        Why is the number two after the ω? Because the inventors of these numbers decided to. (Hey, you'll get used to it after a while!) This, again, explodes the function. For example, $f_{ω2}(4)=f_{ω+4}(4)$. At this rate, $f_{ω+n}(x)>x→x→(x-1)→(n-1)$, which is truly insane.
-        <small>Why don't we use faster-growing values, like, say, $→$ chains? Welllllllllllll, this function is sweet and simple, and also starts with the simplest operation you can think of: adding by one. It's easy-to-understand recursion and simplicity is what makes it so popular.</small>
+        Why is the number two after the $ω$? Because the inventors of these numbers decided to. (Hey, you'll get used to it after a while!) This, again, explodes the function. For example, $f_{ω2}(4)=f_{ω+4}(4)$. At this rate, $f_{ω+n}(x)>x→x→(x-1)→(n-1)$, which is truly insane.
+        <small>Why don't we use faster-growing values, like, say, $→$ chains? Welllllllllllll, this function is sweet and simple, and also starts with the simplest operation you can think of: adding by one. It's easy-to-understand recursion and simplicity is what makes it so popular. Oh, it's also going to get way bigger than Conway chains, so...</small>
         <br>
         Oh, and if you've been staring at a screen for a while, why don't you take a little break? The next part has a whole lot math (and large numbers)!
         <br><br>
@@ -620,8 +623,9 @@
         All right. If you have a tree that is inf-embeddable, which is explained below<span class="print"> (hover over the image to zoom in)</span>:
         <img id="inf" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><style>*{font-family:'Gill Sans','Gill Sans MT',Calibri,'Trebuchet MS'}</style><g transform='matrix(.7 0 0 .7 29 21)'><path fill='none' stroke='%23831' stroke-width='3' d='m34 60 32 62m32-62-32 62m0 1v64'/><circle transform='translate(33 60)' fill='%2347e' r='16'/><circle transform='translate(66 187)' fill='%2347e' r='16'/><circle transform='translate(98 60)' fill='%234d7' r='16'/><circle transform='translate(66 123)' fill='%23916' r='16'/></g><g transform='matrix(.7 0 0 .7 185 36)'><path fill='none' stroke='%23831' stroke-width='3' d='m34 60 32 62m32-62-32 62'/><circle transform='translate(33 60)' fill='%2347e' r='16'/><circle transform='translate(98 60)' fill='%234d7' r='16'/><circle transform='translate(66 123)' fill='%234d7' r='16'/></g><g transform='matrix(.5 0 0 .5 198 178)'><path fill='none' stroke='%234c0933' stroke-width='3' d='m34 60 32 62m32-62-32 62'/><circle transform='translate(33 60)' fill='%2347e' r='16'/><circle transform='translate(98 60)' fill='%234d7' r='16'/><circle transform='translate(66 123)' fill='%234d7' r='16'/></g><text dx='0' dy='0' font-size='22' transform='translate(20 30)'><tspan font-weight='700'><![CDATA[inf-embeddable]]></tspan></text><text dx='0' dy='0' font-size='10.5' transform='translate(91 111)'><tspan><![CDATA[These trees are different!!]]></tspan></text><text dx='0' dy='0' font-size='9.5' transform='translate(57 273)'><tspan><![CDATA[These trees are actually the ]]></tspan><tspan text-decoration='underline'><![CDATA[same.]]></tspan><tspan x='0' y='10'><![CDATA[The blue and green dots on the edges and that]]></tspan><tspan x='0' y='19.5'><![CDATA[blue dot at the bottom are in both trees.]]></tspan></text><path fill='none' stroke='%234c0933' stroke-width='1.5' d='m39 183 31 71m5-71-20 35m20-35 16 35m20-36-41 72'/><g transform='translate(33 149)'><circle transform='translate(6 32)' fill='%2347e' r='8'/><circle transform='translate(55 67)' fill='%2347e' r='8'/><circle transform='translate(38 105)' fill='%2347e' r='8'/><circle transform='translate(77 34)' fill='%234d7' r='8'/><circle transform='translate(22 67)' fill='%23916' r='8'/><circle transform='translate(42 34)' fill='%23916' r='8'/></g></svg>"></img>
         <br>
-        You would expect it to be infinite, but for all values of the function, it is <i>finite!</i> This value has been PROVEN to be way more than the number below. Any approximation currently is actually an <i>extremely</i> loose lower bound (meaning the actual value is much, much higher). (To think that Graham's Number is that big in the first place!) In reality, is an <i>extremely weak</i> lower bound, and in reality, this number is too big to be represented with either of these arrows! That simply <i>blows away</i> the numbers we've discussed currently. But we can go further.
-        <small>See, that's not even the full story. Later proofs have shown that this value will actually exceed $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$ (which will be explained later), and even this is actually much smaller than the actual value. You see, some person that was really into this function ended up devising a complex set of estimations for $\operatorname{tree}(\operatorname{tree}(3)(3))$. Then, they calculated the end result, which was that $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$. You don't need to worry about what that is, but there was a proof that $\operatorname{TREE}(3)≫\operatorname{tree}^{\operatorname{tree}(7)^{\operatorname{tree}(7)^{\operatorname{tree}(7)^{\operatorname{tree}^8(7)}}}}(7)$, which is part of the reason this proof worked in the first place!</small>
+        You would expect it to be infinite, but for all values of the function, it is <i>finite!</i> This value has been PROVEN to be way more than any of the numbers we have discussed so far. Any approximation currently is actually an <i>extremely</i> loose lower bound (meaning the actual value is much, much higher). This number is too big to be represented with either of these arrows! That simply <i>blows away</i> the numbers we've discussed currently. But we can go further.
+        <small>Well, wait, there's one thing. Some rather recent proofs have shown that this value will actually exceed $f_{φ(1@ω)}(\operatorname{tree}(\operatorname{tree}(3)))$, and even this is actually much smaller than the actual value. You see, some person that was really into this function ended up devising a complex set of estimations. Then, they calculated the end result, which was that $f_{φ(1@ω)}(\operatorname{tree}(\operatorname{tree}(3)))$. You don't need to worry about what that is, but there was a proof that $\operatorname{TREE}(3)≫\operatorname{tree}^{\operatorname{tree}(7)^{\operatorname{tree}(7)^{\operatorname{tree}(7)^{\operatorname{tree}^8(7)}}}}(7)$, which is part of the reason this proof worked in the first place!</small>
+        $φ(1@ω)$ will be explained later, but $\operatorname{tree}(\operatorname{tree}(3))$ is still rather big.
         <hr>
         <big><b>fast</b>, <b>Fast</b>, and <b>FAST!</b> (and more symbols)</big>
         Next up: the Veblen function, represented with the lowercase phi symbol.
@@ -694,9 +698,11 @@
         Oh, both SSCG and SCG grow similarly quickly, as $\operatorname{SSCG}(x)&lt;\operatorname{SCG}(x)≤\operatorname{SSCG}(4x+3)$.
         <hr>
         <big>Super-Duper Numbers</big>
-        Remember how the Busy Beaver is uncomputable (maybe look at the Busy Beaver section if you've forgotten)? Well, let's say that there's a manager for the first floor who <i>somehow</i> solved the halting problem, and knows the result! Now, the manager and the beaver beaver contact each other through TuringPhones<sup>®</sup>. Now, there are three new free states introduced: "count," "halted," and "eternal." Now, whenever the beaver goes into the "count" state, the manager counts the number of lit rooms (call that $n$) and simulates the $n$<sup>th</sup> Turing machine. (How these machines are sorted isn't important, but there's a one-to-one mapping so that each machine is somewhere.) If it halts, it puts the robot into the "halted" state. Otherwise, the robot gets put into the "eternal" state. This may seem weird, but this new number is much bigger than the Busy Beaver number, but sadly is again <i>uncomputable!</i> Let's call this a Level 1 Turing machine.
+        Remember how the Busy Beaver is uncomputable (maybe look at the Busy Beaver section if you've forgotten)? Well, let's say that there's a manager for the first floor who <i>somehow</i> solved the halting problem, and knows the result! Now, the manager and the beaver beaver contact each other through TuringPhones<sup>®</sup>. Now, there are three new free states introduced: "count," "halted," and "eternal." Now, whenever the beaver goes into the "count" state, the manager counts the number of lit rooms (call that $n$) and simulates the $n$<sup>th</sup> Turing machine. (How these machines are sorted isn't important, but there's a one-to-one mapping so that each machine is somewhere.)
         <br>
-        Of course, managers have managers too, and you could have a Level 2 Turing machine, where you get three extra states, simulating the $n$<sup>th</sup> Level 1 Turing machine, and so on, and so on, and so on.
+        If it halts, it puts the robot into the "halted" state. Otherwise, the robot gets put into the "eternal" state. This may seem weird, but this new number is much bigger than the Busy Beaver number, but sadly is again <i>uncomputable!</i> Let's call this a Level 1 Turing machine.
+        <br><br>
+        Of course, managers have managers too, and you could have a Level 2 Turing machine, where you get three extra states, simulating the $n$<sup>th</sup> Level 1 Turing machine, and so on, and so on, and so on. But that's not too important to discuss, so we'll just move on from this little bit of trivia, shall we?
         <br><br>
         <sup>All right, fine. I admit it: I made some of it up so that it isn't as boring to read.</sup>
         <hr>
@@ -812,7 +818,7 @@
         φ(5@(10@4))[3]=φ(5@(9,φ(5@(9,φ(5@(9,0,0,0,0)),0,0,0,0)),0,0,0,0))\newline
         φ(x@((y+1)@4))[3]=φ(x@(y,φ(x@(y,φ(x@(y,0,0,0,0)),0,0,0,0)),0,0,0,0))\newline
         φ(x@((y+2)@4))[2]=φ(x@(y,φ(x@(y+1,0,0,0,0)),0,0,0,0))[2]=φ\biggr(x@\Bigl(y,φ\bigl(x@(y,φ(x@(y+1,0,0,0,0)),0,0,0,0)\bigr),0,0,0,0\Bigr)\biggr)[2]=⋯\newline#
-        Note that this can also be extended to larger values, such as $φ(1@(1@(1@(1,0))))$, relatively easily, so we won't get into that too far and we'll just skip all of that. The next huge step, in that case, would be to repeat that.
+        Note that this can also be extended to larger values, such as $φ(1@(1@(1@(1,0))))$, relatively easily, so we won't get into that too far (as that's just an extension of what we have done already) and we'll just skip all of that. The next huge step, in that case, would be to repeat that.
         #ψ(ε_{Ω+1})[k]=\underset{k\ Ω\text{'s}}{\underbrace{ψ(Ω^{Ω^{Ω^{Ω^{Ω^⋰}}}})}}[k]=\underset{k-2\ @\text{'s}}{\underbrace{φ(1@(1@(1@(1@(1@(1@(⋯)))))))}}[k]#
         This value is the Bachmann-Howard ordinal, or BHO. (It's also famous.)
         <small>Think about how large $f_{ψ(ε_{Ω+1})+1}(3)$ would be...</small>
@@ -831,7 +837,7 @@
         And the result grows pretty quickly. The considerable amount of heads may seem like it will never end, but in reality, EVERY SINGLE HYDRA has an ending. (Which means that you could define a large number for the number of heads, or $x$, that regenerate every chop, and get a good hydra, it would generate a HUGE number!)
         <br>
         This function doesn't have a lot of information about it, so take this information with a few (or many) grains of salt: This function is believed to be bigger than TREE and even SSCG (more popular than SCG, by the way). So yeah. This math-inducing hydra is a huge mess, and we don't understand it fully!
-        <small>You may have wondered: why aren't TREE, SSCG, and HG in the sneak peek? Well, it's because we don't know where these functions lie in there. We know that $\operatorname{TREE}(x)$ and $\operatorname{SSCG}(x)$ grow faster than $φ(1@ω)(\operatorname{tree}(\operatorname{tree}(3)))$, however, which is quite impressive. Upper bounds have been proposed, but they are pretty large, even for googology standards.</small>
+        <small>You may have wondered: why aren't TREE, SSCG, and HG in the sneak peek? Well, it's because we don't know where these functions lie in there. Upper bounds have been proven, but they are pretty large, even for googology standards.</small>
         <hr>
         <big>Setting up Sets and a Googol</big>
         Here's a fun fact: Rayo's number was part of a big number duel at MIT. The goal was to write down the biggest number that you could think of, and each new number had to be unique (so you couldn't just add "plus one" to someone else's answer). Also, you have to be specific, so you couldn't say something like "the biggest number you could think of plus two." Reasonably, the stands were crowded, and we present to you the final result (by Rayo himself, of course):
@@ -929,7 +935,7 @@
             progress.style.width = (innerWidth - 20) * scrollY / (Math.max(main.clientHeight, main.scrollHeight, main.offsetHeight, body.scrollHeight, body.offsetHeight) - innerHeight) + 12 + "px"
         }
 
-        var lightTheme = "body{background-color:white;color:black}.katex{color:#727272}#shade{height:8px}.light{color:#2b6;opacity:1}"
+        var lightTheme = "body{background-color:white;color:black}.katex{color:#727272}#shade{height:8px}small{color:#333}.light{color:#2b6;opacity:1}"
         var light = false
 
         function theme() {
