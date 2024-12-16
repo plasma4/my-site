@@ -1383,7 +1383,13 @@
                         var data = value.$[3]
                         var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
                         var flooredData = (data / diffPower) * diffPower
-                        value.$[3] = data < (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
+                        data = data < (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
+                        if (data >= BIGLIMIT) {
+                            value.$[3] = data / 10n
+                            value.$[2]++
+                        } else {
+                            value.$[3] = data
+                        }
                     }
                 }
                 return value
@@ -1396,7 +1402,13 @@
                         var data = value.$[3]
                         var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
                         var flooredData = (data / diffPower) * diffPower
-                        value.$[3] = data <= (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
+                        data = data <= (flooredData + (diffPower >> 1n)) ? flooredData : (flooredData + diffPower)
+                        if (data >= BIGLIMIT) {
+                            value.$[3] = data / 10n
+                            value.$[2]++
+                        } else {
+                            value.$[3] = data
+                        }
                     }
                 }
                 return value
@@ -1413,7 +1425,13 @@
                         }
                         var diffPower = powerOfTenBig(DIGITSMINUSONE - digits)
                         var flooredData = (data / diffPower) * diffPower
-                        value.$[3] = flooredData === data ? flooredData : (flooredData + diffPower)
+                        data = flooredData === data ? flooredData : (flooredData + diffPower)
+                        if (data >= BIGLIMIT) {
+                            value.$[3] = data / 10n
+                            value.$[2]++
+                        } else {
+                            value.$[3] = data
+                        }
                     }
                 }
                 return value
