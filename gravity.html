@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravity Sim</title>
+
+    <style>
+        * {
+            user-select: none;
+        }
+
+        /* Align the SVG, canvas, and cursor override to top left */
+        svg,
+        canvas,
+        #cursorOverride {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        button {
+            position: fixed;
+        }
+
+        /* Add a small shadow! */
+        canvas {
+            filter: drop-shadow(2px 2px 3px #000c);
+        }
+
+        /* Make it easier for the user to see the object panel */
+        svg {
+            background-color: #fffb;
+        }
+
+        #dragCircle,
+        #dragSquare {
+            cursor: grab;
+        }
+
+        #dragCircle.dragging,
+        #dragSquare.dragging {
+            cursor: grabbing;
+        }
+
+        /* This is our invisible override that sets the cursor. */
+        #cursorOverride {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            pointer-events: none;
+            cursor: default;
+        }
+
+        #cursorOverride.dragging-any {
+            cursor: grabbing;
+            pointer-events: auto;
+        }
+
+        /* Source: https://github.com/plasma4/FractalSky/blob/main/index.html (line 62), modified as needed for some different effects. */
+        button {
+            cursor: pointer;
+            transition: background-color 500ms, transform 2s;
+            padding: 4px;
+            margin: 2px;
+            border-radius: 5px;
+            border: none;
+            background-color: #f0c948;
+            filter: drop-shadow(2px 2px 4px #000a);
+        }
+
+        button:hover {
+            transform: scale(1.04);
+            background-color: #ea2;
+        }
+
+        button:active {
+            transform: scale(1.1);
+            background-color: #f39b4e;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+    <svg height="99999" width="52" xmlns="http://www.w3.org/2000/svg">
+        <circle id="dragCircle" r="20" cx="25" cy="25" fill="#b1b1b1" />
+        <rect id="dragSquare" width="40" height="40" x="5" y="60" fill="#a1a1a1" />
+        <line x1="50" y1="0" x2="50" y2="99999" style="stroke: #333; stroke-width: 3px" />
+    </svg>
+    <div
+        style="padding-left: 50px; text-align: right; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+        Hey there! For this simple gravity simulation, you can drag circles and squares from
+        the panel to the left and watch them bounce, allowing you to relax and take a break.
+        You can also drag a shape already on the field to move it!
+    </div>
+    <div id="cursorOverride"></div>
+    <button style="margin-left: 50px" onclick="resetStuff()">Reset</button>
+    <button style="margin-left: 100px" onclick="toggleGravity()">Toggle gravity</button>
+
+    <script>
+        "use strict"
+
+        const canvas = document.getElementsByTagName("canvas")[0]
+        const ctx = canvas.getContext("2d")
+        const cursorOverride = document.getElementById("cursorOverride") // Get the cursor override div
+
+        var w, h, pixels
+        var gravity = 0.5 // Gravity strength
+        var bounceFactor = 0.6 // Bounce factor
+        var minVelocity = 1 // Minimum velocity to cancel collisions.
+
+        window.addEventListener("resize", resizeHandler)
+
+        function resizeHandler() {
+            // Resize and width/height calculation
+            // Source: https://github.com/plasma4/FractalSky/blob/main/main.js (line 244), which is one of my other personal projects and modified to just calculate the canvas resize properly for various DPIs.
+            w = Math.round(innerWidth * devicePixelRatio)
+            h = Math.round(innerHeight * devicePixelRatio)
+            pixels = w * h
+            canvas.width = w
+            canvas.height = h
+            canvas.style.width = Math.ceil(innerWidth) + "px"
+            canvas.style.height = Math.ceil(innerHeight) + "px"
+            ctx.clearRect(0, 0, w, h)
+            update() // Update everything to prevent resize "flashes"
+        }
+
+        var data = []
+
+        /**
+         * Ball object constructor function.
+         * @param {number} x Initial x position.
+         * @param {number} y Initial y position.
+         * @param {number} size Radius of the ball.
+         * @param {object} data Optional data object to set up custom properties.
+         * @returns {Ball} - A new Ball object.
+         */
+        function Ball(size = 20 + Math.random() * 20, x = Math.random() * w, y = Math.random() * h, data = {}) {
+            if (!(this instanceof Ball)) {
+                return new Ball(x, y, size, data)
+            }
+            // Initialize ball properties.
+            this.x = x
+            this.y = y
+            this.size = size
+            this.mass = data.mass || size * size
+            this.vx = data.vx || (Math.random() - 0.5) * 4
+            this.vy = data.vy || (Math.random() - 0.5) * 4
+            this.color = data.color || generateRandomColor() // Random color if needed
+            this.type = "ball"
+        }
+
+        /**
+         * Square object constructor function.
+         * @param {number} x Initial x position.
+         * @param {number} y Initial y position.
+         * @param {number} size Side length of the square.
+         * @param {object} data Optional data object to set up custom properties.
+         * @returns {Square} - A new Square object.
+         */
+        function Square(size = 24 + Math.random() * 20, x = Math.random() * w, y = Math.random() * h, data = {}) {
+            if (!(this instanceof Square)) {
+                return new Square(x, y, size, data)
+            }
+            this.x = x
+            this.y = y
+            this.size = size
+            this.mass = data.mass || size * size
+            this.vx = data.vx || (Math.random() - 0.5) * 4
+            this.vy = data.vy || (Math.random() - 0.5) * 4
+            this.color = data.color || generateRandomColor()
+            this.rotation = data.rotation || 0
+            this.vRotation = data.vRotation || (Math.random() - 0.02) * 0.04
+            this.type = "square"
+        }
+
+        function generateRandomColor() {
+            return "#" + ("00000" + Math.floor(Math.random() * 16777216).toString(16)).slice(-6) // Use some hacky methods; 16777216 = 2^24 so we can use this to generate a hex code, slicing to get the last 6 characters.
+        }
+
+        Ball.prototype.render = function () {
+            ctx.fillStyle = this.color // Set fill color to ball color
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+            ctx.fill() // Actually render the stuff! Due to JS stuff with arc this is quite complex.
+        }
+
+        Square.prototype.render = function () {
+            ctx.fillStyle = this.color
+            ctx.save() // Save current canvas state to restore later
+            ctx.translate(this.x, this.y)
+            ctx.rotate(this.rotation)
+            ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size) // Draw the square, centered post-translation
+            ctx.restore() // Restore!
+        }
+
+        function addItem(item) {
+            data.push(item)
+        }
+
+        function removeItem(index) {
+            data.splice(index, 1)
+        }
+
+        function replaceItem(item, index) {
+            data.splice(index, 1, item)
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, w, h)
+
+            for (var i = 0; i < data.length; i++) {
+                if (!data[i].isDragging) { // Only apply gravity if not being dragged
+                    data[i].vy += gravity
+                }
+                if (data[i].vRotation !== undefined) { // Only squares have rotation
+                    data[i].rotation += data[i].vRotation // Update rotation
+                }
+            }
+
+            for (var i = 0; i < data.length; i++) {
+                for (var o = i + 1; o < data.length; o++) {
+                    const obj1 = data[i]
+                    const obj2 = data[o]
+
+                    const dx = obj2.x - obj1.x
+                    const dy = obj2.y - obj1.y
+                    const distance = Math.sqrt(dx * dx + dy * dy)
+
+                    var collisionDist
+                    if (obj1.type === "ball" && obj2.type === "ball") {
+                        collisionDist = obj1.size + obj2.size
+                    } else if (obj1.type === "square" && obj2.type === "square") {
+                        collisionDist = (obj1.size / 2) + (obj2.size / 2) // Approximate square collision
+                    } else { // ball and square collision
+                        collisionDist = obj1.type === "ball" ? obj1.size + (obj2.size / 2) : (obj1.size / 2) + obj2.size
+                    }
+
+                    if (distance < collisionDist) {
+                        handleMassCollision(obj1, obj2, distance, collisionDist, dx, dy)
+                    }
+                }
+            }
+
+            for (var i = 0; i < data.length; i++) {
+                const obj = data[i]
+
+                if (!obj.isDragging) { // Only update position based on velocity if not dragging
+                    obj.x += obj.vx
+                    obj.y += obj.vy
+                }
+
+                var objectSize = obj.type === "ball" ? obj.size : obj.size / 2
+
+                if (obj.x - objectSize < 0) {
+                    obj.x = objectSize
+                    obj.vx *= -bounceFactor
+                } else if (obj.x + objectSize > w) {
+                    obj.x = w - objectSize
+                    obj.vx *= -bounceFactor
+                }
+
+                if (obj.y - objectSize < 0) {
+                    obj.y = objectSize
+                    obj.vy *= -bounceFactor
+                } else if (obj.y + objectSize > h) {
+                    obj.y = h - objectSize
+                    obj.vy *= -bounceFactor
+                }
+                obj.render()
+            }
+        }
+
+        // Modified function definition to accept dx and dy
+        // Made using the help of Gemini Flash Thinking Experimental 2.0 for math concepts
+        function handleMassCollision(obj1, obj2, distance, collisionDist, dx, dy) {
+            const ball1 = obj1
+            const ball2 = obj2
+
+            if (Math.abs(ball1.vx) > minVelocity || Math.abs(ball1.vy) > minVelocity ||
+                Math.abs(ball2.vx) > minVelocity || Math.abs(ball2.vy) > minVelocity) {
+
+                // Calculate collision normal
+                const collisionNormalX = obj2.x - obj1.x
+                const collisionNormalY = obj2.y - obj1.y
+                const normalMagnitude = Math.max(Math.sqrt(collisionNormalX * collisionNormalX + collisionNormalY * collisionNormalY), 0.1) // Make sure the value is at least 0.1 to prevent NaN problems
+                const normalizedCollisionNormX = collisionNormalX / normalMagnitude
+                const normalizedCollisionNormY = collisionNormalY / normalMagnitude
+
+                // Tangent is perpendicular to normal
+                const collisionTangentX = -normalizedCollisionNormY
+                const collisionTangentY = normalizedCollisionNormX
+
+                // Project velocities onto normal and tangent
+                const v1n = (ball1.vx * normalizedCollisionNormX) + (ball1.vy * normalizedCollisionNormY)
+                const v1t = (ball1.vx * collisionTangentX) + (ball1.vy * collisionTangentY)
+                const v2n = (ball2.vx * normalizedCollisionNormX) + (ball2.vy * normalizedCollisionNormY)
+                const v2t = (ball2.vx * collisionTangentX) + (ball2.vy * collisionTangentY)
+
+                // 1D elastic collision formula along normal
+                const m1 = ball1.mass
+                const m2 = ball2.mass
+
+                const v1nFinal = ((m1 - m2) * v1n + 2 * m2 * v2n) / (m1 + m2)
+                const v2nFinal = ((m2 - m1) * v2n + 2 * m1 * v1n) / (m1 + m2)
+
+                // Tangential velocities remain the same (for frictionless collision)
+                const v1tFinal = v1t
+                const v2tFinal = v2t
+
+                // Convert normal and tangential components back to x and y velocities
+                ball1.vx = (v1nFinal * normalizedCollisionNormX) + (v1tFinal * collisionTangentX)
+                ball1.vy = (v1nFinal * normalizedCollisionNormY) + (v1tFinal * collisionTangentY)
+
+                ball2.vx = (v2nFinal * normalizedCollisionNormX) + (v2tFinal * collisionTangentX)
+                ball2.vy = (v2nFinal * normalizedCollisionNormY) + (v2tFinal * collisionTangentY)
+
+                // Separate objects
+                const overlap = collisionDist - distance
+                const angle = Math.atan2(dy, dx) // Use atan2 for sign calculation and stuff
+                ball1.x -= overlap * Math.cos(angle) * 0.51 // Small extra separation
+                ball1.y -= overlap * Math.sin(angle) * 0.51
+                ball2.x += overlap * Math.cos(angle) * 0.51
+                ball2.y += overlap * Math.sin(angle) * 0.51
+            } else {
+                return // No response needed!
+            }
+        }
+
+        const dragCircle = document.getElementById("dragCircle")
+        const dragSquare = document.getElementById("dragSquare")
+
+        var isDraggingCircle = false
+        var isDraggingSquare = false
+        var circleX, circleY, dragBallX, dragBallY
+        var squareX, squareY, dragSquareX, dragSquareY
+
+        var isDraggingExistingObject = false
+        var draggedObjectIndex = -1
+        var dragOffsetX, dragOffsetY
+
+        var objectDragging = false
+
+        dragCircle.addEventListener("mousedown", e => {
+            if (e.button === 0) {
+                isDraggingCircle = true
+                dragCircle.classList.add("dragging")
+                objectDragging = true
+                cursorOverride.classList.add("dragging-any")
+
+                circleX = e.clientX - dragCircle.cx.baseVal.value
+                circleY = e.clientY - dragCircle.cy.baseVal.value
+
+                dragBallX = dragCircle.cx.baseVal.value * devicePixelRatio
+                dragBallY = dragCircle.cy.baseVal.value * devicePixelRatio
+            }
+        })
+
+        // Dragging stuff made with the help of Gemini Flash Thinking Experimental 2.0
+        dragSquare.addEventListener("mousedown", e => {
+            if (e.button === 0) {
+                isDraggingSquare = true
+                dragSquare.classList.add("dragging")
+                objectDragging = true
+                cursorOverride.classList.add("dragging-any")
+                squareX = e.clientX - dragSquare.getBoundingClientRect().left - dragSquare.getBoundingClientRect().width / 2 // Offset calculation relative to square center
+                squareY = e.clientY - dragSquare.getBoundingClientRect().top - dragSquare.getBoundingClientRect().height / 2
+                dragSquareX = (dragSquare.getBoundingClientRect().left + dragSquare.getBoundingClientRect().width / 2) * devicePixelRatio // Initial position
+                dragSquareY = (dragSquare.getBoundingClientRect().top + dragSquare.getBoundingClientRect().height / 2) * devicePixelRatio
+            }
+        })
+
+        canvas.addEventListener("mousedown", e => {
+            if (e.button === 0) {
+                const mouseX = e.clientX * devicePixelRatio
+                const mouseY = e.clientY * devicePixelRatio
+
+                for (var i = data.length - 1; i >= 0; i--) { // Iterate in reverse for proper ordering
+                    const obj = data[i]
+                    var objectSize = obj.type === "ball" ? obj.size : obj.size / 2
+
+                    if (obj.type === "ball") {
+                        const dx = mouseX - obj.x
+                        const dy = mouseY - obj.y
+                        const distance = Math.sqrt(dx * dx + dy * dy)
+                        if (distance < obj.size) {
+                            isDraggingExistingObject = true
+                            draggedObjectIndex = i
+                            dragOffsetX = mouseX - obj.x // Calculate offset
+                            dragOffsetY = mouseY - obj.y
+                            data[i].isDragging = true
+                            objectDragging = true
+                            cursorOverride.classList.add("dragging-any")
+                            break
+                        }
+                    } else if (obj.type === "square") {
+                        if (mouseX > obj.x - objectSize && mouseX < obj.x + objectSize &&
+                            mouseY > obj.y - objectSize && mouseY < obj.y + objectSize) {
+                            isDraggingExistingObject = true
+                            draggedObjectIndex = i
+                            dragOffsetX = mouseX - obj.x
+                            dragOffsetY = mouseY - obj.y
+                            data[i].isDragging = true
+                            objectDragging = true
+                            cursorOverride.classList.add("dragging-any")
+                            break
+                        }
+                    }
+                }
+            }
+        })
+
+        document.addEventListener("mousemove", e => {
+            if (isDraggingCircle) {
+                dragBallX = (e.clientX - circleX) * devicePixelRatio
+                dragBallY = (e.clientY - circleY) * devicePixelRatio
+            } else if (isDraggingSquare) {
+                dragSquareX = (e.clientX - squareX) * devicePixelRatio // Update square drag position
+                dragSquareY = (e.clientY - squareY) * devicePixelRatio
+            } else if (isDraggingExistingObject) {
+                if (draggedObjectIndex !== -1) {
+                    data[draggedObjectIndex].x = (e.clientX * devicePixelRatio) - dragOffsetX // Update dragged object position based on mouse and offset
+                    data[draggedObjectIndex].y = (e.clientY * devicePixelRatio) - dragOffsetY
+                }
+            }
+        })
+
+        document.addEventListener("mouseup", e => {
+            if (isDraggingCircle && e.button === 0) {
+                isDraggingCircle = false
+                dragCircle.classList.remove("dragging")
+                addItem(new Ball(Math.random() * 60 + 40, dragBallX, dragBallY))
+            } else if (isDraggingSquare && e.button === 0) {
+                isDraggingSquare = false
+                dragSquare.classList.remove("dragging")
+                addItem(new Square(Math.random() * 25 + 10, dragSquareX, dragSquareY))
+            } else if (isDraggingExistingObject && e.button === 0) {
+                isDraggingExistingObject = false
+                if (draggedObjectIndex !== -1) {
+                    data[draggedObjectIndex].isDragging = false
+                    draggedObjectIndex = -1
+                }
+            }
+
+            objectDragging = isDraggingCircle || isDraggingSquare || isDraggingExistingObject
+            if (!objectDragging) {
+                cursorOverride.classList.remove("dragging-any")
+            }
+        })
+
+        document.addEventListener("blur", () => {
+            isDraggingCircle = false
+            dragCircle.classList.remove("dragging")
+            dragSquare.classList.remove("dragging")
+            if (draggedObjectIndex !== -1) {
+                data[draggedObjectIndex].isDragging = false
+                draggedObjectIndex = -1
+            }
+
+            objectDragging = false
+            cursorOverride.classList.remove("dragging-any")
+        })
+
+        function renderDragBall() {
+            if (isDraggingCircle) {
+                ctx.beginPath()
+                ctx.arc(dragBallX, dragBallY, 20 * devicePixelRatio, 0, Math.PI * 2)
+                ctx.strokeStyle = "#b1b1b1"
+                ctx.lineWidth = 2 * devicePixelRatio
+                ctx.stroke()
+            }
+        }
+
+        function renderDragSquare() { // Render function for draggable square
+            if (isDraggingSquare) {
+                ctx.strokeStyle = "#a1a1a1"
+                ctx.lineWidth = 2 * devicePixelRatio
+                ctx.strokeRect(dragSquareX - (20 * devicePixelRatio), dragSquareY - (20 * devicePixelRatio), 40 * devicePixelRatio, 40 * devicePixelRatio) // Draw square outline
+            }
+        }
+
+        resizeHandler() // Set up the canvas here!
+
+        function resetStuff() {
+            data = []
+            for (let i = 0; i < 50; i++) {
+                addItem(new Ball())
+                addItem(new Square())
+            }
+        }
+
+        function toggleGravity() {
+            gravity = gravity === 0 ? 0.5 : 0 // Toggle the gravity!
+            minVelocity = 2 * gravity
+        }
+
+        resetStuff()
+
+        setInterval(updateRender, 16)
+
+        /**
+         * Updates the simulation and renders the scene.
+         */
+        function updateRender() {
+            update()
+            // Dragging stuff is a bit confusing but it gets the job done
+            renderDragBall()
+            renderDragSquare()
+        }
+    </script>
+</body>
+
+</html>
