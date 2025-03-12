@@ -99,11 +99,11 @@
         </div>
         <div>
             <label for="visionSections">Vision sections:</label>
-            <input type="number" id="visionSections" value="4" min="1" max="12" step="1">
+            <input type="number" id="visionSections" value="5" min="1" max="12" step="1">
         </div>
         <div>
             <label for="raysPerSection">Rays per section:</label>
-            <input type="number" id="raysPerSection" value="3" min="1" max="10" step="1">
+            <input type="number" id="raysPerSection" value="5" min="1" max="10" step="1">
         </div>
         <div>
             <label for="energyLossRate">Energy loss rate:</label>
@@ -121,119 +121,123 @@
     <script>
         "use strict"
         function Layer(a, b, weights, biases) {
-            this.a = a
-            this.b = b
-            this.weights = weights ? weights : this.initializeWeights(a, b)
-            this.biases = biases ? biases : this.initializeBiases(b)
-            this.activations = new Array(b) // Pre-allocate activations array in constructor
+            this.a = a;
+            this.b = b;
+            this.weights = weights ? new Float64Array(weights) : this.initializeWeights(a, b); // Use Float64Array
+            this.biases = biases ? new Float64Array(biases) : this.initializeBiases(b);     // Use Float64Array
+            this.activations = new Float64Array(b); // Use Float64Array and pre-allocate
         }
 
         Layer.prototype.initializeWeights = function (a, b) {
-            const weights = new Array(a * b) // Pre-allocate weights array
-            for (var i = 0; i < a * b; i++) {
-                weights[i] = random() < 0.4 ? 0 : random() * 2 - 1
+            const weights = new Float64Array(a * b); // Use Float64Array
+            for (let i = 0; i < a * b; i++) { // Use let for block-scoped variable
+                weights[i] = Math.random() < 0.4 ? 0 : Math.random() * 2 - 1; // Math.random is slightly faster
             }
-            return weights
-        }
+            return weights;
+        };
 
         Layer.prototype.initializeBiases = function (b) {
-            const biases = new Array(b) // Pre-allocate biases array
-            for (var i = 0; i < b; i++) {
-                biases[i] = random() * 4 - 2
+            const biases = new Float64Array(b); // Use Float64Array
+            for (let i = 0; i < b; i++) { // Use let for block-scoped variable
+                biases[i] = Math.random() * 4 - 2; // Math.random is slightly faster
             }
-            return biases
-        }
+            return biases;
+        };
 
         Layer.prototype.calc = function (inputs) {
-            const activations = this.activations
-            const biases = this.biases
-            const weights = this.weights
-            const b = this.b
-            const a = this.a
+            const activations = this.activations;
+            const biases = this.biases;
+            const weights = this.weights;
+            const b = this.b;
+            const a = this.a;
+            const typedInputs = inputs instanceof Float64Array ? inputs : new Float64Array(inputs); // Ensure inputs are Float64Array
 
-            for (var i = 0; i < b; i++) {
-                var input = biases[i]
-                const m = i * a
-                for (var t = 0; t < a; t++) {
-                    input += inputs[t] * weights[t + m]
+            for (let i = 0; i < b; i++) { // Use let for block-scoped variable
+                let input = biases[i];
+                const m = i * a;
+                for (let t = 0; t < a; t++) { // Use let for block-scoped variable
+                    input += typedInputs[t] * weights[t + m];
                 }
-                activations[i] = input
+                activations[i] = input;
             }
-            return activations // Return the pre-allocated and modified array directly
-        }
+            return activations;
+        };
 
         function mutateW(a, b, weights) {
-            const len = a * b
-            const result = weights.slice()
-            for (var i = 0; i < len; i++) {
-                result[i] += (random() * 0.02 - 0.01) * (random() < 0.025 ? 10 : 1)
-                if (random() < 0.005) {
-                    result[i] = random() * 4 - 2
-                } else if (random() < 0.01) {
-                    result[i] *= 0.5
+            const len = a * b;
+            const result = new Float64Array(weights); // Create new Float64Array for result
+            for (let i = 0; i < len; i++) { // Use let for block-scoped variable
+                result[i] += (Math.random() * 0.02 - 0.01) * (Math.random() < 0.025 ? 10 : 1); // Math.random
+                if (Math.random() < 0.005) { // Math.random
+                    result[i] = Math.random() * 4 - 2; // Math.random
+                } else if (Math.random() < 0.01) { // Math.random
+                    result[i] *= 0.5;
                 }
             }
-            return result
+            return result;
         }
 
         function mutateB(b, biases) {
-            const result = biases.slice()
-            for (var i = 0; i < b; i++) {
-                result[i] += 0.016 * random() - 0.008
+            const result = new Float64Array(biases); // Create new Float64Array for result
+            for (let i = 0; i < b; i++) { // Use let for block-scoped variable
+                result[i] += 0.016 * Math.random() - 0.008; // Math.random
             }
-            var t = random() * 1.4 + 0.8
-            for (var i = 0; i < t; i++) {
-                result[Math.floor(b * random())] += (random() * 2 - 1) * 0.3
+            let t = Math.random() * 1.4 + 0.8; // Math.random
+            for (let i = 0; i < t; i++) { // Use let for block-scoped variable
+                result[Math.floor(b * Math.random())] += (Math.random() * 2 - 1) * 0.3; // Math.random
             }
-            return result
+            return result;
         }
 
         function generateLayers(numLayers, minNeurons, maxNeurons, inputSize, outputSize) {
-            const layers = []
-            var currentInputSize = inputSize
-            if (numLayers < 2) numLayers = 2
+            const layers = [];
+            let currentInputSize = inputSize; // Use let for block-scoped variable
+            if (numLayers < 2) numLayers = 2;
 
-            layers.push(new Layer(currentInputSize, Math.floor(random() * (maxNeurons - minNeurons + 1)) + minNeurons))
-            currentInputSize = layers[0].b
+            layers.push(new Layer(currentInputSize, Math.floor(Math.random() * (maxNeurons - minNeurons + 1)) + minNeurons)); // Math.random
+            currentInputSize = layers[0].b;
 
-            for (var i = 1; i < numLayers - 1; i++) {
-                const layerSize = Math.floor(random() * (maxNeurons - minNeurons + 1)) + minNeurons
-                layers.push(new Layer(currentInputSize, layerSize))
-                currentInputSize = layerSize
+            for (let i = 1; i < numLayers - 1; i++) { // Use let for block-scoped variable
+                const layerSize = Math.floor(Math.random() * (maxNeurons - minNeurons + 1)) + minNeurons; // Math.random
+                layers.push(new Layer(currentInputSize, layerSize));
+                currentInputSize = layerSize;
             }
 
-            layers.push(new Layer(currentInputSize, outputSize))
-            return layers
+            layers.push(new Layer(currentInputSize, outputSize));
+            return layers;
         }
 
         function spliceMutation(layers) {
-            if (layers.length <= 2) return layers
-            const layerIndexToMutate = Math.floor(random() * (layers.length - 2)) + 1
-            const layerToMutate = layers[layerIndexToMutate - 1]
-            const nextLayerIndex = layerIndexToMutate
-            const nextLayer = layers[nextLayerIndex]
+            if (layers.length <= 2) return layers;
+            const layerIndexToMutate = Math.floor(Math.random() * (layers.length - 2)) + 1; // Math.random
+            const layerToMutate = layers[layerIndexToMutate - 1];
+            const nextLayerIndex = layerIndexToMutate;
+            const nextLayer = layers[nextLayerIndex];
 
-            if (random() < 0.5) {
-                if (random() < 0.5 && layerToMutate.b > 1) {
-                    layerToMutate.b -= 1
-                    layerToMutate.biases.pop()
+            if (Math.random() < 0.5) { // Math.random
+                if (Math.random() < 0.5 && layerToMutate.b > 1) { // Math.random
+                    layerToMutate.b -= 1;
+                    layerToMutate.biases = layerToMutate.biases.subarray(0, layerToMutate.b); // Efficiently remove last element from Float64Array
                 } else {
-                    layerToMutate.b += 1
-                    layerToMutate.biases.push(random() * 4 - 2)
+                    layerToMutate.b += 1;
+                    const newBiases = new Float64Array(layerToMutate.b); // Create new larger array
+                    newBiases.set(layerToMutate.biases); // Copy existing biases
+                    newBiases[layerToMutate.b - 1] = Math.random() * 4 - 2; // Add new bias value // Math.random
+                    layerToMutate.biases = newBiases; // Assign back
                 }
-                layerToMutate.weights = layerToMutate.initializeWeights(layerToMutate.a, layerToMutate.b)
+                layerToMutate.weights = layerToMutate.initializeWeights(layerToMutate.a, layerToMutate.b);
             } else {
-                const newSize = Math.floor(random() * (8 - 2 + 1)) + 2
-                layerToMutate.b = newSize
-                layerToMutate.biases = layerToMutate.initializeBiases(newSize)
-                layerToMutate.weights = layerToMutate.initializeWeights(layerToMutate.a, layerToMutate.b)
+                const newSize = Math.floor(Math.random() * (8 - 2 + 1)) + 2; // Math.random
+                layerToMutate.b = newSize;
+                layerToMutate.biases = layerToMutate.initializeBiases(newSize);
+                layerToMutate.weights = layerToMutate.initializeWeights(layerToMutate.a, layerToMutate.b);
             }
 
             if (nextLayer) {
-                nextLayer.a = layerToMutate.b
-                nextLayer.weights = nextLayer.initializeWeights(nextLayer.a, nextLayer.b)
+                nextLayer.a = layerToMutate.b;
+                nextLayer.weights = nextLayer.initializeWeights(nextLayer.a, nextLayer.b);
             }
-            return layers
+            return layers;
         }
 
         function resizeHandler() {
@@ -529,7 +533,7 @@
             ctx.stroke()
         }
 
-        var w, h, pixels, mapW, mapH, mapWidth = 2000, mapHeight = 2000
+        var w, h, pixels, mapW, mapH, mapWidth = 3000, mapHeight = 3000
         var creatures = []
         var food = []
         var frameCount = 0
@@ -544,11 +548,11 @@
         var proportionalityConstant = 0.01
         var visionRayLengthBase = 200
         var visionFOV = 120 * Math.PI / 180
-        var visionSectionCount = 4
-        var raysPerSection = 3
+        var visionSectionCount = 5
+        var raysPerSection = 5
         var iterationsPerFrame = 1
-        var gridSizeX = 50 // Grid width in cells
-        var gridSizeY = 50 // Grid height in cells
+        var gridSizeX = 100 // Grid width in cells
+        var gridSizeY = 100 // Grid height in cells
         var gridCellWidth = mapWidth / gridSizeX
         var gridCellHeight = mapHeight / gridSizeY
         var foodGrid = Array(gridSizeX * gridSizeY)
@@ -562,7 +566,7 @@
         function addCreature(x, y, generation = 1, parent = null, network = null, initialEnergy = 15 + 3 * random(), type = "prey") {
             var creatureNetwork = network
             var initialMaxSpeed = maxSpeed + random() * 1.5 - 0.75
-            var initialVision = visionBase + random() * 0.2 - 0.1
+            var initialVision = (visionBase + random() * 0.2 - 0.1) * (type === "predator" ? 1.5 : 1)
             var creatureFill, creatureStroke
 
             if (type === "predator") { // Predator specific properties
@@ -787,114 +791,116 @@
         }
 
         function castRay(creature, rayAngle, length) {
-            var correctedRayAngle = rayAngle
+            var correctedRayAngle = rayAngle;
 
-            var closestDistance = length
-            var closestObjectType = 0
-            var hitSomething = false
+            var closestDistance = length;
+            var closestObjectType = 0;
+            var hitSomething = false;
 
-            const rayX = creature.px
-            const rayY = creature.py
-            const rayDirX = Math.cos(correctedRayAngle)
-            const rayDirY = Math.sin(correctedRayAngle)
-            const rayEndX = rayX + length * rayDirX
-            const rayEndY = rayY + length * rayDirY
+            const rayX = creature.px;
+            const rayY = creature.py;
+            const rayDirX = Math.cos(correctedRayAngle);
+            const rayDirY = Math.sin(correctedRayAngle);
+            const rayEndX = rayX + length * rayDirX;
+            const rayEndY = rayY + length * rayDirY;
 
-            const intersectedGridCells = new Set()
+            const intersectedGridCells = []; // Changed to Array
 
-            var x0 = Math.floor(rayX / gridCellWidth)
-            var y0 = Math.floor(rayY / gridCellHeight)
-            var x1 = Math.floor(rayEndX / gridCellWidth)
-            var y1 = Math.floor(rayEndY / gridCellHeight)
+            var x0 = Math.floor(rayX / gridCellWidth);
+            var y0 = Math.floor(rayY / gridCellHeight);
+            var x1 = Math.floor(rayEndX / gridCellWidth);
+            var y1 = Math.floor(rayEndY / gridCellHeight);
 
-            var dx = Math.abs(x1 - x0)
-            var dy = Math.abs(y1 - y0)
-            var sx = (x0 < x1) ? 1 : -1
-            var sy = (y0 < y1) ? 1 : -1
-            var err = dx - dy // Error term
+            var dx = Math.abs(x1 - x0);
+            var dy = Math.abs(y1 - y0);
+            var sx = (x0 < x1) ? 1 : -1;
+            var sy = (y0 < y1) ? 1 : -1;
+            var err = dx - dy; // Error term
 
-            var currentGridX = x0
-            var currentGridY = y0
+            var currentGridX = x0;
+            var currentGridY = y0;
 
-            while (true) {
+            var maxIterations = 50
+            while (--maxIterations) {
                 if (currentGridX >= 0 && currentGridX < gridSizeX && currentGridY >= 0 && currentGridY < gridSizeY) {
-                    intersectedGridCells.add(currentGridY * gridSizeX + currentGridX)
+                    intersectedGridCells.push(currentGridY * gridSizeX + currentGridX); // Using push for Array
                 }
 
                 // Modified loop termination condition (direction-aware >= and <=)
-                const xCondition = (sx > 0) ? (currentGridX >= x1) : (currentGridX <= x1)
-                const yCondition = (sy > 0) ? (currentGridY >= y1) : (currentGridY <= y1)
+                const xCondition = (sx > 0) ? (currentGridX === x1) : (currentGridX === x1); // Changed >= and <= to ===, which is safer for termination.
+                const yCondition = (sy > 0) ? (currentGridY === y1) : (currentGridY === y1); // Changed >= and <= to ===, which is safer for termination.
 
                 if (xCondition && yCondition) {
-                    break
+                    break;
                 }
 
-                var e2 = 2 * err
+                var e2 = 2 * err;
                 if (e2 > -dy) { // Step X
-                    err -= dy
-                    currentGridX += sx
+                    err -= dy;
+                    currentGridX += sx;
                 }
                 if (e2 < dx) { // Step Y
-                    err += dx
-                    currentGridY += sy
+                    err += dx;
+                    currentGridY += sy;
                 }
             }
 
             // Iterate through creatures - Optimized with creatureGrid
             if (checkCreatures || creature.type === "predator") {
-                var nearbyCreatures = [] // Gather nearby creatures
-                const cellsArray = Array.from(intersectedGridCells) // Use cellsArray from food section
-                for (var i = 0; i < cellsArray.length; i++) {
-                    const cellIndex = cellsArray[i]
-                    const creaturesInCell = creatureGrid[cellIndex] // Get creatures from creatureGrid
+                var nearbyCreatures = []; // Gather nearby creatures
+                // Optimized creature gathering using simple array iteration
+                for (let i = 0; i < intersectedGridCells.length; i++) { // Iterate with index for efficiency
+                    const cellIndex = intersectedGridCells[i];
+                    const creaturesInCell = creatureGrid[cellIndex]; // Get creatures from creatureGrid
                     if (creaturesInCell) {
                         for (var j = 0; j < creaturesInCell.length; j++) {
-                            nearbyCreatures.push(creaturesInCell[j]) // Gather nearby creatures
+                            nearbyCreatures.push(creaturesInCell[j]); // Gather nearby creatures
                         }
                     }
                 }
 
+
                 // Iterate through nearby creatures for distance calculation
                 for (var i = 0; i < nearbyCreatures.length; i++) {
-                    const otherCreature = nearbyCreatures[i]
-                    if (otherCreature === creature) continue
+                    const otherCreature = nearbyCreatures[i];
+                    if (otherCreature === creature) continue;
 
-                    const intersectionDistance = rayCircleIntersection(rayX, rayY, rayDirX, rayDirY, otherCreature.px, otherCreature.py, creatureBodyRadius * (otherCreature.type === "predator" ? 1.5 : 1)) // Use size multiplier
+                    const intersectionDistance = rayCircleIntersection(rayX, rayY, rayDirX, rayDirY, otherCreature.px, otherCreature.py, creatureBodyRadius * (otherCreature.type === "predator" ? 1.5 : 1)); // Use size multiplier
                     if (intersectionDistance != null && intersectionDistance < closestDistance) {
-                        closestDistance = intersectionDistance
-                        closestObjectType = otherCreature.type === "predator" ? 3 : 2
-                        hitSomething = true
+                        closestDistance = intersectionDistance;
+                        closestObjectType = otherCreature.type === "predator" ? 3 : 2;
+                        hitSomething = true;
                     }
                 }
             }
 
             // Food gathering checks
             if (checkFood && creature.type === "prey") {
-                var nearbyFood = []
-                const cellsArray = Array.from(intersectedGridCells)
-                for (var i = 0; i < cellsArray.length; i++) { // Changed to for loop
-                    const cellIndex = cellsArray[i]
-                    const foodItemsInCell = foodGrid[cellIndex]
+                var nearbyFood = [];
+                // Optimized food gathering using simple array iteration
+                for (let i = 0; i < intersectedGridCells.length; i++) { // Iterate with index for efficiency
+                    const cellIndex = intersectedGridCells[i];
+                    const foodItemsInCell = foodGrid[cellIndex];
                     if (foodItemsInCell) {
                         for (var j = 0; j < foodItemsInCell.length; j++) {
-                            nearbyFood.push(foodItemsInCell[j])
+                            nearbyFood.push(foodItemsInCell[j]);
                         }
                     }
                 }
 
                 // Iterate through nearby food for accurate distance calculation
                 for (var i = 0; i < nearbyFood.length; i++) { // Changed to for loop
-                    const foodItem = nearbyFood[i]
-                    const intersectionDistance = rayCircleIntersection(rayX, rayY, rayDirX, rayDirY, foodItem[0], foodItem[1], Math.sqrt(foodItem[2]) * 5)
+                    const foodItem = nearbyFood[i];
+                    const intersectionDistance = rayCircleIntersection(rayX, rayY, rayDirX, rayDirY, foodItem[0], foodItem[1], Math.sqrt(foodItem[2]) * 5);
                     if (intersectionDistance != null && intersectionDistance < closestDistance) {
-                        closestDistance = intersectionDistance
-                        closestObjectType = 1 // Type of food
-                        hitSomething = true
+                        closestDistance = intersectionDistance;
+                        closestObjectType = 1; // Type of food
+                        hitSomething = true;
                     }
                 }
             }
 
-            return hitSomething ? [closestDistance, closestObjectType] : null
+            return hitSomething ? [closestDistance, closestObjectType] : null;
         }
 
         var foodTick = 0
@@ -1017,9 +1023,9 @@
                             const dx = creature.px - preyCreature.px
                             const dy = creature.py - preyCreature.py
                             const distSq = dx * dx + dy * dy
-                            const eatDistanceSq = (creatureBodyRadius * (creature.type === "predator" ? 1.5 : 1) + creatureBodyRadius * (preyCreature.type === "predator" ? 1.5 : 1)) // Account for size
+                            const eatDistanceSq = (creatureBodyRadius * (creature.type === "predator" ? 1.5 : 1) + creatureBodyRadius * 0.9) // Slight size decrease
 
-                            if (distSq <= eatDistanceSq * eatDistanceSq * 5 && (creature !== selectedCreature || !document.getElementById("invulnerable").checked) && creature.nextEatingTime < 0) {
+                            if (distSq <= eatDistanceSq * eatDistanceSq * 5 && creature.nextEatingTime < 0 && (preyCreature !== selectedCreature || !document.getElementById("invulnerable").checked)) {
                                 creature.energy = Math.min(creatureEnergyMax * 2, creature.energy + 10 + preyCreature.energy / 5)
                                 creature.nextEatingTime = 30 + 20 * random()
                                 creatures.splice(j, 1) // Splice the eaten creature (prey)
@@ -1148,11 +1154,9 @@
                 ctx.fillText(`Generation: ${selectedCreature.generation}`, (w - canvasPaddingX + 10), canvasPaddingY + 65 * devicePixelRatio)
                 ctx.textAlign = "start"
 
-                const inputValuesForVisualization = [selectedCreature.energy, ...selectedCreature.currentVisionData]
+                const inputValuesForVisualization = [Math.max(selectedCreature.energy, 0), ...selectedCreature.currentVisionData]
                 renderLayers(selectedCreature.network, 1 + 2 * visionSectionCount, inputValuesForVisualization)
             }
-
-            renderLayers(selectedCreature?.network, 1 + 2 * visionSectionCount, selectedCreature?.currentVisionData ? [selectedCreature.energy, ...selectedCreature.currentVisionData] : undefined)
 
             frameCount++
             setTimeout(renderFrame, 16 + startTime - Date.now())
