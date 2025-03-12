@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Creature Simulation</title>
+    <style>
+        body,
+        html {
+            background-color: white;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #controls {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 15px;
+        }
+
+        label,
+        button {
+            margin-right: 5px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: #eee;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        #controls label {
+            background-color: transparent;
+            border: none;
+            cursor: default;
+            padding-right: 0;
+        }
+
+        .active {
+            background-color: #ddd;
+        }
+
+        #food-control input[type="number"],
+        #vision-controls input[type="number"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 60px;
+            margin-right: 5px;
+        }
+
+        #grid-controls input[type="number"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 60px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+    <div id="controls">
+        <div id="iteration-controls">
+            Iterations per frame:
+            <button class="active">1</button>
+            <button>2</button>
+            <button>5</button>
+            <button>10</button>
+            <button>25</button>
+            <button>50</button>
+        </div>
+        <div id="food-controls">
+            Food generation:
+            <button data-ticks="0.5">twice/tick</button>
+            <button data-ticks="1" class="active">one/tick</button>
+            <button data-ticks="2">one/2 ticks</button>
+            <button data-ticks="3">one/3 ticks</button>
+            <button data-ticks="0">None</button>
+        </div>
+        <div>
+            <label for="invulnerable">Invulnerable selected creature:</label>
+            <input type="checkbox" id="invulnerable" checked>
+        </div>
+        <div>
+            <label for="findFood">Prey detect food (predators do not):</label>
+            <input type="checkbox" id="findFood" checked>
+        </div>
+        <div>
+            <label for="findCreatures">Prey detect creatures:</label>
+            <input type="checkbox" id="findCreatures" checked>
+        </div>
+        <div>
+            <label for="visionSections">Vision sections:</label>
+            <input type="number" id="visionSections" value="4" min="1" max="12" step="1">
+        </div>
+        <div>
+            <label for="raysPerSection">Rays per section:</label>
+            <input type="number" id="raysPerSection" value="3" min="1" max="10" step="1">
+        </div>
+        <div>
+            <label for="energyLossRate">Energy loss rate:</label>
+            <input type="number" id="energyLossRate" value="100" min="10" max="1000" step="1">%
+        </div>
+        <div id="creature-controls">
+            Creatures:
+            <button id="addPreyButton">Add prey</button>
+            <button id="addPredatorButton">Add predators</button>
+        </div>
+        <button id="reseedButton">Reseed</button>
+    </div>
+    <canvas></canvas>
+
+    <script>
+        "use strict"
+        function Layer(a, b, weights, biases) {
+            this.a = a
+            this.b = b
+            this.weights = weights ? weights : this.initializeWeights(a, b)
+            this.biases = biases ? biases : this.initializeBiases(b)
+            this.activations = new Array(b) // Pre-allocate activations array in constructor
+        }
+
+        Layer.prototype.initializeWeights = function (a, b) {
+            const weights = new Array(a * b) // Pre-allocate weights array
+            for (var i = 0; i < a * b; i++) {
+                weights[i] = random() < 0.4 ? 0 : random() * 2 - 1
+            }
+            return weights
+        }
+
+        Layer.prototype.initializeBiases = function (b) {
+            const biases = new Array(b) // Pre-allocate biases array
+            for (var i = 0; i < b; i++) {
+                biases[i] = random() * 4 - 2
+            }
+            return biases
+        }
+
+        Layer.prototype.calc = function (inputs) {
+            const activations = this.activations
+            const biases = this.biases
+            const weights = this.weights
+            const b = this.b
+            const a = this.a
+
+            for (var i = 0; i < b; i++) {
+                var input = biases[i]
+                const m = i * a
+                for (var t = 0; t < a; t++) {
+                    input += inputs[t] * weights[t + m]
+                }
+                activations[i] = input
+            }
+            return activations // Return the pre-allocated and modified array directly
+        }
+
+        function mutateW(a, b, weights) {
+            const len = a * b
+            const result = weights.slice()
+            for (var i = 0; i < len; i++) {
+                result[i] += (random() * 0.02 - 0.01) * (random() < 0.025 ? 10 : 1)
+                if (random() < 0.005) {
+                    result[i] = random() * 4 - 2
+                } else if (random() < 0.01) {
+                    result[i] *= 0.5
+                }
+            }
+            return result
+        }
+
+        function mutateB(b, biases) {
+            const result = biases.slice()
+            for (var i = 0; i < b; i++) {
+                result[i] += 0.016 * random() - 0.008
+            }
+            var t = random() * 1.4 + 0.8
+            for (var i = 0; i < t; i++) {
+                result[Math.floor(b * random())] += (random() * 2 - 1) * 0.3
+            }
+            return result
+        }
+
+        function generateLayers(numLayers, minNeurons, maxNeurons, inputSize, outputSize) {
+            const layers = []
+            var currentInputSize = inputSize
+            if (numLayers < 2) numLayers = 2
+
+            layers.push(new Layer(currentInputSize, Math.floor(random() * (maxNeurons - minNeurons + 1)) + minNeurons))
+            currentInputSize = layers[0].b
+
+            for (var i = 1; i < numLayers - 1; i++) {
+                const layerSize = Math.floor(random() * (maxNeurons - minNeurons + 1)) + minNeurons
+                layers.push(new Layer(currentInputSize, layerSize))
+                currentInputSize = layerSize
+            }
+
+            layers.push(new Layer(currentInputSize, outputSize))
+            return layers
+        }
+
+        function spliceMutation(layers) {
+            if (layers.length <= 2) return layers
+            const layerIndexToMutate = Math.floor(random() * (layers.length - 2)) + 1
+            const layerToMutate = layers[layerIndexToMutate - 1]
+            const nextLayerIndex = layerIndexToMutate
+            const nextLayer = layers[nextLayerIndex]
+
+            if (random() < 0.5) {
+                if (random() < 0.5 && layerToMutate.b > 1) {
+                    layerToMutate.b -= 1
+                    layerToMutate.biases.pop()
+                } else {
+                    layerToMutate.b += 1
+                    layerToMutate.biases.push(random() * 4 - 2)
+                }
+                layerToMutate.weights = layerToMutate.initializeWeights(layerToMutate.a, layerToMutate.b)
+            } else {
+                const newSize = Math.floor(random() * (8 - 2 + 1)) + 2
+                layerToMutate.b = newSize
+                layerToMutate.biases = layerToMutate.initializeBiases(newSize)
+                layerToMutate.weights = layerToMutate.initializeWeights(layerToMutate.a, layerToMutate.b)
+            }
+
+            if (nextLayer) {
+                nextLayer.a = layerToMutate.b
+                nextLayer.weights = nextLayer.initializeWeights(nextLayer.a, nextLayer.b)
+            }
+            return layers
+        }
+
+        function resizeHandler() {
+            w = Math.round(innerWidth * devicePixelRatio)
+            h = Math.round(innerHeight * devicePixelRatio)
+            pixels = w * h
+            canvas.width = w
+            canvas.height = h
+            canvas.style.width = Math.ceil(innerWidth) + "px"
+            canvas.style.height = Math.ceil(innerHeight) + "px"
+            mapW = mapWidth
+            mapH = mapHeight
+        }
+
+        const layerSpacingX = 200
+        const neuronSpacingY = 40
+        const neuronRadius = 15
+        const canvasPaddingX = 50
+        const canvasPaddingY = 50
+        const baseLineWidth = 2
+        const weightLineWidth = 3
+        const neuronOutlineWidth = 5
+        const textColor = "black"
+        const fontSize = 10
+        const textVerticalOffset = -4
+
+        var checkFood = false
+        var checkCreatures = false
+
+        function renderLayers(layers, inputSize, inputValues) {
+            if (!layers) return
+
+            const canvasPaddingXScaled = canvasPaddingX * devicePixelRatio
+            const canvasPaddingYScaled = canvasPaddingY * devicePixelRatio
+            const layerSpacingXScaled = layerSpacingX * devicePixelRatio
+            const neuronSpacingYScaled = neuronSpacingY * devicePixelRatio
+            const neuronRadiusScaled = neuronRadius * devicePixelRatio
+            const neuronOutlineWidthScaled = neuronOutlineWidth * devicePixelRatio
+            const fontSizeScaled = fontSize * devicePixelRatio
+            const textVerticalOffsetScaled = textVerticalOffset * devicePixelRatio
+            const weightLineWidthScaled = weightLineWidth * devicePixelRatio
+
+            const totalNetworkWidth = (layers.length + 1) * layerSpacingXScaled // Use scaled layerSpacingX
+            const totalNetworkHeight = Math.max(inputSize, ...layers.map(layer => layer.b)) * neuronSpacingYScaled // Use scaled neuronSpacingY
+
+            const startX = w - totalNetworkWidth - canvasPaddingXScaled // Use scaled canvasPaddingX
+            const startY = canvasPaddingYScaled // Use scaled canvasPaddingY
+
+            function getNeuronColor(value) {
+                value = Math.tanh(value)
+                return { fill: value > 0 ? "#2e1" : "#d11", alpha: value }
+            }
+
+            const inputLayerX = startX
+            const numInputNeurons = inputSize
+            const inputLayerStartY = startY
+
+            for (var i = 0; i < numInputNeurons; i++) {
+                // Use scaled neuronSpacingY for neuronY position
+                const neuronY = inputLayerStartY + i * neuronSpacingYScaled + neuronSpacingYScaled / 2
+                const neuronX = inputLayerX
+                const inputValue = inputValues && inputValues[i] !== undefined ? inputValues[i] : 0
+
+                ctx.beginPath()
+                ctx.arc(neuronX, neuronY, neuronRadiusScaled, 0, Math.PI * 2) // Use scaled neuronRadius
+                var colorData = getNeuronColor(inputValue)
+                ctx.fillStyle = colorData.fill
+                ctx.globalAlpha = colorData.alpha
+                ctx.fill()
+                ctx.globalAlpha = 1
+
+                ctx.strokeStyle = inputValue > 0 ? "green" : "red"
+                ctx.globalAlpha = Math.max(0.1, Math.min(0.6, Math.abs(inputValue) * 0.4))
+                ctx.lineWidth = neuronOutlineWidthScaled // Use scaled neuronOutlineWidth
+                ctx.stroke()
+                ctx.closePath()
+                ctx.globalAlpha = 1
+
+                ctx.fillStyle = textColor
+                ctx.font = `${fontSizeScaled}px sans-serif` // Use scaled fontSize
+                ctx.textAlign = "center"
+                ctx.textBaseline = "middle"
+                // Use scaled neuronRadius, fontSize, textVerticalOffset for text position
+                ctx.fillText(inputValue.toFixed(1), neuronX, neuronY + neuronRadiusScaled + fontSizeScaled + textVerticalOffsetScaled)
+            }
+
+            layers.forEach((layer, layerIndex) => {
+                // Use scaled layerSpacingX for layerX position
+                const layerX = startX + (layerIndex + 1) * layerSpacingXScaled
+                const numNeurons = layer.b
+                const layerStartY = startY
+
+                for (var i = 0; i < numNeurons; i++) {
+                    // Use scaled neuronSpacingY for neuronY position
+                    const neuronY = layerStartY + i * neuronSpacingYScaled + neuronSpacingYScaled / 2
+                    const neuronX = layerX
+
+                    ctx.beginPath()
+                    ctx.arc(neuronX, neuronY, neuronRadiusScaled, 0, Math.PI * 2) // Use scaled neuronRadius
+                    var colorData = getNeuronColor(layer.activations[i])
+                    ctx.fillStyle = colorData.fill
+                    ctx.globalAlpha = colorData.alpha
+                    ctx.fill()
+                    ctx.globalAlpha = 1
+
+                    var biasColorData = getNeuronColor(layer.biases[i])
+                    ctx.strokeStyle = biasColorData.fill
+                    ctx.globalAlpha = biasColorData.alpha * 0.8
+                    ctx.lineWidth = neuronOutlineWidthScaled // Use scaled neuronOutlineWidth
+                    ctx.stroke()
+                    ctx.closePath()
+                    ctx.globalAlpha = 1
+
+                    ctx.fillStyle = textColor
+                    ctx.font = `${fontSizeScaled}px Arial` // Use scaled fontSize
+                    ctx.textAlign = "center"
+                    ctx.textBaseline = "middle"
+                    // Use scaled neuronRadius, fontSize, textVerticalOffset for text position
+                    ctx.fillText(layer.activations[i].toFixed(3), neuronX, neuronY + neuronRadiusScaled + fontSizeScaled + textVerticalOffsetScaled)
+
+                    if (layerIndex >= 0) {
+                        const prevNumNeurons = (layerIndex === 0) ? inputSize : layers[layerIndex - 1].b
+                        // Use scaled layerSpacingX for prevLayerX position
+                        const prevLayerX = (layerIndex === 0) ? startX : startX + layerIndex * layerSpacingXScaled
+                        const prevLayerStartY = startY
+
+                        for (var j = 0; j < prevNumNeurons; j++) {
+                            // Use scaled neuronSpacingY for prevNeuronY position
+                            const prevNeuronY = prevLayerStartY + j * neuronSpacingYScaled + neuronSpacingYScaled / 2
+                            const prevNeuronX = prevLayerX
+                            const weightValue = layer.weights[j + i * prevNumNeurons]
+
+                            if (weightValue !== 0) {
+                                ctx.beginPath()
+                                ctx.moveTo(prevNeuronX + neuronRadiusScaled, prevNeuronY) // Use scaled neuronRadius
+                                ctx.lineTo(neuronX - neuronRadiusScaled, neuronY) // Use scaled neuronRadius
+                                ctx.lineWidth = weightLineWidthScaled // Use scaled weightLineWidth
+                                ctx.globalAlpha = Math.max(0.05, Math.min(0.7, Math.abs(weightValue) * 0.5))
+                                ctx.strokeStyle = weightValue > 0 ? "green" : "red"
+                                ctx.stroke()
+                                ctx.closePath()
+                                ctx.globalAlpha = 1
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
+        var mouseX = 0
+        var mouseY = 0
+        var isMousePressed = false
+        var cameraX = 0
+        var cameraY = 0
+        var isDragging = false
+        var dragStartX = 0
+        var dragStartY = 0
+        var selectedCreature = null
+        var zoomFactor = devicePixelRatio
+        var visionRaycasts = []
+
+        function drawCreature(creature) {
+            var px = creature.px
+            var py = creature.py
+            var rotation = creature.rotation
+            var fill = "rgb(" + creature.fill + ")"
+            var stroke = creature.stroke
+            var sizeMultiplier = creature.type === "predator" ? 1.5 : 1 // 50% larger for predators
+
+            var x = (px - cameraX) * zoomFactor
+            var y = (py - cameraY) * zoomFactor
+
+            if (creature === selectedCreature) {
+                ctx.lineWidth = zoomFactor
+
+                // Draw Vision FOV Arc
+                ctx.beginPath()
+                ctx.lineTo(x, y)
+                ctx.arc(x, y, creature.vision * visionRayLengthBase * zoomFactor, rotation - visionFOV / 2, rotation + visionFOV / 2)
+                ctx.lineTo(x, y)
+                ctx.fillStyle = "rgba(200, 200, 200, 0.1)"
+                ctx.fill()
+                ctx.strokeStyle = "gray"
+                ctx.lineWidth = zoomFactor
+                ctx.stroke()
+                ctx.closePath()
+
+                // Draw Vision Rays
+                visionRaycasts.forEach((ray, index) => {
+                    ctx.beginPath()
+                    ctx.moveTo((ray.startX - cameraX) * zoomFactor, (ray.startY - cameraY) * zoomFactor)
+                    ctx.lineTo((ray.endX - cameraX) * zoomFactor, (ray.endY - cameraY) * zoomFactor)
+                    ctx.strokeStyle = ray.color
+                    ctx.lineWidth = zoomFactor
+                    ctx.globalAlpha = ray.alpha
+                    ctx.stroke()
+                    ctx.closePath()
+                })
+                ctx.globalAlpha = 1
+                ctx.font = "16px Arial"
+                ctx.fillStyle = "rgba(255, 255, 255, 0.7)"
+                ctx.textAlign = "center"
+                const text = "selected"
+                ctx.fillStyle = "black"
+                ctx.font = (16 * zoomFactor) + "px sans-serif"
+                ctx.shadowBlur = 3
+                ctx.shadowColor = "#050505"
+                ctx.shadowOffsetX = 3
+                ctx.shadowOffsetY = 3
+                ctx.fillText(text, x, y - 50 * zoomFactor)
+                ctx.shadowBlur = 0
+                ctx.shadowOffsetX = 0
+                ctx.shadowOffsetY = 0
+                ctx.textAlign = "start"
+            } else {
+                ctx.shadowBlur = 0
+            }
+
+            ctx.fillStyle = "rgb(" + creature.fill + ")"
+            ctx.lineWidth = 1.5 * zoomFactor
+            ctx.strokeStyle = stroke
+            ctx.beginPath()
+            ctx.ellipse(x, y, 32 * sizeMultiplier * zoomFactor, 20 * sizeMultiplier * zoomFactor, rotation, 0, 6.283185307179586)
+            ctx.fill()
+            ctx.stroke()
+
+            // Draw the eyes
+            ctx.fillStyle = "#fffd"
+            var r1 = rotation - 0.55
+            var a = Math.cos(r1)
+            var b = Math.sin(r1)
+            ctx.beginPath()
+            var r2 = rotation + 0.55
+            var c = Math.cos(r2)
+            var d = Math.sin(r2)
+            var x1 = x + 17 * sizeMultiplier * a * zoomFactor
+            var y1 = y + 15 * sizeMultiplier * b * zoomFactor
+            var x2 = x + 17 * sizeMultiplier * c * zoomFactor
+            var y2 = y + 15 * sizeMultiplier * d * zoomFactor
+            ctx.arc(x1, y1, 5.5 * sizeMultiplier * zoomFactor, 0, 6.283185307179586)
+            ctx.arc(x2, y2, 5.5 * sizeMultiplier * zoomFactor, 0, 6.283185307179586)
+            ctx.closePath()
+            ctx.fill()
+            ctx.fillStyle = "#000"
+
+            var diffY = mouseY - y1
+            var diffX = mouseX - x1
+            var distSq = diffX * diffX + diffY * diffY
+            var r = 1.75 * zoomFactor
+
+            var isMouseNear = distSq < (40000 * zoomFactor * zoomFactor)
+
+            if (isMouseNear) {
+                var m = 0.13 - Math.pow(distSq * 0.25, 0.8) * 0.00003 / zoomFactor
+                var angleToMouse = Math.atan2(diffY, diffX)
+                x1 = x + 16 * (a + m * Math.cos(angleToMouse)) * sizeMultiplier * zoomFactor
+                y1 = y + 15 * sizeMultiplier * b * zoomFactor
+                x2 = x + 16 * (c + m * Math.cos(angleToMouse)) * sizeMultiplier * zoomFactor
+                y2 = y + 15 * sizeMultiplier * d * zoomFactor
+                ctx.fillStyle = "#000"
+                r = 1.75 * zoomFactor * (creature.type === "predator" ? 2.5 : 1)
+            } else {
+                ctx.fillStyle = "#000"
+                r = 1.75 * zoomFactor * (creature.type === "predator" ? 2.5 : 1)
+            }
+
+            ctx.beginPath()
+            ctx.arc(x1, y1, r, 0, 6.283185307179586)
+            ctx.arc(x2, y2, r, 0, 6.283185307179586)
+            ctx.closePath()
+            ctx.fill()
+            ctx.fillStyle = "#100"
+
+            ctx.beginPath()
+            ctx.arc(x1, y1, 3 * zoomFactor, 0, 6.283185307179586)
+            ctx.arc(x2, y2, 3 * zoomFactor, 0, 6.283185307179586)
+            ctx.closePath()
+            ctx.fill()
+            ctx.fillStyle = "#000"
+
+            ctx.shadowBlur = 0
+        }
+
+        function drawFood(food) {
+            var x = (food[0] - cameraX) * zoomFactor
+            var y = (food[1] - cameraY) * zoomFactor
+            ctx.fillStyle = "green"
+            ctx.strokeStyle = "darkgreen"
+            ctx.lineWidth = 2 * zoomFactor
+            ctx.beginPath()
+            ctx.arc(x, y, Math.sqrt(food[2]) * 5 * zoomFactor, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.stroke()
+        }
+
+        var w, h, pixels, mapW, mapH, mapWidth = 2000, mapHeight = 2000
+        var creatures = []
+        var food = []
+        var frameCount = 0
+        var creatureBodyRadius = 20
+        var creatureEnergyMax = 50
+        var energyToReproduce = 30
+        var maxSpeed = 5
+        var energyLoss = 100 / 50000
+        var visionBase = 1
+        var reproductionCost = 25
+        var childEnergy = 12
+        var proportionalityConstant = 0.01
+        var visionRayLengthBase = 200
+        var visionFOV = 120 * Math.PI / 180
+        var visionSectionCount = 4
+        var raysPerSection = 3
+        var iterationsPerFrame = 1
+        var gridSizeX = 50 // Grid width in cells
+        var gridSizeY = 50 // Grid height in cells
+        var gridCellWidth = mapWidth / gridSizeX
+        var gridCellHeight = mapHeight / gridSizeY
+        var foodGrid = Array(gridSizeX * gridSizeY)
+        var creatureGrid = Array(gridSizeX * gridSizeY) // Creature Grid!
+        var foodRate = 1
+
+        function shiftColor(num) {
+            return random() < 0.05 ? Math.round(Math.max(0, Math.min(255, num + 200 * random() - 100))) : Math.round(Math.max(0, Math.min(255, num + 20 * random() - 10)))
+        }
+
+        function addCreature(x, y, generation = 1, parent = null, network = null, initialEnergy = 15 + 3 * random(), type = "prey") {
+            var creatureNetwork = network
+            var initialMaxSpeed = maxSpeed + random() * 1.5 - 0.75
+            var initialVision = visionBase + random() * 0.2 - 0.1
+            var creatureFill, creatureStroke
+
+            if (type === "predator") { // Predator specific properties
+                creatureFill = [180 + Math.floor(random() * 75), 50, 50] // Reddish color
+                creatureStroke = "#500"
+                initialMaxSpeed = maxSpeed + 2 + random() * 1 // Slightly faster
+            } else { // Default prey properties (existing)
+                creatureFill = [Math.floor(random() * 255), 100 + Math.floor(random() * 155), 240 + Math.floor(random() * 25)]
+                creatureStroke = "#005"
+            }
+
+
+            if (parent) {
+                creatureNetwork = parent.network
+                initialMaxSpeed = parent.maxSpeed
+                initialVision = parent.vision
+                creatureFill = parent.fill
+                creatureStroke = parent.stroke
+                initialMaxSpeed = initialMaxSpeed * (1 + (random() * 0.1 - 0.05))
+                initialMaxSpeed = Math.max(0.5, Math.min(maxSpeed * 2, initialMaxSpeed))
+
+                initialVision = initialVision * (1 + (random() * 0.1 - 0.05))
+                initialVision = Math.max(visionBase * 0.1, initialVision)
+
+                creatureNetwork = parent.network.map(layer => new Layer(layer.a, layer.b, mutateW(layer.a, layer.b, layer.weights), mutateB(layer.b, layer.biases)))
+                if (random() < 0.2) {
+                    creatureNetwork = spliceMutation(creatureNetwork.map(layer => new Layer(layer.a, layer.b, layer.weights, layer.biases)))
+                    if (random() < 0.2) {
+                        creatureFill = [shiftColor(creatureFill[0]), shiftColor(creatureFill[1]), shiftColor(creatureFill[2])]
+                        if (type === "predator") { // Keep predators reddish even after color mutation, but with slight variation
+                            creatureFill[0] = Math.min(255, Math.max(180, creatureFill[0])) // Ensure Red component stays in the reddish range
+                        }
+                    }
+                }
+            }
+
+            const networkInputSize = 1 + 2 * visionSectionCount
+
+            const newCreature = {
+                px: x,
+                py: y,
+                rotation: random() * Math.PI * 2,
+                speed: 5,
+                energy: initialEnergy,
+                age: 0,
+                maxAge: Math.floor(random() * (1500 - 1200 + 1)) + 1200,
+                generation: generation,
+                fill: creatureFill,
+                stroke: creatureStroke,
+                network: creatureNetwork ? creatureNetwork : generateLayers(4, Math.round(random()) + 3, Math.round(random()) + Math.round(random()) + 3, networkInputSize, 2),
+                vision: initialVision,
+                maxSpeed: initialMaxSpeed,
+                currentVisionData: [],
+                type: type // Store type in the object
+            }
+            if (type === "predator") {
+                newCreature.nextEatingTime = 25 + 10 * random()
+            }
+            creatures.push(newCreature)
+            return newCreature
+        }
+
+        function addFood() {
+            food.push([random() * (mapWidth - 10) + 5, random() * (mapHeight - 10) + 5, random() * 18 + 4]) // x, y, size
+        }
+
+        function initializeFood() {
+            food = []
+            for (var i = 0; i < 100; i++) {
+                addFood()
+            }
+        }
+
+        function rayCircleIntersection(rayX, rayY, rayDirX, rayDirY, circleX, circleY, circleRadius) {
+            const dx = rayX - circleX
+            const dy = rayY - circleY
+
+            const a = rayDirX * rayDirX + rayDirY * rayDirY
+            const b = 2 * (dx * rayDirX + dy * rayDirY)
+            const c = dx * dx + dy * dy - circleRadius * circleRadius
+
+            const discriminant = b * b - 4 * a * c
+
+            if (discriminant < 0) {
+                return null
+            }
+
+            const t1 = (-b - Math.sqrt(discriminant)) / (2 * a)
+            const t2 = (-b + Math.sqrt(discriminant)) / (2 * a)
+
+            if (t1 >= 0) {
+                return t1
+            }
+            if (t2 >= 0) {
+                return t2
+            }
+
+            return null
+        }
+
+        const canvas = document.getElementsByTagName("canvas")[0]
+        const ctx = canvas.getContext("2d")
+        window.addEventListener("resize", resizeHandler)
+
+        function initializeCreatures(prey, predators) {
+            creatures = []
+            for (var i = 0; i < prey; i++) {
+                addCreature(Math.max(32, random() * mapWidth - 32), Math.max(20, random() * mapHeight - 20))
+            }
+            for (var i = 0; i < predators; i++) {
+                addCreature(Math.max(32, random() * mapWidth - 32), Math.max(20, random() * mapHeight - 20), 1, null, null, undefined, "predator")
+            }
+        }
+
+        function renderCreatures() {
+            creatures.forEach(creature => {
+                drawCreature(creature)
+            })
+        }
+
+        function renderFood() {
+            food.forEach(foodItem => {
+                drawFood(foodItem)
+            })
+        }
+
+        var seedA, seedB, seedC, seedD
+        function seedRNG(str) {
+            var h1 = 1779033703, h2 = 3144134277,
+                h3 = 1013904242, h4 = 2773480762
+            for (var i = 0, k; i < str.length; i++) {
+                k = str.charCodeAt(i)
+                h1 = h2 ^ Math.imul(h1 ^ k, 597399067)
+                h2 = h3 ^ Math.imul(h2 ^ k, 2869860233)
+                h3 = h4 ^ Math.imul(h3 ^ k, 951274213)
+                h4 = h1 ^ Math.imul(h4 ^ k, 2716044179)
+            }
+            h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067)
+            h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233)
+            h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213)
+            h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179)
+            seedA = (h1 ^ h2 ^ h3 ^ h4) >>> 0
+            seedB = (h2 ^ h1) >>> 0
+            seedC = (h3 ^ h1) >>> 0
+            seedD = (h4 ^ h1) >>> 0
+        }
+
+        function random() {
+            var t = seedB << 9,
+                r = seedA * 5
+            r = (r << 7 | r >>> 25) * 9
+            seedC ^= seedA
+            seedD ^= seedB
+            seedB ^= seedC
+            seedA ^= seedD
+            seedC ^= t
+            seedD = seedD << 11 | seedD >>> 21
+            return (r >>> 0) / 4294967296
+        }
+
+        function updateFoodGrid() {
+            foodGrid = Array(gridSizeX * gridSizeY)
+            for (var i = 0; i < gridSizeX * gridSizeY; i++) {
+                foodGrid[i] = []
+            }
+            for (var foodIndex = 0; foodIndex < food.length; foodIndex++) {
+                const foodItem = food[foodIndex]
+                const foodX = foodItem[0]
+                const foodY = foodItem[1]
+                const foodRadius = Math.sqrt(foodItem[2]) * 5
+
+                // Calculate bounding box in grid indices
+                const minGridX = Math.max(0, Math.floor((foodX - foodRadius) / gridCellWidth))
+                const minGridY = Math.max(0, Math.floor((foodY - foodRadius) / gridCellHeight))
+                const maxGridX = Math.min(gridSizeX - 1, Math.ceil((foodX + foodRadius) / gridCellWidth) - 1)
+                const maxGridY = Math.min(gridSizeY - 1, Math.ceil((foodY + foodRadius) / gridCellHeight) - 1)
+
+                // Iterate only within the bounding box
+                for (var gridY = minGridY; gridY <= maxGridY; gridY++) {
+                    for (var gridX = minGridX; gridX <= maxGridX; gridX++) {
+                        // Calculate grid cell boundaries (still needed for accurate overlap test)
+                        const cellMinX = gridX * gridCellWidth
+                        const cellMaxX = cellMinX + gridCellWidth
+                        const cellMinY = gridY * gridCellHeight
+                        const cellMaxY = cellMinY + gridCellHeight
+
+                        // Rectangle-Circle Overlap Test (Separation Axis Theorem concept) - Keep this accurate test
+                        const overlapX = (foodX + foodRadius >= cellMinX) && (foodX - foodRadius <= cellMaxX)
+                        const overlapY = (foodY + foodRadius >= cellMinY) && (foodY - foodRadius <= cellMaxY)
+
+                        if (overlapX && overlapY) { // Overlap in BOTH X and Y axes means rectangle-circle overlap
+                            foodGrid[gridY * gridSizeX + gridX].push(foodItem)
+                        }
+                    }
+                }
+            }
+        }
+
+        function updateCreatureGrid() { // NEW function - update Creature Grid
+            creatureGrid = Array(gridSizeX * gridSizeY)
+            for (var i = 0; i < gridSizeX * gridSizeY; i++) {
+                creatureGrid[i] = []
+            }
+            for (var creatureIndex = 0; creatureIndex < creatures.length; creatureIndex++) {
+                const creature = creatures[creatureIndex]
+                const creatureX = creature.px
+                const creatureY = creature.py
+                const creatureRadius = creatureBodyRadius * (creature.type === "predator" ? 1.5 : 1) // Use size multiplier
+
+                // Calculate bounding box in grid indices (similar to food)
+                const minGridX = Math.max(0, Math.floor((creatureX - creatureRadius) / gridCellWidth))
+                const minGridY = Math.max(0, Math.floor((creatureY - creatureRadius) / gridCellHeight))
+                const maxGridX = Math.min(gridSizeX - 1, Math.ceil((creatureX + creatureRadius) / gridCellWidth) - 1)
+                const maxGridY = Math.min(gridSizeY - 1, Math.ceil((creatureY + creatureRadius) / gridCellHeight) - 1)
+
+                for (var gridY = minGridY; gridY <= maxGridY; gridY++) {
+                    for (var gridX = minGridX; gridX <= maxGridX; gridX++) {
+                        creatureGrid[gridY * gridSizeX + gridX].push(creature) // Store creature object in grid
+                    }
+                }
+            }
+        }
+
+        function castRay(creature, rayAngle, length) {
+            var correctedRayAngle = rayAngle
+
+            var closestDistance = length
+            var closestObjectType = 0
+            var hitSomething = false
+
+            const rayX = creature.px
+            const rayY = creature.py
+            const rayDirX = Math.cos(correctedRayAngle)
+            const rayDirY = Math.sin(correctedRayAngle)
+            const rayEndX = rayX + length * rayDirX
+            const rayEndY = rayY + length * rayDirY
+
+            const intersectedGridCells = new Set()
+
+            var x0 = Math.floor(rayX / gridCellWidth)
+            var y0 = Math.floor(rayY / gridCellHeight)
+            var x1 = Math.floor(rayEndX / gridCellWidth)
+            var y1 = Math.floor(rayEndY / gridCellHeight)
+
+            var dx = Math.abs(x1 - x0)
+            var dy = Math.abs(y1 - y0)
+            var sx = (x0 < x1) ? 1 : -1
+            var sy = (y0 < y1) ? 1 : -1
+            var err = dx - dy // Error term
+
+            var currentGridX = x0
+            var currentGridY = y0
+
+            while (true) {
+                if (currentGridX >= 0 && currentGridX < gridSizeX && currentGridY >= 0 && currentGridY < gridSizeY) {
+                    intersectedGridCells.add(currentGridY * gridSizeX + currentGridX)
+                }
+
+                // Modified loop termination condition (direction-aware >= and <=)
+                const xCondition = (sx > 0) ? (currentGridX >= x1) : (currentGridX <= x1)
+                const yCondition = (sy > 0) ? (currentGridY >= y1) : (currentGridY <= y1)
+
+                if (xCondition && yCondition) {
+                    break
+                }
+
+                var e2 = 2 * err
+                if (e2 > -dy) { // Step X
+                    err -= dy
+                    currentGridX += sx
+                }
+                if (e2 < dx) { // Step Y
+                    err += dx
+                    currentGridY += sy
+                }
+            }
+
+            // Iterate through creatures - Optimized with creatureGrid
+            if (checkCreatures || creature.type === "predator") {
+                var nearbyCreatures = [] // Gather nearby creatures
+                const cellsArray = Array.from(intersectedGridCells) // Use cellsArray from food section
+                for (var i = 0; i < cellsArray.length; i++) {
+                    const cellIndex = cellsArray[i]
+                    const creaturesInCell = creatureGrid[cellIndex] // Get creatures from creatureGrid
+                    if (creaturesInCell) {
+                        for (var j = 0; j < creaturesInCell.length; j++) {
+                            nearbyCreatures.push(creaturesInCell[j]) // Gather nearby creatures
+                        }
+                    }
+                }
+
+                // Iterate through nearby creatures for distance calculation
+                for (var i = 0; i < nearbyCreatures.length; i++) {
+                    const otherCreature = nearbyCreatures[i]
+                    if (otherCreature === creature) continue
+
+                    const intersectionDistance = rayCircleIntersection(rayX, rayY, rayDirX, rayDirY, otherCreature.px, otherCreature.py, creatureBodyRadius * (otherCreature.type === "predator" ? 1.5 : 1)) // Use size multiplier
+                    if (intersectionDistance != null && intersectionDistance < closestDistance) {
+                        closestDistance = intersectionDistance
+                        closestObjectType = otherCreature.type === "predator" ? 3 : 2
+                        hitSomething = true
+                    }
+                }
+            }
+
+            // Food gathering checks
+            if (checkFood && creature.type === "prey") {
+                var nearbyFood = []
+                const cellsArray = Array.from(intersectedGridCells)
+                for (var i = 0; i < cellsArray.length; i++) { // Changed to for loop
+                    const cellIndex = cellsArray[i]
+                    const foodItemsInCell = foodGrid[cellIndex]
+                    if (foodItemsInCell) {
+                        for (var j = 0; j < foodItemsInCell.length; j++) {
+                            nearbyFood.push(foodItemsInCell[j])
+                        }
+                    }
+                }
+
+                // Iterate through nearby food for accurate distance calculation
+                for (var i = 0; i < nearbyFood.length; i++) { // Changed to for loop
+                    const foodItem = nearbyFood[i]
+                    const intersectionDistance = rayCircleIntersection(rayX, rayY, rayDirX, rayDirY, foodItem[0], foodItem[1], Math.sqrt(foodItem[2]) * 5)
+                    if (intersectionDistance != null && intersectionDistance < closestDistance) {
+                        closestDistance = intersectionDistance
+                        closestObjectType = 1 // Type of food
+                        hitSomething = true
+                    }
+                }
+            }
+
+            return hitSomething ? [closestDistance, closestObjectType] : null
+        }
+
+        var foodTick = 0
+        function renderFrame() {
+            var startTime = Date.now()
+            checkFood = document.getElementById("findFood").checked
+            checkCreatures = document.getElementById("findCreatures").checked
+            if (+document.getElementById("visionSections").value !== visionSectionCount) {
+                visionSectionCount = document.getElementById("visionSections").value
+            }
+            if (+document.getElementById("raysPerSection").value !== raysPerSection) {
+                raysPerSection = document.getElementById("raysPerSection").value
+            }
+            if (document.getElementById("energyLossRate").value / 50000 !== energyLoss) {
+                energyLoss = document.getElementById("energyLossRate").value / 50000
+            }
+
+            updateFoodGrid()
+            updateCreatureGrid()
+
+            ctx.clearRect(0, 0, w, h)
+            visionRaycasts = []
+
+            for (var iteration = 0; iteration < iterationsPerFrame; iteration++) {
+                if (foodTick % foodRate === 0 && food.length < 2000 && foodRate !== 0) {
+                    addFood()
+                    if (foodRate === 0.5) {
+                        addFood() // second food
+                    }
+                    updateFoodGrid()
+                }
+                foodTick++
+                for (var i = creatures.length - 1; i >= 0; i--) {
+                    const creature = creatures[i]
+
+                    var visionRayLength = creature.vision * visionRayLengthBase
+                    const currentVisionInput = Array(visionSectionCount * 2).fill(0)
+                    const sectionAngle = visionFOV / visionSectionCount
+
+                    for (let sectionIndex = 0; sectionIndex < visionSectionCount; sectionIndex++) { // Changed to let
+                        var sectionClosestDistance = visionRayLength
+                        var sectionClosestType = 0
+                        var sectionHitSomething = false
+                        const sectionStartAngle = creature.rotation - visionFOV / 2 + sectionIndex * sectionAngle + Math.PI / visionSectionCount / 3
+
+                        for (let rayIndex = 0; rayIndex < raysPerSection; rayIndex++) { // Changed to let
+                            var rayAngleOffset = 0
+
+                            if (raysPerSection > 1) {
+                                rayAngleOffset = (sectionAngle / raysPerSection) * rayIndex - (sectionAngle / 2) + (sectionAngle / (raysPerSection * 2))
+                            } else {
+                                rayAngleOffset = 0
+                            }
+                            var rayAngle = sectionStartAngle + rayAngleOffset
+
+                            const raycastResult = castRay(creature, rayAngle, visionRayLength)
+
+                            if (raycastResult && raycastResult[0] < sectionClosestDistance) {
+                                sectionClosestDistance = raycastResult[0]
+                                sectionClosestType = raycastResult[1]
+                                sectionHitSomething = true
+                            }
+
+                            if (selectedCreature === creature && iteration === iterationsPerFrame - 1) {
+                                const rayEndX = creature.px + sectionClosestDistance * Math.cos(rayAngle)
+                                const rayEndY = creature.py + sectionClosestDistance * Math.sin(rayAngle)
+
+                                visionRaycasts.push({
+                                    startX: creature.px,
+                                    startY: creature.py,
+                                    endX: rayEndX,
+                                    endY: rayEndY,
+                                    hitSomething: sectionHitSomething,
+                                    color: sectionHitSomething ? ["", "#12d", "#2e1", "#d11"][sectionClosestType] : "#333",
+                                    alpha: sectionHitSomething ? 1 : 0.6
+                                })
+                            }
+                        }
+
+                        currentVisionInput[sectionIndex * 2] = sectionHitSomething ? Math.max(0, 1 - sectionClosestDistance / visionRayLength) : 0
+                        currentVisionInput[sectionIndex * 2 + 1] = sectionHitSomething * sectionClosestType
+                    }
+
+                    if (creature === selectedCreature) {
+                        creature.currentVisionData = currentVisionInput
+                    } else {
+                        delete creature.currentVisionData
+                    }
+
+                    var input = [Math.max(creature.energy, 0), ...currentVisionInput]
+
+                    creature.network.forEach((layer, layerIndex) => {
+                        input = layer.calc(input)
+                        layer.activations = input
+                    })
+
+                    const networkOutput = creature.network[creature.network.length - 1].activations
+
+                    var angleChange = Math.min(Math.max(networkOutput[0] * 0.05, Math.PI / -36), Math.PI / 36)
+                    const maxRotationChange = Math.PI / 4
+                    angleChange = Math.max(-maxRotationChange, Math.min(maxRotationChange, angleChange))
+
+                    creature.rotation += angleChange
+
+                    var movement = Math.max(0, Math.min(creature.maxSpeed, networkOutput[1] * 5))
+
+                    ctx.setTransform(zoomFactor, 0, 0, zoomFactor, cameraX, cameraY)
+
+                    creature.px += movement * Math.cos(creature.rotation)
+                    creature.py += movement * Math.sin(creature.rotation)
+
+                    creature.energy -= (Math.pow(creature.maxSpeed, 1.4) + visionSectionCount * raysPerSection * creature.vision + movement * movement) * energyLoss * (creature.type === "predator" ? 0.5 : 1)
+                    // Eating logic
+                    if (creature.type === "predator") {
+                        creature.nextEatingTime -= random() + 1
+                        for (var j = creatures.length - 1; j >= 0; j--) { // Predators eat creatures (prey)
+                            const preyCreature = creatures[j]
+                            if (preyCreature.type === "predator" || preyCreature === creature) continue // Predators don't eat predators or themselves
+
+                            const dx = creature.px - preyCreature.px
+                            const dy = creature.py - preyCreature.py
+                            const distSq = dx * dx + dy * dy
+                            const eatDistanceSq = (creatureBodyRadius * (creature.type === "predator" ? 1.5 : 1) + creatureBodyRadius * (preyCreature.type === "predator" ? 1.5 : 1)) // Account for size
+
+                            if (distSq <= eatDistanceSq * eatDistanceSq * 5 && (creature !== selectedCreature || !document.getElementById("invulnerable").checked) && creature.nextEatingTime < 0) {
+                                creature.energy = Math.min(creatureEnergyMax * 2, creature.energy + 10 + preyCreature.energy / 5)
+                                creature.nextEatingTime = 30 + 20 * random()
+                                creatures.splice(j, 1) // Splice the eaten creature (prey)
+                                continue
+                            }
+                        }
+                    } else { // Prey eating logic (food) - only prey eats food
+                        for (var j = food.length - 1; j >= 0; j--) {
+                            const foodItem = food[j]
+                            if (!foodItem) continue
+
+                            const dx = creature.px - foodItem[0]
+                            const dy = creature.py - foodItem[1]
+                            const distSq = dx * dx + dy * dy
+                            const eatDistanceSq = creatureBodyRadius + Math.sqrt(foodItem[2])
+
+                            if (distSq <= eatDistanceSq * eatDistanceSq * 5) {
+                                food.splice(j, 1)
+                                creature.energy = Math.min(creatureEnergyMax, creature.energy + foodItem[2])
+                            }
+                        }
+                    }
+
+
+                    creature.age += 1
+                    const energyDeficit = Math.max(0, creatureEnergyMax - creature.energy)
+                    creature.age += energyDeficit * proportionalityConstant / 10
+
+                    if ((creature.energy <= 0 || creature.age >= creature.maxAge) && (creature !== selectedCreature || !document.getElementById("invulnerable").checked)) {
+                        creatures.splice(i, 1)
+                        continue
+                    }
+
+                    if (creature.energy >= energyToReproduce + random() * 2) {
+                        creature.energy -= reproductionCost
+                        const child = addCreature(creature.px + random() * 50 - 25, creature.py + random() * 50 - 25, creature.generation + 1, creature, creature.network, childEnergy * (creature.type === "predator" ? 2 : 1), creature.type) // Inherit type
+                    }
+                }
+            }
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0)
+            renderFood()
+            renderCreatures()
+
+            if (selectedCreature) {
+                const visionPreviewX = 50 * devicePixelRatio // Scaled X position
+                const visionPreviewY = h - 100 * devicePixelRatio // Scaled Y position
+                const barWidth = 25 * devicePixelRatio // Scaled barWidth
+                const barSpacing = 5 * devicePixelRatio // Scaled barSpacing
+                const maxBarHeight = 60 * devicePixelRatio // Scaled maxBarHeight
+                const textOffsetY = 15 * devicePixelRatio // Scaled textOffsetY
+
+                ctx.fillStyle = "rgba(100, 100, 100, 0.5)"
+                ctx.fillRect(
+                    visionPreviewX - 10 * devicePixelRatio, // Scaled X position and offset
+                    visionPreviewY - maxBarHeight - 10 * devicePixelRatio, // Scaled Y position and offset
+                    visionSectionCount * (barWidth + barSpacing) + 20 * devicePixelRatio, // Scaled width and padding
+                    maxBarHeight + 20 * devicePixelRatio // Scaled height and padding
+                )
+
+                for (var i = 0; i < visionSectionCount; i++) {
+                    const distanceValue = selectedCreature.currentVisionData[i * 2]
+                    const typeValue = selectedCreature.currentVisionData[i * 2 + 1]
+                    const barHeight = distanceValue * maxBarHeight
+                    var barColor = "rgba(128, 128, 128, 0.4)"
+                    var objectTypeLabel = ""
+
+                    if (typeValue === 1) {
+                        barColor = "rgba(0, 0, 200, 0.8)"
+                        objectTypeLabel = "Food"
+                    } else if (typeValue === 2) {
+                        barColor = "rgba(0, 200, 0, 0.8)"
+                        objectTypeLabel = "Prey"
+                    } else if (typeValue === 3) {
+                        barColor = "rgba(200, 0, 0, 0.8)"
+                        objectTypeLabel = "Pred."
+                    } else {
+                        objectTypeLabel = "None"
+                    }
+
+                    ctx.fillStyle = barColor
+                    ctx.fillRect(
+                        visionPreviewX + i * (barWidth + barSpacing), // X position is already scaled by barWidth/barSpacing
+                        visionPreviewY - barHeight,
+                        barWidth, // Scaled barWidth
+                        barHeight
+                    )
+
+                    ctx.strokeStyle = "black"
+                    ctx.lineWidth = 1 * devicePixelRatio // Scaled line width
+                    ctx.strokeRect(
+                        visionPreviewX + i * (barWidth + barSpacing) + 0.5 * devicePixelRatio, // Scaled X position and offset
+                        visionPreviewY - barHeight + 0.5 * devicePixelRatio, // Scaled Y position and offset
+                        barWidth - 1 * devicePixelRatio, // Scaled bar width and offset
+                        barHeight - 1 * devicePixelRatio // Scaled bar height and offset
+                    )
+
+                    if (objectTypeLabel) {
+                        ctx.fillStyle = "black"
+                        ctx.font = `${12 * devicePixelRatio}px Arial` // Scaled font size
+                        ctx.textAlign = "center"
+                        ctx.textBaseline = "top"
+                        ctx.fillText(
+                            objectTypeLabel,
+                            visionPreviewX + i * (barWidth + barSpacing) + barWidth / 2, // X position already scaled
+                            visionPreviewY + textOffsetY // Scaled textOffsetY
+                        )
+                    }
+                }
+
+
+                ctx.fillStyle = "rgba(255, 255, 255, 0.7)"
+                ctx.fillRect(
+                    (w - 250 - 10) * devicePixelRatio,
+                    (canvasPaddingY - 10) * devicePixelRatio,
+                    (250 + 20) * devicePixelRatio, // Scaled width and height
+                    (30 + 20) * devicePixelRatio
+                )
+                ctx.fillStyle = "black"
+                ctx.font = `${14 * devicePixelRatio}px sans-serif` // Scaled font size
+                ctx.textAlign = "right"
+                ctx.textBaseline = "top"
+                ctx.fillText(`Energy: ${Math.max(selectedCreature.energy, 0).toFixed(2)}`, (w - canvasPaddingX + 10), canvasPaddingY + 5 * devicePixelRatio) // Scaled positions
+                ctx.fillText(`Vision: ${selectedCreature.vision.toFixed(3)}`, (w - canvasPaddingX + 10), canvasPaddingY + 25 * devicePixelRatio)
+                ctx.fillText(`Time left: ${Math.floor(selectedCreature.maxAge - selectedCreature.age)}`, (w - canvasPaddingX + 10), canvasPaddingY + 45 * devicePixelRatio)
+                ctx.fillText(`Generation: ${selectedCreature.generation}`, (w - canvasPaddingX + 10), canvasPaddingY + 65 * devicePixelRatio)
+                ctx.textAlign = "start"
+
+                const inputValuesForVisualization = [selectedCreature.energy, ...selectedCreature.currentVisionData]
+                renderLayers(selectedCreature.network, 1 + 2 * visionSectionCount, inputValuesForVisualization)
+            }
+
+            renderLayers(selectedCreature?.network, 1 + 2 * visionSectionCount, selectedCreature?.currentVisionData ? [selectedCreature.energy, ...selectedCreature.currentVisionData] : undefined)
+
+            frameCount++
+            setTimeout(renderFrame, 16 + startTime - Date.now())
+        }
+
+        var iterationButtons = document.querySelectorAll("#iteration-controls button")
+
+        iterationButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                iterationButtons.forEach(btn => btn.classList.remove("active"))
+                this.classList.add("active")
+                iterationsPerFrame = parseInt(this.textContent)
+            })
+        })
+
+        var foodRateButtons = document.querySelectorAll("#food-controls button")
+
+        foodRateButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                foodRateButtons.forEach(btn => btn.classList.remove("active"))
+                this.classList.add("active")
+                foodRate = parseFloat(this.dataset.ticks)
+            })
+        })
+
+        document.addEventListener("mousedown", function (e) {
+            isMousePressed = true
+            isDragging = true
+            dragStartX = e.clientX * devicePixelRatio
+            dragStartY = e.clientY * devicePixelRatio
+            canvas.style.cursor = "grabbing"
+
+            var minDistanceSq = Infinity
+            var closestCreature = null
+            for (const creature of creatures) {
+                const mouseWorldX = (mouseX / zoomFactor) + cameraX
+                const mouseWorldY = mouseY / zoomFactor + cameraY
+                const dx = mouseWorldX - creature.px
+                const dy = mouseWorldY - creature.py
+                const distSq = dx * dx + dy * dy
+                if (distSq < minDistanceSq) {
+                    minDistanceSq = distSq
+                    closestCreature = creature
+                }
+            }
+
+            if (!e.target.closest('#controls')) {
+                const selectionThresholdSq = creatureBodyRadius * creatureBodyRadius * 4
+                if (closestCreature && minDistanceSq <= selectionThresholdSq) {
+                    selectedCreature = closestCreature
+                } else {
+                    selectedCreature = null
+                }
+            }
+        })
+
+        document.addEventListener("mouseup", function (e) {
+            isMousePressed = false
+            isDragging = false
+            canvas.style.cursor = "default"
+        })
+
+        document.addEventListener("blur", function (e) {
+            isMousePressed = false
+            isDragging = false
+            canvas.style.cursor = "default"
+        })
+
+        document.addEventListener("mousemove", function (e) {
+            var rect = canvas.getBoundingClientRect()
+            mouseX = (e.clientX - rect.left) * devicePixelRatio
+            mouseY = (e.clientY - rect.top) * devicePixelRatio
+
+            if (isDragging) {
+                cameraX -= (mouseX - dragStartX) / zoomFactor
+                cameraY -= (mouseY - dragStartY) / zoomFactor
+                dragStartX = mouseX
+                dragStartY = mouseY
+            }
+        })
+
+        document.addEventListener("wheel", function (e) {
+            e.preventDefault()
+            const zoomStrength = 0.05
+
+            const worldX = (mouseX / zoomFactor) + cameraX
+            const worldY = (mouseY / zoomFactor) + cameraY
+
+            if (e.deltaY < 0) {
+                zoomFactor *= (1 + zoomStrength)
+            } else {
+                zoomFactor *= (1 - zoomStrength)
+            }
+            zoomFactor = Math.max(devicePixelRatio / 8, Math.min(zoomFactor, devicePixelRatio * 8))
+
+            const worldMouseXAfterZoom = (mouseX / zoomFactor) + cameraX
+            const worldMouseYAfterZoom = (mouseY / zoomFactor) + cameraY
+            cameraX = cameraX - (worldMouseXAfterZoom - worldX)
+            cameraY = cameraY - (worldMouseYAfterZoom - worldY)
+            return false
+        }, { passive: false })
+
+        document.addEventListener("dblclick", function (e) {
+            e.preventDefault()
+            return false
+        }, { passive: false })
+
+        document.getElementById("reseedButton").addEventListener("click", resetSimulation)
+        document.querySelectorAll("#iteration-controls button").forEach(button => {
+            button.addEventListener("click", function () {
+                iterationsPerFrame = parseInt(this.textContent)
+                document.querySelector("#iteration-controls button.active").classList.remove("active")
+                this.classList.add("active")
+            })
+        })
+
+        document.querySelectorAll("#food-controls button").forEach(button => {
+            button.addEventListener("click", function () {
+                foodRate = +this.dataset.ticks
+                foodTick = 0
+                document.querySelector("#food-controls button.active").classList.remove("active")
+                this.classList.add("active")
+            })
+        })
+
+        document.getElementById("visionSections").addEventListener("input", function () {
+            this.value = Math.max(Math.min(this.value.replace(/(?![0-9])./g, ""), 12), 1)
+            if (visionSectionCount !== +this.value) {
+                visionSectionCount = +this.value
+                resetSimulation()
+            }
+        })
+        document.getElementById("raysPerSection").addEventListener("input", function () {
+            this.value = Math.max(Math.min(this.value.replace(/(?![0-9])./g, ""), 1), 1)
+            raysPerSection = +this.value
+        })
+        document.getElementById("energyLossRate").addEventListener("input", function () {
+            this.value = Math.max(Math.min(this.value.replace(/(?![0-9])./g, ""), 1000), 10)
+            energyLoss = this.value / 50000
+        })
+
+        document.getElementById("addPreyButton").addEventListener("click", function () {
+            for (let i = 0; i < 25; i++) {
+                addCreature(Math.max(32, random() * mapWidth - 32), Math.max(20, random() * mapHeight - 20), 0, null, null, undefined, "prey") // Explicitly set type to "prey"
+            }
+        })
+
+        document.getElementById("addPredatorButton").addEventListener("click", function () {
+            for (let i = 0; i < 5; i++) {
+                addCreature(Math.max(32, random() * mapWidth - 32), Math.max(20, random() * mapHeight - 20), 0, null, null, undefined, "predator") // Explicitly set type to "predator"
+            }
+        })
+
+        function resetSimulation() {
+            const savedCameraX = cameraX
+            const savedCameraY = cameraY
+            const savedZoomFactor = zoomFactor
+
+            generateSeed()
+            initializeFood()
+            initializeCreatures(50, 10)
+
+            cameraX = savedCameraX
+            cameraY = savedCameraY
+            zoomFactor = savedZoomFactor
+            selectedCreature = null // Clear selected creature on reset
+        }
+
+        function generateSeed() {
+            var values = new Uint32Array(15)
+            crypto.getRandomValues(values)
+            var gameSeed = ""
+            for (var i = 0; i < 10; i++) {
+                gameSeed += "0123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(values[i] * 46 / 4294967296)]
+            }
+            seedRNG(gameSeed)
+            gameSeed = ""
+        }
+
+        resizeHandler()
+        resetSimulation()
+        renderFrame()
+    </script>
+</body>
+
+</html>
