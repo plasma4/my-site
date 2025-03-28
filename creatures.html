@@ -1290,7 +1290,7 @@
             }
         })
         document.getElementById("raysPerSection").addEventListener("input", function () {
-            this.value = Math.max(Math.min(this.value.replace(/(?![0-9])./g, ""), 1), 1)
+            this.value = Math.max(Math.min(this.value.replace(/(?![0-9])./g, ""), 1), 10)
             raysPerSection = +this.value
         })
         document.getElementById("energyLossRate").addEventListener("input", function () {
