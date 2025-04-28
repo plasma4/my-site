@@ -803,13 +803,9 @@
         You can imagine how the pattern continues, right? This type of recusion is quite powerful, so our next step would be $φ(1,0,0,0,0)=\underset{n\ φ\text{'s}}{\underbrace{φ(φ(φ(0,0,0,0)⋯,0,0,0),0,0,0)}}$, $φ(1,0,0,0,0,0)$, and so on. Until we get to $φ(1@n)$.
         #φ(1@n)=\underset{n\ 0\text{'s}}{\underbrace{φ(1,0,0⋯0,0,0)}}\newline
         φ(a@b)=\underset{b\ 0\text{'s}}{\underbrace{φ(a,0,0⋯0,0,0)}}#
-        This can be extended much further:
+        This can be extended much further. Take this:
         #φ(1@ω)[k]=\underset{k\ 0\text{'s}}{\underbrace{φ(1,0,0⋯0,0,0)}}=ψ(Ω^{Ω^ω})[k]\newline
-        φ(1@(10@2))[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(9,φ(1@(9,φ(1@(9,⋯,0,0)),0,0)),0,0))⋯,0,0))}}\newline
-        φ(1@((a+1)@2))[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(a,φ(1@(a,φ(1@(a,⋯,0,0)),0,0)),0,0))⋯,0,0))}}\newline
-        φ(1@((a+1)@3))[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(4,φ(1@(a,φ(1@(a,φ(1@(a,⋯,0,0,0)),0,0,0)),0,0,0))⋯,0,0,0))}}\newline
-        φ(n@((a+1)@3))[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(n@(4,φ(n@(a,φ(n@(a,φ(n@(a,⋯,0,0,0)),0,0,0)),0,0,0))⋯,0,0,0))}}\newline
-        φ(n@((a+1)@b))[k]=\underset{k\ φ\text{'s with each one containing b zeroes inside}}{\underbrace{φ(n@(4,φ(n@(a,φ(n@(a,φ(n@(a,⋯,0,0⋯0)),0,0⋯0)),0,0⋯0))⋯,0,0⋯0))}}\newline#
+        φ(1@(10@2))[k]=\underset{k\ φ\text{'s}}{\underbrace{φ(1@(9,φ(1@(9,φ(1@(9,φ(1@(9,⋯,0,0)),0,0)),0,0))⋯,0,0))}}\newline
         <small>Googologists will call $φ(1@ω)$, or $ψ(Ω^{Ω^ω})$ (these two are the same; weird, right?), the Small Veblen Ordinal, or SVO. $ψ(Ω^{Ω^Ω})$, or $φ(1@(1,0))$, is equal the Large Veblen Ordinal, or LVO.</small>
         If that's strange, here are a few more examples:
         #φ(3@(2@0))[k]=φ(3@2)[k]=φ(3,0,0)[k]\newline
@@ -857,10 +853,10 @@
         <br><br>
         Let's make that more understandable. It <i>also</i> means "the smallest number bigger than <i>any finite</i> value obtainable by using up to $n$ symbols in first-order set theory." Now, <i>WHAT'S FIRST ORDER SET THEORY!?</i>
         <br><br>
-        First-order set theory involves sets and symbols, in a very wonky language. Zero is represented with ten symbols, which sounds like a lot, but it gets larger faster. Larger numbers can be created with the symbols given though. Just think about what you can make with up to $10^{100}$ symbols! No one knows how big this number is, because there's so many things you can make.
+        First-order set theory involves sets and symbols, in a very wonky language. Zero is represented with ten symbols, which sounds like a lot, but it gets larger faster. Larger numbers can be created with the symbols given though. Just think about what you can make with up to $10^{100}$ symbols! No one truly knows how big this number is, because, for one, it's uncomputable.
         #\operatorname{Rayo}(10)=0=(¬∃x_2(x_2∈x_1))\newline
         \operatorname{Rayo}(30)=1=(∃x_2(x_2∈x_1)∧(¬∃x_2((x_2∈x_1∧∃x_3(x_3∈x_2)))))#
-        (The function $\operatorname{Rayo}(x)$ represents the <i>largest value</i> in $x$ or fewer symbols. Be careful! That also means that $\operatorname{Rayo}(11)$, $\operatorname{Rayo}(12)$, and all values until $\operatorname{Rayo}(29)$ equal zero.) This is one of the LARGEST named numbers! We know that $\operatorname{Rayo}(728+75x)>2↑↑x$, and, with just $7339$ symbols, we can surpass $\operatorname{BB}(2^{65536}-1)$.
+        (The function $\operatorname{Rayo}(x)$ represents the smallest number greater than the largest finite number representable in that many symbols of set theory (effectively, the <i>largest value plus one</i>) in $x$ or fewer symbols. Be careful! That also means that $\operatorname{Rayo}(11)$, $\operatorname{Rayo}(12)$, and all values until $\operatorname{Rayo}(29)$ equal zero.) This is one of the LARGEST named numbers! We know that $\operatorname{Rayo}(728+75x)>2↑↑x$, and, with just $7339$ symbols, we can surpass $\operatorname{BB}(2^{65536}-1)$.
         <br><br>
         Just like with the Busy Beaver, the amount of possible formulas you can create is pretty small, as you get a limited set of symbols, and only <i>some</i> actually form something valid. However, even with the limited quantity of equations creatable, the values can be HUGE.
         <br>
@@ -871,6 +867,8 @@
         Why add one? Rayo is the smallest number bigger than all representable values, but $H$ is the smallest number larger. This can also continue, so for $H(2,x)$, you have access to the values $Z(1,x)$ and $Z(0,x)$ (and find the smallest number larger than all finite values). For $Z(3,x)$, you get $Z(2,x)$, $Z(1,x)$, and $Z(0,x)$, and so on. These values only cost one symbol, so the new numbers you can obtain get much bigger. As you might expect, each increase of $n$ in $Z(n,x)$ creates a number much bigger than $H(n-1,x)$.
         <br>
         Except...this is a great example of a salad number. A salad number is a number that appears to be much bigger (which it would noramlly be.). Unfortunately, in terms of googology, it's pretty much the same. For example, a factorial will ALWAYS be powerful by conventional standards, but in terms of googology, it isn't important. (In other cases, salad numbers may not have a good defintion, such as the $Z$ function we made up. In this case, how do we represent the Rayo number as a symbol?)
+        <br>
+        In the future, I'll link a more comprehensive explanation of set theory, eventually reaching up to LNGN.
         <br><br>
         At the end of the day, it doesn't matter if you're in a large number competition with your friend. They'll likely beat you by saying "whatever you said plus one," or cheat out and say "infinity." Lesson? Be sure to set the rules like they did at the MIT contest!
         <br><br>
