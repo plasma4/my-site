@@ -74,6 +74,7 @@
     <div id="controls">
         <div id="iterationControls">
             Iterations per frame:
+            <button>0</button>
             <button class="active">1</button>
             <button>2</button>
             <button>5</button>
@@ -90,16 +91,28 @@
             <button data-ticks="0">None</button>
         </div>
         <div>
-            <label for="invulnerable">Invulnerable selected creature:</label>
-            <input type="checkbox" id="invulnerable">
-        </div>
-        <div>
             <label for="findFood">Prey detect food:</label>
             <input type="checkbox" id="findFood" checked>
         </div>
         <div>
             <label for="findCreatures">Prey detect creatures:</label>
             <input type="checkbox" id="findCreatures" checked>
+        </div>
+        <div>
+            <label for="invulnerable">Invulnerable selected creature:</label>
+            <input type="checkbox" id="invulnerable">
+        </div>
+        <div>
+            <label for="spawnPrey">Prey spawner:</label>
+            <input type="checkbox" id="spawnPrey">
+        </div>
+        <div>
+            <label for="spawnPredators">Predator spawner:</label>
+            <input type="checkbox" id="spawnPredators">
+        </div>
+        <div>
+            <label for="trackHunger">Hunger in network:</label>
+            <input type="checkbox" id="trackHunger" checked>
         </div>
         <div>
             <label for="visionSections">Vision sections:</label>
@@ -326,6 +339,9 @@
         const fontSize = 10
         const textVerticalOffset = -4
 
+        var spawnPrey = false
+        var spawnPredators = false
+        var trackHunger = false
         var checkFood = false
         var checkCreatures = false
 
@@ -665,7 +681,7 @@
                 }
             }
 
-            const networkInputSize = 1 + 2 * visionSectionCount
+            const networkInputSize = 2 * visionSectionCount
 
             const newCreature = {
                 px: x,
@@ -866,7 +882,7 @@
             const rayEndX = rayX + length * rayDirX
             const rayEndY = rayY + length * rayDirY
 
-            const intersectedGridCells = [] // Changed to Array
+            const intersectedGridCells = []
 
             var x0 = Math.floor(rayX / gridCellWidth)
             var y0 = Math.floor(rayY / gridCellHeight)
@@ -877,7 +893,7 @@
             var dy = Math.abs(y1 - y0)
             var sx = (x0 < x1) ? 1 : -1
             var sy = (y0 < y1) ? 1 : -1
-            var err = dx - dy // Error term
+            var err = dx - dy
 
             var currentGridX = x0
             var currentGridY = y0
@@ -965,10 +981,13 @@
             return hitSomething ? [closestDistance, closestObjectType] : null
         }
 
-        var foodTick = 0
+        var gameTick = 0
         function renderFrame() {
             var startTime = Date.now()
             checkFood = document.getElementById("findFood").checked
+            spawnPrey = document.getElementById("spawnPrey").checked
+            spawnPredators = document.getElementById("spawnPredators").checked
+            trackHunger = document.getElementById("trackHunger").checked
             checkCreatures = document.getElementById("findCreatures").checked
             if (+document.getElementById("visionSections").value !== visionSectionCount) {
                 visionSectionCount = document.getElementById("visionSections").value
@@ -980,6 +999,7 @@
                 energyLoss = document.getElementById("energyLossRate").value / 50000
             }
 
+
             updateFoodGrid()
             updateCreatureGrid()
 
@@ -987,29 +1007,41 @@
             visionRaycasts = []
 
             for (var iteration = 0; iteration < iterationsPerFrame; iteration++) {
-                if (foodTick % foodRate === 0 && food.length < 1000 && foodRate !== 0) {
+                if (spawnPredators && gameTick % 100 === 0) {
+                    addCreature(Math.max(32, random() * mapWidth - 32), Math.max(20, random() * mapHeight - 20), 1, null, null, undefined, "predator")
+                }
+                if (spawnPrey && gameTick % 10 === 0) {
+                    addCreature(Math.max(32, random() * mapWidth - 32), Math.max(20, random() * mapHeight - 20), 1, null, null, undefined, "predator")
+                }
+                if (gameTick % foodRate === 0 && food.length < 1000 && foodRate !== 0) {
                     addFood()
                     if (foodRate === 0.5) {
                         addFood() // second food
                     }
                     updateFoodGrid()
                 }
-                foodTick++
+                gameTick++
                 for (var i = creatures.length - 1; i >= 0; i--) {
                     const creature = creatures[i]
                     var isPredator = creature.type === "predator"
 
                     var visionRayLength = creature.vision * visionRayLengthBase
-                    const currentVisionInput = Array(visionSectionCount * 2).fill(0)
+                    var currentVisionInput
+                    if (trackHunger) {
+                        currentVisionInput = Array(visionSectionCount * 2 + 1).fill(0)
+                        currentVisionInput[0] = creature.energy * 0.01
+                    } else {
+                        currentVisionInput = Array(visionSectionCount * 2).fill(0)
+                    }
                     const sectionAngle = visionFOV / visionSectionCount
 
-                    for (let sectionIndex = 0; sectionIndex < visionSectionCount; sectionIndex++) { // Changed to let
+                    for (let sectionIndex = +trackHunger; sectionIndex < visionSectionCount; sectionIndex++) {
                         var sectionClosestDistance = visionRayLength
                         var sectionClosestType = 0
                         var sectionHitSomething = false
                         const sectionStartAngle = creature.rotation - visionFOV / 2 + sectionIndex * sectionAngle + Math.PI / visionSectionCount / 3
 
-                        for (let rayIndex = 0; rayIndex < raysPerSection; rayIndex++) { // Changed to let
+                        for (let rayIndex = 0; rayIndex < raysPerSection; rayIndex++) {
                             var rayAngleOffset = 0
 
                             if (raysPerSection > 1) {
@@ -1053,11 +1085,10 @@
                         delete creature.currentVisionData
                     }
 
-                    var input = [Math.max(creature.energy, 0), ...currentVisionInput]
-
+                    currentVisionInput = currentVisionInput.slice(0)
                     creature.network.forEach((layer, layerIndex) => {
-                        input = layer.calc(input)
-                        layer.activations = input
+                        currentVisionInput = layer.calc(currentVisionInput)
+                        layer.activations = currentVisionInput
                     })
 
                     const networkOutput = creature.network[creature.network.length - 1].activations
@@ -1075,7 +1106,7 @@
                     creature.px += movement * Math.cos(creature.rotation)
                     creature.py += movement * Math.sin(creature.rotation)
 
-                    creature.energy -= (Math.pow(creature.maxSpeed, 1.4) * 0.4 + visionSectionCount * raysPerSection * creature.vision + movement * movement) * energyLoss * (isPredator ? 0.5 : 1)
+                    creature.energy -= ((Math.pow(creature.maxSpeed, 1.4) * 0.4 + visionSectionCount * raysPerSection * creature.vision + movement * movement) * energyLoss) * (isPredator ? 0.4 : 1)
                     // Eating logic
                     if (isPredator) {
                         creature.nextEatingTime -= random() + 1
@@ -1217,8 +1248,7 @@
                 ctx.fillText(`Generation: ${selectedCreature.generation}`, (w - canvasPaddingX + 10), canvasPaddingY + 65 * devicePixelRatio)
                 ctx.textAlign = "start"
 
-                const inputValuesForVisualization = [Math.max(selectedCreature.energy, 0), ...selectedCreature.currentVisionData]
-                renderLayers(selectedCreature.network, 1 + 2 * visionSectionCount, inputValuesForVisualization)
+                renderLayers(selectedCreature.network, 2 * visionSectionCount, trackHunger ? selectedCreature.currentVisionData.slice(0).push(selectedCreature.energy * 0.01) : selectedCreature.currentVisionData)
             }
 
             frameCount++
@@ -1363,7 +1393,7 @@
         document.querySelectorAll("#foodControls button").forEach(button => {
             button.addEventListener("click", function () {
                 foodRate = +this.dataset.ticks
-                foodTick = 0
+                gameTick = 0
                 document.querySelector("#foodControls button.active").classList.remove("active")
                 this.classList.add("active")
             })
@@ -1384,6 +1414,9 @@
             this.value = Math.max(Math.min(this.value.replace(/(?![0-9])./g, ""), 1000), 10)
             energyLoss = this.value / 50000
         })
+        document.getElementById("spawnPrey").addEventListener("input", resetSimulation)
+        document.getElementById("spawnPredators").addEventListener("input", resetSimulation)
+        document.getElementById("trackHunger").addEventListener("input", resetSimulation)
 
         document.getElementById("addPreyButton").addEventListener("click", function () {
             for (let i = 0; i < 25; i++) {
