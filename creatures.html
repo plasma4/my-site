@@ -74,7 +74,6 @@
     <div id="controls">
         <div id="iterationControls">
             Iterations per frame:
-            <button>0</button>
             <button class="active">1</button>
             <button>2</button>
             <button>5</button>
@@ -1248,7 +1247,7 @@
                 ctx.fillText(`Generation: ${selectedCreature.generation}`, (w - canvasPaddingX + 10), canvasPaddingY + 65 * devicePixelRatio)
                 ctx.textAlign = "start"
 
-                renderLayers(selectedCreature.network, 2 * visionSectionCount, trackHunger ? selectedCreature.currentVisionData.slice(0).push(selectedCreature.energy * 0.01) : selectedCreature.currentVisionData)
+                renderLayers(selectedCreature.network, 2 * visionSectionCount, selectedCreature.currentVisionData)
             }
 
             frameCount++
