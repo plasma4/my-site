@@ -1,3 +1,1 @@
-Everything on my [website](https://plasma4.github.io/my-site/), all in one place!
-
-Migration planned to my own domain soon.
+All the *projects* on my [website](https://plasma4.org/projects/), all in one place! (See https://github.com/plasma4/Site/ for root.)
