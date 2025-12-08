@@ -1,6 +1,6 @@
-[submodule "FractalSky"]
-	path = FractalSky
+[submodule "fractalsky"]
+	path = fractalsky
 	url = https://github.com/plasma4/FractalSky
-[submodule "RuntimeFS"]
-	path = RuntimeFS
+[submodule "runtimefs"]
+	path = runtimefs
 	url = https://github.com/plasma4/RuntimeFS
