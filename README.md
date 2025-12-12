@@ -1,1 +1,1 @@
-All the projects on my [website](https://plasma4.org/projects/), all in one place! (See https://github.com/plasma4/Site/ for the root page and blog.)
+All the projects on my [website](https://plasma4.org/projects/), in one place! (See https://github.com/plasma4/main-site/ for the root page and blog.)
