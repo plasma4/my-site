@@ -12,6 +12,11 @@
             cursor: default;
         }
 
+        body,
+        button {
+            font-family: Garamond, Georgia, serif;
+        }
+
         .active {
             cursor: default
         }
@@ -48,23 +53,21 @@
 
         .active {
             border-radius: 10px;
+            background-color: #f87a0b;
         }
 
-        #food-control input[type="number"],
-        #vision-controls input[type="number"] {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            width: 60px;
+        input[type="number"],
+        #seed {
+            padding: 2px;
+            border: 1px solid black;
+            border-radius: 4px;
+            background-color: #ddd;
+            width: 40px;
             margin-right: 5px;
         }
 
-        #grid-controls input[type="number"] {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            width: 60px;
-            margin-right: 5px;
+        #seed {
+            width: 120px;
         }
 
         button {
@@ -128,12 +131,16 @@
             <input type="checkbox" id="trackHunger" checked>
         </div>
         <div>
+            <label for="wrapCreature">Wrap creature around map:</label>
+            <input type="checkbox" id="wrapCreature">
+        </div>
+        <div>
             <label for="visionSections">Vision sections:</label>
-            <input type="number" id="visionSections" value="4" min="1" max="12" step="1">
+            <input type="number" id="visionSections" value="5" min="1" max="12" step="1">
         </div>
         <div>
             <label for="raysPerSection">Rays per section:</label>
-            <input type="number" id="raysPerSection" value="6" min="1" max="10" step="1">
+            <input type="number" id="raysPerSection" value="5" min="1" max="10" step="1">
         </div>
         <div>
             <label for="energyLossRate">Energy loss rate:</label>
@@ -391,11 +398,13 @@
         const textVerticalOffset = -4
 
         // Control panel state variables
+        var invulnerable = false
         var spawnPrey = false
         var spawnPredators = false
         var trackHunger = false
         var checkFood = false
         var checkCreatures = false
+        var wrapCreature = false
 
         // Renders the neural network layers and connections
         function renderLayers(layers, inputSize, inputValues) {
@@ -586,7 +595,7 @@
                 ctx.fillStyle = "black"
                 ctx.font = (16 * zoomFactor) + "px sans-serif"
                 ctx.shadowBlur = 3
-                ctx.shadowColor = "#050505"
+                ctx.shadowColor = "#05050533"
                 ctx.shadowOffsetX = 3
                 ctx.shadowOffsetY = 3
                 ctx.fillText(text, x, y - 50 * zoomFactor)
@@ -1127,17 +1136,37 @@
             return hitSomething ? [closestDistance, closestObjectType] : null
         }
 
-        var gameTick = 0 // Counter for simulation ticks
-        // The main animation loop
-        function renderFrame() {
-            var startTime = Date.now() // Record start time for frame rate control
-
-            // Update control panel state variables
+        function updateSettings() {
+            invulnerable = document.getElementById("invulnerable").checked
             checkFood = document.getElementById("findFood").checked
             spawnPrey = document.getElementById("spawnPrey").checked
             spawnPredators = document.getElementById("spawnPredators").checked
             trackHunger = document.getElementById("trackHunger").checked
             checkCreatures = document.getElementById("findCreatures").checked
+            wrapCreature = document.getElementById("wrapCreature").checked
+
+            // Handle Hunger Change specifically to trigger reset
+            let newTrackHunger = document.getElementById("trackHunger").checked
+            if (trackHunger !== newTrackHunger) {
+                trackHunger = newTrackHunger
+                resetSimulation()
+            }
+        }
+
+        // Attach to all checkboxes
+        document.getElementById("invulnerable").addEventListener("change", updateSettings)
+        document.getElementById("findFood").addEventListener("change", updateSettings)
+        document.getElementById("spawnPrey").addEventListener("change", updateSettings)
+        document.getElementById("spawnPredators").addEventListener("change", updateSettings)
+        document.getElementById("findCreatures").addEventListener("change", updateSettings)
+        document.getElementById("wrapCreature").addEventListener("change", updateSettings)
+        document.getElementById("trackHunger").addEventListener("change", updateSettings)
+        updateSettings()
+
+        var gameTick = 0 // Counter for simulation ticks
+        // The main animation loop
+        function renderFrame() {
+            var startTime = Date.now() // Record start time for frame rate control
 
             // Update simulation parameters based on control panel inputs
             if (+document.getElementById("visionSections").value !== visionSectionCount) {
@@ -1184,12 +1213,13 @@
                     var isPredator = creature.type === "predator"
 
                     var visionRayLength = creature.vision * visionRayLengthBase
-                    // Calculate network input size dynamically
-                    const networkInputSize = (2 * visionSectionCount) + (trackHunger ? 1 : 0)
-                    var currentVisionInput = Array(networkInputSize).fill(0)
+                    var expectedInputSize = creature.network[0].a
+                    var visionInputSize = visionSectionCount * 2
+                    var creatureTracksHunger = expectedInputSize > visionInputSize
+                    var currentVisionInput = new Float64Array(expectedInputSize).fill(0)
 
-                    // Add hunger input if tracking is enabled
-                    if (trackHunger) {
+                    // Add hunger input only if the network has a slot for it
+                    if (creatureTracksHunger) {
                         currentVisionInput[0] = creature.energy * 0.01
                     }
 
@@ -1212,7 +1242,6 @@
                                 rayAngleOffset = 0
                             }
                             var rayAngle = sectionStartAngle + rayAngleOffset
-
                             const raycastResult = castRay(creature, rayAngle, visionRayLength)
 
                             // Update closest hit within the section
@@ -1240,7 +1269,7 @@
                         }
 
                         // Store vision data in the input array for the network
-                        const inputBaseIndex = trackHunger ? 1 : 0
+                        const inputBaseIndex = creatureTracksHunger ? 1 : 0
                         currentVisionInput[inputBaseIndex + sectionIndex * 2] = sectionHitSomething ? Math.max(0, 1 - sectionClosestDistance / visionRayLength) : 0
                         currentVisionInput[inputBaseIndex + sectionIndex * 2 + 1] = sectionHitSomething * sectionClosestType
                     }
@@ -1285,7 +1314,7 @@
                             const eatDistanceSq = (creatureBodyRadius * (creature.type === "predator" ? 1.5 : 1) + creatureBodyRadius * 0.9)
 
                             // Check for collision with prey and eating time
-                            if (distSq <= eatDistanceSq * eatDistanceSq * 5 && creature.nextEatingTime < 0 && (preyCreature !== selectedCreature || !document.getElementById("invulnerable").checked)) {
+                            if (distSq <= eatDistanceSq * eatDistanceSq * 5 && creature.nextEatingTime < 0 && (preyCreature !== selectedCreature || !invulnerable)) {
                                 creature.energy = Math.min(creatureEnergyMax * 2, creature.energy + 10 + preyCreature.energy / 5)
                                 creature.nextEatingTime = 30 + 20 * random()
                                 creatures.splice(j, 1) // Remove eaten prey
@@ -1315,7 +1344,7 @@
                     creature.age += energyDeficit * proportionalityConstant / 10
 
                     // Check for death due to low energy or old age
-                    if ((creature.energy <= 0 || creature.age >= creature.maxAge) && (creature !== selectedCreature || !document.getElementById("invulnerable").checked)) {
+                    if ((creature.energy <= 0 || creature.age >= creature.maxAge) && (creature !== selectedCreature || !invulnerable)) {
                         creatures.splice(i, 1) // Remove dead creature
                         continue
                     }
@@ -1325,6 +1354,11 @@
                         creature.energy -= reproductionCost
                         // Add a new creature (child) near the parent
                         const child = addCreature(creature.px + random() * 50 - 25, creature.py + random() * 50 - 25, creature.generation + 1, creature, creature.network, childEnergy * (isPredator ? 2 : 1), creature.type)
+                    }
+
+                    if (wrapCreature) {
+                        creature.px = ((creature.px % mapWidth) + mapWidth) % mapWidth
+                        creature.py = ((creature.py % mapHeight) + mapHeight) % mapHeight
                     }
                 }
             }
@@ -1454,10 +1488,10 @@
                 ctx.textBaseline = "top"
                 ctx.fillText(`Energy: ${formatValue(selectedCreature.energy, 1)}`, (w - canvasPaddingX + 10), canvasPaddingY + 5 * devicePixelRatio)
                 ctx.fillText(`Vision: ${formatValue(selectedCreature.vision, 3)}`, (w - canvasPaddingX + 10), canvasPaddingY + 25 * devicePixelRatio)
-                ctx.fillText(`Time left: ${formatValue(selectedCreature.maxAge - selectedCreature.age)}`, (w - canvasPaddingX + 10), canvasPaddingY + 45 * devicePixelRatio)
+                ctx.fillText(`Ticks left: ${formatValue(selectedCreature.maxAge - selectedCreature.age)}`, (w - canvasPaddingX + 10), canvasPaddingY + 45 * devicePixelRatio)
                 ctx.fillText(`Generation: ${selectedCreature.generation}`, (w - canvasPaddingX + 10), canvasPaddingY + 65 * devicePixelRatio)
                 if (trackHunger) {
-                    ctx.fillText(`Hunger Input: ${formatValue(selectedCreature.currentVisionData[0], 2)}`, (w - canvasPaddingX + 10), canvasPaddingY + 85 * devicePixelRatio)
+                    ctx.fillText(`Hunger input: ${formatValue(selectedCreature.currentVisionData[0], 2)}`, (w - canvasPaddingX + 10), canvasPaddingY + 85 * devicePixelRatio)
                 }
                 ctx.textAlign = "start"
 
@@ -1498,19 +1532,19 @@
 
         // Event listeners for input fields
         document.getElementById("visionSections").addEventListener("input", function () {
-            this.value = Math.max(Math.min(this.value.replace(/(?![0-9])./g, ""), 12), 1)
-            if (visionSectionCount !== +this.value) {
-                visionSectionCount = +this.value
-                resetSimulation() // Reset simulation if vision sections change
+            let val = Math.max(1, Math.min(12, parseInt(this.value) || 1))
+            if (visionSectionCount !== val) {
+                visionSectionCount = val
+                resetSimulation()
             }
         })
+
         document.getElementById("raysPerSection").addEventListener("input", function () {
-            this.value = Math.max(Math.min(this.value.replace(/(?![0-9])./g, ""), 10), 1)
-            raysPerSection = +this.value
+            raysPerSection = Math.max(1, Math.min(10, parseInt(this.value) || 1))
         })
+
         document.getElementById("energyLossRate").addEventListener("input", function () {
-            this.value = Math.max(Math.min(this.value.replace(/(?![0-9])./g, ""), 1000), 10)
-            energyLoss = this.value / 50000
+            energyLoss = (parseInt(this.value) || 100) / 50000
         })
 
         // Event listeners for checkboxes that affect network size
@@ -1679,10 +1713,10 @@
 
         // Generates a random seed for the simulation
         function generateSeed() {
-            var values = new Uint32Array(15)
+            var values = new Uint32Array(12)
             crypto.getRandomValues(values)
             var gameSeed = ""
-            for (var i = 0; i < 10; i++) {
+            for (var i = 0; i < 12; i++) {
                 gameSeed += "0123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(values[i] * 36 / 4294967296)]
             }
             document.getElementById("seed").value = gameSeed
