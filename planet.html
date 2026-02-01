@@ -3413,6 +3413,21 @@
             background-color: #f7dda299;
         }
 
+        .gold {
+            background-color: #ef990eaa;
+            color: white;
+            border-color: #eed193;
+        }
+
+        .gold:hover,
+        .gold:focus {
+            background-color: #f2bc3dcc;
+        }
+
+        .gold:active {
+            background-color: #f7dda2;
+        }
+
         .green {
             background-color: #28ef0e44;
             border-color: #9af78e;
@@ -3606,9 +3621,6 @@
         #upgradeEasy {
             background-color: #5f0d75;
             border-color: #f94fb8;
-            position: fixed;
-            top: -4px;
-            right: -4px;
         }
 
         .rainbow {
@@ -3631,41 +3643,108 @@
                 background-position: 100% 100%;
             }
         }
+
+        [style*="--tip:"] {
+            position: relative;
+        }
+
+        [style*="--tip:"]:empty::before {
+            display: none;
+        }
+
+        [style*="--tip:"]::after {
+            pointer-events: none;
+            content: var(--tip);
+            text-shadow: none !important;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 1.4;
+            width: 80%;
+            width: 300px;
+            max-width: 500px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            display: inline-block;
+            position: absolute;
+            z-index: 1;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            opacity: 0.2;
+            transition: opacity 500ms, transform 300ms ease-in-out;
+        }
+
+        [style*="--tip:"]::before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50% !important;
+            border-radius: 0 !important;
+            width: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            transition: opacity 1s !important;
+            opacity: 0.8;
+            border-color: #ddd transparent transparent transparent;
+        }
+
+        [style*="--tip:"]:hover::after,
+        [style*="--tip:"]:focus::after {
+            transform: translateX(-50%) scale(1);
+            opacity: 1;
+        }
+
+        [style*="--tip:"]:hover::before,
+        [style*="--tip:"]:focus::before {
+            opacity: 1;
+        }
+
+        button[style*="--tip:"]::after {
+            background-color: #514c4d;
+            bottom: auto;
+            top: calc(100% + 5px);
+        }
+
+        button[style*="--tip:"]::before {
+            border-color: transparent transparent #d6d6d6 transparent;
+        }
     </style>
 </head>
 
 <body style="display: none">
-    <br>
-    <p>The game was made by me (Leo Zhang). All rights are reserved! Have fun...</p>
-    <p class="small">(Original concept by Gavin)</p>
+    <!-- This game's code is kind of a mess isn't it -->
+    <p class="small">Game by Leo Zhang; original concept by Gavin.</p>
     <button class="bold red" id="reset">RESET</button>
     <button class="bold orange" id="import">Import</button>
     <button class="bold orange" id="export">Export</button>
     <button class="bold yellow" id="themes">Switch themes</button>
     <button class="bold yellow" id="font">Switch fonts</button>
-    <button id="upgradeEasy"></button>
+    <button id="upgradeEasy" style="--tip: 'By default, you only buy 1 thing at a time when holding down a button. Upgrade this to increase how much you buy at once.'"></button>
     <div id="home">
-        <p>Note that if you press and hold on a button, it will be automatically clicked on 20 times/second.</p>
-        <p>This will also happen if you use the Space/Enter keys!</p>
         <div style="color: #da4" data-s="hydrogen" data-p="hydrogen" id="atoms"></div>
         <div style="color: #bbb" data-s="gas cloud" id="clouds"></div>
         <div style="color: #ddd" data-s="helium" data-p="helium" id="helium"></div>
         <div style="color: #3d4" data-s="strange matter" data-p="strange matter" id="exotic"></div>
-        <button class="red" data-earn="atoms+1">Get hydrogen atoms</button>
+        <button class="red" data-earn="atoms+1" style="--tip: 'Tip: if you press and hold down on a button using either Space/Enter or your finger, it will automatically be pressed 20 times a second. This works for all the buttons, not just this one!'">Get hydrogen atoms</button>
         <button class="orange" data-cost="atoms-50" data-earn="molecules+1" data-stat="molecules" data-show="atoms>10">Get a molecule for 50 hydrogen</button>
         <br>
         <button class="yellow" data-cost="atoms-50000" data-earn="stars+1" data-stat="stars">Form a star for 50,000 hydrogen</button>
         <button class="yellow" data-cost="stars-10" data-earn="starmakers+1" data-stat="starmakers">Get a star synthesizer for 10 stars</button>
         <p>Molecules are made from a chunk of hydrogen and boost manual hydrogen gain. They also produce an additional 1 hydrogen per second. Much more powerful stars produce 100 hydrogen/sec.</p>
         <hr>
-        <button class="gray" data-cost="stars-all|starmakers-all|molecules-all|atoms-all" data-earn="clouds+*1" data-stat="clouds">Go SUPERNOVA and get gas clouds</button>
+        <button class="gold" data-cost="stars-all|starmakers-all|molecules-all|atoms-all" data-earn="clouds+*1" data-stat="clouds" style="--tip: 'You need at least 50 stars to go SUPERNOVA. It will convert all stars to gas clouds and reset previous progress.'">Go SUPERNOVA and get gas clouds</button>
         <button class="green" data-cost="clouds-25" data-earn="helium+1" data-stat="helium">Condense 25 gas clouds into helium</button>
         <button class="orange" data-cost="stars-250000" data-earn="nstars+1" data-stat="nstars" data-show="clouds>0">Fuse 250,000 stars into a neutron star</button>
         <br>
         <button class="blue" data-cost="clouds-50000|stars-100000" data-earn="reactors+1" data-stat="reactors" data-show="clouds>0">Make a neutron condenser from 50,000 gas clouds and 100,000 stars</button>
         <button class="porply" data-cost="exotic-25000" data-earn="magnets+1" data-stat="magnets" data-show="clouds>0">Make a strange magnet with 25,000 strange matter</button>
-        <p>You need at least 50 stars to go SUPERNOVA. It will convert all stars to gas clouds and reset previous progress.</p>
-        <div class="hide" data-show="helium>0">
+        <div class="hide" data-show="clouds>0">
             <p>Helium increases star gain by <span style="color: #fdd" id="heliumBoost"></span>, and neutron stars produce helium.</p>
             <p>Strange matter boosts molecule and neutron star effect by <span style="color: #79b" id="strangeBoost"></span>. You make strange matter from neutron condensers and strange stars.</p>
             <p>Strange magnets attract more strange matter and increase their production by <span style="color: #2b5" id="magnetBoost"></span>.</p>
@@ -3691,20 +3770,20 @@
         </div>
         <div class="hide" data-show="planets>=1000">
             <hr>
-            <button class="black" data-cost="atoms-1e24" data-earn="blackholes+1" data-stat="blackholes">Make a black hole</button>
+            <button class="black" data-cost="atoms-1e24" data-earn="blackholes+1" data-stat="blackholes" style="--tip: 'A black hole...now THAT is powerful. Spend 1.000S hydrogen for a single one!'">Make a black hole</button>
             <button class="black" data-show="blackholes>0" data-cost="blackholes-100" data-earn="superholes+1" data-stat="superholes">Make a SUPERMASSIVE black hole from 100 black holes</button>
             <br>
             <button class="wow" data-show="superholes>0" data-cost="atoms-all|stars-all|starmakers-all|molecules-all|clouds-all|helium-all|nstars-all|exotic-all|reactors-all|magnets-all|planets-all|sstars-all|money-all|quarkgen-all|blackholes-all|superholes-all|quarks-all|spin-all" data-earn="neon+*1e-9" data-stat="neon">Go HYPERNOVA and gain neon based on hydrogen</button>
             <button class="wow2" data-show="superholes>0" data-cost="neon-1e39|stars-1" data-earn="dwarfs+1" data-stat="dwarfs">Create a white dwarf for 1.000Dd neon and 1 star</button>
-            <p>A black hole...now THAT's powerful. Spend 1.000S hydrogen for a single one! They boost helium production speed by <span style="color: #1db" id="holeBoost"></span> by sucking in nearby gas rapidly.</p>
+            <p>They boost helium production speed by <span style="color: #1db" id="holeBoost"></span> by sucking in nearby gas rapidly.</p>
             <p class="hide" data-show="blackholes>0">Supermassive black holes, meanwhile, have immense spin speed and generate spin. Your spin increases quark production by <span style="color: #f42" id="spinBoost"></span>.</p>
             <p class="hide" data-show="superholes>0">You can also go HYPERNOVA, which resets previous progress in exchange for neon. Your neon multiplies automated hydrogen and star gain by <span style="color: #db3" id="neonBoost"></span>.</p>
             <p class="hide" data-show="neon>0">White dwarfs are made from a bunch of neon and the remnants of a former star. They increase helium and exotic matter gain by <span style="color: #fab" id="dwarfBoost"></span>.</p>
         </div>
         <div class="hide" data-show="dwarfs>0">
             <hr>
-            <button class="wow3" data-show="superholes>0" data-cost="spin-3POWtickspeed" data-earn="tickspeed+1" id="getTickspeed"></button>
-            <p>Want things to go faster? Get tickspeed by accelerating and use Einstein's theory of relativity to your advantage! (Currently increasing all pre-slime production speed by <span style="color: #d72" id="tickBoost"></span>.)</p>
+            <button class="wow3" data-show="superholes>0" data-cost="spin-3POWtickspeed" data-earn="tickspeed+1" id="getTickspeed" style="--tip: 'Want things to go faster? Get tickspeed by accelerating and use Einstein\'s theory of relativity to your advantage!'"></button>
+            <p>Currently increasing all pre-slime production speed by <span style="color: #d72" id="tickBoost"></span>.</p>
             <p>You'll unlock something new at 1.000e100 neon...</p>
         </div>
         <div class="hide" data-show="neon>1e100">
@@ -3727,7 +3806,7 @@
             <button class="red" data-show="superholes>0" data-cost="atoms-e27000" data-earn="arms+1" data-stat="arms">Get a galactic robot arm for 1e27,000 hydrogen</button>
             <br>
             <button class="brown" data-show="arms>0" data-cost="arms-10" data-earn="ezclickers+1" data-stat="ezclickers">Create an EZClicker with 10 robot arms</button>
-            <button class="yellow" data-show="superholes>0" data-cost="rockets-1e8" data-earn="hyperrockets+1" data-stat="hyperrockets">Create a HyperRocket from 100M rockets</button>
+            <button class="gold" data-show="superholes>0" data-cost="rockets-1e8" data-earn="hyperrockets+1" data-stat="hyperrockets">Create a HyperRocket from 100M rockets</button>
             <button class="quark" data-show="superholes>0" data-cost="hyperrockets-5|tickspeed-10" data-earn="superticks+1" data-stat="superticks">Create super-tickspeed from 5 HyperRockets and 10 tickspeed</button>
             <button class="green2" data-show="superholes>0" id="seeAliens">Visit the alien Interplanetary Unit for 10 HyperRockets</button>
             <br><br>
