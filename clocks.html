@@ -9776,13 +9776,13 @@
                         <br>
                         <button data-id="purply-pond" data-cooldown="1800" data-earn="ponds+1"
                             data-cost="goo-5000|goldb-1e7" data-show="wells>0"
-                            data-desc="Make a pond by pouring 5,000 goo into a sizeable pond and 10 million gold bars inside.\nSlowly produces magical energy to use.$ponds$">
+                            data-desc="Make a pond by pouring 5,000 goo into a sizeable pond and 10 million gold bars inside.\nSlowly produces usable magical energy.$ponds$">
                             <span class="bigger pond"></span>
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
-                        <button data-id="all-well" data-cooldown="120" data-earn="wells+1" data-cost="goo-100"
-                            data-show="goo>=50"
-                            data-desc="Make a well made of 100 goo to slowly generate even more goo.$wells$">
+                        <button data-id="all-well" data-cooldown="120" data-earn="wells+1" data-cost="goo-25"
+                            data-show="goo>0"
+                            data-desc="Make a well made of 25 goo to slowly generate even more goo.$wells$">
                             <span class="bigger well"></span>
                             <span class="cooldown" aria-hidden="true"></span>
                         </button>
@@ -10294,7 +10294,7 @@
                         <span class="comical white outlined" id="void" data-for="$big black"></span>
                         Note that Void is capped at 1e10.000M unless you have special upgrades.
                         <br>
-                        <div id="rdContainer" class="smallish red" style="visibility: hidden">
+                        <div id="rdContainer" class="smallish red" style="display: none">
                             <label class="hidden" for="rd">
                                 Rage difficulty level requested (defaults to 1)
                             </label>
@@ -10309,10 +10309,43 @@
                             (Purple candy gain is HARDCAPPED at 1e1,000,000.)
                         </div>
                     </div>
-                    <hr>
+
+                    <button class="special" data-cost="carrots-EXPgcarrots,1" data-show="carrots>0" data-hide="$carrot3"
+                        data-earn="gcarrots+1" data-desc="Get a {golden carrot} that increases your health further!">
+                        +1<span class="big gcarrot" role="img" aria-label=" golden carrot"></span>
+                    </button>
+                    <button class="special" data-cost="carrots-EX3gcarrots,1" data-show="$carrot3" data-hide="$bunnies4"
+                        data-earn="gcarrots+1"
+                        data-desc="Get a {golden carrot} that increases your health further!\n{(The cost is decreased because of Triple Carrotene.)}">
+                        +1<span class="big gcarrot" role="img" aria-label=" golden carrot"></span>
+                    </button>
+                    <button class="special" data-cost="carrots-EX3gcarrots,0.5" data-show="$bunnies4"
+                        data-earn="gcarrots+1"
+                        data-desc="Get a {golden carrot} that increases your health further! Note that golden carrots are capped at 10,000.\n{(The cost is decreased because of a bunny upgrade.)}">
+                        +1<span class="big gcarrot" role="img" aria-label=" golden carrot"></span>
+                    </button>
+                    <button class="special" data-cost="coins-EXPgcarrots,0.11" data-show="$bunnies7"
+                        data-earn="gcarrots+100"
+                        data-desc="Get 100 {golden carrots} that increase your health further!\n{(The cost is based on coins in this case.)}">
+                        +100<span class="big gcarrot" role="img" aria-label=" golden carrots"></span>
+                    </button>
+                    <button class="special" data-cost="gcarrots-24" data-show="$carrot4" data-earn="carrotgold+1"
+                        data-desc="Obtain a 24-Karrot bar by getting 24 golden carrots. Each bar increases golden shard CPS effect by +2.4%.\n{The effect only works if you have at least 24 golden shards!}$carrotgold$">
+                        +1 24-Karrot Gold Bar <span class="bigger carrotgold"></span>
+                    </button>
+                    <br><br>
+                    <div id="coins" class="valuable" data-desc="Yay! A coin!" data-for="$bigger coin"></div>
+                    <span class="smallish red" id="redcandy"></span>
+                    <span class="smallish yellow" id="yellowcandy" data-for="$bigger yellowcandy"></span>
+                    <span class="smallish purple" id="purplecandy" data-for="$bigger purplecandy"></span>
+                    <i class="smallish orange" id="carrots" data-for="$bigger carrot"></i>
+                    <i class="smallish valuable" id="gcarrots" data-for="$bigger gcarrot"></i>
+                    <br>
+                    <i class="smallish valuable2" id="carrotgold" data-for="$bigger carrotgold"></i>
                     <div id="shop" class="small center orange" style="display: none">
+                        <hr>
                         Hello! I'm a shopkeeper. I can use my secret methods and products to give you a big boost!
-                        <div id="difficultyContainer" class="smallish yellow" style="visibility: hidden">
+                        <div id="difficultyContainer" class="smallish yellow" style="display: none">
                             <label class="hidden" for="difficulty">
                                 Difficulty level requested (defaults to 1)
                             </label>
@@ -10335,10 +10368,6 @@
                                 Increase by 1
                             </span>
                         </div>
-                        <span class="mini special" data-cost="coins-100" data-earn="$heal" data-fade="$heal"
-                            data-desc="[Costs 1,500 coins.] Gain the ability to heal in battles too, and also double healing speed OUTSIDE of battles!">
-                            Heal in battles
-                        </span>
                         <span class="mini special" data-cost="coins-250" data-earn="$damage" data-fade="$damage"
                             data-desc="[Costs 250 coins.] Double your damage output!">
                             Double damage
@@ -10348,10 +10377,24 @@
                             data-desc="[Costs 400 coins.] Double your damage output one more time!">
                             Double damage AGAIN
                         </span>
+                        <span class="mini special" data-cost="coins-333" data-show="$speed" data-earn="$triple"
+                            data-fade="$triple"
+                            data-desc="[Costs 333 coins.] Triple coin gain from defeating an enemy!">
+                            Speedy gain
+                        </span>
+                        <span class="mini special" data-cost="coins-22222222" data-show="$speed" data-earn="$double"
+                            data-fade="$double"
+                            data-desc="[Costs 22,222,222 coins.] Double your coin gain from defeating an enemy.">
+                            Golden enemies
+                        </span>
                         <span class="mini special" data-cost="coins-777" data-show="$damage2" data-earn="$harder"
                             data-fade="$harder"
                             data-desc="[Costs 777 coins.] Gain the ability to challenge harder enemies!\n{Any time you visit me, I'll give you a custom slider to adjust the difficulty from 1 to 12.}">
                             A challenge
+                        </span>
+                        <span class="mini special" data-cost="coins-100" data-earn="$heal" data-fade="$heal"
+                            data-desc="[Costs 1,500 coins.] Gain the ability to heal in battles too, and also double healing speed outside of battles!">
+                            Heal in battles
                         </span>
                         <span class="mini special" data-cost="coins-1500" data-show="$heal" data-earn="$speed"
                             data-fade="$speed"
@@ -10362,16 +10405,6 @@
                             data-fade="$super"
                             data-desc="[Costs 2,000 coins.] Your attacks now speed up to +800% faster instead of +80%!">
                             Superspeed
-                        </span>
-                        <span class="mini special" data-cost="coins-333" data-show="$speed" data-earn="$triple"
-                            data-fade="$triple"
-                            data-desc="[Costs 333 coins.] Triple coin gain from defeating an enemy!">
-                            Speedy gain
-                        </span>
-                        <span class="mini special" data-cost="coins-222222222" data-show="$speed" data-earn="$double"
-                            data-fade="$double"
-                            data-desc="[Costs 222,222,222 coins.] Double your coin gain from defeating an enemy.">
-                            Golden enemies
                         </span>
                         <span class="mini special" data-cost="coins-5000" data-earn="$coin" data-fade="$coin"
                             data-desc="[Costs 5,000 coins.] Gain a {+0.1% sell multiplier that stacks with other multipliers} for EVERY SINGLE coin that you currently own!\nIt's just that good! (Except that it caps out at +100,000%, anyway.)\n[Additionally, all coins are salvaged through golden shard resets. However, you still need enough money to purchase the research.]">
@@ -10579,43 +10612,7 @@
                             <span class="redcandy"></span><span class="yellowcandy"></span><span
                                 class="purplecandy"></span>
                         </span>
-                        <br><br>
                     </div>
-
-                    <button class="special" data-cost="carrots-EXPgcarrots,1" data-show="carrots>0" data-hide="$carrot3"
-                        data-earn="gcarrots+1" data-desc="Get a {golden carrot} that increases your health further!">
-                        +1<span class="big gcarrot" role="img" aria-label=" golden carrot"></span>
-                    </button>
-                    <button class="special" data-cost="carrots-EX3gcarrots,1" data-show="$carrot3" data-hide="$bunnies4"
-                        data-earn="gcarrots+1"
-                        data-desc="Get a {golden carrot} that increases your health further!\n{(The cost is decreased because of Triple Carrotene.)}">
-                        +1<span class="big gcarrot" role="img" aria-label=" golden carrot"></span>
-                    </button>
-                    <button class="special" data-cost="carrots-EX3gcarrots,0.5" data-show="$bunnies4"
-                        data-earn="gcarrots+1"
-                        data-desc="Get a {golden carrot} that increases your health further!\n{(The cost is decreased because of a bunny upgrade.)}">
-                        +1<span class="big gcarrot" role="img" aria-label=" golden carrot"></span>
-                    </button>
-                    <button class="special" data-cost="coins-EXPgcarrots,0.11" data-show="$bunnies7"
-                        data-earn="gcarrots+100"
-                        data-desc="Get 100 {golden carrots} that increase your health further!\n{(The cost is based on coins in this case.)}">
-                        +100<span class="big gcarrot" role="img" aria-label=" golden carrots"></span>
-                    </button>
-                    <button class="special" data-cost="gcarrots-24" data-show="$carrot4" data-earn="carrotgold+1"
-                        data-desc="Obtain a 24-Karrot bar by getting 24 golden carrots. Each bar increases golden shard CPS effect by +2.4%.\n{The effect only works if you have at least 24 golden shards!}$carrotgold$">
-                        +1 24-Karrot Gold Bar <span class="bigger carrotgold"></span>
-                    </button>
-                    <br><br>
-                    <div id="coins" class="valuable" data-desc="Yay! A coin!" data-for="$bigger coin"></div>
-                    <span class="smallish red" id="redcandy"></span>
-                    <span class="smallish yellow" id="yellowcandy" data-for="$bigger yellowcandy"></span>
-                    <span class="smallish purple" id="purplecandy" data-for="$bigger purplecandy"></span>
-                    <br>
-                    <i class="smallish orange" id="carrots" data-for="$bigger carrot"></i>
-                    <i class="smallish valuable" id="gcarrots" data-for="$bigger gcarrot"></i>
-                    <i class="smallish valuable">(maximum of 10,000 golden carrots)</i>
-                    <br>
-                    <i class="smallish valuable2" id="carrotgold" data-for="$bigger carrotgold"></i>
 
                     <div id="underground"></div>
                     <div id="zoneEffect" class="small serif"></div>
@@ -10849,7 +10846,7 @@
                     <br>
                     <span class="small rainbow"
                         data-desc="The amount of researches stacks up, by the way, so start getting them!">
-                        Time to SCIENCE!
+                        Time to SCIENCE! (Some of these require science from your scientists, of course.)
                     </span>
 
                     <div id="research" class="study">
@@ -12242,7 +12239,7 @@
                 </div>
 
                 <nav class="small" aria-label="The navigation to view additional tabs">
-                    <u title="Open the changelog" id="viewDevlog" class="linky" role="link">View changelog</u>
+                    <u title="Open the changelog" id="viewChanges" class="linky" role="link">View changelog</u>
                     &nbsp;
                     <u title="View the settings" id="viewSettings" class="linky" role="link">View settings</u>
                     &nbsp;
@@ -12398,8 +12395,7 @@
                 <div id="ironore" class="pale" data-desc="Iron ore is heavy and is used to build machinery."
                     data-for="%iron ore"></div>
                 <div id="bauxite" class="gray"
-                    data-desc="Bauxite is used to make aluminum (OR ALUMINIUM IN BRITISH ENGLISH), which is used to build rockets.."
-                    data-for="%bauxite">
+                    data-desc="Bauxite is used to make aluminum, which is used to build rockets.." data-for="%bauxite">
                 </div>
                 <div id="graphite" class="dark"
                     data-desc="Graphite is used to construct resistors, a component of circuit boards."
@@ -12439,7 +12435,8 @@
 
                 <br>
 
-                <div id="science" class="blue" data-desc="Science helps you unlock new and exciting researches."
+                <div id="science" class="blue"
+                    data-desc="Science helps you unlock new and exciting researches. Without enough of it, some research simply won't show up."
                     data-for="$flask"></div>
                 <div id="creativity" class="orange" data-desc="Creativity helps unlock new and exciting researches."
                     data-for="$star"></div>
@@ -12860,6 +12857,7 @@
                                 add(name, value)
                             }
                         }
+                        candyUpdated = false
                     }
                 }
             }
@@ -13039,7 +13037,7 @@
                     if (buttons.length !== 0) {
                         buttons[0].focus()
                     } else {
-                        ID("viewDevlog").focus()
+                        ID("viewChanges").focus()
                     }
                 }
             }, 5)
@@ -13158,7 +13156,7 @@
             showTab("setup")
         })
 
-        attachEvent("viewDevlog", function () {
+        attachEvent("viewChanges", function () {
             showTab("changelog")
         })
 
@@ -14503,7 +14501,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
         var goFast = 0, sepia = 0, invert = 0, spinAnimation = 0, spinSpeed = 1, epilepsy = 0, bright = 0, silly = 0, workerUnloaded = true, zone = 1, sceneFrame = 0, characterX = characterSections, characterY = 0, fallSpeed = 0, health = Hyper2(100), mixingType = 0, mixingTime = new Hyper(), isBoss = false, isWonder = false, difficulty = 1, rageDifficulty = 1, difficultyTier = Hyper(1), enemiesBattled = -1, enemiesDefeated = 0, battleFrame = 1, waitBeforeAttack = 45, fightFrame = 0, dungeonX = 10, dungeonY = 10, dungeonSpeed = 1, attackData = [], attackDataX = [], attackDataY = [], attackID = [], enemyHealth = Hyper2(Infinity)
         var stuff, stuffTotals, frame, offlineFrames
         var baseSpeed = Hyper(true), crystalBoost = Hyper(true), speed = Hyper(baseSpeed), buttonLoops = 1, buttonPower = Hyper(true), newsSpeed = 1, cpt = -1, time = -1, startingTime = -1, cManagersUsed = new Hyper(), autosellOn = false, showStats = true, noAudio = false, sleekMode = false, showSubtabs = false, stripedButtons = false, seasonsEnabled = false, mainFont = 0, extraCSS = "", themeCSS = "", usingTheme = false, showLag = false, earlySpeed = null, lagData = new Hyper(true), mainColor = "#333", backColor = "d", isDark = false
-        var newsOptions = ["Why does increasing the crystal cap costs GOLDEN SHARDS after a certain point? Like, why?", "This news ticker will go away soon. Bye!", "There's upgrades, you know...", "You just wasted your time looking at this news ticker. Anyway, don't you have something to do?", "You shouldn't expect to complete the clock game quickly. It takes a while!", "Tired of reading morse code? Just decode it automatically, like - .... .. ... / .--. .. . -.-. . / --- ..-. / - . -..- -.", "Tired of this game? Well, you can always stare into space and wait...", "Your game might be lagging.", "Did you know? This is a news ticker.", "You have made a total of $CLOCKTOTAL$ clocks in this run of TTC. (Yes, that's the nickname. Or...The Clock Game.)", "It's very difficult to support variations of English. American...Canadian...British...United Clock Confederation...", "Do you really want lore?", "Should I make Ordinal Pringles minus the ordinal?", "Apparently quettagram is a thing, for some reason.", "haha pedro pascal triangle funny, haha... ...waits five years", "Imagine having a sticky key...in real life!", "Can you guess how many news tickers there are? There's at least 3, for sure, like really, actually, though.", "spoiler: I don't have any", '<u onclick="spinAnimation=360,spinSpeed=1">BAZINGA (but slow)</u>', '<u onclick="sepia=100">hey, did you know sepia makes this look like stuff is old? also it moves some other stuff around for some reason</u>', '<u onclick="invert=100">invert colors</u>', '<u onclick="goFast=1000">gotta go fast</u>', '<u onclick="bright=60">flashlight mode</u>', '<u onclick="silly=120">silly</u>', "uh, hello there, news ticker reader", "how many atoms is too many?", "You shouldn't touch francium-215.", "Is the first EraClock the Stonehenge of our time?", "Francium is only one atomic number behind radium...and it decays faster!", generateEverySprite(240, 112) + '<span class="hyperclock"></span><span class="crystal4"></span><span class="apple"></span><span class="carrotgold"></span>', "1000 999 998 997 996 995 994 993 992 991 990 989 i'm lazy so, 3 2 1...HAPPY NEW YEAR", "new game when?", 'EPILEPSY WARNING: <u onclick="epilepsy=60">Click get epilepsy</u>', '<u onclick="spinAnimation=360,spinSpeed=20">Click for a fast spinny</u>', '<u onclick="spinAnimation=360,spinSpeed=2.5">Click for a spinny</u>', "The time since you started/your last shard reset was $TIMEAFTER$ seconds.", "So, if I remove this news ticker, will there be less content?", "There are " + progressNotes.length + " tips in the game (currently, of course).", "Why is it called a news TICKER? Is it ticking?", "[pretend this has a bad dad joke here]", "\u2014From someone", "What is NaN, you ask? Why don't you Bing it up? (Sorry, I had to say it.)", firefoxZero === 0 ? "You are using Firefox!" : "You are NOT using Firefox.", "How bad do your clocks have to be to be worth ONE DOLLAR?", "Hear me out: I never update the changelog because you likely haven't even seen it yet.", "You have just read news ticker $NEWSID$. Congrats!", "This news ticker was seeded using math. Isn't that weird? This is also news message $NEWSID$.", "Did you know digital clocks used to be a part of the game? They used 3D printers (and were NOT very good).", "What are MegaClocks filled with? Who knows?", "Listen, this is an incremental game, not an RPG. Don't get too excited.", "Please observe the next news message carefully. It could affect you in many ways!", "Modern clocks are mass-produced, and a common material is clock brass.", "News tickers were added in 0.2.0. The current version is " + version + ".", "Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "what? i fight in an old dungeon? for what? coins? candy? CANDY? WHTA DA HUH? WHY? WHAT DOES THIS HAVE TO DO WITH? WHAT?", "You have been in dungeon battles for a total of $BATTLEFRAME$ frames!", "The news tickers that you get are based on how long the game has been actively running on your device. (Or other devices with exporting.)", "Don't even try to use base64 tools on the save file!", "You know zooming out to look at a news ticker won't help you?", "ARE YOU BORD?", "Purple, green, then BLUE!!???? Why are the colors out of order!!!!??????? Come oneeee!!!!!!!!!", "did you know that many people think Google's AI (Gemini) is better than ChatGPT 3.5?", "Flipper Zeroes likely won't work on your car because they use an advanced method that prevents signal data from being reused. (Somewhat well, anyway.)", "To win, press...              ...                 Ctrl+Shift+Q+Q on a Chromium laptop.", "Modding the game is an idea you could have: the tools are already in place!", "The CSS code is over 3,333 lines long! It's even over 3,335 lines long! It's also in the same HTML file.", "Dashnet Farms forgets.", window.location.href, "Moose code: " + "- .... .. ... / .. ... / .- / -.-. .- -".replace(/ /g, '<span class="rc"></span>').replace(/\./g, "moose").replace(/-/g, "mooose"), "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomo-row's yesterday. Bob, of course, nose this.", "Do you get all the references? [ReferenceError: reference is not defined]", "api.plasma4.org exists.", "You should play Bee Incremental instead.", "This game is on Galaxy.", "If you see this news ticker, your clocks have been tripled. Only works on " + (new URL(window.location.href).hostname === "plasma4.org" ? "plasma4.github.io" : "plasma4.org") + ", of course.", "John Clock is canonically managing his clock empire in his room.", "John Clock.", "Here is your randomly generated letter: z. I generated this letter beforehand.", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ frames. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "This game does not use break-eternity. Sorry.", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Bragging rights!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1 me bored true=valid', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "Cheating? You wouldn't do that, right?", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM WILL RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "Everyone keeps talking about NG+ and NG-, but personally I'm waiting for NG× and NG/.", "i have a feeling you're getting a left-to-right ticker soon...", "I don't put YT links in the ticker, unlike some other people.", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Omega Layers!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "I have a very important message to make: *", "Oh, you can't select the icons on the page? Well, that's a shame.", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "imagine if instead of TTC it was CC and instead of clicking clocks you clicked cookies", "!?             <<<not formal", "Go play some music in the background", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Use UBlock Origin.", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8! (No, not a factorial. Sorry.)", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "stop squinting at the news please", '<b class="smaller red">you should stop playing.</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "How many clocks would you need to stack to reach the moon?", "This game was partially developed on a Chromebook.", "This news ticker was poorly designed and might act weird on lesser resolutions.", "We're taking the MOOOOOON!", "I'm genuinely sorry for the cringe news tickers this game was released in like early 2024", "hi", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                              DONE!', "pay your workers more", "What would you do with one dollar?", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "This frame was $MS$ away from the previous one. Don't worry: we try to fix lag somewhat here!", "news ticker meta: the MetaClocks return", "welcome to NeverEnding Ticker", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
+        var newsOptions = ["Why does increasing the crystal cap costs GOLDEN SHARDS after a certain point? Like, why?", "This news ticker will go away soon. Bye!", 'Observe these cursed cubes: <span class="big cube brownbrick"></span> &nbsp;&nbsp;&nbsp; <span class="big cube redbrick"></span> &nbsp;&nbsp;&nbsp; <span class="big cube concrete"></span> &nbsp;&nbsp;&nbsp; <span class="big cube grass"></span>', "There's upgrades, you know...", "You just wasted your time looking at this news ticker. Anyway, don't you have something to do?", "You shouldn't expect to complete the clock game quickly. It takes a while!", "Tired of reading morse code? Just decode it automatically, like - .... .. ... / .--. .. . -.-. . / --- ..-. / - . -..- -.", "Tired of this game? Well, you can always stare into space and wait...", "Your game might be lagging.", "Did you know? This is a news ticker.", "You have made a total of $CLOCKTOTAL$ clocks in this run of TTC. (Yes, that's the nickname. Or...The Clock Game.)", "It's very difficult to support variations of English. American...Canadian...British...United Clock Confederation...", "Do you really want lore?", "Should I make Ordinal Pringles minus the ordinal?", "Apparently quettagram is a thing, for some reason.", "haha pedro pascal triangle funny, haha... ...waits five years", "Imagine having a sticky key...in real life!", "Can you guess how many news tickers there are? There's at least 3, for sure, like really, actually, though.", "spoiler: I don't have any", '<u onclick="spinAnimation=360,spinSpeed=1">BAZINGA (but slow)</u>', '<u onclick="sepia=100">hey, did you know sepia makes this look like stuff is old? also it moves some other stuff around for some reason</u>', '<u onclick="invert=100">invert colors</u>', '<u onclick="goFast=1000">gotta go fast</u>', '<u onclick="bright=60">flashlight mode</u>', '<u onclick="silly=120">silly</u>', "uh, hello there, news ticker reader", "how many atoms is too many?", "You shouldn't touch francium-215.", "Is the first EraClock the Stonehenge of our time?", "Francium is only one atomic number behind radium...and it decays faster!", generateEverySprite(240, 112) + '<span class="hyperclock"></span><span class="crystal4"></span><span class="apple"></span><span class="carrotgold"></span>', "1000 999 998 997 996 995 994 993 992 991 990 989 i'm lazy so, 3 2 1...HAPPY NEW YEAR", "new game when?", 'EPILEPSY WARNING: <u onclick="epilepsy=60">Click get epilepsy</u>', '<u onclick="spinAnimation=360,spinSpeed=20">Click for a fast spinny</u>', '<u onclick="spinAnimation=360,spinSpeed=2.5">Click for a spinny</u>', "The time since you started/your last shard reset was $TIMEAFTER$ seconds.", "So, if I remove this news ticker, will there be less content?", "There are " + progressNotes.length + " tips in the game (currently, of course).", "Why is it called a news TICKER? Is it ticking?", "[pretend this has a bad dad joke here]", "\u2014From someone", "What is NaN, you ask? Why don't you Bing it up? (Sorry, I had to say it.)", firefoxZero === 0 ? "You are using Firefox!" : "You are NOT using Firefox.", "How bad do your clocks have to be to be worth ONE DOLLAR?", "Hear me out: I never update the changelog because you likely haven't even seen it yet.", "You have just read news ticker $NEWSID$. Congrats!", "This news ticker was seeded using math. Isn't that weird? This is also news message $NEWSID$.", "Did you know digital clocks used to be a part of the game? They used 3D printers (and were NOT very good).", "What are MegaClocks filled with? Who knows?", "Listen, this is an incremental game, not an RPG. Don't get too excited.", "John Clock says TTC is neither an incremental nor an RPG.", "Please observe the next news message carefully. It could affect you in many ways!", "Modern clocks are mass-produced, and a common material is clock brass.", "News tickers were added in 0.2.0. The current version is " + version + ".", "Autoclicker go brrrrrrbrbrbrrrrrr                                                                                                                    rrrrr", "what? i fight in an old dungeon? for what? coins? candy? CANDY? WHTA DA HUH? WHY? WHAT DOES THIS HAVE TO DO WITH? WHAT?", "You have been in dungeon battles for a total of $BATTLEFRAME$ frames!", "The news tickers that you get are based on how long the game has been actively running on your device. (Or other devices with exporting.)", "Don't even try to use base64 tools on the save file!", "You know zooming out to look at a news ticker won't help you?", "ARE YOU BORD?", "Purple, green, then BLUE!!???? Why are the colors out of order!!!!??????? Come oneeee!!!!!!!!!", "did you know that many people think Google's AI (Gemini) is better than ChatGPT 3.5?", "Flipper Zeroes likely won't work on your car because they use an advanced method that prevents signal data from being reused. (Somewhat well, anyway.)", "To win, press...              ...                 Ctrl+Shift+Q+Q on a Chromium laptop.", "Modding the game is an idea you could have: the tools are already in place!", "The CSS code is over 3,333 lines long! It's even over 3,335 lines long! It's also in the same HTML file.", "Dashnet Farms forgets.", window.location.href, "Moose code: " + "- .... .. ... / .. ... / .- / -.-. .- -".replace(/ /g, '<span class="rc"></span>').replace(/\./g, "moose").replace(/-/g, "mooose"), "did you know this encodes to v'r¢é'£\\u000ba\\u008aÇ§r\\u0087^²Ú", "imagine needing to beat the game in >1 click", "Knowing the date trick: it's the day after is after tomo-row's yesterday. Bob, of course, nose this.", "Do you get all the references? [ReferenceError: reference is not defined]", "api.plasma4.org exists.", "You should play Bee Incremental instead.", "This game is on Galaxy.", "If you see this news ticker, your clocks have been tripled. Only works on " + (new URL(window.location.href).hostname === "plasma4.org" ? "plasma4.github.io" : "plasma4.org") + ", of course.", "John Clock is canonically managing his clock empire in his room.", "John Clock.", "Here is your randomly generated letter: z. I generated this letter beforehand.", "Less than 10 clocks a second and having red text is truly actually insanely wild.", 'I pour my brains out in these news tickers. You had better listen or you will be forced to, hmm, <u class="smaller">click right over...here</u>', "untrusted 60fps", "know-lege-ful", "News? What's that? Never heard of $BIG$.", "You've had the game running for $PLAYTIME$ frames. (This doesn't include offline time!)", "It is currently $TIME$ milliseconds after 1970. Oh, sorry, it's changed again. Check again? Maybe?", "When you have eeeeeeeeeeeeeee be like", "This game does not use break-eternity. Sorry.", "According to an untrusted source, r/OSHA has some BANGERS! (I don't have any comment on that.)", "Why does everything need digital knowledge? I mean, what the heck?", "Discord means something negative. So does skibidi. Look it up!", "This very long and convoluted news ticker message contains just eighty-six characters!", "A year of HTML, CSS, and JS is 3 years of programming. (Bragging rights!)", "Fun fact: you can use data:text/html links that have HTML in them for a painful one-line programming experience!", "What's the largest number you can think of? Now add one. You have a bigger number!", "Do you know what a Qd is? It's approximately A LOT. Also, 1Qd modulo 1Qd is zero (plus zero), if that gives you an idea of how big it is.", "Is digital knowledge IQ? I better hold it hold it hold it, never sell! But is it...doing well?", "Sorry, our news editors are taking a short break. We will check back after a while!", "So, like, if the Prestige Tree has prestige, the Modding Tree has mods, then what the Communitree?                                             oh i get it. It's community", 'button dopamine boost here button message("BIG BRAIN") yes bc 1 me bored true=valid', '<span class="gwood"></span> simply looks cool', '<u class="smaller">click here</u> to get a nothing', "If you reset for golden shards right now, you'd get $SHARDEARN$ shards.", "If you didn't exist, you would earn 0 shards.", "I'd update the clock game...but I'm too busy staring at the MetaClock animation.", "Is this meta (not having well-animated backgrounds like Google Chrome has is sad: try it in Firefox) much yes?", "Modding a tree be like :T", "There's only so many news tickers I can think of...", "krillion is wild", "C.L.O.C.K: Cool looking oval clock knicker-knacksies", "wotd is abbr. tho", "You and a super intelligent snail with F1,000,000 digital knowledge both get 1 trillllllllllllion clocks. The snail will pursue you endlessly. What do you do?", "This news ticker is slightly off-center vertically. Have fun!", "A idle game isn't an idle game without silly microtransactions everywhere.", "autoClick=true", "Cheating? You wouldn't do that, right?", "Faster news ticker = faster reading = faster brain cells", "Have you fond a speling error yet?", "THIS IS A PUBLIC ANNOUNCEMENT TO SPEND YOUR CRYSTALS. HOARDING THEM WILL RESULT IN UNBEARABLE GAMEPLAY!", "Breaking news: I don't have any, so stop looking at me :<", "This news ticker is restarting. Please give us a break already.", "Imagine the news ticker item disappearing before it goes across to the other side...", "Having difficulty selecting text? Try triple clicking on it to select a whole paragraph. Oh, wait...the news ticker automatically selects ALL text for you!", "Mysterious bright crystals have been found near your facility! They have a mysterious glow, and when touched, they appear to speed up time around you...", "Breaking news: 1+1=thwee!", "Everyone keeps talking about NG+ and NG-, but personally I'm waiting for NG× and NG/.", "If * is multiplication and ** is exponentiation then is *** tetration?", "i have a feeling you're getting a left-to-right ticker soon...", "I don't put YT links in the ticker, unlike some other people.", "Imagine getting a duplicate news ticker", "CPS is for clookies/sec", "fractal11 [infinite text] fractal12 [infinite text] fractal21 [infinite text] fractal22", "[space]", "What? You're used to a monospace news ticker from somewhere else? Whatever...", "This is not an ad for AD (Antimatter-related)", "Omega Layers!", "Cookie clicker but confusing 11/10 i can't stop help me i'm begging u", "315.", "I have a very important message to make: *", "Oh, you can't select the icons on the page? Well, that's a shame.", "Sign, co-sign, and tan-gen. What does it all mean?", "Apples are better than dimensions...or are they? Have you unlocked them yet?", "Does anyone actually read the tips that i worked on?", "There's over 1 research in the entire game...", "Here's a random number: 4. It was chosen by a dice roll so it's super duper random!", "Here's a number: 0. If it's not zero, you may need to seek medical help and undo the cosmic bit flips you get.", "imagine if instead of TTC it was CC and instead of clicking clocks you clicked cookies", "!?             <<<not formal", "Go play some music in the background", "NaN-immune, NaNeNaN immune, but is it FNaN immune?", "using a custom large number system for your big purposes be like pure pain", "The anti-update: everything is replaced by antimatter and you get researches in reverse", "Use UBlock Origin.", "Imagine not having F1,000 of digital knowledge yet", "<code>This game is as confuzin as code sometimez</code>", "The ghost of idle games haunts you...it tells you that you shouldn't use an autoclicker...", "Sorry, but we only support 3 dimensions currently. Come back later for 8! (No, not a factorial. Sorry.)", 'these <span class="red">c</span><span class="orange">l</span><span class="yellow">o</span><span class="green">c</span><span class="blue">k</span><span class="pink">s</span> overfill the ticky', "Projectiles...yay", "stop squinting at the news please", '<b class="smaller red">you should stop playing.</b>', "impatient waiting for the next ticker yada yada", "when will game reach version 1.0.0?", "Error 404 news ticker found (k)not", "sticker incoming", '<span class="smaller flashy">ME FLASHY</span>', '<span class="smaller flashy">I</span> <span class="smaller flashy2">AM</span> <span class="smaller flashy3">THE</span> <span class="smaller flashy4">FLASHY</span>', "How many clocks would you need to stack to reach the moon?", "This game was partially developed on a Chromebook.", "This news ticker was poorly designed and might act weird on lesser resolutions.", "We're taking the MOOOOOON!", "I'm genuinely sorry for the cringe news tickers this game was released in like early 2024", "hi", "just imagine...a clock, but MEGA", 'please wait...rebooting                          ...                           .....       dot.dot.dot                                                                              DONE!', "pay your workers more", "This game uses unseeded randomness for 0 gameplay mechanics. This includes news tickers!", "(Encounters that seem random are secretly hard-coded.", "What would you do with one dollar?", 'Your news ticker FPS is currently: <b class="smaller lime">too lazy to check sorry</b>', "This frame was $MS$ away from the previous one. Don't worry: we try to fix lag somewhat here!", "news ticker meta: the MetaClocks return", "Are news tickers overrated?", "Originally, bauxite's description included OR ALUMINIUM IN BRITISH ENGLISH.", "sorry for any lag issues ):", "welcome to NeverEnding Ticker", "-.-. .-.. --- -.-. -.-".replace(/ /g, '<span class="rc"></span>').replace(/\./g, '<span class="clock"></span>').replace(/-/g, '<span class="gc"></span>'), "i'm out of news so here's a ticky in the opposing direction"]
         newsOptions.unshift("Including this news ticker, there are currently " + (newsOptions.length + 1) + " unique tickers. Now, next up...")
 
         function generateEverySprite(width, height) {
@@ -17463,26 +17461,26 @@ c`.split("\n")
                 if (endgameLoaded) {
                     if (endX === -1) {
                         if (playerY < 0 || (!endgameCollide.includes(getTile(Math.ceil(playerX) - 1, playerY)) && !endgameCollide.includes(getTile(Math.ceil(playerX) - 1, playerY + 1)))) {
-                            playerX -= 0.0625
+                            playerX -= 0.2
                         }
                     } else if (endX === 1) {
                         if (playerY < 0 || (!endgameCollide.includes(getTile(playerX + 1, playerY)) && !endgameCollide.includes(getTile(playerX + 1, playerY + 1)))) {
-                            playerX += 0.0625
+                            playerX += 0.2
                         }
                     }
                     if (endY === -1) {
                         if (playerY < 1 || (!endgameCollide.includes(getTile(playerX, Math.ceil(playerY) - 1)) && !endgameCollide.includes(getTile(playerX + 1, Math.ceil(playerY) - 1)))) {
-                            playerY -= 0.0625
+                            playerY -= 0.2
                         }
                     } else if (endY === 1) {
                         if (playerY < -1 || (!endgameCollide.includes(getTile(playerX, playerY + 1)) && !endgameCollide.includes(getTile(playerX + 1, playerY + 1)))) {
-                            playerY += 0.0625
+                            playerY += 0.2
                         }
                     }
                     ctx.clearRect(0, 0, 320, 320)
 
                     die2Frame = Math.max(die2Frame - 1, 0)
-                    var darknessAmount = (0.013 + 0.004 * Math.sin(frame * 0.05)) * (die2Frame >= 100 ? die2Frame - 100 : 50 - die2Frame)
+                    var darknessAmount = (0.013 + 0.004 * Math.sin(frame * 0.05)) * (die2Frame >= 30 ? die2Frame - 30 : 15 - die2Frame)
                     if (darknessAmount <= 0) {
                         ctx.fillStyle = "black"
                         ctx.fillRect(0, 0, 320, 320)
@@ -17631,27 +17629,27 @@ c`.split("\n")
                 if (dieFrame < 5) {
                     var scaling = 1 + dieFrame * 0.01
                     filterEffect = "brightness(" + Math.pow(scaling, 15) + ")"
-                    ID("underground").style.transform = "scale(" + (scaling - 0.8) + ")"
+                    // ID("underground").style.transform = "scale(" + (scaling - 0.8) + ")"
                 } else if (dieFrame < 10) {
                     var scaling = 1.1 - dieFrame * 0.01
                     filterEffect = "brightness(" + Math.pow(scaling, 15) + ")"
-                    ID("underground").style.transform = "scale(" + (scaling - 0.8) + ")"
+                    // ID("underground").style.transform = "scale(" + (scaling - 0.8) + ")"
                 }
                 ID("underground").style.filter = filterEffect + "hue-rotate(" + dieFrame * 7.2 + "deg)"
                 if (dieFrame >= 25) {
                     return
                 }
             } else if (inBattle >= 0) {
-                if (inBattle === 60) {
+                if (inBattle === 20) {
                     characterX = battleX * characterSections
                     characterY = battleY * characterSections
                 }
                 inBattle = Math.max(0, inBattle - 1)
-                if (inBattle >= 30) {
-                    ID("underground").style.opacity = (inBattle / 30 - 1).toFixed(3)
+                if (inBattle >= 10) {
+                    ID("underground").style.opacity = (inBattle / 10 - 1).toFixed(3)
                     return
                 } else if (inBattle > 0) {
-                    ID("underground").style.opacity = (1 - inBattle / 30).toFixed(3)
+                    ID("underground").style.opacity = (1 - inBattle / 10).toFixed(3)
                 } else {
                     ID("underground").removeAttribute("style")
                 }
@@ -17689,7 +17687,8 @@ c`.split("\n")
             var extraY = Math.max(Math.min(cy, 0), Math.floor(divY - dungeonY + 3))
 
             if (!tileData[cy + 1] || !(collisionKey.includes(tileData[cy + 1][cx]))) {
-                characterY += ++fallSpeed
+                fallSpeed = Math.min(fallSpeed + 2.5, 200)
+                characterY += fallSpeed
                 if (cx < 0 && characterY >= 25 * characterSections) {
                     characterY = 25 * characterSections
                     fallSpeed = 0
@@ -18006,27 +18005,27 @@ c`.split("\n")
                         }
                         var additionalCSS = ""
                         if (data === "gc" || data === "radiumbar") {
-                            xData = attackDataX[i] += Math.min(zone === 2 ? difficultyTier.toString() : 1, 6) * 0.03 * dungeonSpeed * attackMultiplier
+                            xData = attackDataX[i] += Math.min(zone === 2 ? difficultyTier.toString() : 1, 6) * 0.12 * dungeonSpeed * attackMultiplier
                         } else if (data === "hammer" || data === "shovel") {
-                            xData = attackDataX[i] += 0.1 * dungeonSpeed * attackMultiplier
+                            xData = attackDataX[i] += 0.2 * dungeonSpeed * attackMultiplier
                             if (attackMultiplier === 4) {
-                                attackDataY[i] -= 0.15 * dungeonSpeed * attackMultiplier
+                                attackDataY[i] -= 0.6 * dungeonSpeed * attackMultiplier
                             }
                             additionalCSS = ";transform: rotate(" + (xData * 100) + "deg)"
                         } else if (data === "binary") {
-                            xData = attackDataX[i] += 0.15 * dungeonSpeed * attackMultiplier
+                            xData = attackDataX[i] += 0.3 * dungeonSpeed * attackMultiplier
                             var mod2 = xData % 1.8
                             additionalCSS = ";transform: scale(" + ((mod2 >= 0.9 ? 1.8 - mod2 : mod2) + 0.1) + ")"
                         } else if (data === "bolt") {
-                            xData = attackDataX[i] += 0.2 * dungeonSpeed * attackMultiplier
+                            xData = attackDataX[i] += 0.4 * dungeonSpeed * attackMultiplier
                             additionalCSS = ";transform: rotate(" + (xData * 25) + "deg)"
                         } else {
                             if (data === "shard") {
-                                attackID[i] -= zone === 2 ? 0.1 * Math.min(difficultyTier.toString(), 4) : 0.1
+                                attackID[i] -= zone === 2 ? 0.25 * Math.min(difficultyTier.toString(), 4) : 0.25
                             } else if (data === "wonder") {
-                                attackID[i] -= 0.04
+                                attackID[i] -= 0.1
                             }
-                            xData = attackDataX[i] += 0.05 * dungeonSpeed * attackMultiplier
+                            xData = attackDataX[i] += 0.15 * dungeonSpeed * attackMultiplier
                         }
                         var distance = Math.max(1 - Math.sqrt((xData - divX) * (xData - divX) + (yData - divY) * (yData - divY)) * 0.4, 0)
                         attackHTML += '<span class="' + data + '" style="top:' + (4 + 32 * (yData - extraY)) + 'px;left:' + (4 + 32 * (xData - extraX)) + 'px' + additionalCSS + (data === "radiumbar" || data === "shard" ? '"></span>' : ";filter:brightness(" + distance + ')"></span>')
@@ -19008,13 +19007,13 @@ c`.split("\n")
             }
             if (hasResearch("rage")) {
                 ID("rdContainer").removeAttribute("style")
-            } else if (ID("rdContainer").style.visibility !== "hidden") {
-                ID("rdContainer").style.visibility = "hidden"
+            } else if (ID("rdContainer").style.display !== "none") {
+                ID("rdContainer").style.display = "none"
             }
             if (hasResearch("harder")) {
                 ID("difficultyContainer").removeAttribute("style")
-            } else if (ID("difficultyContainer").style.visibility !== "hidden") {
-                ID("difficultyContainer").style.visibility = "hidden"
+            } else if (ID("difficultyContainer").style.display !== "none") {
+                ID("difficultyContainer").style.display = "none"
             }
             if (hasResearch("tier")) {
                 ID("tierContainer").removeAttribute("style")
@@ -19138,11 +19137,6 @@ c`.split("\n")
 
             // Update all the values that are within the game
             updateGame()
-
-            // Update dungeons (no dragons)
-            if ((currentTab === "dungeon" || currentTab === "finale") && hasResearch("dungeon")) {
-                updateDungeon(currentTab === "finale")
-            }
 
             // Update the silly news ticker
             var ticky = ID("ticker")
@@ -19404,6 +19398,14 @@ c`.split("\n")
             setTimeout(draw, (frame % 3 === 0 ? 16 : 17) - Date.now() + newTime)
         }
 
+        // 20FPS to reduce lag
+        setInterval(function () {
+            // Update dungeons (no dragons)
+            if ((currentTab === "dungeon" || currentTab === "finale") && hasResearch("dungeon")) {
+                updateDungeon(currentTab === "finale")
+            }
+        }, 50)
+
         var battleX = 1
         var battleY = 2
         var battleDungeons = [`$$gggggggg
@@ -19411,13 +19413,19 @@ c`.split("\n")
 c      e
 brbrbrbrbr
 rbrbrbrbrb
-brbrbrbrbr`.split("\n"),
+brbrbrbrbr
+
+
+`.split("\n"),
         `cccccccccc
   $$$$
        e
 cccccccccc
 rbrbrbrbrb
-brbrbrbrbr`.split("\n"),
+brbrbrbrbr
+
+
+`.split("\n"),
         `cccccccccc
 
 $      e
@@ -19426,7 +19434,10 @@ brbrbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
 rbrbrbrbrb
-brbrbrbrbr`.split("\n"),
+brbrbrbrbr
+
+
+`.split("\n"),
         `cccccccccc
      $$
        e
@@ -19436,18 +19447,27 @@ rbrbrbrbrb
 brbrbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
-bbbbbrrrrr`.split("\n"),
+bbbbbrrrrr
+
+
+`.split("\n"),
         `bbbbbbbbbb
   $$ $$
        e    $  $$
 cccccccccccccccbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
-cccccccccc`.split("\n"),
+cccccccccc
+
+
+`.split("\n"),
         `cccccccccc
 $$$
        e
-bbbbbbbbbb`.split("\n"),
+bbbbbbbbbb
+
+
+`.split("\n"),
         `cccccccccc
            $
        e   $$
@@ -19456,7 +19476,10 @@ rrrrrrrrrrccccccccc
 bbbbbbbbbb
 rrrrrrrrrr
 bbbbbbbbbb
-rrrrrrrrrr`.split("\n")]
+rrrrrrrrrr
+
+
+`.split("\n")]
 
         if (storageWorks) {
             function getMods() {
