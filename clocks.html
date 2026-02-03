@@ -17424,7 +17424,7 @@ gggggggggggggggggggggggggggggggggggggggggggggggggrrrrgggggggggg b
             return cap
         }
 
-        var battleDungeon = "", worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
+        var battleDungeon = "", worker = null, healthUpdated = true, formattedHealthCap = "", previousHealthCap = Hyper2(0), candyUpdated = true, formattedCandy = "0", previousCandy = Hyper2(0), damageUpdated = true, formattedDamage = "1.000", previousDamage = Hyper2(1)
         var dungeonKey = "brgpc$e!?#P", collisionKey = "brgpc", collectingKey = "P$!?e", shopCharacter = "p", battleCharacter = "e", extremeBattleCharacter = "!", wonderBattleCharacter = "?", portalCharacter = "#", coinCharacter = "$", candyCharacter = "P", characterSections = 100, dieFrame = 0, die2Frame = 0, spawnX = characterSections, spawnY = 0, dungeonDepth = 0, dungeonData = [], collectedPortals = [], collectX = [], collectY = [], collectedX = [], collectedY = [], inBattle = -1, startingX = 0, startingY = 0, canJump = true, redCandy = Hyper2(0), redCandyPower = Hyper2(0), mixingSpeed = 1, endgameLoaded = false
 
         var endgameSheet = new Image()
@@ -17727,7 +17727,7 @@ c`.split("\n")
             var typeArray = ["brownbrick", "redbrick", "grass", "hue person", "concrete", "coin", inBattle >= 0 ? (isBoss ? "boss" : "enemy") + enemyType : "exclamation", "boss", "wonder2", "portal", "purplecandy", "person"]
             var newX = null
             var newY = null
-            var withinBattle = inBattle < 30 && inBattle >= 0
+            var withinBattle = inBattle < 15 && inBattle >= 0
             if (!withinBattle) {
                 collectX = []
                 collectY = []
@@ -17739,7 +17739,7 @@ c`.split("\n")
                 var y = Math.floor(i / dungeonX) + extraY
                 var hideItem = false
                 var type = -1
-                var item = x < 0 && y >= 25 ? (y === 25 ? [30, 60, 70, 71, 72, 73, 74, 75, 100, 150, 250, 300, 500, 1000].includes(-x) ? "$" : -1 : "br"[y & 1]) : (y < depth ? tileData[y][x] : -1)
+                var item = x < 0 && y >= 25 ? (y === 25 ? [30, 60, 70, 71, 72, 73, 74, 75, 100, 150, 250, 300, 500, 1000].includes(-x) ? "$" : -1 : "br"[y & 1]) : (y >= 0 && y < depth ? tileData[y][x] : -1)
                 var isDigit = (typeof item === "string") && item.charCodeAt(0) >= 48 && item.charCodeAt(0) <= 57
                 if (x === cx && y === cy) {
                     type = 11
@@ -17771,7 +17771,7 @@ c`.split("\n")
                                 } else if (item === battleCharacter || item === extremeBattleCharacter || item === wonderBattleCharacter) {
                                     isBoss = item !== battleCharacter
                                     isWonder = item === wonderBattleCharacter
-                                    inBattle = 60
+                                    inBattle = 20
                                     enemiesBattled++
                                     enemyHealth = Hyper2(Infinity)
                                     startingX = characterX
@@ -17953,7 +17953,7 @@ c`.split("\n")
                     var xData = attackDataX[i]
                     var yData = attackDataY[i]
                     var attackMultiplier = attackID[i]
-                    if (xData >= boundX + 0.5 || xData <= -0.25 || yData >= boundY + 0.25 || yData <= -0.25 || (Math.floor(yData) < depth && collideKey.includes(tileData[Math.floor(yData)][Math.floor(xData)]))) {
+                    if (xData >= boundX + 0.5 || xData <= -0.25 || yData >= boundY + 0.25 || yData <= -0.25 || (yData >= 0 && Math.floor(yData) < depth && collideKey.includes(tileData[Math.floor(yData)][Math.floor(xData)]))) {
                         attackData.splice(i, 1)
                         attackDataX.splice(i, 1)
                         attackDataY.splice(i, 1)
@@ -17971,7 +17971,7 @@ c`.split("\n")
                         } else if (data === "hammer") {
                             health = health.sub(zoneEffect.mul(35 * Math.max(1, 0.2 + Math.pow(difficulty, 2.5) * 0.072)))
                             characterX -= (xData < 7 ? 0.5 : -0.5) * characterSections
-                            if (collisionKey.includes(tileData[Math.floor(yData)][Math.floor(characterX / characterSections)])) {
+                            if (yData >= 0 && Math.floor(yData) < depth && collisionKey.includes(tileData[Math.floor(yData)][Math.floor(characterX / characterSections)])) {
                                 characterX += characterSections
                             }
                             attackID[i] = 4
@@ -18025,7 +18025,7 @@ c`.split("\n")
                             } else if (data === "wonder") {
                                 attackID[i] -= 0.1
                             }
-                            xData = attackDataX[i] += 0.15 * dungeonSpeed * attackMultiplier
+                            xData = attackDataX[i] += 0.1 * dungeonSpeed * attackMultiplier
                         }
                         var distance = Math.max(1 - Math.sqrt((xData - divX) * (xData - divX) + (yData - divY) * (yData - divY)) * 0.4, 0)
                         attackHTML += '<span class="' + data + '" style="top:' + (4 + 32 * (yData - extraY)) + 'px;left:' + (4 + 32 * (xData - extraX)) + 'px' + additionalCSS + (data === "radiumbar" || data === "shard" ? '"></span>' : ";filter:brightness(" + distance + ')"></span>')
@@ -19414,8 +19414,6 @@ c      e
 brbrbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
-
-
 `.split("\n"),
         `cccccccccc
   $$$$
@@ -19423,8 +19421,6 @@ brbrbrbrbr
 cccccccccc
 rbrbrbrbrb
 brbrbrbrbr
-
-
 `.split("\n"),
         `cccccccccc
 
@@ -19435,8 +19431,6 @@ rbrbrbrbrb
 brbrbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
-
-
 `.split("\n"),
         `cccccccccc
      $$
@@ -19448,8 +19442,6 @@ brbrbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
 bbbbbrrrrr
-
-
 `.split("\n"),
         `bbbbbbbbbb
   $$ $$
@@ -19458,15 +19450,11 @@ cccccccccccccccbrbrbr
 rbrbrbrbrb
 brbrbrbrbr
 cccccccccc
-
-
 `.split("\n"),
         `cccccccccc
 $$$
        e
 bbbbbbbbbb
-
-
 `.split("\n"),
         `cccccccccc
            $
@@ -19477,8 +19465,6 @@ bbbbbbbbbb
 rrrrrrrrrr
 bbbbbbbbbb
 rrrrrrrrrr
-
-
 `.split("\n")]
 
         if (storageWorks) {
