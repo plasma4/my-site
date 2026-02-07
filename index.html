@@ -27,7 +27,11 @@
             /* smol */
             font-size: 10px;
             text-shadow: .5px .5px .5px black;
-            margin-left: -8px;
+            margin: 0 8px 0 -8px;
+        }
+
+        #detail {
+            display: none;
         }
 
         b {
@@ -212,12 +216,17 @@
         like setting up an easy-to-use version of <a href="https://github.com/plasma4/kaizo-cookies">Kaizo Cookies</a>
         and a local <a href="https://github.com/plasma4/cookieclicker">Cookie Clicker</a>.
         <br>
+        <small id="detail">
+            Did you know I have a <a href='https://plasma4.org/projects/'>proper domain</a> now with these projects?
+            (This website will still stick around on plasma4.github.io for legacy reasons.)
+        </small>
         <small>
             All rights reserved! WebGL effects in the homepage and blog by
             <a href="https://demonin.com/">Demonin</a>.
             Clock sprite in the image at the top by @that_1_shadow on Discord.
             In the original version of the site, there was a rickroll here too :)
         </small>
+        <script>if (new URL(window.location.href).hostname === "plasma4.github.io") document.getElementById("detail").style.display = "inline"</script>
     </div>
 </body>
 
