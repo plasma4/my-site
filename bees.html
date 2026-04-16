@@ -4690,7 +4690,7 @@
             <span class="tech" style="--s: 40"></span>
         </button>
         <br>
-        <button class="aqua" data-show="unlock11>0" data-cost="honey-1e12" data-earn="planters+1" data-wait="0.2"
+        <button class="aqua" data-show="unlock11>0" data-cost="honey-1e12" data-earn="planters+1" data-wait="0.15"
             data-stat="planters">
             Hire a bunny to slowly plant trees for 1T honey
             <span style="--s: 24"></span>
@@ -5490,7 +5490,7 @@
 
             var lostBeeCount = C("beesLost").add(C("beesLost2")).add(C("beesLost3"))
             if (lostBeeCount.isPositive()) {
-                updateId("beeLostCount", lostBeeCount.format(3) + " bees lost")
+                updateId("beeLostCount", lostBeeCount + " bees lost")
             } else {
                 updateId("beeLostCount", "")
             }
