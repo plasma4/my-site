@@ -1,7 +1,8 @@
 /*
-Welcome to my code that helps run my fractal viewer. It is licensed under the
-MIT License and is open source in case you want to use it!
-It is compiled into WASM, and the run function can be executed by JavaScript.
+  Note: there is a newer version of the fractal program, FractalSky, that is out.
+  Welcome to my (OLD) code that helps run my fractal viewer. It is licensed under the
+  MIT License and is open source in case you want to use it!
+  It is compiled into WASM, and the run function can be executed by JavaScript.
 */
 
 #include <math.h>

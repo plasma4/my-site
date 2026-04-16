@@ -4168,7 +4168,7 @@
         <div style="font-size: 18px; color: #fe5c7a" id="overcrowding"></div>
         <div style="color: #f05c0d; --tip: 'The number of bees you have lost this winter. Make honeycombs so that they can survive!'"
             id="beeLostCount"></div>
-        <div style="color: #f09b08; --tip: 'Made from honey and used as a food source, among other things.'"
+        <div style="color: #f09b08; --tip: 'Made from honey and used as a winter food source, among other things.'"
             data-s="honeycomb $0" data-p="honeycombs $0" id="cells">
         </div>
         <div style="color: #f6be14; --tip: 'Honey is useful for purchasing stuff and is made from nectar.'"
@@ -4244,7 +4244,7 @@
             Study amount: <input id="studyAmount" class="range2" type="range" min="0" max="100">
             <div style="color: #fc9ae2; --tip: 'The education of your bees may be turned into ideas!'"
                 data-s="education $9" id="education"></div>
-            <div style="color: #81f0ee; --tip: 'Ideas are the first step in unlocking new technologies.'"
+            <div style="color: #81f0ee; --tip: 'Ideas are the first step in unlocking more complicated technologies.'"
                 data-s="idea $10" data-p="ideas $10" id="ideas"></div>
             <div style="color: #d4f6da; --tip: 'Cultural points may be used for unlocking advancements related to culture and art.'"
                 data-s="cultural point $14" data-p="cultural points $14" id="cpoints"></div>
@@ -4551,12 +4551,11 @@
             data-stat="fhomes2">
             Decorate 10 upgraded nurse bee homes using 2,000 flowers
         </button>
-        <br>
-        <hr>
         <button class="orange" data-show="schoolidea>0" data-cost="jelly-80000|cells-2000000" data-earn="schools+1"
             data-stat="schools">
             Construct a school using 80,000 royal jelly and 2,000,000 honeycombs
         </button>
+        <hr>
         <button class="red" data-show="bighive>0" data-cost="cells-1.5e8|pollen-1e6" data-earn="hives+1" data-wait="0.2"
             data-stat="hives">
             Create a separate hive to decrease overcrowding with 150M honeycombs and 1M pollen
@@ -4670,7 +4669,7 @@
             <span style="--s: 7"></span>
         </button>
         <hr>
-        <div class="smaller">
+        <div class="smaller" data-show="unlock9>0">
             You may also plant <b style="color: #8bef5d">trees</b> to increase <b style="color: #c7e63d">pupae</b> gain
             or cut them down for some <b style="color: #d59679">wood</b>!
             <br>
@@ -4708,60 +4707,71 @@
             data-hide="partners>1">
             Unlock a new trading partner for 1,000 fruit
         </button>
-        <hr>
-        <div style="color: #f24ea3; text-shadow: #f24ea3 0 0 10px; --tip: 'Pollination power increases based on several different factors: unspent pollination points, trees, flowers, and pollen.'"
-            data-s="pollination power" id="ppower">
-        </div>
-        <p>
-            Various resources boost your <b style="color: #f24ea3">pollination power</b> gain.
-            However, the amount that you gain will decrease as you get more and more of it.
-            (Note that this decrease is based on the total amount of pollination power that you have.)
-        </p>
-        <button class="yellow2 tip2" data-cost="iron-2.5e7|gold-5000|ppower-300000" data-earn="freepoints+1|ppoints+1"
-            style="--tip: 'Get free pollination points from your unspent pollination power, which is automatically generated.'">
-            Get a free pollination point for 25M iron, 5,000 gold and 300,000 pollination power
-        </button>
-        <hr>
-        <p class="hide" data-show="gold1>0"
-            style="--tip: 'Pollen cost formula: 5.000T, multiplied by 1.2 for every pollination point you\'ve previously purchased.'">
-            Pollination point cost: <b class="small grayish" id="ppointCost"></b>
-        </p>
-        <button class="metal tip2" data-cost="pollen-5e12/1.1POWtppoints|fruit-1e6" data-earn="ppoints+1|tppoints+1"
-            data-stat="ppoints"
-            style="--tip: 'Pollination points, although expensive, can be spent on various upgrades!'">
-            Get 1 pollination point
-        </button>
-        <button class="black tip2" id="refund" style="--tip: 'Refund all your spent pollination points at no cost!'">
-            Refund pollination points
-        </button>
-        <p>
-            Upgrade costs: <strong style="color: #d5f770; --tip: 'Cost for upgrade #1'" id="pp1"></strong>/<strong
-                style="color: #f29d52; --tip: 'Cost for upgrade #2'" id="pp2"></strong>/<strong
-                style="color: #0bdd7b; --tip: 'Cost for upgrade #3'" id="pp3"></strong>/<strong
-                style="color: #f162c2; --tip: 'Cost for upgrade #4'" id="pp4"></strong>/<strong
-                style="color: #2dccec; --tip: 'Cost for upgrade #5'" id="pp5"></strong>/<strong
-                style="color: #f7c6c1; --tip: 'Cost for upgrade #6'" id="pp6"></strong>
-        </p>
-        <div class="smaller">Upgrade 1: <strong style="color: #d5f770">+10% royal jelly production
-                (multiplicative)</strong>
-        </div>
-        <div class="smaller">Upgrade 2: <strong style="color: #f29d52">+10% pupae production (multiplicative)</strong>
-        </div>
-        <div class="smaller">Upgrade 3: <strong style="color: #0bdd7b">+30% more gems (multiplicative)</strong>
-        </div>
-        <div class="smaller">Upgrade 4: <strong style="color: #f162c2">+40% faster automatic tree planters for EVERY
-                unspent pollination
-                point (additive)</strong></div>
-        <div class="smaller">Upgrade 5: <strong style="color: #2dccec">+50% pollen gain for EVERY unspent pollination
-                point (additive)</strong></div>
-        <div class="smaller">Upgrade 6: <strong style="color: #f7c6c1">increased motivation based on fame</strong></div>
-        <div class="upgradeMenu">
-            <span style="--s: 45"></span><button id="pol1"></button>
-            <span style="--s: 46"></span><button id="pol2"></button>
-            <span style="--s: 47"></span><button id="pol3"></button>
-            <span style="--s: 48"></span><button id="pol4"></button>
-            <span style="--s: 49"></span><button id="pol5"></button>
-            <span style="--s: 50"></span><button id="pol6"></button>
+        <div class="hide" data-show="unlock20>0">
+            <hr>
+            <div style="color: #f24ea3; text-shadow: #f24ea3 0 0 10px; --tip: 'Pollination power increases based on several different factors: unspent pollination points, trees, flowers, and pollen.'"
+                data-s="pollination power" id="ppower">
+            </div>
+            <p>
+                You get <b style="color: #f24ea3">pollination power</b> based on trees, flowers
+                However, the amount that you gain will decrease as you get more and more of it.
+                (Note that this decrease is based on the total amount of pollination power that you have.)
+            </p>
+            <button class="yellow2 tip2" data-show="ppoints>0" data-cost="iron-2.5e7|gold-5000|ppower-300000"
+                data-earn="freepoints+1|ppoints+1"
+                style="--tip: 'Get bonus pollination points from your unspent pollination power, which is automatically generated.'">
+                Get a bonus pollination point for 25M iron, 5,000 gold and 300,000 pollination power
+            </button>
+            <button class="yellow2 tip2" data-show="freepoints>0" data-cost="iron-2.5e7|gold-5000|ppower-1e6"
+                data-earn="freepoints+1|ppoints+1"
+                style="--tip: 'Get bonus pollination points from your unspent pollination power, which is automatically generated.'">
+                Get a bonus pollination point for 25M iron, 5,000 gold and 1,000,000 pollination power
+            </button>
+            <hr>
+            <p class="hide" data-show="gold1>0"
+                style="--tip: 'Pollen cost formula: 5.000T, multiplied by 1.1 for every pollination point you\'ve previously purchased.'">
+                Pollination point cost: <b class="small grayish" id="ppointCost"></b>
+            </p>
+            <button class="metal tip2" data-cost="pollen-5e12/1.1POWtppoints|fruit-1e6" data-earn="ppoints+1|tppoints+1"
+                data-stat="ppoints"
+                style="--tip: 'Pollination points, although expensive, can be spent on various upgrades!'">
+                Get 1 pollination point
+            </button>
+            <button class="black tip2" id="refund"
+                style="--tip: 'Refund all your spent pollination points at no cost!'">
+                Refund pollination points
+            </button>
+            <p>
+                Upgrade costs (pollination points needed):
+                <strong style="color: #d5f770;" id="pp1"></strong>/<strong style="color: #f29d52"
+                    id="pp2"></strong>/<strong style="color: #0bdd7b" id="pp3"></strong>/<strong style="color: #f162c2"
+                    id="pp4"></strong>/<strong style="color: #2dccec" id="pp5"></strong>/<strong style="color: #f7c6c1"
+                    id="pp6"></strong>
+            </p>
+            <div class="smaller">Upgrade 1: <strong style="color: #d5f770">+10% royal jelly production
+                    (multiplicative)</strong>
+            </div>
+            <div class="smaller">Upgrade 2: <strong style="color: #f29d52">+10% pupae production
+                    (multiplicative)</strong>
+            </div>
+            <div class="smaller">Upgrade 3: <strong style="color: #0bdd7b">+30% more gems (multiplicative)</strong>
+            </div>
+            <div class="smaller">Upgrade 4: <strong style="color: #f162c2">+40% faster automatic tree planters for EVERY
+                    unspent pollination
+                    point (additive)</strong></div>
+            <div class="smaller">Upgrade 5: <strong style="color: #2dccec">+50% pollen gain for EVERY unspent
+                    pollination
+                    point (additive)</strong></div>
+            <div class="smaller">Upgrade 6: <strong style="color: #f7c6c1">increased motivation based on fame</strong>
+            </div>
+            <div class="upgradeMenu">
+                <span style="--s: 45"></span><button id="pol1"></button>
+                <span style="--s: 46"></span><button id="pol2"></button>
+                <span style="--s: 47"></span><button id="pol3"></button>
+                <span style="--s: 48"></span><button id="pol4"></button>
+                <span style="--s: 49"></span><button id="pol5"></button>
+                <span style="--s: 50"></span><button id="pol6"></button>
+            </div>
         </div>
     </div>
     <div id="menu5">
@@ -5455,7 +5465,12 @@
                 return
             }
             add("day", Hyper(1).div(120), speed)
-            var beeSum = C("bees").add(C("bees2")).add(C("bees3"))
+
+            var fBees = C("bees").floor()
+            var fBees2 = C("bees2").floor()
+            var fBees3 = C("bees3").floor()
+            var fQbees = C("qbees").floor()
+            var beeSum = fBees.add(fBees2).add(fBees3)
             hasMotivation = beeSum.isPositive()
             updateTime(disableRender)
 
@@ -5483,21 +5498,21 @@
             // Increase numbers
             var collectionRate = Hyper(speed).mul([0.4, 2, 1.5, 1][season])
             if (season === 0) {
-                if (!remove2("cells", C("bees").div(1200), speed)) {
-                    add("beesLost", C("bees").sub(mul("bees", Hyper(0.999999), speed)))
+                if (!remove2("cells", fBees.div(1200), speed)) {
+                    mul("bees", Hyper(0.999999), speed)
                 }
-                if (!remove2("cells", C("bees2").div(1200), speed)) {
-                    add("beesLost2", C("bees2").sub(mul("bees2", Hyper(0.999998), speed)))
+                add("beesLost", fBees.sub(C("bees").floor()))
+
+                if (!remove2("cells", fBees2.div(1200), speed)) {
+                    mul("bees2", Hyper(0.999998), speed)
                 }
-                if (!remove2("cells", C("bees3").div(1200), speed)) {
-                    add("beesLost3", C("bees3").sub(mul("bees3", Hyper(0.999995), speed)))
+                add("beesLost2", fBees2.sub(C("bees2").floor()))
+
+                if (!remove2("cells", fBees3.div(1200), speed)) {
+                    mul("bees3", Hyper(0.999995), speed)
                 }
+                add("beesLost3", fBees3.sub(C("bees3").floor()))
             } else {
-                if (C("pupae").isZero()) {
-                    stuff.bees = C("bees").floor()
-                    stuff.bees2 = C("bees2").floor()
-                }
-                stuff.bees3 = C("bees3").floor()
                 clearAmount(["beesLost", "beesLost2", "beesLost3"])
             }
 
@@ -5829,7 +5844,7 @@
         }
 
         function getBeeBoost(beeName, houseName, ignoreAmount) {
-            var beeAmount = C(beeName)
+            var beeAmount = C(beeName).floor()
             if (houseName == null) {
                 return beeAmount.mul(ignoreAmount ? 1 : 1 - (studyAmount / 100))
             }
@@ -5839,7 +5854,7 @@
         }
 
         function getBeeBoost2(beeName, houseName) {
-            var beeAmount = C(beeName)
+            var beeAmount = C(beeName).floor()
             return beeAmount.isPositive() ? getBeeBoost(beeName, houseName, 2).div(beeAmount) : new Hyper(1)
         }
 
@@ -6137,7 +6152,7 @@
 
             for (let i = 1; i <= pollinationAmount; i++) {
                 updateId("pol" + i, C("p" + i).format() + "×")
-                updateId("pp" + i, Hyper(i + 1).add(C("p" + i).mul(2)).format() + " pollination points")
+                updateId("pp" + i, Hyper(i + 1).add(C("p" + i).mul(2)).format())
             }
         }
 
